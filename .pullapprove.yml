@@ -1,0 +1,19 @@
+approve_by_comment: true
+approve_regex: '^(Approved|LGTM|lgtm|:shipit:|:\+1:)'
+reject_regex: '^(Rejected|:-1:)'
+reset_on_push: false
+reviewers:
+  members:
+  - jamox
+  - ljleppan
+  - Mession
+  - nygrenh
+  - tuomokar
+  - Djiffit
+  - Denopia
+  - Rubiini
+  name: default
+  required: 1
+  conditions:
+    branches:
+      - master  # only need to approve if merging to master
