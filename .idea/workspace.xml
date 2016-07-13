@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="46248f8d-fec3-49de-9f08-94455bf662cd" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/tmc-plugin-intellij/src/main/java/fi.helsinki.cs.tmc.intellij/Settings.java" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmc-plugin-intellij/resources/META-INF/plugin.xml" afterPath="$PROJECT_DIR$/tmc-plugin-intellij/resources/META-INF/plugin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmc-plugin-intellij/src/main/java/fi.helsinki.cs.tmc.intellij/TestEvent.java" afterPath="$PROJECT_DIR$/tmc-plugin-intellij/src/main/java/fi.helsinki.cs.tmc.intellij/TestEvent.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tmc-plugin-intellij/src/main/test/fi.helsinki.cs.tmc.intellij/TestEventTest.java" afterPath="$PROJECT_DIR$/tmc-plugin-intellij/src/main/test/fi.helsinki.cs.tmc.intellij/TestEventTest.java" />
     </list>
     <ignored path="tmc-intellij.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,7 +82,7 @@
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
-              <caret line="0" column="1" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
+              <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -163,8 +159,7 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-1366" />
-    <option name="y" value="21" />
+    <option name="y" value="789" />
     <option name="width" value="1366" />
     <option name="height" value="747" />
   </component>
@@ -841,7 +836,7 @@
       <workItem from="1468352030368" duration="57000" />
       <workItem from="1468352127301" duration="49000" />
       <workItem from="1468352224610" duration="70000" />
-      <workItem from="1468352697360" duration="4628000" />
+      <workItem from="1468352697360" duration="4711000" />
     </task>
     <servers />
   </component>
@@ -851,10 +846,10 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6964000" />
+    <option name="totallyTimeSpent" value="7047000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1366" y="21" width="1366" height="747" extended-state="6" />
+    <frame x="0" y="789" width="1366" height="747" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1255,7 +1250,7 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="1" selection-start-line="0" selection-start-column="1" selection-end-line="0" selection-end-column="1" />
+          <caret line="0" column="6" selection-start-line="0" selection-start-column="6" selection-end-line="0" selection-end-column="6" />
           <folding />
         </state>
       </provider>
