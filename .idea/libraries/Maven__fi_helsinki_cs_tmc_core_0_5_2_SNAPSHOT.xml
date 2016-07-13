@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: fi.helsinki.cs.tmc:core:0.5.2-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/core/0.5.2-SNAPSHOT/core-0.5.2-20160615.185234-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/core/0.5.2-SNAPSHOT/core-0.5.2-20160615.185234-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/core/0.5.2-SNAPSHOT/core-0.5.2-20160615.185234-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

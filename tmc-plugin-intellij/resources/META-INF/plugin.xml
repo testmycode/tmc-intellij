@@ -1,6 +1,6 @@
 <idea-plugin version="2">
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>fi.helsinki.cs.tmc</id>
+  <name>TMC Plugin</name>
   <version>1.0</version>
   <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
@@ -29,7 +29,10 @@
   </extensions>
 
   <actions>
-    <!-- Add your actions here -->
+    <group id="TMC.TestMenu" text="TMC TestMenu" description="Test Menu">
+      <add-to-group group-id="MainMenu" anchor="last"  />
+      <action id="TestEvent1" class="fi.helsinki.cs.tmc.intellij.TestEvent" text="Test Event Popup" description="Pop up test" />
+    </group>
   </actions>
 
 </idea-plugin>
