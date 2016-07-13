@@ -1,3 +1,5 @@
+package fi.helsinki.cs.tmc.intellij;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;

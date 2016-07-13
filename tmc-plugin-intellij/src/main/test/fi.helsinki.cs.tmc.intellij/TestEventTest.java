@@ -1,3 +1,5 @@
+package fi.helsinki.cs.tmc.intellij;
+
 import org.junit.Before;
 import org.junit.Test;
 
