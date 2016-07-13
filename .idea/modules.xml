@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ohtuprojekti.iml" filepath="$PROJECT_DIR$/ohtuprojekti.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmc-intellij.iml" filepath="$PROJECT_DIR$/tmc-intellij.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tmc-plugin-intellij/tmc-plugin-intellij.iml" filepath="$PROJECT_DIR$/tmc-plugin-intellij/tmc-plugin-intellij.iml" />
     </modules>
   </component>
 </project>

@@ -1,6 +1,6 @@
 <idea-plugin version="2">
-  <id>com.your.company.unique.plugin.id</id>
-  <name>Plugin display name here</name>
+  <id>Uniikki perhonen</id>
+  <name>Vittura kerppeasdadr display name here</name>
   <version>1.0</version>
   <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
@@ -29,7 +29,10 @@
   </extensions>
 
   <actions>
-    <!-- Add your actions here -->
+    <group id="Testimenu" text="Testi menu menu = testi" description="Sample menu">
+      <add-to-group group-id="MainMenu" anchor="first"  />
+      <action id="Testinappi" class="TestEvent" text="Testi testi 123" description="A test menu item" />
+    </group>
   </actions>
 
 </idea-plugin>
