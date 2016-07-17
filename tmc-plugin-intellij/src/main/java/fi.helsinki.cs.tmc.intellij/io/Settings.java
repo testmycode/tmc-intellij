@@ -8,9 +8,6 @@ import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 import java.nio.file.Path;
 import java.util.Locale;
 
-/**
- * Created by tuomokar on 15.7.2016.
- */
 public class Settings implements TmcSettings {
 
     private String username;
