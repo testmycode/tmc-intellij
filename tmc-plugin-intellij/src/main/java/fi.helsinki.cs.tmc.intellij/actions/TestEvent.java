@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij;
+package fi.helsinki.cs.tmc.intellij.actions;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

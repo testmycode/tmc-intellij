@@ -31,7 +31,7 @@
   <actions>
     <group id="TMC.TestMenu" text="TMC TestMenu" description="Test Menu">
       <add-to-group group-id="MainMenu" anchor="last"  />
-      <action id="TestEvent1" class="fi.helsinki.cs.tmc.intellij.TestEvent" text="Test Event Popup" description="Pop up test" />
+      <action id="TestEvent1" class="fi.helsinki.cs.tmc.intellij.actions.TestEvent" text="Test Event Popup" description="Pop up test" />
     </group>
   </actions>
 
