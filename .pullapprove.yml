@@ -12,6 +12,7 @@ reviewers:
   - Djiffit
   - Denopia
   - Rubiini
+  - Melchan
   name: default
   required: 1
   conditions:
