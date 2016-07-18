@@ -25,7 +25,9 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
+    <postStartupActivity implementation="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"></postStartupActivity>
+    <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.SaveSettingsService"/>
+
   </extensions>
 
   <actions>
