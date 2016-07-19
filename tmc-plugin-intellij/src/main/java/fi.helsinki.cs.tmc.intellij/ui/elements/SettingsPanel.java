@@ -1,20 +1,31 @@
 package fi.helsinki.cs.tmc.intellij.ui.elements;
  
 import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.ui.ComboBox;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import fi.helsinki.cs.tmc.core.domain.Course;
-import fi.helsinki.cs.tmc.intellij.io.Settings;
-import fi.helsinki.cs.tmc.intellij.services.SaveSettingsService;
+import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
+import org.apache.commons.httpclient.HttpException;
 import org.jetbrains.annotations.NotNull;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class SettingsPanel {
@@ -30,8 +41,6 @@ public class SettingsPanel {
     private JCheckBox sendSnapshotsOfYourCheckBox;
     private JComboBox selectErrorLanguageField;
     private JButton browseButton;
-    // POISTA TÄMÄ
-    final SaveSettingsService saveSettings = ServiceManager.getService(SaveSettingsService.class);
 
     public JTextField getUsernameField() {
         return usernameField;
@@ -75,24 +84,57 @@ public class SettingsPanel {
 
 
     public SettingsPanel() {
-        Settings settings = saveSettings.getSettings();
-        if (settings == null) {
-            System.out.println("nullii on");
-            settings = new Settings("beebee", "bb", "cc");
-        }
-        System.out.println("Settings URL " + settings.getServerAddress());
-        usernameField.setText(settings.getUsername());
-        serverAddressField.setText(settings.getServerAddress());
-        passwordField.setText(settings.getPassword());
-        ActionListener listener = createActionListener();
-        browseButton.addActionListener(listener);
+        SettingsTmc SettingsTmc = TmcSettingsManager.get();
+        usernameField.setText(SettingsTmc.getUsername());
+        serverAddressField.setText(SettingsTmc.getServerAddress());
+        passwordField.setText(SettingsTmc.getPassword());
+        ActionListener browseListener = createActionListener();
+        browseButton.addActionListener(browseListener);
+        ActionListener refreshListener = createActionListenerRefresh();
+        refreshButton.addActionListener(refreshListener);
         ArrayList<Course> courses = new ArrayList<>();
-//        courses = (ArrayList<Course>) tmc.listCourses(ProgressObserver.NULL_OBSERVER);
+        try {
+            courses = (ArrayList<Course>) TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
+        } catch (Exception e) {
+            courses.add(new Course("vituiksmeni"));
+        }
         for (Course crs : courses) {
             listOfAvailableCourses.addItem(crs);
+            System.out.println(crs.getId());
+            System.out.println(crs.getDetailsUrl());
+            System.out.println(crs.getName());
+            System.out.println(crs.isExercisesLoaded());
+            System.out.println(crs.getCometUrl());
+            System.out.println(crs.getExercises());
         }
-        projectPathField.setText(settings.getProjectBasePath());
+        projectPathField.setText(SettingsTmc.getProjectBasePath());
         selectErrorLanguageField.addItem("English");
+    }
+
+    private ActionListener createActionListenerRefresh() {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                ArrayList<Course> courses = new ArrayList<>();
+                listOfAvailableCourses.removeAllItems();
+                try {
+                    courses = (ArrayList<Course>) TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
+                } catch (Exception e) {
+                    courses.add(new Course("vituiksmeni"));
+                }
+                for (Course crs : courses) {
+                    crs.setDetailsUrl(URI.create(crs.getDetailsUrl() + "?api_version=7"));
+                    listOfAvailableCourses.addItem(crs);
+                    System.out.println(crs.getId());
+                    System.out.println(crs.getDetailsUrl());
+                    System.out.println(crs.getName());
+                    System.out.println(crs.isExercisesLoaded());
+                    System.out.println(crs.getCometUrl());
+                    System.out.println(crs.getExercises());
+                    System.out.println(crs.getUnlockables());
+                }
+            }
+        };
     }
 
     @NotNull

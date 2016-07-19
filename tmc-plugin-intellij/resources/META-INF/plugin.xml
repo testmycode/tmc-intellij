@@ -26,7 +26,7 @@
 
   <extensions defaultExtensionNs="com.intellij">
     <postStartupActivity implementation="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"></postStartupActivity>
-    <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.SaveSettingsService"/>
+    <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings"/>
     <applicationConfigurable displayName="TMC Settings" id="TMC Settings" instance="fi.helsinki.cs.tmc.intellij.ui.SettingsPanelLauncher"/>
   </extensions>
 

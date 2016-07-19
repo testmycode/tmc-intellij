@@ -1,27 +1,25 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
-import com.intellij.openapi.ui.Messages;
-import fi.helsinki.cs.tmc.intellij.services.SaveSettingsService;
+import fi.helsinki.cs.tmc.core.TmcCore;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.langs.util.TaskExecutor;
+import fi.helsinki.cs.tmc.langs.util.TaskExecutorImpl;
 import org.jetbrains.annotations.NotNull;
 
 public class StartupEvent implements StartupActivity{
 
     @Override
     public void runActivity(@NotNull Project project) {
-
-//        final SaveSettingsService saveSettings = ServiceManager.getService(SaveSettingsService.class);
-
-//
-//        String txt= Messages.showInputDialog(project, "What is your name?", "Input your name", Messages.getQuestionIcon());
-//        String psw= Messages.showInputDialog(project, "What is your name?", "Input your name", Messages.getQuestionIcon());
-//        if (!txt.isEmpty()){
-//            saveSettings.setuserName(txt);
-//            saveSettings.setpassword(psw);
-//        }
-//        Messages.showMessageDialog(project, "Current user: " + saveSettings.getuserName() + " "  + saveSettings.getpassword(), "Information", Messages.getInformationIcon());
-
+        if (TmcSettingsManager.get() == null) {
+            TmcSettingsManager.setup();
+        }
+        if (TmcCoreHolder.get() == null) {
+            TaskExecutor tmcLangs = new TaskExecutorImpl();
+            TmcCore core = new TmcCore(TmcSettingsManager.get(), tmcLangs);
+            TmcCoreHolder.set(core);
+        }
     }
 }

@@ -4,10 +4,9 @@ package fi.helsinki.cs.tmc.intellij.ui;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.options.Configurable;
 import com.intellij.openapi.options.ConfigurationException;
-import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
-import fi.helsinki.cs.tmc.intellij.io.Settings;
-import fi.helsinki.cs.tmc.intellij.services.SaveSettingsService;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.ui.elements.SettingsPanel;
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +16,7 @@ import javax.swing.*;
 public class SettingsPanelLauncher implements Configurable {
 
     private SettingsPanel settingsUi;
-    final SaveSettingsService saveSettings = ServiceManager.getService(SaveSettingsService.class);
+    final PersistentTmcSettings saveSettings = ServiceManager.getService(PersistentTmcSettings.class);
 
     public SettingsPanelLauncher() {
         settingsUi = new SettingsPanel();
@@ -48,18 +47,18 @@ public class SettingsPanelLauncher implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
-        Settings settings = saveSettings.getSettings();
+        SettingsTmc SettingsTmc = saveSettings.getSettingsTmc();
         boolean nullSettings = false;
-        if (settings == null) {
+        if (SettingsTmc == null) {
             nullSettings = true;
-            settings = new Settings("beebee", "bb", "cc");
+            SettingsTmc = new SettingsTmc("beebee", "bb", "cc");
         }
-        settings.setUsername(settingsUi.getUsernameField().getText());
-        settings.setPassword(settingsUi.getPasswordField().getText());
-        settings.setServerAddress(settingsUi.getServerAddressField().getText());
-        settings.setCourse((Course) settingsUi.getListOfAvailableCourses().getSelectedItem());
-        settings.setProjectBasePath(settingsUi.getProjectPathField().getText());
-        saveSettings.setSettings(settings);
+        SettingsTmc.setUsername(settingsUi.getUsernameField().getText());
+        SettingsTmc.setPassword(settingsUi.getPasswordField().getText());
+        SettingsTmc.setServerAddress(settingsUi.getServerAddressField().getText());
+        SettingsTmc.setCourse((Course) settingsUi.getListOfAvailableCourses().getSelectedItem());
+        SettingsTmc.setProjectBasePath(settingsUi.getProjectPathField().getText());
+        saveSettings.setSettingsTmc(SettingsTmc);
     }
 
     @Override

@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 
-public class Settings implements TmcSettings, Serializable {
+public class SettingsTmc implements TmcSettings, Serializable {
 
     private String username;
     private String password;
@@ -19,13 +19,13 @@ public class Settings implements TmcSettings, Serializable {
     private String projectBasePath;
 
 
-    public Settings(String serverAddress, String username, String password) {
+    public SettingsTmc(String serverAddress, String username, String password) {
         this.serverAddress = serverAddress;
         this.username = username;
         this.password = password;
     }
 
-    public Settings() {
+    public SettingsTmc() {
     }
 
     public void setUsername(String username) {
@@ -76,7 +76,7 @@ public class Settings implements TmcSettings, Serializable {
 
     @Override
     public String apiVersion() {
-        return null;
+        return "7";
     }
 
     @Override
@@ -86,7 +86,7 @@ public class Settings implements TmcSettings, Serializable {
 
     @Override
     public String clientVersion() {
-        return null;
+        return "0.9.2";
     }
 
     @Override
