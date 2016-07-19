@@ -52,14 +52,13 @@ public class SettingsPanelLauncher implements Configurable {
         boolean nullSettings = false;
         if (settings == null) {
             nullSettings = true;
-            System.out.println("nullii on");
             settings = new Settings("beebee", "bb", "cc");
         }
         settings.setUsername(settingsUi.getUsernameField().getText());
         settings.setPassword(settingsUi.getPasswordField().getText());
         settings.setServerAddress(settingsUi.getServerAddressField().getText());
         settings.setCourse((Course) settingsUi.getListOfAvailableCourses().getSelectedItem());
-        settings.setWorkDir(settingsUi.getProjectPathField().toString());
+        settings.setProjectBasePath(settingsUi.getProjectPathField().getText());
         saveSettings.setSettings(settings);
     }
 

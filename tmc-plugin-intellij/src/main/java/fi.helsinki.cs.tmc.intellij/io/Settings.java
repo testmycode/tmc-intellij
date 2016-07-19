@@ -7,6 +7,7 @@ import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
 import java.io.Serializable;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Locale;
 
 public class Settings implements TmcSettings, Serializable {
@@ -15,7 +16,7 @@ public class Settings implements TmcSettings, Serializable {
     private String password;
     private String serverAddress;
     private Course course;
-    private String workDir;
+    private String projectBasePath;
 
 
     public Settings(String serverAddress, String username, String password) {
@@ -39,12 +40,12 @@ public class Settings implements TmcSettings, Serializable {
         this.serverAddress = serverAddress;
     }
 
-    public String getWorkDir() {
-        return workDir;
+    public String getProjectBasePath() {
+        return projectBasePath;
     }
 
-    public void setWorkDir(String workDir) {
-        this.workDir = workDir;
+    public void setProjectBasePath(String projectBasePath) {
+        this.projectBasePath = projectBasePath;
     }
 
     @Override
@@ -95,7 +96,7 @@ public class Settings implements TmcSettings, Serializable {
 
     @Override
     public Path getTmcProjectDirectory() {
-        return null;
+        return Paths.get(projectBasePath);
     }
 
     @Override

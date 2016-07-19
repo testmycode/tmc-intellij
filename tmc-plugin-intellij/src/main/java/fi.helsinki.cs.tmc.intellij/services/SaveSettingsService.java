@@ -13,25 +13,22 @@ import java.util.ArrayList;
 @State(
         name="TmcSettings",
         storages = {
-                @Storage("asdsa.xml")}
+                @Storage("TMCSettings.xml")}
 )
 public class SaveSettingsService implements PersistentStateComponent<SaveSettingsService> {
 
     @Nullable
     @Override
     public SaveSettingsService getState() {
-        System.out.println("get state");
         return this;
     }
     @Override
     public void loadState(SaveSettingsService saveSettingsService) {
-        System.out.println("load state");
         XmlSerializerUtil.copyBean(saveSettingsService, this);
     }
 
     @Nullable
     public static SaveSettingsService getInstance() {
-        System.out.println("get instance");
         return ServiceManager.getService(SaveSettingsService.class);
     }
 
