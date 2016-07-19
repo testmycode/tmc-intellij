@@ -5,26 +5,51 @@ import fi.helsinki.cs.tmc.core.configuration.TmcSettings;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
+import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.Locale;
 
-public class Settings implements TmcSettings {
+public class Settings implements TmcSettings, Serializable {
 
     private String username;
     private String password;
-    private String url;
+    private String serverAddress;
     private Course course;
     private String workDir;
 
+
     public Settings(String serverAddress, String username, String password) {
-        this.url = serverAddress;
+        this.serverAddress = serverAddress;
         this.username = username;
         this.password = password;
     }
 
+    public Settings() {
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setServerAddress(String serverAddress) {
+        this.serverAddress = serverAddress;
+    }
+
+    public String getWorkDir() {
+        return workDir;
+    }
+
+    public void setWorkDir(String workDir) {
+        this.workDir = workDir;
+    }
+
     @Override
     public String getServerAddress() {
-        return url;
+        return serverAddress;
     }
 
     @Override
@@ -83,9 +108,13 @@ public class Settings implements TmcSettings {
         return null;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
     @Override
     public void setCourse(Course course) {
-
+        this.course = course;
     }
 
     @Override

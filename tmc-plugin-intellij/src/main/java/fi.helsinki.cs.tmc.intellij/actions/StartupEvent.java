@@ -12,16 +12,16 @@ public class StartupEvent implements StartupActivity{
     @Override
     public void runActivity(@NotNull Project project) {
 
-        final SaveSettingsService saveSettings = ServiceManager.getService(SaveSettingsService.class);
-        Messages.showMessageDialog(project, "Last user was: "+saveSettings.getuserName() + " " + saveSettings.getpassword(), "Information", Messages.getInformationIcon());
+//        final SaveSettingsService saveSettings = ServiceManager.getService(SaveSettingsService.class);
 
-        String txt= Messages.showInputDialog(project, "What is your name?", "Input your name", Messages.getQuestionIcon());
-        String psw= Messages.showInputDialog(project, "What is your name?", "Input your name", Messages.getQuestionIcon());
-        if (!txt.isEmpty()){
-            saveSettings.setuserName(txt);
-            saveSettings.setpassword(psw);
-        }
-        Messages.showMessageDialog(project, "Current user: " + saveSettings.getuserName() + " "  + saveSettings.getpassword(), "Information", Messages.getInformationIcon());
+//
+//        String txt= Messages.showInputDialog(project, "What is your name?", "Input your name", Messages.getQuestionIcon());
+//        String psw= Messages.showInputDialog(project, "What is your name?", "Input your name", Messages.getQuestionIcon());
+//        if (!txt.isEmpty()){
+//            saveSettings.setuserName(txt);
+//            saveSettings.setpassword(psw);
+//        }
+//        Messages.showMessageDialog(project, "Current user: " + saveSettings.getuserName() + " "  + saveSettings.getpassword(), "Information", Messages.getInformationIcon());
 
     }
 }

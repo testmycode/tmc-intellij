@@ -3,6 +3,11 @@ package fi.helsinki.cs.tmc.intellij.services;
 import com.intellij.openapi.components.*;
 import com.intellij.util.xmlb.XmlSerializerUtil;
 import com.sun.istack.internal.Nullable;
+import fi.helsinki.cs.tmc.core.domain.Course;
+import fi.helsinki.cs.tmc.intellij.io.Settings;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 
 @State(
@@ -30,26 +35,16 @@ public class SaveSettingsService implements PersistentStateComponent<SaveSetting
         return ServiceManager.getService(SaveSettingsService.class);
     }
 
-    String password;
 
-    public String getpassword() {
-        return password;
+    Settings settings;
+
+    public Settings getSettings() {
+        return settings;
     }
 
-    public void setpassword(String password) {
-        this.password = password;
+    public void setSettings(Settings settings) {
+        this.settings = settings;
     }
-
-    String userName;
-
-    public String getuserName() {
-        return userName;
-    }
-
-    public void setuserName(String userName) {
-        this.userName = userName;
-    }
-
 
 
 }
