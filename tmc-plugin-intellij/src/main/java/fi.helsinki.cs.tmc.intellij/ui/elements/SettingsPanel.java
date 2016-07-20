@@ -1,31 +1,22 @@
 package fi.helsinki.cs.tmc.intellij.ui.elements;
- 
-import com.intellij.openapi.components.ServiceManager;
+
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import fi.helsinki.cs.tmc.core.domain.Course;
+import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
-import org.apache.commons.httpclient.HttpException;
 import org.jetbrains.annotations.NotNull;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.swing.*;
+import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class SettingsPanel {
@@ -84,10 +75,10 @@ public class SettingsPanel {
 
 
     public SettingsPanel() {
-        SettingsTmc SettingsTmc = TmcSettingsManager.get();
-        usernameField.setText(SettingsTmc.getUsername());
-        serverAddressField.setText(SettingsTmc.getServerAddress());
-        passwordField.setText(SettingsTmc.getPassword());
+        SettingsTmc settingsTmc = TmcSettingsManager.get();
+        usernameField.setText(settingsTmc.getUsername());
+        serverAddressField.setText(settingsTmc.getServerAddress());
+        passwordField.setText(settingsTmc.getPassword());
         ActionListener browseListener = createActionListener();
         browseButton.addActionListener(browseListener);
         ActionListener refreshListener = createActionListenerRefresh();
@@ -96,18 +87,12 @@ public class SettingsPanel {
         try {
             courses = (ArrayList<Course>) TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
         } catch (Exception e) {
-            courses.add(new Course("vituiksmeni"));
         }
         for (Course crs : courses) {
             listOfAvailableCourses.addItem(crs);
-            System.out.println(crs.getId());
-            System.out.println(crs.getDetailsUrl());
-            System.out.println(crs.getName());
-            System.out.println(crs.isExercisesLoaded());
-            System.out.println(crs.getCometUrl());
-            System.out.println(crs.getExercises());
         }
-        projectPathField.setText(SettingsTmc.getProjectBasePath());
+        listOfAvailableCourses.setSelectedItem(settingsTmc.getCourse());
+        projectPathField.setText(settingsTmc.getProjectBasePath());
         selectErrorLanguageField.addItem("English");
     }
 
@@ -120,19 +105,12 @@ public class SettingsPanel {
                 try {
                     courses = (ArrayList<Course>) TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
                 } catch (Exception e) {
-                    courses.add(new Course("vituiksmeni"));
+                    e.printStackTrace();
                 }
                 for (Course crs : courses) {
-                    crs.setDetailsUrl(URI.create(crs.getDetailsUrl() + "?api_version=7"));
                     listOfAvailableCourses.addItem(crs);
-                    System.out.println(crs.getId());
-                    System.out.println(crs.getDetailsUrl());
-                    System.out.println(crs.getName());
-                    System.out.println(crs.isExercisesLoaded());
-                    System.out.println(crs.getCometUrl());
-                    System.out.println(crs.getExercises());
-                    System.out.println(crs.getUnlockables());
                 }
+                listOfAvailableCourses.setSelectedItem(TmcSettingsManager.get().getCourse());
             }
         };
     }
