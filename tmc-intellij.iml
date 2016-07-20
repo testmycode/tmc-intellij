@@ -8,7 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/tmc-plugin-intellij/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
-    <orderEntry type="jdk" jdkName="IntelliJ IDEA IU-145.1617.8" jdkType="IDEA JDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.vektah:intellij-openapi:12.1.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.vektah:intellij-util:12.1.4" level="project" />
