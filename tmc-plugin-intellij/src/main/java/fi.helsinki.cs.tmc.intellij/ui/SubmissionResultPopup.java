@@ -33,6 +33,7 @@ public class SubmissionResultPopup {
     }
 
     private JPanel panel1;
+    private JTable table1;
 
 
     {
