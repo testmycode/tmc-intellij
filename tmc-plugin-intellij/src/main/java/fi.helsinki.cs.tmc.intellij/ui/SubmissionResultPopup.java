@@ -20,9 +20,6 @@ import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.util.*;
 
-/**
- * Created by xlex on 20.7.2016.
- */
 public class SubmissionResultPopup {
     private JRadioButton radioButton1;
     private JComboBox comboBox1;
