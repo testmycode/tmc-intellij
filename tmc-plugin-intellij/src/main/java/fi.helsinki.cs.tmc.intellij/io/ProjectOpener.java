@@ -1,4 +1,3 @@
-
 package fi.helsinki.cs.tmc.intellij.io;
 
 import com.intellij.openapi.project.ProjectManager;
@@ -11,9 +10,6 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class ProjectOpener {
-
-    public ProjectOpener() {
-    }
 
     public void openProject(String path) {
         try {
@@ -50,4 +46,5 @@ public class ProjectOpener {
     public void openNextExercise(Course course, Exercise exercise) {
 
     }
+
 }
