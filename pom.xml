@@ -43,7 +43,12 @@
             <artifactId>core</artifactId>
             <version>0.5.2-SNAPSHOT</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-all</artifactId>
+            <version>1.9.0</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <scope>provided</scope>
             <groupId>net.vektah</groupId>
@@ -55,6 +60,16 @@
             <groupId>net.vektah</groupId>
             <artifactId>intellij-util</artifactId>
             <version>12.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.21</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.21</version>
         </dependency>
         <dependency>
             <scope>provided</scope>
@@ -74,6 +89,20 @@
         <sourceDirectory>${basedir}/tmc-plugin-intellij/src/main/java/</sourceDirectory>
         <testSourceDirectory>${basedir}/tmc-plugin-intellij/src/test/java</testSourceDirectory>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <compilerArgument>-Xlint:unchecked</compilerArgument>
+
+                    <compilerArguments>
+                        <extdirs>${project.build.directory}/dependency/intellij-idea/lib/</extdirs>
+                    </compilerArguments>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>

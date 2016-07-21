@@ -31,7 +31,6 @@ public class TmcCoreHolderTest {
     public void getReturnsCoreWithoutSetup() throws Exception {
         TmcCore core = TmcCoreHolder.testGet();
         assertNotEquals(core, null);
-        assertEquals(core.getClass(), TmcCore.class);
     }
 
     @Test
