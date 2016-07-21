@@ -2,3 +2,9 @@ language: java
 
 notifications:
   email: false
+
+before_install:
+  - chmod +x prepare-build.sh
+  - ./prepare-build.sh
+
+script: mvn package

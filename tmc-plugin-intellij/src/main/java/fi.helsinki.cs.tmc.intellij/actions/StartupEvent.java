@@ -13,13 +13,8 @@ public class StartupEvent implements StartupActivity{
 
     @Override
     public void runActivity(@NotNull Project project) {
-        if (TmcSettingsManager.get() == null) {
-            TmcSettingsManager.setup();
-        }
-        if (TmcCoreHolder.get() == null) {
-            TaskExecutor tmcLangs = new TaskExecutorImpl();
-            TmcCore core = new TmcCore(TmcSettingsManager.get(), tmcLangs);
-            TmcCoreHolder.set(core);
-        }
+        TmcSettingsManager.setup();
+        TmcCoreHolder.setup();
     }
 }
+

@@ -1,10 +1,19 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+<<<<<<< HEAD
 import com.intellij.openapi.components.*;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import org.jetbrains.annotations.Nullable;
+import com.sun.istack.internal.Nullable;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
+=======
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.util.xmlb.XmlSerializerUtil;
+import org.jetbrains.annotations.Nullable;
+>>>>>>> master
 
 @State(
         name="TmcSettings",
@@ -29,6 +38,7 @@ public class PersistentTmcSettings implements PersistentStateComponent<Persisten
     }
 
 
+<<<<<<< HEAD
     SettingsTmc SettingsTmc;
 
     public SettingsTmc getSettingsTmc() {
@@ -39,4 +49,9 @@ public class PersistentTmcSettings implements PersistentStateComponent<Persisten
         this.SettingsTmc = settingsTmc;
     }
 
+
 }
+=======
+
+}
+>>>>>>> master
