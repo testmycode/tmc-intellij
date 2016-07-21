@@ -101,7 +101,8 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Locale getLocale() {
-        return null;
+        Locale locale = new Locale("en");
+        return locale;
     }
 
     @Override
