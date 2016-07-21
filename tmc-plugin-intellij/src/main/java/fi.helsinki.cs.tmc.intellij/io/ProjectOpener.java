@@ -46,5 +46,4 @@ public class ProjectOpener {
     public void openNextExercise(Course course, Exercise exercise) {
 
     }
-
 }
