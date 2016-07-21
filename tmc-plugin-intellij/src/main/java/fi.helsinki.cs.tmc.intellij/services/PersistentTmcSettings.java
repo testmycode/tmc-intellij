@@ -2,8 +2,8 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 import com.intellij.openapi.components.*;
 import com.intellij.util.xmlb.XmlSerializerUtil;
-import com.sun.istack.internal.Nullable;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import org.jetbrains.annotations.Nullable;
 
 
 @State(

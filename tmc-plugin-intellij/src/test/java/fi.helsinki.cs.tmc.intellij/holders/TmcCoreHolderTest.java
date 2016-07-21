@@ -25,8 +25,6 @@ public class TmcCoreHolderTest {
 
     }
 
-
-
     @Test
     public void getReturnsCoreWithoutSetup() throws Exception {
         TmcCore core = TmcCoreHolder.testGet();
