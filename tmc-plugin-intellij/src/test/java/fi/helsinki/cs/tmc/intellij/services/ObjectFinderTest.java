@@ -15,9 +15,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-/**
- * Created by konstaku on 20.7.2016.
- */
 public class ObjectFinderTest {
     private ObjectFinder finder;
     @Before
@@ -49,9 +46,9 @@ public class ObjectFinderTest {
 
     @Test
     public void findCourseByNameWorks() throws Exception {
-        List<Course> courses = new ArrayList<>();
+        final List<Course> courses = new ArrayList<>();
         courses.add(new Course("Jamaikan Nippuside"));
-        Course toFind = new Course("Namibian Saha");
+        final Course toFind = new Course("Namibian Saha");
         TmcCore core = mock(TmcCore.class);
         courses.add(toFind);
         when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
@@ -75,7 +72,7 @@ public class ObjectFinderTest {
 
     @Test
     public void findCourseByNameReturnsNullWhenNotFound() throws Exception {
-        List<Course> courses = new ArrayList<>();
+        final List<Course> courses = new ArrayList<>();
         courses.add(new Course("Jamaikan Nippuside"));
         Course toFind = new Course("Namibian Vasara");
         courses.add(toFind);
