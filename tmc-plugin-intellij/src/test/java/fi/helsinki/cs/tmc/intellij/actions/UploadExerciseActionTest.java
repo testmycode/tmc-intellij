@@ -9,9 +9,11 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class UploadExerciseActionTest {
+
 
 //    @Test
 //    public void uploadExercisesTestCallsSubmitMethod() throws Exception {
@@ -31,4 +33,6 @@ public class UploadExerciseActionTest {
 //        upload.uploadExercise(project,core2, finder);
 //        verify(core2).submit(ProgressObserver.NULL_OBSERVER, exercise);
 //    }
+
+
 }

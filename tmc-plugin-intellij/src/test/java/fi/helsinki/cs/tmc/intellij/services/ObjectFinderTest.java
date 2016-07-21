@@ -49,6 +49,7 @@ public class ObjectFinderTest {
         final List<Course> courses = new ArrayList<>();
         courses.add(new Course("Jamaikan Nippuside"));
         final Course toFind = new Course("Namibian Saha");
+
         TmcCore core = mock(TmcCore.class);
         courses.add(toFind);
         when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
@@ -73,6 +74,7 @@ public class ObjectFinderTest {
     @Test
     public void findCourseByNameReturnsNullWhenNotFound() throws Exception {
         final List<Course> courses = new ArrayList<>();
+
         courses.add(new Course("Jamaikan Nippuside"));
         Course toFind = new Course("Namibian Vasara");
         courses.add(toFind);

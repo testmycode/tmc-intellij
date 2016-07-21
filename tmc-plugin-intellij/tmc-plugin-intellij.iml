@@ -36,12 +36,6 @@
         <CLASSES>
           <root url="jar://$USER_HOME$/Downloads/lib/slf4j-log4j12-1.7.21.jar!/" />
         </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
         <CLASSES>
           <root url="jar://$USER_HOME$/Downloads/lib/core-0.5.2-SNAPSHOT.jar!/" />
         </CLASSES>
@@ -51,5 +45,6 @@
         </SOURCES>
       </library>
     </orderEntry>
+
   </component>
 </module>
