@@ -13,7 +13,12 @@ public class TestEvent extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
-        Messages.showMessageDialog(project, "Testing " + project.getName() + " " + project.getProjectFilePath() , "Information", Messages.getInformationIcon());
+        DownloadExerciseAction action = new DownloadExerciseAction();
+        try {
+            action.downloadExerciseAction();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
+
