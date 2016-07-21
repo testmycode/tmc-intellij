@@ -6,9 +6,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * Created by konstaku on 20.7.2016.
- */
 public class PersistentTmcSettingsTest {
 
     private PersistentTmcSettings settings;
