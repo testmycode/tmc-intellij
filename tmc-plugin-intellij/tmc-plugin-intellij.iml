@@ -36,15 +36,12 @@
         <CLASSES>
           <root url="jar://$USER_HOME$/Downloads/lib/slf4j-log4j12-1.7.21.jar!/" />
         </CLASSES>
-        <CLASSES>
-          <root url="jar://$USER_HOME$/Downloads/lib/core-0.5.2-SNAPSHOT.jar!/" />
-        </CLASSES>
         <JAVADOC />
         <SOURCES>
           <root url="jar://$USER_HOME$/Downloads/lib/core-0.5.2-SNAPSHOT.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
-
+    <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:core:0.5.2-SNAPSHOT" level="project" />
   </component>
 </module>

@@ -1,24 +1,19 @@
 package fi.helsinki.cs.tmc.intellij.ui;
 
-import com.intellij.openapi.actionSystem.ActionGroup;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.ui.MessageType;
-import com.intellij.openapi.ui.popup.*;
-import com.intellij.openapi.util.Condition;
-import com.intellij.ui.awt.RelativePoint;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-import javax.swing.event.HyperlinkListener;
-import java.awt.*;
-import java.util.*;
+import java.awt.Insets;
+
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextPane;
+
 
 public class SubmissionResultPopup {
     private JRadioButton radioButton1;

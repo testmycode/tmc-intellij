@@ -1,18 +1,15 @@
 package fi.helsinki.cs.tmc.intellij.holders;
 
-import fi.helsinki.cs.tmc.core.TmcCore;
-import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
-import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
+import fi.helsinki.cs.tmc.core.TmcCore;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+
 
 public class TmcCoreHolderTest {
     @Before

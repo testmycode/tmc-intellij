@@ -1,12 +1,11 @@
 package fi.helsinki.cs.tmc.intellij.holders;
 
-import com.intellij.openapi.components.ServiceManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
 
+import com.intellij.openapi.components.ServiceManager;
 
 public final class TmcSettingsManager {
-
 
     private static final PersistentTmcSettings persistentSettings = ServiceManager.getService(PersistentTmcSettings.class);
 

@@ -1,8 +1,10 @@
 package fi.helsinki.cs.tmc.intellij.io;
 
-import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.configuration.TmcSettings;
 import fi.helsinki.cs.tmc.core.domain.Course;
+
+import com.google.common.base.Optional;
+
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
 import java.io.Serializable;
@@ -17,7 +19,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private String serverAddress;
     private Course course;
     private String projectBasePath;
-
 
     public SettingsTmc(String serverAddress, String username, String password) {
         this.serverAddress = serverAddress;
