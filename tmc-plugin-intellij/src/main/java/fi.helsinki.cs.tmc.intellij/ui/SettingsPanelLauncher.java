@@ -13,14 +13,18 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+//not used
 public class SettingsPanelLauncher implements Configurable {
 
     private SettingsPanel settingsUi;
     final PersistentTmcSettings saveSettings = ServiceManager.getService(PersistentTmcSettings.class);
 
     public SettingsPanelLauncher() {
-        settingsUi = new SettingsPanel();
+       // settingsUi = new SettingsPanel();
     }
+
+
+    public SettingsPanel getSettingsUi() { return settingsUi; }
 
     @Nls
     @Override

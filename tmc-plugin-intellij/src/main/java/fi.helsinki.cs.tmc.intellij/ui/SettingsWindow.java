@@ -1,5 +1,7 @@
-package fi.helsinki.cs.tmc.intellij.ui.elements;
+package fi.helsinki.cs.tmc.intellij.ui;
 
+
+import fi.helsinki.cs.tmc.intellij.ui.elements.SettingsPanel;
 
 import javax.swing.*;
 import java.awt.*;
