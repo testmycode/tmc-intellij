@@ -17,7 +17,8 @@ import javax.swing.JComponent;
 public class SettingsPanelLauncher implements Configurable {
 
     private SettingsPanel settingsUi;
-    final PersistentTmcSettings saveSettings = ServiceManager.getService(PersistentTmcSettings.class);
+    final PersistentTmcSettings saveSettings =
+            ServiceManager.getService(PersistentTmcSettings.class);
 
     public SettingsPanelLauncher() {
         settingsUi = new SettingsPanel();
