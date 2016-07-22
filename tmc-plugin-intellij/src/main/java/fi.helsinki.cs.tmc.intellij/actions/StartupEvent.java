@@ -8,7 +8,7 @@ import com.intellij.openapi.startup.StartupActivity;
 
 import org.jetbrains.annotations.NotNull;
 
-public class StartupEvent implements StartupActivity{
+public class StartupEvent implements StartupActivity {
 
     @Override
     public void runActivity(@NotNull Project project) {

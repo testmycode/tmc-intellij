@@ -10,20 +10,14 @@ import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadExerciseAction extends AnAction {
 
-    private Exercise exercise;
     private TmcCore core;
-    private List<Exercise> list;
 
     public DownloadExerciseAction() {
-        exercise = new Exercise();
         core = TmcCoreHolder.get();
-        list = new ArrayList<Exercise>();
     }
 
     @Override
@@ -37,7 +31,9 @@ public class DownloadExerciseAction extends AnAction {
 
     public List<Exercise> downloadExerciseAction() throws Exception {
 
-        List<Exercise> exercises = TmcCoreHolder.get().getCourseDetails(ProgressObserver.NULL_OBSERVER, TmcSettingsManager.get().getCourse()).call().getExercises();
+        List<Exercise> exercises =
+                TmcCoreHolder.get().getCourseDetails(ProgressObserver.NULL_OBSERVER,
+                TmcSettingsManager.get().getCourse()).call().getExercises();
 
         exercises = CheckForExistingExercises.clean(exercises);
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
