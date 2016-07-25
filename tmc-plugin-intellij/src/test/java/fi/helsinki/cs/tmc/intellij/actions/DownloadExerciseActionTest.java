@@ -25,8 +25,6 @@ import static org.mockito.Mockito.when;
 
 public class DownloadExerciseActionTest {
 
-
-
     @Test
     public void actionPerformed() throws Exception {
 
@@ -38,16 +36,21 @@ public class DownloadExerciseActionTest {
         Project project = mock(Project.class);
         TmcCore core = mock(TmcCore.class);
         Exercise exercise = new Exercise();
+
         TmcCoreHolder.set(core);
+
         final List<Exercise> excs = new ArrayList<>();
         excs.add(exercise);
         SettingsTmc settings = mock(SettingsTmc.class);
         settings.setProjectBasePath("/home/koko");
         CheckForExistingExercises checker = mock(CheckForExistingExercises.class);
+
         when(checker.clean(excs)).thenReturn(excs);
+
         final Course course = new Course("kurssi");
         when(settings.getCourse()).thenReturn(course);
         course.setExercises(excs);
+
         when(settings.getTmcProjectDirectory()).thenReturn(Paths.get("/home/koko"));
         when(core.getCourseDetails(ProgressObserver.NULL_OBSERVER, course)).thenReturn(
                 new Callable<Course>() {
@@ -57,6 +60,7 @@ public class DownloadExerciseActionTest {
                     }
                 }
         );
+
         when(core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, excs)).thenReturn(
                 new Callable<List<Exercise>>() {
                     @Override
@@ -65,8 +69,10 @@ public class DownloadExerciseActionTest {
                     }
                 }
         );
+
         ProjectOpener opener = mock(ProjectOpener.class);
         download.downloadExerciseAction(core, settings, checker, opener);
     }
+
 
 }

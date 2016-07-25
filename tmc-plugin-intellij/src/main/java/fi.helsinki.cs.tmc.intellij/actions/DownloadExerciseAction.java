@@ -20,7 +20,6 @@ import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
-import fi.helsinki.cs.tmc.intellij.ui.SubmissionResultWaitingDialog;
 import fi.helsinki.cs.tmc.intellij.ui.elements.SettingsPanel;
 
 import javax.swing.*;
