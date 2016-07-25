@@ -1,10 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.ui.elements;
 
-import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
-import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
-import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
-import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
-
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
@@ -15,16 +10,20 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-
+import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.ui.ProjectListRenderer;
 import icons.TmcIcons;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import javax.swing.*;
+import java.util.ArrayList;
 
 public class ProjectListWindow {
 
@@ -101,6 +100,7 @@ public class ProjectListWindow {
     private void createCourseSpecificTab(ObjectFinder finder, ProjectOpener opener, String course) {
         final JBScrollPane panel = new JBScrollPane();
         final JBList list = new JBList();
+        list.setCellRenderer(new ProjectListRenderer());
         DefaultListModel defaultListModel = new DefaultListModel();
         panel.setBorder(BorderFactory.createTitledBorder(""));
         ArrayList<String> exercises = finder.listAllDownloadedExercises(course);
