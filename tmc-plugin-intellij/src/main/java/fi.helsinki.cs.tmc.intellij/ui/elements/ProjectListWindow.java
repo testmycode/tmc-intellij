@@ -113,26 +113,28 @@ public class ProjectListWindow {
         list.addMouseListener(mouseListener);
         panel.setName(course);
         panel.setViewportView(list);
-        tabbedPanelBase.addTab(course, panel);
+        if (list.getItemsCount() > 0) {
+            tabbedPanelBase.addTab(course, panel);
+        }
     }
 
     @NotNull
     private MouseListener createMouseListenerForWindow(
             final ProjectOpener opener, final JBScrollPane panel, final JBList list) {
         return new MouseAdapter() {
-                    public void mousePressed(MouseEvent mouseEvent) {
-                        addRightMouseButtonFunctionality(mouseEvent, list, panel);
-                    }
+            public void mousePressed(MouseEvent mouseEvent) {
+                addRightMouseButtonFunctionality(mouseEvent, list, panel);
+            }
 
-                    public void mouseClicked(MouseEvent mouseEvent) {
-                        if (mouseEvent.getButton() == 1 && mouseEvent.getClickCount() >= 2) {
-                            String selectedItem = (String) list.getSelectedValue();
-                            opener.openProject(TmcSettingsManager.get().getProjectBasePath()
-                                    + File.separator + list.getParent().getParent().getName()
-                                    + File.separator + selectedItem);
-                        }
-                    }
-                };
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton() == 1 && mouseEvent.getClickCount() >= 2) {
+                    String selectedItem = (String) list.getSelectedValue();
+                    opener.openProject(TmcSettingsManager.get().getProjectBasePath()
+                            + File.separator + list.getParent().getParent().getName()
+                            + File.separator + selectedItem);
+                }
+            }
+        };
     }
 
     private void addRightMouseButtonFunctionality(
@@ -148,9 +150,9 @@ public class ProjectListWindow {
                     try {
                         Desktop.getDesktop().open
                                 (new File(TmcSettingsManager.get().getProjectBasePath()
-                                + File.separator + list.getParent()
-                                .getParent().getName() + File.separator
-                                + list.getSelectedValue()));
+                                        + File.separator + list.getParent()
+                                        .getParent().getName() + File.separator
+                                        + list.getSelectedValue()));
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
@@ -185,33 +187,24 @@ public class ProjectListWindow {
         basePanel = new JPanel();
         basePanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPanelBase = new JTabbedPane();
-        basePanel.add(tabbedPanelBase, new GridConstraints(1, 0, 1, 3,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                null, new Dimension(200, 200), null, 0, false));
+        basePanel.add(tabbedPanelBase, new GridConstraints(1, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(200, 200), null, 0, false));
         toolbar = new JToolBar();
         toolbar.setBorderPainted(false);
         toolbar.setFloatable(false);
-        basePanel.add(toolbar, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW,
-                GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 20), null, 0, false));
+        basePanel.add(toolbar, new GridConstraints(0, 0, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(-1, 20), null, 0, false));
         openButton = new JButton();
         openButton.setText("Open");
-        basePanel.add(openButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, null,
-                null, 0, false));
+        basePanel.add(openButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         hideButton = new JButton();
         hideButton.setText("Hide");
-        basePanel.add(hideButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, null,
-                null, 0, false));
+        basePanel.add(hideButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, 1, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
-        basePanel.add(spacer1, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1,
-                null, null, null, 0, false));
+        basePanel.add(spacer1, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
+    /**
+     * @noinspection ALL
+     */
     public JComponent $$$getRootComponent$$$() {
         return basePanel;
     }
