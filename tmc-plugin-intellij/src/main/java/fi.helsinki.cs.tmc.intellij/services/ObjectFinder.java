@@ -72,9 +72,11 @@ public class ObjectFinder {
         try (DirectoryStream<Path> directoryStream =
                      Files.newDirectoryStream(Paths.get(folderPath))) {
             for (Path path : directoryStream) {
-                if (Files.isDirectory(path) && path.toString().charAt(0) != '.') {
+                if (Files.isDirectory(path)) {
                     String[] exerciseCourse = path.toString().split(File.separator);
-                    fileNames.add(exerciseCourse[exerciseCourse.length - 1]);
+                    if (exerciseCourse[exerciseCourse.length - 1].charAt(0) != '.') {
+                        fileNames.add(exerciseCourse[exerciseCourse.length - 1]);
+                    }
                 }
             }
         } catch (IOException ex)  {
