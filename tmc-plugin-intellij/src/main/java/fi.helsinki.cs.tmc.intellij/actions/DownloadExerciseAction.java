@@ -9,6 +9,7 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 
 import com.intellij.openapi.actionSystem.AnAction;
@@ -57,10 +58,8 @@ public class DownloadExerciseAction extends AnAction {
                                                  SettingsTmc settings,
                                                  CheckForExistingExercises checker,
                                                  ProjectOpener opener) throws Exception {
-
-        Course course = core.getCourseDetails(ProgressObserver.NULL_OBSERVER,
-                settings.getCourse()).call();
-
+        ObjectFinder finder = new ObjectFinder();
+        Course course = finder.findCourseByName(settings.getCourse().getName(), core);
         List<Exercise> exercises = course.getExercises();
         exercises = checker.clean(exercises);
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
