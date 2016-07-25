@@ -1,13 +1,13 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.intellij.ui.SettingsWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import fi.helsinki.cs.tmc.intellij.ui.SettingsWindow;
 
 public class TmcSettingsAction extends AnAction{
 
-    SettingsWindow window;
+    private SettingsWindow window;
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -15,7 +15,7 @@ public class TmcSettingsAction extends AnAction{
     }
 
     public void showSettings() {
-        if ( window == null || window.isClosed()){
+        if ( window == null || window.isClosed()) {
             window = new SettingsWindow();
         } else {
             window.show();

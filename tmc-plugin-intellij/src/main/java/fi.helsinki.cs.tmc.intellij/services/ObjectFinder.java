@@ -1,11 +1,9 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
-import com.intellij.codeEditor.printing.FileSeparatorProvider;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
-import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 
 import java.io.File;
@@ -50,13 +48,16 @@ public class ObjectFinder {
     }
 
     public ArrayList<String> listAllDownloadedCourses() {
-        ArrayList<String> fileNames = getListOfDirectoriesInPath(TmcSettingsManager.get().getProjectBasePath());
+        ArrayList<String> fileNames = getListOfDirectoriesInPath(
+                TmcSettingsManager.get().getProjectBasePath());
         return fileNames;
     }
 
     private ArrayList<String> getListOfDirectoriesInPath(String folderPath) {
         ArrayList<String> fileNames = new ArrayList<>();
-        try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(folderPath))) {
+        try (DirectoryStream<Path> directoryStream =
+                     Files.newDirectoryStream(Paths.get(folderPath))) {
+
             for (Path path : directoryStream) {
                 String[] exerciseCourse;
                 if (path.toString().contains("/")) {
@@ -74,7 +75,9 @@ public class ObjectFinder {
     }
 
     public ArrayList<String> listAllDownloadedExercises(String courseName) {
-        ArrayList<String> fileNames = getListOfDirectoriesInPath(TmcSettingsManager.get().getProjectBasePath()+File.separator+courseName);
+        ArrayList<String> fileNames = getListOfDirectoriesInPath(TmcSettingsManager.get()
+                .getProjectBasePath() + File.separator + courseName);
+
         return fileNames;
     }
 }
