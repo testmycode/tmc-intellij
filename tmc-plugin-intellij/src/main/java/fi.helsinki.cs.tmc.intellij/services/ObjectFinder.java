@@ -73,7 +73,12 @@ public class ObjectFinder {
                      Files.newDirectoryStream(Paths.get(folderPath))) {
             for (Path path : directoryStream) {
                 if (Files.isDirectory(path)) {
-                    String[] exerciseCourse = path.toString().split(File.separator);
+                    String[] exerciseCourse;
+                    if (path.toString().contains("/")) {
+                        exerciseCourse = path.toString().split(File.separator);
+                    } else {
+                        exerciseCourse = path.toString().split("\\\\");
+                    }
                     if (exerciseCourse[exerciseCourse.length - 1].charAt(0) != '.') {
                         fileNames.add(exerciseCourse[exerciseCourse.length - 1]);
                     }

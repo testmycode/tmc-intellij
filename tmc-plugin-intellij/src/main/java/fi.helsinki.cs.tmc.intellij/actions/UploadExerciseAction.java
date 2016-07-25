@@ -32,7 +32,12 @@ public class UploadExerciseAction extends AnAction {
 
     private void uploadExercise(Project project, TmcCore core, ObjectFinder finder) {
         String path = project.getBasePath();
-        String[] exerciseCourse = path.split(File.separator);
+        String[] exerciseCourse;
+        if (path.toString().contains("/")) {
+            exerciseCourse = path.toString().split(File.separator);
+        } else {
+            exerciseCourse = path.toString().split("\\\\");
+        }
         try {
             Course course =
                     finder.findCourseByName(exerciseCourse[exerciseCourse.length - 2], core);
