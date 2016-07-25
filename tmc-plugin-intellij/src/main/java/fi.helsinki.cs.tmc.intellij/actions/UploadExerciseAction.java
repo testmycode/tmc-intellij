@@ -7,8 +7,8 @@ import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
-import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
+import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

@@ -1,5 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.intellij.ui.elements.ProjectListWindow;
+
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
@@ -8,15 +10,14 @@ import com.intellij.openapi.wm.ToolWindowFactory;
 import com.intellij.openapi.wm.ToolWindowManager;
 import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
-import fi.helsinki.cs.tmc.intellij.ui.elements.ProjectListWindow;
+
 import org.jetbrains.annotations.NotNull;
 
 public class OpenToolWindowAction extends AnAction implements ToolWindowFactory {
 
-
     public void actionPerformed(AnActionEvent anActionEvent) {
-
-        ToolWindowManager.getInstance(anActionEvent.getProject()).getToolWindow("TMC Project List").show(null);
+        ToolWindowManager.getInstance(anActionEvent.getProject())
+                .getToolWindow("TMC Project List").show(null);
     }
 
     @Override

@@ -32,7 +32,8 @@ public class SettingsTmc implements TmcSettings, Serializable {
     public SettingsTmc() {
         JFileChooser fileChooser = new JFileChooser();
         serverAddress = "https://tmc.mooc.fi/staging/org/tmc-intellij/";
-        projectBasePath = fileChooser.getFileSystemView().getDefaultDirectory().toString() + File.separator + "IdeaProjects" + File.separator + "TMCProjects";
+        projectBasePath = fileChooser.getFileSystemView().getDefaultDirectory().toString()
+                + File.separator + "IdeaProjects" + File.separator + "TMCProjects";
     }
 
     public void setUsername(String username) {
