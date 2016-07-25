@@ -37,6 +37,11 @@
       <action id="Upload Exercise" class="fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction" text="Upload current exercise" description="Upload exercise" />
       <action id="Download Exercises" class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction" text="Download current course's exercises" description="Download exercise" />
     </group>
+
+    <action class="fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction" id="SubmitButtonAction"  icon="TmcIcons.SUBMIT_BUTTON" >
+      <add-to-group group-id="NavBarToolBar" anchor="first" />
+    </action>
+
   </actions>
 
 </idea-plugin>
