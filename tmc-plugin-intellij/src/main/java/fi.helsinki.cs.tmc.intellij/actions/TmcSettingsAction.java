@@ -15,6 +15,6 @@ public class TmcSettingsAction extends AnAction{
     }
 
     public void showSettings() {
-        window = new SettingsWindow();
+        if ( window == null || window.isClosed()) window = new SettingsWindow();
     }
 }
