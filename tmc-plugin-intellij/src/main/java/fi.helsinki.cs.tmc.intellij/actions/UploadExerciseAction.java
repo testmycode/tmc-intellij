@@ -7,13 +7,12 @@ import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
 public class UploadExerciseAction extends AnAction {
 
