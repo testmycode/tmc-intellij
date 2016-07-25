@@ -7,12 +7,13 @@ import com.google.common.base.Optional;
 
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
-import javax.swing.*;
 import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
+
+import javax.swing.JFileChooser;
 
 public class SettingsTmc implements TmcSettings, Serializable {
 
