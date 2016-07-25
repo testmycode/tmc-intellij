@@ -13,8 +13,10 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
 public class UploadExerciseAction extends AnAction{
+
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -43,7 +45,8 @@ public class UploadExerciseAction extends AnAction{
     private void getResults(Project project, Exercise exercise, TmcCore core) {
         try {
             SubmissionResult result = core.submit(ProgressObserver.NULL_OBSERVER, exercise).call();
-            Messages.showMessageDialog(project, result.toString(), "Result", Messages.getQuestionIcon());
+            System.out.println(result);
+            SubmissionResultHandler.showResultMessage(exercise, result);
         } catch (Exception e) {
             e.printStackTrace();
         }
