@@ -17,6 +17,5 @@ public class TestEvent extends AnAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
 //        Messages.showMessageDialog(project, "Testing " + project.getName() + " " + project.getProjectFilePath() , "Information", Messages.getInformationIcon());
-        Messages.showErrorDialog(new SubmissionResultPopup().getPanel1(), "lol");
     }
 }

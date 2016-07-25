@@ -57,8 +57,6 @@ public class ProjectListWindow {
                     if (e.getClickCount() >= 2) {
                         String selectedItem = (String) list.getSelectedValue();
                         opener.openProject(TmcSettingsManager.get().getProjectBasePath() + File.separator + list.getParent().getParent().getName() + File.separator + selectedItem);
-                        System.out.println(list.getSelectedValue());
-                        System.out.println(list.getParent().getParent().getName());
                     }
                 }
             };

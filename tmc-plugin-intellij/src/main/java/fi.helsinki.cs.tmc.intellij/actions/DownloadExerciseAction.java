@@ -8,6 +8,7 @@ import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +27,13 @@ public class DownloadExerciseAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
+        OperationInProgressNotification note = new OperationInProgressNotification("Downloading");
         try {
             downloadExerciseAction();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        note.hide();
     }
 
     public List<Exercise> downloadExerciseAction() throws Exception {

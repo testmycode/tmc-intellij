@@ -23,8 +23,10 @@ public class UploadExerciseAction extends AnAction{
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
+        OperationInProgressNotification note = new OperationInProgressNotification("Uploading");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
         uploadExercise(project, TmcCoreHolder.get(), new ObjectFinder());
+        note.hide();
     }
 
     public void uploadExercise(Project project, TmcCore core, ObjectFinder finder){
