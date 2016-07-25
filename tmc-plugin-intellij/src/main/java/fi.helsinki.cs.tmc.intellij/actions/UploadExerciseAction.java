@@ -8,6 +8,7 @@ import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
+import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -18,8 +19,10 @@ public class UploadExerciseAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
+        OperationInProgressNotification note = new OperationInProgressNotification("Uploading");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
         uploadExercise(project, TmcCoreHolder.get(), new ObjectFinder());
+        note.hide();
     }
 
     private void uploadExercise(Project project, TmcCore core, ObjectFinder finder) {

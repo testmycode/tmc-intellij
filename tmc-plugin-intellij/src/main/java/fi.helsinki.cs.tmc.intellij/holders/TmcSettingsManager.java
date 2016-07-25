@@ -16,15 +16,16 @@ public final class TmcSettingsManager {
 
     public static synchronized SettingsTmc get() {
         if (persistentSettings.getSettingsTmc() == null) {
-            persistentSettings.setSettingsTmc(new SettingsTmc("", "", ""));
+            persistentSettings.setSettingsTmc(new SettingsTmc());
         }
         return persistentSettings.getSettingsTmc();
     }
 
     public static synchronized void setup() {
         if (persistentSettings.getSettingsTmc() == null) {
-            persistentSettings.setSettingsTmc(new SettingsTmc("", "", ""));
+            persistentSettings.setSettingsTmc(new SettingsTmc());
         }
+
     }
 
     public static synchronized void set(SettingsTmc settings) {

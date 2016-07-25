@@ -9,6 +9,7 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -32,16 +33,30 @@ public class DownloadExerciseAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
+
+        OperationInProgressNotification note = new OperationInProgressNotification("Downloading");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+
         try {
-            downloadExerciseAction(TmcCoreHolder.get(), TmcSettingsManager.get(), new CheckForExistingExercises(), new ProjectOpener());
+            downloadExerciseAction(TmcCoreHolder.get(),
+                    TmcSettingsManager.get(),
+                    new CheckForExistingExercises(),
+                    new ProjectOpener());
         } catch (Exception e) {
-            Messages.showMessageDialog(project, "Downloading failed \n" + e.getMessage(), "Result", Messages.getErrorIcon());
+            Messages.showMessageDialog(project,
+                    "Downloading failed \n" + e.getMessage(), "Result", Messages.getErrorIcon());
         }
+        note.hide();
     }
 
-    public List<Exercise> downloadExerciseAction(TmcCore core, SettingsTmc settings, CheckForExistingExercises checker, ProjectOpener opener) throws Exception {
-        Course course = core.getCourseDetails(ProgressObserver.NULL_OBSERVER, settings.getCourse()).call();
+    public List<Exercise> downloadExerciseAction(TmcCore core,
+                                                 SettingsTmc settings,
+                                                 CheckForExistingExercises checker,
+                                                 ProjectOpener opener) throws Exception {
+
+        Course course = core.getCourseDetails(ProgressObserver.NULL_OBSERVER,
+                settings.getCourse()).call();
+
         List<Exercise> exercises = course.getExercises();
         exercises = checker.clean(exercises);
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
