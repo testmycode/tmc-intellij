@@ -12,8 +12,7 @@ public class ObjectFinder {
 
     public Exercise findExerciseByName(Course course, String exerciseName) {
         List<Exercise> exercises = course.getExercises();
-        TmcCore core = TmcCoreHolder.get();
-        for(Exercise exercise: exercises){
+        for(Exercise exercise: exercises) {
             if(exercise.getName().equals(exerciseName)){
                 return exercise;
             }

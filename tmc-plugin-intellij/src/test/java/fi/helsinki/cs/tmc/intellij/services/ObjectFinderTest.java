@@ -16,7 +16,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class ObjectFinderTest {
+
     private ObjectFinder finder;
+
     @Before
     public void setUp() throws Exception {
         finder = new ObjectFinder();
