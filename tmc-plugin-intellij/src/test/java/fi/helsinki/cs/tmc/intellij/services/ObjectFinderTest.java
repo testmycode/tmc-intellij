@@ -18,7 +18,9 @@ import java.util.concurrent.Callable;
 
 
 public class ObjectFinderTest {
+
     private ObjectFinder finder;
+
     @Before
     public void setUp() throws Exception {
         finder = new ObjectFinder();

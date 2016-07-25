@@ -15,9 +15,6 @@ import static org.mockito.Mockito.*;
 */
 import org.junit.Test;
 
-/**
- * Created by konstaku on 20.7.2016.
- */
 public class TmcSettingsManagerTest {
     @Test
     public void get() throws Exception {

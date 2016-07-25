@@ -14,9 +14,6 @@ import java.nio.file.Path;
 
 public class ProjectOpener {
 
-    public ProjectOpener() {
-    }
-
     public void openProject(String path) {
         try {
             ProjectManager.getInstance().loadAndOpenProject(path);
