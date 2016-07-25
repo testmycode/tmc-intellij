@@ -6,9 +6,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.ui.popup.JBPopup;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.siyeh.ig.ui.TextField;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
@@ -19,10 +16,7 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
-import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
-import fi.helsinki.cs.tmc.intellij.ui.elements.SettingsPanel;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 

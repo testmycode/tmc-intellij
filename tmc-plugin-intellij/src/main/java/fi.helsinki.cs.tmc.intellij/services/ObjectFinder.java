@@ -4,7 +4,6 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
-import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 
 import java.util.List;
 
@@ -12,8 +11,9 @@ public class ObjectFinder {
 
     public Exercise findExerciseByName(Course course, String exerciseName) {
         List<Exercise> exercises = course.getExercises();
-        for(Exercise exercise: exercises) {
-            if(exercise.getName().equals(exerciseName)){
+
+        for (Exercise exercise: exercises) {
+            if (exercise.getName().equals(exerciseName)) {
                 return exercise;
             }
         }

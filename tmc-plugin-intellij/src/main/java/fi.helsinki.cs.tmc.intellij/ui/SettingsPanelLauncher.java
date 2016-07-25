@@ -1,22 +1,24 @@
 package fi.helsinki.cs.tmc.intellij.ui;
 
-
-import com.intellij.openapi.components.ServiceManager;
-import com.intellij.openapi.options.Configurable;
-import com.intellij.openapi.options.ConfigurationException;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.ui.elements.SettingsPanel;
+
+import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.options.Configurable;
+import com.intellij.openapi.options.ConfigurationException;
+
 import org.jetbrains.annotations.Nls;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
+import javax.swing.JComponent;
 
 public class SettingsPanelLauncher implements Configurable {
 
     private SettingsPanel settingsUi;
-    final PersistentTmcSettings saveSettings = ServiceManager.getService(PersistentTmcSettings.class);
+    final PersistentTmcSettings saveSettings =
+            ServiceManager.getService(PersistentTmcSettings.class);
 
     public SettingsPanelLauncher() {
         settingsUi = new SettingsPanel();
@@ -47,18 +49,18 @@ public class SettingsPanelLauncher implements Configurable {
 
     @Override
     public void apply() throws ConfigurationException {
-        SettingsTmc SettingsTmc = saveSettings.getSettingsTmc();
+        SettingsTmc settingsTmc = saveSettings.getSettingsTmc();
         boolean nullSettings = false;
-        if (SettingsTmc == null) {
+        if (settingsTmc == null) {
             nullSettings = true;
-            SettingsTmc = new SettingsTmc("beebee", "bb", "cc");
+            settingsTmc = new SettingsTmc("beebee", "bb", "cc");
         }
-        SettingsTmc.setUsername(settingsUi.getUsernameField().getText());
-        SettingsTmc.setPassword(settingsUi.getPasswordField().getText());
-        SettingsTmc.setServerAddress(settingsUi.getServerAddressField().getText());
-        SettingsTmc.setCourse((Course) settingsUi.getListOfAvailableCourses().getSelectedItem());
-        SettingsTmc.setProjectBasePath(settingsUi.getProjectPathField().getText());
-        saveSettings.setSettingsTmc(SettingsTmc);
+        settingsTmc.setUsername(settingsUi.getUsernameField().getText());
+        settingsTmc.setPassword(settingsUi.getPasswordField().getText());
+        settingsTmc.setServerAddress(settingsUi.getServerAddressField().getText());
+        settingsTmc.setCourse((Course) settingsUi.getListOfAvailableCourses().getSelectedItem());
+        settingsTmc.setProjectBasePath(settingsUi.getProjectPathField().getText());
+        saveSettings.setSettingsTmc(settingsTmc);
     }
 
     @Override

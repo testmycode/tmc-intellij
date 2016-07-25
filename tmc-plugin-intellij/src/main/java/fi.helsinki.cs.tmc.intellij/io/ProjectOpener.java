@@ -1,10 +1,12 @@
 
 package fi.helsinki.cs.tmc.intellij.io;
 
-import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.util.InvalidDataException;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
+
+import com.intellij.openapi.project.ProjectManager;
+import com.intellij.openapi.util.InvalidDataException;
+
 import org.jdom.JDOMException;
 
 import java.io.IOException;

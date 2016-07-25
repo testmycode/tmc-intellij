@@ -1,9 +1,14 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -11,9 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class ObjectFinderTest {
 
@@ -51,6 +53,7 @@ public class ObjectFinderTest {
         final List<Course> courses = new ArrayList<>();
         courses.add(new Course("Jamaikan Nippuside"));
         final Course toFind = new Course("Namibian Saha");
+
         TmcCore core = mock(TmcCore.class);
         courses.add(toFind);
         when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
@@ -75,6 +78,7 @@ public class ObjectFinderTest {
     @Test
     public void findCourseByNameReturnsNullWhenNotFound() throws Exception {
         final List<Course> courses = new ArrayList<>();
+
         courses.add(new Course("Jamaikan Nippuside"));
         Course toFind = new Course("Namibian Vasara");
         courses.add(toFind);
