@@ -7,13 +7,13 @@ import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 
 public class UploadExerciseAction extends AnAction {
 
@@ -49,13 +49,11 @@ public class UploadExerciseAction extends AnAction {
     private void getResults(Project project, Exercise exercise, TmcCore core) {
         try {
             SubmissionResult result = core.submit(ProgressObserver.NULL_OBSERVER, exercise).call();
-            Messages.showMessageDialog(project, result.toString(), "Result",
-                    Messages.getQuestionIcon());
-
+            System.out.println(result);
+            SubmissionResultHandler.showResultMessage(exercise, result);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
 }
