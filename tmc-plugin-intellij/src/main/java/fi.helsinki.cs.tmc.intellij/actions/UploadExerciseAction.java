@@ -1,6 +1,11 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
@@ -10,14 +15,6 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
-
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-
-import java.io.File;
 
 public class UploadExerciseAction extends AnAction {
 
@@ -34,7 +31,7 @@ public class UploadExerciseAction extends AnAction {
         String path = project.getBasePath();
         String[] exerciseCourse;
         if (path.toString().contains("/")) {
-            exerciseCourse = path.toString().split(File.separator);
+            exerciseCourse = path.toString().split("/");
         } else {
             exerciseCourse = path.toString().split("\\\\");
         }

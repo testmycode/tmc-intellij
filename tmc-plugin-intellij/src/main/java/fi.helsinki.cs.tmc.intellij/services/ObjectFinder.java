@@ -75,7 +75,7 @@ public class ObjectFinder {
                 if (Files.isDirectory(path)) {
                     String[] exerciseCourse;
                     if (path.toString().contains("/")) {
-                        exerciseCourse = path.toString().split(File.separator);
+                        exerciseCourse = path.toString().split("/");
                     } else {
                         exerciseCourse = path.toString().split("\\\\");
                     }
