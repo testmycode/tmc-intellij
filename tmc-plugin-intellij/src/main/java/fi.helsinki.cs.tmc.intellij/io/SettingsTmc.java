@@ -7,6 +7,8 @@ import com.google.common.base.Optional;
 
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
+import javax.swing.*;
+import java.io.File;
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +29,9 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     public SettingsTmc() {
+        JFileChooser fileChooser = new JFileChooser();
+        serverAddress = "https://tmc.mooc.fi/staging/org/tmc-intellij/";
+        projectBasePath = fileChooser.getFileSystemView().getDefaultDirectory().toString() + File.separator + "IdeaProjects" + File.separator + "TMCProjects";
     }
 
     public void setUsername(String username) {
@@ -46,7 +51,11 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     public void setProjectBasePath(String projectBasePath) {
-        this.projectBasePath = projectBasePath;
+        if (projectBasePath.contains("TMCProjects")) {
+            this.projectBasePath = projectBasePath;
+        } else {
+            this.projectBasePath = projectBasePath + File.separator + "TMCProjects";
+        }
     }
 
     @Override
