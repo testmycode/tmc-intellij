@@ -103,23 +103,22 @@ public class SettingsPanel {
 
     }
 
+    public void saveInformation(){
+        final PersistentTmcSettings saveSettings = ServiceManager.getService(PersistentTmcSettings.class);
+        SettingsTmc SettingsTmc = ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+        SettingsTmc.setUsername(usernameField.getText());
+        SettingsTmc.setPassword(passwordField.getText());
+        SettingsTmc.setServerAddress(serverAddressField.getText());
+        SettingsTmc.setCourse((Course) listOfAvailableCourses.getSelectedItem());
+        SettingsTmc.setProjectBasePath(projectPathField.getText());
+        saveSettings.setSettingsTmc(SettingsTmc);
+    }
+
     private ActionListener createActionListenerOk(final JFrame frame) {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                final PersistentTmcSettings saveSettings = ServiceManager.getService(PersistentTmcSettings.class);
-                SettingsTmc SettingsTmc = ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
-                boolean nullSettings = false;
-                if (SettingsTmc == null) {
-                    nullSettings = true;
-                    SettingsTmc = new SettingsTmc("beebee", "bb", "cc");
-                }
-                SettingsTmc.setUsername(usernameField.getText());
-                SettingsTmc.setPassword(passwordField.getText());
-                SettingsTmc.setServerAddress(serverAddressField.getText());
-                SettingsTmc.setCourse((Course) listOfAvailableCourses.getSelectedItem());
-                SettingsTmc.setProjectBasePath(projectPathField.getText());
-                saveSettings.setSettingsTmc(SettingsTmc);
+                saveInformation();
                 frame.dispose();
                 frame.setVisible(false);
             }
@@ -142,6 +141,7 @@ public class SettingsPanel {
             public void actionPerformed(ActionEvent actionEvent) {
                 ArrayList<Course> courses = new ArrayList<>();
                 listOfAvailableCourses.removeAllItems();
+                saveInformation();
                 try {
                     courses = (ArrayList<Course>) TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
                 } catch (Exception e) {
