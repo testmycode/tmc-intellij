@@ -15,8 +15,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
-public class UploadExerciseAction extends AnAction{
-
+public class UploadExerciseAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -24,19 +23,22 @@ public class UploadExerciseAction extends AnAction{
         uploadExercise(project, TmcCoreHolder.get(), new ObjectFinder());
     }
 
-    public void uploadExercise(Project project, TmcCore core, ObjectFinder finder){
+    private void uploadExercise(Project project, TmcCore core, ObjectFinder finder) {
         String path = project.getBasePath();
         String[] exerciseCourse = new String[2];
-        if (path.contains("/")) {
-            exerciseCourse = path.split("/");
-        } else {
-            String backslash = " \\ ";
-            backslash.trim();
-            exerciseCourse = path.split(backslash);
+        if (path != null) {
+            if (path.contains("/")) {
+                exerciseCourse = path.split("/");
+            } else {
+                String backslash = " \\ ";
+                backslash = backslash.trim();
+                exerciseCourse = path.split(backslash);
+            }
         }
 
         Course course = finder.findCourseByName(exerciseCourse[exerciseCourse.length - 2], core);
-        Exercise exercise = finder.findExerciseByName(course, exerciseCourse[exerciseCourse.length - 1]);
+        Exercise exercise = finder.findExerciseByName(course,
+                exerciseCourse[exerciseCourse.length - 1]);
 
         getResults(project, exercise, core);
 
@@ -51,6 +53,5 @@ public class UploadExerciseAction extends AnAction{
             e.printStackTrace();
         }
     }
-
 
 }

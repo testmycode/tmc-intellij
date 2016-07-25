@@ -14,10 +14,10 @@ import org.jetbrains.annotations.Nullable;
 
 
 @State(
-        name= "TmcSettings",
-        storages = {
-                @Storage("TMCSettings.xml")}
-)
+        name = "TmcSettings",
+        storages = { @Storage("TMCSettings.xml") }
+        )
+
 public class PersistentTmcSettings implements PersistentStateComponent<PersistentTmcSettings> {
 
     @Nullable
@@ -25,6 +25,7 @@ public class PersistentTmcSettings implements PersistentStateComponent<Persisten
     public PersistentTmcSettings getState() {
         return this;
     }
+
     @Override
     public void loadState(PersistentTmcSettings persistentTmcSettings) {
         XmlSerializerUtil.copyBean(persistentTmcSettings, this);

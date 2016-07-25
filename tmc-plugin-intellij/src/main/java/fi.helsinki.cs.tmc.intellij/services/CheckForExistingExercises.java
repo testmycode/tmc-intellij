@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CheckForExistingExercises {
 
-    public static List<Exercise> clean(List<Exercise> exercises) {
+    public List<Exercise> clean(List<Exercise> exercises) {
         List<Exercise> existing = new ArrayList<Exercise>();
         for (Exercise exercise : exercises) {
             if (exercise.isDownloaded(TmcSettingsManager.get().getTmcProjectDirectory())) {

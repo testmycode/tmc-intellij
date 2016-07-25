@@ -8,8 +8,6 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
-
-
 public class TestEvent extends AnAction {
 
     @Override
