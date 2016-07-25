@@ -25,6 +25,7 @@ public final class TmcSettingsManager {
         if (persistentSettings.getSettingsTmc() == null) {
             persistentSettings.setSettingsTmc(new SettingsTmc("", "", ""));
         }
+
     }
 
     public static synchronized void set(SettingsTmc settings) {
