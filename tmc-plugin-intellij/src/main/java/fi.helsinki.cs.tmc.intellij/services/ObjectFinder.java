@@ -22,8 +22,8 @@ public class ObjectFinder {
     public Exercise findExerciseByName(Course course, String exerciseName) {
         List<Exercise> exercises = course.getExercises();
 
-        for(Exercise exercise: exercises){
-            if(exercise.getName().equals(exerciseName)){
+        for (Exercise exercise: exercises) {
+            if (exercise.getName().equals(exerciseName)) {
                 return exercise;
             }
         }

@@ -1,7 +1,10 @@
 package fi.helsinki.cs.tmc.intellij.ui;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextArea;
 
 public class OperationInProgressNotification {
 

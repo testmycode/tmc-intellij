@@ -1,10 +1,14 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+
 
 public class PersistentTmcSettingsTest {
 

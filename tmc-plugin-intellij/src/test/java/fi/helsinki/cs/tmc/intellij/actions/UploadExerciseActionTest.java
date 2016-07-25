@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+/*
 import com.intellij.openapi.project.Project;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
@@ -11,6 +12,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+*/
 
 public class UploadExerciseActionTest {
 
