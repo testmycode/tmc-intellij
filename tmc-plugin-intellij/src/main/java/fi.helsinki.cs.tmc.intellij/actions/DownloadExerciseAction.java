@@ -1,47 +1,65 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class DownloadExerciseAction extends AnAction {
 
-    private TmcCore core;
+    private Exercise exercise;
+    private List<Exercise> list;
 
     public DownloadExerciseAction() {
-        core = TmcCoreHolder.get();
+        exercise = new Exercise();
+        list = new ArrayList<Exercise>();
     }
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
+
         OperationInProgressNotification note = new OperationInProgressNotification("Downloading");
+        Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+
         try {
-            downloadExerciseAction();
+            downloadExerciseAction(TmcCoreHolder.get(),
+                    TmcSettingsManager.get(),
+                    new CheckForExistingExercises(),
+                    new ProjectOpener());
         } catch (Exception e) {
-            e.printStackTrace();
+            Messages.showMessageDialog(project,
+                    "Downloading failed \n" + e.getMessage(), "Result", Messages.getErrorIcon());
         }
         note.hide();
     }
 
-    public List<Exercise> downloadExerciseAction() throws Exception {
+    public List<Exercise> downloadExerciseAction(TmcCore core,
+                                                 SettingsTmc settings,
+                                                 CheckForExistingExercises checker,
+                                                 ProjectOpener opener) throws Exception {
 
-        List<Exercise> exercises =
-                TmcCoreHolder.get().getCourseDetails(ProgressObserver.NULL_OBSERVER,
-                TmcSettingsManager.get().getCourse()).call().getExercises();
+        Course course = core.getCourseDetails(ProgressObserver.NULL_OBSERVER,
+                settings.getCourse()).call();
 
-        exercises = CheckForExistingExercises.clean(exercises);
+        List<Exercise> exercises = course.getExercises();
+        exercises = checker.clean(exercises);
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
         return exercises;
     }
-
-
 }

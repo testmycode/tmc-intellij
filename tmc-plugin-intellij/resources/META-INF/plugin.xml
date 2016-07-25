@@ -42,6 +42,11 @@
       <action id="Open TMC Exercise List" class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction" text="Open TMC Exercise List" description="Open TMC Exercise List" />
       <action id="TestEvent1" class="fi.helsinki.cs.tmc.intellij.actions.TestEvent" text="Test Event Popup" description="Pop up test" />
     </group>
+
+    <action class="fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction" id="SubmitButtonAction"  icon="TmcIcons.SUBMIT_BUTTON" >
+      <add-to-group group-id="NavBarToolBar" anchor="first" />
+    </action>
+
   </actions>
 
 </idea-plugin>
