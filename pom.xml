@@ -24,12 +24,6 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
-
-        <repository>
-            <id>vektah-openapi</id>
-            <name>3rd party openapi repository</name>
-            <url>https://github.com/Vektah/maven-intellij-openapi/raw/master/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -60,18 +54,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <scope>provided</scope>
-            <groupId>net.vektah</groupId>
-            <artifactId>intellij-openapi</artifactId>
-            <version>12.1.4</version>
-        </dependency>
-        <dependency>
-            <scope>provided</scope>
-            <groupId>net.vektah</groupId>
-            <artifactId>intellij-util</artifactId>
-            <version>12.1.4</version>
-        </dependency>
-        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.21</version>
@@ -80,18 +62,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.7.21</version>
-        </dependency>
-        <dependency>
-            <scope>provided</scope>
-            <groupId>net.vektah</groupId>
-            <artifactId>intellij-annotations</artifactId>
-            <version>12.1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>net.vektah</groupId>
-            <scope>provided</scope>
-            <artifactId>intellij-extensions</artifactId>
-            <version>12.1.4</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
