@@ -14,7 +14,7 @@ public class SettingsWindow {
     public SettingsWindow() {
             frame = new JFrame();
             JPanel panel = new SettingsPanel(frame).getPanel();
-            frame.setSize(new Dimension(800, 500));
+
             frame.add(panel);
             frame.setTitle("TMC Settings");
             frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -27,6 +27,12 @@ public class SettingsWindow {
 
     public boolean isClosed() {
         return (frame == null || !frame.isVisible());
+    }
+
+    public void show() {
+        frame.setVisible(false);
+        frame.setVisible(true);
+
     }
 }
 
