@@ -25,7 +25,7 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-    <toolWindow id="TMC Project List"   secondary="false" anchor="right"
+    <toolWindow id="TMC Project List" secondary="false" anchor="left"
                 factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction">
     </toolWindow>
     <postStartupActivity implementation="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"></postStartupActivity>

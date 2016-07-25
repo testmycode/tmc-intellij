@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
@@ -14,12 +15,16 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
+
+import java.io.File;
 
 public class UploadExerciseAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        OperationInProgressNotification note = new OperationInProgressNotification("Uploading");
+        OperationInProgressNotification note = new
+                OperationInProgressNotification("Uploading exercise, please wait!");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
         uploadExercise(project, TmcCoreHolder.get(), new ObjectFinder());
         note.hide();
@@ -27,23 +32,19 @@ public class UploadExerciseAction extends AnAction {
 
     private void uploadExercise(Project project, TmcCore core, ObjectFinder finder) {
         String path = project.getBasePath();
-        String[] exerciseCourse = new String[2];
-        if (path != null) {
-            if (path.contains("/")) {
-                exerciseCourse = path.split("/");
-            } else {
-                String backslash = " \\ ";
-                backslash = backslash.trim();
-                exerciseCourse = path.split(backslash);
-            }
+        String[] exerciseCourse = path.split(File.separator);
+        try {
+            Course course =
+                    finder.findCourseByName(exerciseCourse[exerciseCourse.length - 2], core);
+            Exercise exercise = finder.findExerciseByName(course,
+                    exerciseCourse[exerciseCourse.length - 1]);
+            getResults(project, exercise, core);
+        } catch (Exception exept) {
+            Messages.showErrorDialog(project, "Are your credentials correct?\n"
+                    + "Is this a TMC Exercise?\n"
+                    + "Are you connected to the internet?\n"
+                    + exept.getMessage() + " " + exept.toString(), "Error while submitting");
         }
-
-        Course course = finder.findCourseByName(exerciseCourse[exerciseCourse.length - 2], core);
-        Exercise exercise = finder.findExerciseByName(course,
-                exerciseCourse[exerciseCourse.length - 1]);
-
-        getResults(project, exercise, core);
-
     }
 
     private void getResults(Project project, Exercise exercise, TmcCore core) {

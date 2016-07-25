@@ -26,7 +26,9 @@ public class SettingsPanelLauncher implements Configurable {
     }
 
 
-    public SettingsPanel getSettingsUi() { return settingsUi; }
+    public SettingsPanel getSettingsUi() {
+        return settingsUi;
+    }
 
     @Nls
     @Override

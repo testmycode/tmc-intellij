@@ -34,7 +34,9 @@ public class DownloadExerciseAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
 
-        OperationInProgressNotification note = new OperationInProgressNotification("Downloading");
+        OperationInProgressNotification note =
+                new OperationInProgressNotification("Downloading exercises, " +
+                        "this may take several minutes");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
 
         try {
@@ -44,7 +46,9 @@ public class DownloadExerciseAction extends AnAction {
                     new ProjectOpener());
         } catch (Exception e) {
             Messages.showMessageDialog(project,
-                    "Downloading failed \n" + e.getMessage(), "Result", Messages.getErrorIcon());
+                    "Downloading failed \n"
+                            + "Are your account details correct?\n"
+                            + e.getMessage(), "Result", Messages.getErrorIcon());
         }
         note.hide();
     }

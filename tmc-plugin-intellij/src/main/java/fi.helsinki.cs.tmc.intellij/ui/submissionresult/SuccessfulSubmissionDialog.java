@@ -7,8 +7,6 @@ import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
-import fi.helsinki.cs.tmc.intellij.ui.SubmissionResultPopup;
-
 import com.intellij.openapi.ui.Messages;
 
 import org.apache.commons.lang.StringUtils;
@@ -147,13 +145,13 @@ public class SuccessfulSubmissionDialog extends JDialog {
                             desktop.browse(new URI(solutionUrl));
                         } catch (Exception ex) {
                             String errorMessage = "Failed to open browser.\n" + ex.getMessage();
-                            JPanel panel = new SubmissionResultPopup().getPanel1();
-                            Messages.showErrorDialog(panel, errorMessage);
+//                            JPanel panel = new SubmissionResultPopup().getPanel1();
+//                            Messages.showErrorDialog(panel, errorMessage);
                         }
                     } else {
                         String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";
-                        JPanel panel = new SubmissionResultPopup().getPanel1();
-                        Messages.showErrorDialog(panel, errorMessage);
+//                        JPanel panel = new SubmissionResultPopup().getPanel1();
+//                        Messages.showErrorDialog(panel, errorMessage);
                     }
                 }
             });
