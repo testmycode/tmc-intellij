@@ -1,5 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.ui.elements;
-
+package fi.helsinki.cs.tmc.intellij.ui.settings;
 
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;

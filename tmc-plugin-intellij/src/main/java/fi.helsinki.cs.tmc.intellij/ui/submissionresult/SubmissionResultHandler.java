@@ -14,6 +14,7 @@ public class SubmissionResultHandler {
 
         } else {
             new FailedSubmissionDialog(result, project);
+            String errorMessage = "All tests didn't pass!";
         }
     }
 }

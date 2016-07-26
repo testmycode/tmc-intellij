@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.ui.components.JBList;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
@@ -10,11 +11,14 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
+import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 import org.junit.Test;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -50,7 +54,15 @@ public class DownloadExerciseActionTest {
         final Course course = new Course("kurssi");
         when(settings.getCourse()).thenReturn(course);
         course.setExercises(excs);
-
+        final List <Course> courses = new ArrayList<>();
+        courses.add(course);
+        when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
+                new Callable<List<Course>>() {
+                    @Override
+                    public List<Course> call() throws Exception {
+                        return courses;
+                    }
+                });
         when(settings.getTmcProjectDirectory()).thenReturn(Paths.get("/home/koko"));
         when(core.getCourseDetails(ProgressObserver.NULL_OBSERVER, course)).thenReturn(
                 new Callable<Course>() {
@@ -60,7 +72,9 @@ public class DownloadExerciseActionTest {
                     }
                 }
         );
-
+        when(checker.getListOfDownloadedExercises(excs)).thenReturn(excs);
+        CourseAndExerciseManager.setDatabase(new HashMap<String, ArrayList<Exercise>>());
+        ProjectListManager.setCurrentListElements(new HashMap<String, List<JBList>>());
         when(core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, excs)).thenReturn(
                 new Callable<List<Exercise>>() {
                     @Override

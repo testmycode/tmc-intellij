@@ -6,7 +6,6 @@ import static fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.Boxer.hgl
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
-
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackAnswer;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanel;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanelFactory;
