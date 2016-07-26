@@ -9,12 +9,12 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
@@ -36,8 +36,8 @@ public class DownloadExerciseAction extends AnAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
 
         OperationInProgressNotification note =
-                new OperationInProgressNotification("Downloading exercises, " +
-                        "this may take several minutes");
+                new OperationInProgressNotification("Downloading exercises, "
+                        + "this may take several minutes");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
 
         try {
@@ -63,6 +63,7 @@ public class DownloadExerciseAction extends AnAction {
         List<Exercise> exercises = course.getExercises();
         exercises = checker.clean(exercises);
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
+        CourseAndExerciseManager.updateSinglecourse(course.getName());
         return exercises;
     }
 }

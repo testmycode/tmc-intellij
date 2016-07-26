@@ -1,15 +1,12 @@
-package fi.helsinki.cs.tmc.intellij.ui;
+package fi.helsinki.cs.tmc.intellij.ui.settings;
 
-
-import fi.helsinki.cs.tmc.intellij.ui.elements.SettingsPanel;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class SettingsWindow {
 
-    JFrame frame;
-
+    private JFrame frame;
 
     public SettingsWindow() {
         frame = new JFrame();
@@ -32,7 +29,5 @@ public class SettingsWindow {
     public void show() {
         frame.setVisible(false);
         frame.setVisible(true);
-
     }
 }
-

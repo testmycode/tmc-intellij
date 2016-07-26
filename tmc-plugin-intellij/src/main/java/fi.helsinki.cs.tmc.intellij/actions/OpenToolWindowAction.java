@@ -1,6 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import fi.helsinki.cs.tmc.intellij.ui.elements.ProjectListWindow;
+import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -23,6 +23,8 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
         try {
             ToolWindowManager.getInstance(project)
                     .getToolWindow("Project").setSplitMode(true, null);
+            ToolWindowManager.getInstance(project)
+                    .getToolWindow("Project").show(null);
             ToolWindowManager.getInstance(project)
                     .getToolWindow("TMC Project List").activate(null);
             ToolWindowManager.getInstance(project)

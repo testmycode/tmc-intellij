@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fi.helsinki.cs.tmc.intellij.ui.elements.ProjectListWindow">
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListWindow">
   <grid id="27dc6" binding="basePanel" layout-manager="GridLayoutManager" row-count="3" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
@@ -27,6 +27,7 @@
         <properties>
           <borderPainted value="false"/>
           <floatable value="false"/>
+          <foreground color="-16777216"/>
         </properties>
         <border type="none"/>
         <children/>

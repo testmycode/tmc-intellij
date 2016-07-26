@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.ui.elements;
+package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
 import com.intellij.openapi.ui.JBMenuItem;
 import com.intellij.openapi.ui.JBPopupMenu;

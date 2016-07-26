@@ -25,12 +25,12 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
-    <toolWindow id="TMC Project List" secondary="false" anchor="left"
+    <toolWindow id="TMC Project List" secondary="false" anchor="right"
                 factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction">
     </toolWindow>
     <postStartupActivity implementation="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"></postStartupActivity>
     <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings"/>
-    <!--<applicationConfigurable displayName="TMC Settings" id="TMC Settings" instance="fi.helsinki.cs.tmc.intellij.ui.SettingsPanelLauncher"/>-->
+    <!--<applicationConfigurable displayName="TMC Settings" id="TMC Settings" instance="fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanelLauncher"/>-->
   </extensions>
 
   <actions>

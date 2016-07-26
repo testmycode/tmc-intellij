@@ -1,20 +1,21 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
+
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 
 public class UploadExerciseAction extends AnAction {
 
@@ -41,6 +42,7 @@ public class UploadExerciseAction extends AnAction {
             Exercise exercise = finder.findExerciseByName(course,
                     exerciseCourse[exerciseCourse.length - 1]);
             getResults(project, exercise, core);
+            CourseAndExerciseManager.updateSinglecourse(course.getName());
         } catch (Exception exept) {
             Messages.showErrorDialog(project, "Are your credentials correct?\n"
                     + "Is this a TMC Exercise?\n"

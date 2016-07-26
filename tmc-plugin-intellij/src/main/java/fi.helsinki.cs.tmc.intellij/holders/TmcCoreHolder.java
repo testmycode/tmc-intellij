@@ -35,9 +35,8 @@ public class TmcCoreHolder {
     public static synchronized TmcCore testGet() {
         if (core == null) {
             TaskExecutor tmcLangs = new TaskExecutorImpl();
-            core = new TmcCore(new SettingsTmc
-                    ("https://tmc.mooc.fi/staging/org/tmc-intellij", "intellij-student", "intellij-tmc")
-                    , tmcLangs);
+            core = new TmcCore(new SettingsTmc("https://tmc.mooc.fi/staging/org/tmc-intellij",
+                    "intellij-student", "intellij-tmc"), tmcLangs);
         }
         return core;
     }
