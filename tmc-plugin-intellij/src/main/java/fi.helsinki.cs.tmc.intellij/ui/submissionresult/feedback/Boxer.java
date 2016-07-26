@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.ui.submissionresult;
+package fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback;
 
 import java.awt.Component;
 import javax.swing.Box;

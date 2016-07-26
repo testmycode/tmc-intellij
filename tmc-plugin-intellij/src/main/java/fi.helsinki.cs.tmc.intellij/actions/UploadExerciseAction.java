@@ -55,7 +55,7 @@ public class UploadExerciseAction extends AnAction {
         try {
             SubmissionResult result = core.submit(ProgressObserver.NULL_OBSERVER, exercise).call();
             System.out.println(result);
-            SubmissionResultHandler.showResultMessage(exercise, result);
+            SubmissionResultHandler.showResultMessage(exercise, result, project);
         } catch (Exception e) {
             e.printStackTrace();
         }

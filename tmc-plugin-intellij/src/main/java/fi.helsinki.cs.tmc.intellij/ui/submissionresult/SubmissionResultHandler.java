@@ -3,17 +3,18 @@ package fi.helsinki.cs.tmc.intellij.ui.submissionresult;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
-import com.intellij.openapi.ui.Messages;
+import com.intellij.openapi.project.Project;
 
 public class SubmissionResultHandler {
 
-    public static void showResultMessage(Exercise exercise, SubmissionResult result) {
-        if (result.isAllTestsPassed()) {
-            //JTextField myTextField = new JTextField("Testin popupfactory", 20);
-            new SuccessfulSubmissionDialog(exercise, result);
+    public static void showResultMessage(Exercise exercise,
+                                         SubmissionResult result,
+                                         Project project) {
 
+        if (result.isAllTestsPassed()) {
+            new SuccessfulSubmissionDialog(exercise, result, project);
         } else {
-            String errorMessage = "All tests didn't pass!";
+            new FailedSubmissionDialog(result, project);
         }
     }
 }

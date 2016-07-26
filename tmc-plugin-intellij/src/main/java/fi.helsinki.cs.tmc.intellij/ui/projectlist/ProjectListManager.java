@@ -6,12 +6,12 @@ import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.ui.components.JBList;
 
-import javax.swing.DefaultListModel;
-import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
 
 public class ProjectListManager {
 
