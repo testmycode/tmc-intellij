@@ -117,6 +117,7 @@ public class ProjectListWindow {
         tabbedPanelBase.removeAll();
         toolbar.removeAll();
         CourseAndExerciseManager.updateAll();
+        ProjectListManager.refreshAllCourses();
         addCourseTabsAndExercises();
     }
 

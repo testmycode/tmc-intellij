@@ -12,6 +12,8 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
+import static a.b.n.co;
+
 
 public class ProjectListManager {
 
@@ -35,6 +37,13 @@ public class ProjectListManager {
             currentListElements.put(list.getName(), new ArrayList<JBList>());
         }
         currentListElements.get(list.getName()).add(list);
+    }
+
+    public static void refreshAllCourses() {
+        List<String> courses = new ObjectFinder().listAllDownloadedCourses();
+        for (String course : courses) {
+            refreshCourse(course);
+        }
     }
 
     public static void refreshCourse(String course) {
