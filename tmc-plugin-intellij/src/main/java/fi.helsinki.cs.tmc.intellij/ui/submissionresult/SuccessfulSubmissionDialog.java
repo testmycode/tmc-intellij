@@ -7,7 +7,7 @@ import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
-import fi.helsinki.cs.tmc.intellij.ui.SubmissionResultPopup;
+//import fi.helsinki.cs.tmc.intellij.ui.SubmissionResultPopup;
 
 import com.intellij.openapi.ui.Messages;
 
@@ -57,7 +57,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
         addVSpace(6);
         addPointsLabel(result);
         addVSpace(10);
-        addModelSolutionButton(result);
+        //addModelSolutionButton(result);
         addVSpace(20);
         addFeedbackQuestions(result); //TODO: maybe put in box
         addVSpace(10);
@@ -135,6 +135,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
         }
     }
 
+
     private void addModelSolutionButton(SubmissionResult result) {
         if (result.getSolutionUrl() != null) {
             final String solutionUrl = result.getSolutionUrl();
@@ -147,13 +148,13 @@ public class SuccessfulSubmissionDialog extends JDialog {
                             desktop.browse(new URI(solutionUrl));
                         } catch (Exception ex) {
                             String errorMessage = "Failed to open browser.\n" + ex.getMessage();
-                            JPanel panel = new SubmissionResultPopup().getPanel1();
-                            Messages.showErrorDialog(panel, errorMessage);
+//                            JPanel panel = new SubmissionResultPopup().getPanel1();
+//                            Messages.showErrorDialog(panel, errorMessage);
                         }
                     } else {
                         String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";
-                        JPanel panel = new SubmissionResultPopup().getPanel1();
-                        Messages.showErrorDialog(panel, errorMessage);
+//                        JPanel panel = new SubmissionResultPopup().getPanel1();
+//                        Messages.showErrorDialog(panel, errorMessage);
                     }
                 }
             });

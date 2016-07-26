@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.JComponent;
 
 //not used
+/*
 public class SettingsPanelLauncher implements Configurable {
 
     private SettingsPanel settingsUi;
@@ -75,3 +76,4 @@ public class SettingsPanelLauncher implements Configurable {
     public void disposeUIResources() {
     }
 }
+*/
