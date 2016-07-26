@@ -6,13 +6,11 @@ import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.ui.components.JBList;
 
+import javax.swing.DefaultListModel;
+import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.DefaultListModel;
-import javax.swing.JPanel;
-
-import static a.b.n.co;
 
 
 public class ProjectListManager {
@@ -48,12 +46,14 @@ public class ProjectListManager {
 
     public static void refreshCourse(String course) {
         List<JBList> list = currentListElements.get(course);
-        for (JBList lis : list) {
-            if (lis != null && lis.getName().equals(course)) {
-                DefaultListModel model = (DefaultListModel) lis.getModel();
-                model.removeAllElements();
-                addExercisesToList(new ObjectFinder(), course, model);
-                lis.setModel(model);
+        if (list != null) {
+            for (JBList lis : list) {
+                if (lis != null && lis.getName().equals(course)) {
+                    DefaultListModel model = (DefaultListModel) lis.getModel();
+                    model.removeAllElements();
+                    addExercisesToList(new ObjectFinder(), course, model);
+                    lis.setModel(model);
+                }
             }
         }
     }
