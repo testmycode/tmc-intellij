@@ -5,7 +5,7 @@ import fi.helsinki.cs.tmc.intellij.ui.SettingsWindow;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-public class TmcSettingsAction extends AnAction{
+public class TmcSettingsAction extends AnAction {
 
     private SettingsWindow window;
 
@@ -20,6 +20,5 @@ public class TmcSettingsAction extends AnAction{
         } else {
             window.show();
         }
-
     }
 }
