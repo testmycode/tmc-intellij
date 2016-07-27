@@ -17,8 +17,8 @@ public class FailedSubmissionDialog {
     private String parsePoints(SubmissionResult result) {
         if (result.getPoints().size() == 0) {
             return "0";
-        } else {
-            return result.getPoints().toString();
         }
+
+        return result.getPoints().toString();
     }
 }

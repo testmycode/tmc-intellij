@@ -31,6 +31,7 @@ public class UploadExerciseAction extends AnAction {
         ExerciseUploadingService.startUploadExercise(project,
                 TmcCoreHolder.get(),
                 new ObjectFinder());
+
         note.hide();
     }
 

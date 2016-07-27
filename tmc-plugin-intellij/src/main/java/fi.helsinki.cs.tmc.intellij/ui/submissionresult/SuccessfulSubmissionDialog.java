@@ -86,20 +86,24 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
     private void sendFeedback(SubmissionResult result, Project project) {
         List<FeedbackAnswer> answers = getFeedbackAnswers();
-        if (answers.size() != 0) {
-            try {
-                TmcCoreHolder.get().sendFeedback(ProgressObserver.NULL_OBSERVER,
-                        getFeedbackAnswers(), new URI(result.getFeedbackAnswerUrl())).call();
 
-            } catch (Exception ex) {
-                String errorMessage = "Problems with internet.\n" + ex.getMessage();
-                Messages.showErrorDialog(project, errorMessage, "Problem with internet");
-            }
+        if (answers.size() == 0) {
+            return;
+        }
+
+        try {
+            TmcCoreHolder.get().sendFeedback(ProgressObserver.NULL_OBSERVER,
+                    getFeedbackAnswers(), new URI(result.getFeedbackAnswerUrl())).call();
+
+        } catch (Exception ex) {
+            String errorMessage = "Problems with internet.\n" + ex.getMessage();
+            Messages.showErrorDialog(project, errorMessage, "Problem with internet");
         }
     }
 
     public List<FeedbackAnswer> getFeedbackAnswers() {
         List<FeedbackAnswer> answers = new ArrayList<FeedbackAnswer>();
+
         for (FeedbackQuestionPanel panel : feedbackQuestionPanels) {
             FeedbackAnswer answer = panel.getAnswer();
             if (answer != null) {
@@ -150,14 +154,15 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private String getPointsMsg(SubmissionResult result) {
-        if (!result.getPoints().isEmpty()) {
-            String msg = "Points permanently awarded: "
-                    + StringUtils.join(result.getPoints(), ", ") + ".";
-            String str = StringEscapeUtils.escapeHtml4(msg).replace("\n", "<br />\n");
-            return "<html>" + str + "</html>";
-        } else {
+        if (result.getPoints().isEmpty()) {
             return "";
         }
+
+        String msg = "Points permanently awarded: "
+                + StringUtils.join(result.getPoints(), ", ") + ".";
+        String str = StringEscapeUtils.escapeHtml4(msg).replace("\n", "<br />\n");
+        return "<html>" + str + "</html>";
+
     }
 
 
@@ -184,16 +189,17 @@ public class SuccessfulSubmissionDialog extends JDialog {
             @Override
             public void actionPerformed(ActionEvent ev) {
                 Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-                    try {
-                        desktop.browse(new URI(solutionUrl));
-                    } catch (Exception ex) {
-                        String errorMessage = "Failed to open browser.\n" + ex.getMessage();
-                        Messages.showErrorDialog(project, errorMessage, "Problem with browser");
-                    }
-                } else {
+
+                if (desktop == null || !desktop.isSupported(Desktop.Action.BROWSE)) {
                     String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";
                     Messages.showErrorDialog(project, errorMessage, "Os problem");
+                }
+
+                try {
+                    desktop.browse(new URI(solutionUrl));
+                } catch (Exception ex) {
+                    String errorMessage = "Failed to open browser.\n" + ex.getMessage();
+                    Messages.showErrorDialog(project, errorMessage, "Problem with browser");
                 }
             }
         };
@@ -202,29 +208,32 @@ public class SuccessfulSubmissionDialog extends JDialog {
     private void addFeedbackQuestions(SubmissionResult result) {
         this.feedbackQuestionPanels = new ArrayList<FeedbackQuestionPanel>();
 
-        if (!result.getFeedbackQuestions().isEmpty() && result.getFeedbackAnswerUrl() != null) {
-            for (FeedbackQuestion question : result.getFeedbackQuestions()) {
-                try {
-                    FeedbackQuestionPanel panel;
-                    panel = FeedbackQuestionPanelFactory.getPanelForQuestion(question);
-                    feedbackQuestionPanels.add(panel);
-                } catch (IllegalArgumentException e) {
-                    continue;
-                }
-            }
+        if (result.getFeedbackQuestions().isEmpty() || result.getFeedbackQuestions() == null) {
+            return;
+        }
 
-            if (!feedbackQuestionPanels.isEmpty()) { // Some failsafety
-                JLabel feedbackLabel = new JLabel("Feedback (leave empty to not send)");
-                feedbackLabel.setFont(feedbackLabel.getFont().deriveFont(Font.BOLD));
-                getContentPane().add(leftAligned(feedbackLabel));
-
-                for (FeedbackQuestionPanel panel : feedbackQuestionPanels) {
-                    getContentPane().add(leftAligned(panel));
-                }
-            } else {
-                feedbackQuestionPanels = null;
+        for (FeedbackQuestion question : result.getFeedbackQuestions()) {
+            try {
+                FeedbackQuestionPanel panel;
+                panel = FeedbackQuestionPanelFactory.getPanelForQuestion(question);
+                feedbackQuestionPanels.add(panel);
+            } catch (IllegalArgumentException e) {
+                continue;
             }
         }
+
+        if (!feedbackQuestionPanels.isEmpty()) { // Some failsafety
+            JLabel feedbackLabel = new JLabel("Feedback (leave empty to not send)");
+            feedbackLabel.setFont(feedbackLabel.getFont().deriveFont(Font.BOLD));
+            getContentPane().add(leftAligned(feedbackLabel));
+
+            for (FeedbackQuestionPanel panel : feedbackQuestionPanels) {
+                getContentPane().add(leftAligned(panel));
+            }
+        } else {
+            feedbackQuestionPanels = null;
+        }
+
     }
 
     private void addOkButton() {

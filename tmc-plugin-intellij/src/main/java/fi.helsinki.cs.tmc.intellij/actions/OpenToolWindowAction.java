@@ -42,7 +42,7 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
                     .getToolWindow("TMC Project List").setSplitMode(true, null);
             ToolWindowManager.getInstance(project)
                     .getToolWindow("TMC Project List").show(null);
-        } catch (Exception exept) {
+        } catch (Exception exception) {
 
         }
     }
