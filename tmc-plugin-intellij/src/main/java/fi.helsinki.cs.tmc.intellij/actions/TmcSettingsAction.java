@@ -1,6 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import fi.helsinki.cs.tmc.intellij.ui.SettingsWindow;
+import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

@@ -37,9 +37,3 @@ Now everything should be ready and all the code compilable.
 * press OK to finish and run the plugin.
 * a new window for IntelliJ IDEA will open up and the Plugin will be active in that window so you can test out the TMC functions as you wish.
 
-##### One more configuration:
-In the plugin project you might have to configure a few dependencies still: `log4j-1.2.17.jar`, `slf4j-api.1.7.21.jar` and `slf4j-log4j12-1.7.21.jar`.
-* the location is set to be in the Downloads of your home directory.
-* download the jar in https://drive.google.com/open?id=0BydEhjDvaihCTFhpRmlTNF9hY00 containing all of these and simply unpack it there.
-* in case you want to put them in a different directory, you can change the location in the project (to look up the directory you extracted the files in)`File` -> `Project Structure` -> `Modules` -> `tmc-plugin-intellij`, double clicking the dependencies there and then pressing the `+` sign to add the new location, and the `-` sign to remove the old one.
-* fix for this is coming soon so you don't have to do this anymore.

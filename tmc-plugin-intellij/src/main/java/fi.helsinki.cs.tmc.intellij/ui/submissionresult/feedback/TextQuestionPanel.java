@@ -1,9 +1,8 @@
-package fi.helsinki.cs.tmc.intellij.ui.submissionresult;
+package fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback;
 
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 
 import com.intellij.ui.components.JBScrollPane;
-
 
 
 public class TextQuestionPanel extends FeedbackQuestionPanel {

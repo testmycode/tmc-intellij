@@ -1,14 +1,17 @@
 package fi.helsinki.cs.tmc.intellij.ui.submissionresult;
 
-import static fi.helsinki.cs.tmc.intellij.ui.submissionresult.Boxer.hbox;
-import static fi.helsinki.cs.tmc.intellij.ui.submissionresult.Boxer.hglue;
+import static fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.Boxer.hbox;
+import static fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.Boxer.hglue;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
-//import fi.helsinki.cs.tmc.intellij.ui.SubmissionResultPopup;
+import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackAnswer;
+import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanel;
+import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanelFactory;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
 import org.apache.commons.lang.StringUtils;
@@ -35,13 +38,11 @@ import javax.swing.JPanel;
 
 public class SuccessfulSubmissionDialog extends JDialog {
 
-
-
     private JButton okButton;
 
     private List<FeedbackQuestionPanel> feedbackQuestionPanels;
 
-    public SuccessfulSubmissionDialog(Exercise exercise, SubmissionResult result) {
+    public SuccessfulSubmissionDialog(Exercise exercise, SubmissionResult result, Project project) {
         this.setTitle(exercise.getName() + " passed");
 
         JPanel contentPane = new JPanel();
@@ -57,7 +58,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
         addVSpace(6);
         addPointsLabel(result);
         addVSpace(10);
-        //addModelSolutionButton(result);
+        addModelSolutionButton(result, project);
         addVSpace(20);
         addFeedbackQuestions(result); //TODO: maybe put in box
         addVSpace(10);
@@ -126,8 +127,8 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
     private String getPointsMsg(SubmissionResult result) {
         if (!result.getPoints().isEmpty()) {
-            String msg = "Points permanently awarded: ";
-            msg += StringUtils.join(result.getPoints(), ", ") + ".";
+            String msg = "Points permanently awarded: "
+                    + StringUtils.join(result.getPoints(), ", ") + ".";
             String str = StringEscapeUtils.escapeHtml4(msg).replace("\n", "<br />\n");
             return "<html>" + str + "</html>";
         } else {
@@ -136,31 +137,39 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
 
-    private void addModelSolutionButton(SubmissionResult result) {
+    private void addModelSolutionButton(SubmissionResult result, final Project project) {
         if (result.getSolutionUrl() != null) {
             final String solutionUrl = result.getSolutionUrl();
-            JButton solutionButton = new JButton(new AbstractAction("View model solution") {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-                    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-                        try {
-                            desktop.browse(new URI(solutionUrl));
-                        } catch (Exception ex) {
-                            String errorMessage = "Failed to open browser.\n" + ex.getMessage();
-//                            JPanel panel = new SubmissionResultPopup().getPanel1();
-//                            Messages.showErrorDialog(panel, errorMessage);
-                        }
-                    } else {
-                        String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";
-//                        JPanel panel = new SubmissionResultPopup().getPanel1();
-//                        Messages.showErrorDialog(panel, errorMessage);
-                    }
-                }
-            });
+
+            JButton solutionButton = new JButton(
+                    getAbstractAction("View model solution",
+                            solutionUrl,
+                            project));
 
             getContentPane().add(leftAligned(solutionButton));
         }
+    }
+
+    private AbstractAction getAbstractAction(String message,
+                                             final String solutionUrl,
+                                             final Project project) {
+        return new AbstractAction(message) {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+                if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                    try {
+                        desktop.browse(new URI(solutionUrl));
+                    } catch (Exception ex) {
+                        String errorMessage = "Failed to open browser.\n" + ex.getMessage();
+                        Messages.showErrorDialog(project, errorMessage, "Problem with browser");
+                    }
+                } else {
+                    String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";
+                    Messages.showErrorDialog(project, errorMessage, "Os problem");
+                }
+            }
+        };
     }
 
     private void addFeedbackQuestions(SubmissionResult result) {

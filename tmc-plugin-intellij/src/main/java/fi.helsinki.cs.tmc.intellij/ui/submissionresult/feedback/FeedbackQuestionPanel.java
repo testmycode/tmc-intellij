@@ -1,4 +1,6 @@
-package fi.helsinki.cs.tmc.intellij.ui.submissionresult;
+package fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback;
+
+import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackAnswer;
 
 import javax.swing.JPanel;
 

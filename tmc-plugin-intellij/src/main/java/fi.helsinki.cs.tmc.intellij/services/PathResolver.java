@@ -2,20 +2,35 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 import com.intellij.openapi.project.Project;
 
+/**
+ * Offers methods to get info from a path.
+ */
 public class PathResolver {
 
-    public String[] getStrings(Project project) {
+    /**
+     * Returns a given project's course and exercise name in
+     * an array.
+     * @param project project info is wanted from
+     * @return array containing the course and exercise name derived
+     *     from a project's path
+     */
+    public static String[] getCourseAndExerciseName(Project project) {
         String path = project.getBasePath();
-        String[] exerciseCourse = new String[2];
-        if (path != null) {
-            if (path.contains("/")) {
-                exerciseCourse = path.split("/");
-            } else {
-                String backslash = " \\ ";
-                backslash = backslash.trim();
-                exerciseCourse = path.split(backslash);
-            }
+
+        if (path == null) {
+            return null;
         }
-        return exerciseCourse;
+
+        String[] exerciseAndCourse = new String[2];
+
+        if (osIsUnixBased(path)) {
+            return path.split("/");
+        }
+        return path.split("\\\\");
+
+    }
+
+    private static boolean osIsUnixBased(String path) {
+        return path.contains("/");
     }
 }

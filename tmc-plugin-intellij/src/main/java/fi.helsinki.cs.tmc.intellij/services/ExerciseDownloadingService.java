@@ -9,19 +9,21 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
 import java.util.List;
 
-public class DownloadExercise {
+public class ExerciseDownloadingService {
 
-    public List<Exercise> startDownloadExercise(TmcCore core,
+    public static List<Exercise> startDownloadExercise(TmcCore core,
                                                 SettingsTmc settings,
                                                 CheckForExistingExercises checker,
                                                 ProjectOpener opener) throws Exception {
 
-        Course course = core.getCourseDetails(ProgressObserver.NULL_OBSERVER,
-                settings.getCourse()).call();
+        ObjectFinder finder = new ObjectFinder();
+        Course course = finder.findCourseByName(settings.getCourse().getName(), core);
 
         List<Exercise> exercises = course.getExercises();
         exercises = checker.clean(exercises);
+
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
+        CourseAndExerciseManager.updateSinglecourse(course.getName(), checker);
         return exercises;
     }
 }
