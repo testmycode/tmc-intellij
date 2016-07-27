@@ -87,14 +87,16 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void sendFeedback(SubmissionResult result, Project project) {
-        System.out.println(result.getFeedbackAnswerUrl() + " URI:ne toope!");
-        try {
-            TmcCoreHolder.get().sendFeedback(ProgressObserver.NULL_OBSERVER,
-                    getFeedbackAnswers(), new URI(result.getFeedbackAnswerUrl())).call();
+        List<FeedbackAnswer> answers = getFeedbackAnswers();
+        if (answers.size() != 0) {
+            try {
+                TmcCoreHolder.get().sendFeedback(ProgressObserver.NULL_OBSERVER,
+                        getFeedbackAnswers(), new URI(result.getFeedbackAnswerUrl())).call();
 
-        } catch (Exception ex) {
-            String errorMessage = "Problems with internet.\n" + ex.getMessage();
-            Messages.showErrorDialog(project, errorMessage, "Problem with internet");
+            } catch (Exception ex) {
+                String errorMessage = "Problems with internet.\n" + ex.getMessage();
+                Messages.showErrorDialog(project, errorMessage, "Problem with internet");
+            }
         }
     }
 
