@@ -10,4 +10,4 @@ before_install:
 script: mvn package
 
 after_success:
-  - mvn clean cobertura:cobertura coveralls:report 
+  - mvn cobertura:cobertura coveralls:report
