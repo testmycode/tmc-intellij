@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 @State(
-        name = "TmcSettings",
+        name = "TMCSettings",
         storages = { @Storage("TMCSettings.xml") }
         )
 
