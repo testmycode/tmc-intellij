@@ -9,6 +9,7 @@ import com.intellij.ui.components.JBList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
@@ -16,8 +17,8 @@ import javax.swing.JPanel;
 
 public class ProjectListManager {
 
-    static HashMap<String, List<JBList>> currentListElements;
-    static ArrayList<JPanel> panelList;
+    static Map<String, List<JBList>> currentListElements;
+    static List<JPanel> panelList;
 
     public ProjectListManager() {
         panelList = new ArrayList<>();
@@ -47,30 +48,42 @@ public class ProjectListManager {
 
     public static void refreshCourse(String course) {
         List<JBList> list = currentListElements.get(course);
-        if (list != null) {
-            for (JBList lis : list) {
-                if (lis != null && lis.getName().equals(course)) {
-                    DefaultListModel model = (DefaultListModel) lis.getModel();
-                    model.removeAllElements();
-                    addExercisesToList(new ObjectFinder(), course, model);
-                    lis.setModel(model);
-                }
+        if (list == null) {
+            return;
+        }
+
+        for (JBList jbList : list) {
+            if (list == null || !jbList.getName().equals(course)) {
+                continue;
             }
+            DefaultListModel model = (DefaultListModel) jbList.getModel();
+            model.removeAllElements();
+            addExercisesToList(new ObjectFinder(), course, model);
+            jbList.setModel(model);
         }
     }
 
     public static void addExercisesToList(ObjectFinder finder,
                                           String course, DefaultListModel defaultListModel) {
+
         if (CourseAndExerciseManager.isCourseInDatabase(course)) {
-            ArrayList<Exercise> exercises = CourseAndExerciseManager.getExercises(course);
-            for (Exercise ex : exercises) {
-                defaultListModel.addElement(ex);
-            }
+            List<Exercise> exercises = CourseAndExerciseManager.getExercises(course);
+            addExercisesToListModel(defaultListModel, exercises);
         } else {
-            ArrayList<String> exercises = finder.listAllDownloadedExercises(course);
-            for (String ex : exercises) {
-                defaultListModel.addElement(ex);
-            }
+            List<String> exercises = finder.listAllDownloadedExercises(course);
+            addExercisesToListModelAsStrings(defaultListModel, exercises);
+        }
+    }
+
+    private static void addExercisesToListModel(DefaultListModel listModel, List<Exercise> exercises) {
+        for (Exercise ex : exercises) {
+            listModel.addElement(ex);
+        }
+    }
+
+    private static void addExercisesToListModelAsStrings(DefaultListModel listModel, List<String> exercises) {
+        for (String ex : exercises) {
+            listModel.addElement(ex);
         }
     }
 

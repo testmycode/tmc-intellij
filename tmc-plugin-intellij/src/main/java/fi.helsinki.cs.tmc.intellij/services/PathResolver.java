@@ -21,8 +21,6 @@ public class PathResolver {
             return null;
         }
 
-        String[] exerciseAndCourse = new String[2];
-
         if (osIsUnixBased(path)) {
             return path.split("/");
         }

@@ -30,7 +30,6 @@ import javax.swing.SwingUtilities;
  * Creates a tab in project list sidewindow and all components it
  * requires.
  */
-
 public class CourseTabFactory {
 
     public void createCourseSpecificTab(ObjectFinder finder,
@@ -39,77 +38,94 @@ public class CourseTabFactory {
         final JBScrollPane panel = new JBScrollPane();
         final JBList list = new JBList();
         list.setCellRenderer(new ProjectListRenderer());
+
         DefaultListModel defaultListModel = new DefaultListModel();
         panel.setBorder(BorderFactory.createTitledBorder(""));
         ProjectListManager.addExercisesToList(finder, course, defaultListModel);
-        if (defaultListModel.getSize() > 0) {
-            list.setName(course);
-            list.setModel(defaultListModel);
-            MouseListener mouseListener = createMouseListenerForWindow(opener, panel, list);
-            list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-            list.addMouseListener(mouseListener);
-            panel.setName(course);
-            panel.setViewportView(list);
-            ProjectListManager.addList(list);
-            tabbedPanelBase.addTab(course, panel);
+
+        if (defaultListModel.getSize() <= 0) {
+            return;
         }
+
+        list.setName(course);
+        list.setModel(defaultListModel);
+
+        MouseListener mouseListener = createMouseListenerForWindow(opener, panel, list);
+        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        list.addMouseListener(mouseListener);
+
+        panel.setName(course);
+        panel.setViewportView(list);
+
+        ProjectListManager.addList(list);
+        tabbedPanelBase.addTab(course, panel);
     }
 
     @NotNull
     private MouseListener createMouseListenerForWindow(
             final ProjectOpener opener, final JBScrollPane panel, final JBList list) {
         return new MouseAdapter() {
+
             public void mousePressed(MouseEvent mouseEvent) {
                 addRightMouseButtonFunctionality(mouseEvent, list, panel);
             }
 
             public void mouseClicked(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton() == 1 && mouseEvent.getClickCount() >= 2) {
-                    Object selectedItem = list.getSelectedValue();
-                    if (selectedItem.getClass() == Exercise.class) {
-                        opener.openProject(((Exercise) selectedItem)
-                                .getExerciseDirectory(TmcSettingsManager.get()
-                                        .getTmcProjectDirectory()));
-                    } else {
-                        opener.openProject(TmcSettingsManager.get().getProjectBasePath()
-                                + File.separator + list.getParent().getParent().getName()
-                                + File.separator + selectedItem);
-                    }
+                if (mouseEvent.getButton() != 1 || mouseEvent.getClickCount() < 2) {
+                    return;
                 }
+
+                Object selectedItem = list.getSelectedValue();
+                if (selectedItem.getClass() == Exercise.class) {
+                    opener.openProject(((Exercise) selectedItem)
+                            .getExerciseDirectory(TmcSettingsManager.get()
+                                    .getTmcProjectDirectory()));
+                } else {
+                    opener.openProject(TmcSettingsManager.get().getProjectBasePath()
+                            + File.separator + list.getParent().getParent().getName()
+                            + File.separator + selectedItem);
+                }
+
             }
         };
     }
 
     private void addRightMouseButtonFunctionality(
             MouseEvent mouseEvent, final JBList list, JBScrollPane panel) {
-        if (SwingUtilities.isRightMouseButton(mouseEvent)) {
-            int index = list.locationToIndex(mouseEvent.getPoint());
-            list.setSelectedIndex(index);
-            PopUpMenu menu = new PopUpMenu();
-            JBMenuItem openInExplorer = new JBMenuItem("Open path");
-            final Object selectedItem = list.getSelectedValue();
-            openInExplorer.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    try {
-                        if (selectedItem.getClass() != Exercise.class) {
-                            Desktop.getDesktop().open(new File(TmcSettingsManager
-                                    .get().getProjectBasePath()
-                                            + File.separator + list.getParent()
-                                            .getParent().getName() + File.separator
-                                            + list.getSelectedValue()));
-                        } else {
-                            Desktop.getDesktop().open(new File(((Exercise)selectedItem)
-                                    .getExerciseDirectory(TmcSettingsManager
-                                            .get().getTmcProjectDirectory()).toString()));
-                        }
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            });
-            menu.add(openInExplorer);
-            menu.show(panel, mouseEvent.getX(), mouseEvent.getY());
+
+        if (!SwingUtilities.isRightMouseButton(mouseEvent)) {
+            return;
         }
+
+        int index = list.locationToIndex(mouseEvent.getPoint());
+        list.setSelectedIndex(index);
+        PopUpMenu menu = new PopUpMenu();
+        JBMenuItem openInExplorer = new JBMenuItem("Open path");
+        final Object selectedItem = list.getSelectedValue();
+
+        openInExplorer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    if (selectedItem.getClass() != Exercise.class) {
+                        Desktop.getDesktop().open(new File(TmcSettingsManager
+                                .get().getProjectBasePath()
+                                + File.separator + list.getParent()
+                                .getParent().getName() + File.separator
+                                + list.getSelectedValue()));
+                    } else {
+                        Desktop.getDesktop().open(new File(((Exercise)selectedItem)
+                                .getExerciseDirectory(TmcSettingsManager
+                                        .get().getTmcProjectDirectory()).toString()));
+                    }
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
+        menu.add(openInExplorer);
+        menu.show(panel, mouseEvent.getX(), mouseEvent.getY());
+
     }
 }

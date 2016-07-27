@@ -5,9 +5,6 @@ import com.intellij.openapi.ui.JBPopupMenu;
 
 public class PopUpMenu extends JBPopupMenu {
 
-    public PopUpMenu() {
-    }
-
     public void addItemToMenu(JBMenuItem item) {
         add(item);
     }

@@ -41,7 +41,6 @@ import javax.swing.JPanel;
 public class SuccessfulSubmissionDialog extends JDialog {
 
     private JButton okButton;
-
     private List<FeedbackQuestionPanel> feedbackQuestionPanels;
 
     public SuccessfulSubmissionDialog(Exercise exercise, SubmissionResult result, Project project) {

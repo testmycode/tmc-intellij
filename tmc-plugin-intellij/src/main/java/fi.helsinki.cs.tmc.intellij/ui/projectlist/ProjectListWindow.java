@@ -61,9 +61,11 @@ public class ProjectListWindow {
         ArrayList<String> courses = finder.listAllDownloadedCourses();
         final ProjectOpener opener = new ProjectOpener();
         CourseTabFactory factory = new CourseTabFactory();
+
         for (String course : courses) {
             factory.createCourseSpecificTab(finder, opener, course, tabbedPanelBase);
         }
+
         addFunctionalityToHideButton();
         JButton refreshButton = addFunctionalityToRefreshButton();
         toolbar.add(refreshButton);
@@ -77,9 +79,11 @@ public class ProjectListWindow {
                 JBList list = (JBList) tabbedPanelBase
                         .getSelectedComponent().getComponentAt(10, 10)
                         .getComponentAt(10, 10);
+
                 ProjectOpener opener = new ProjectOpener();
                 String courseName =
                         (list.getName());
+
                 opener.openProject(TmcSettingsManager.get().getProjectBasePath()
                         + File.separator + courseName + File.separator
                         + list.getSelectedValue());

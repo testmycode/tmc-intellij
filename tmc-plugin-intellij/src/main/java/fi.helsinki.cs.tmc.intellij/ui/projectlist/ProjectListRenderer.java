@@ -36,20 +36,28 @@ public class ProjectListRenderer extends DefaultListCellRenderer {
                 list, value, index, isSelected, cellHasFocus);
 
         try {
-            if (Exercise.class == value.getClass()) {
-                if (((Exercise) value).isCompleted()) {
-                    label.setIcon(TmcIcons.DONE_EXERCISE);
-                } else {
-                    label.setIcon(TmcIcons.NOT_DONE_EXERCISE);
-                }
-            } else {
+            if (exerciseUnKnown(value)) {
                 label.setIcon(TmcIcons.UNKNOWN);
+            } else if (exerciseCompleted(value)) {
+                label.setIcon(TmcIcons.DONE_EXERCISE);
+            } else {
+                label.setIcon(TmcIcons.NOT_DONE_EXERCISE);
             }
+
         } catch (Exception ewr) {
 
         }
+
         label.setHorizontalTextPosition(JLabel.RIGHT);
         label.setFont(font);
         return label;
+    }
+
+    private boolean exerciseUnKnown(Object value) {
+        return Exercise.class != value.getClass();
+    }
+
+    private boolean exerciseCompleted(Object value) {
+        return ((Exercise) value).isCompleted();
     }
 }
