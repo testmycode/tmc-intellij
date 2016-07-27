@@ -193,6 +193,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
                 if (desktop == null || !desktop.isSupported(Desktop.Action.BROWSE)) {
                     String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";
                     Messages.showErrorDialog(project, errorMessage, "Os problem");
+                    return;
                 }
 
                 try {
@@ -212,28 +213,32 @@ public class SuccessfulSubmissionDialog extends JDialog {
             return;
         }
 
-        for (FeedbackQuestion question : result.getFeedbackQuestions()) {
+        createQuestionPanelAndAddToPanelList(result.getFeedbackQuestions());
+
+        if (feedbackQuestionPanels.isEmpty()) { // Some failsafety
+            feedbackQuestionPanels = null;
+            return;
+        }
+
+        JLabel feedbackLabel = new JLabel("Feedback (leave empty to not send)");
+        feedbackLabel.setFont(feedbackLabel.getFont().deriveFont(Font.BOLD));
+        getContentPane().add(leftAligned(feedbackLabel));
+
+        for (FeedbackQuestionPanel panel : feedbackQuestionPanels) {
+            getContentPane().add(leftAligned(panel));
+        }
+    }
+
+    private void createQuestionPanelAndAddToPanelList(List<FeedbackQuestion> questions) {
+        for (FeedbackQuestion question : questions) {
             try {
-                FeedbackQuestionPanel panel;
-                panel = FeedbackQuestionPanelFactory.getPanelForQuestion(question);
+                FeedbackQuestionPanel panel
+                        = FeedbackQuestionPanelFactory.getPanelForQuestion(question);
                 feedbackQuestionPanels.add(panel);
             } catch (IllegalArgumentException e) {
                 continue;
             }
         }
-
-        if (!feedbackQuestionPanels.isEmpty()) { // Some failsafety
-            JLabel feedbackLabel = new JLabel("Feedback (leave empty to not send)");
-            feedbackLabel.setFont(feedbackLabel.getFont().deriveFont(Font.BOLD));
-            getContentPane().add(leftAligned(feedbackLabel));
-
-            for (FeedbackQuestionPanel panel : feedbackQuestionPanels) {
-                getContentPane().add(leftAligned(panel));
-            }
-        } else {
-            feedbackQuestionPanels = null;
-        }
-
     }
 
     private void addOkButton() {
