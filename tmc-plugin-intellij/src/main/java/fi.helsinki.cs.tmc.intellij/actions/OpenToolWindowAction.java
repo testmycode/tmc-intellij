@@ -15,10 +15,11 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Defined in plugin.xml in actions group on line
- *  <action id="Open TMC Exercise List" class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"
- * and in extensions
- *   <toolWindow id="TMC Project List" secondary="false" anchor="right"
- factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction">
+ *  &lt;action id="Open TMC Exercise List"
+ *  class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"&gt;
+ *    and in extensions
+ *   &lt;toolWindow id="TMC Project List" secondary="false" anchor="right"
+ factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"&gt;
  * Opens the tool window in the active project window,
  * generates the content for the window
  */

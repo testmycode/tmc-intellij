@@ -35,7 +35,7 @@ import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
 /**
- * Swing component displayed in settings window
+ * Swing component displayed in settings window.
  */
 
 public class SettingsPanel {
@@ -188,6 +188,10 @@ public class SettingsPanel {
                 fileChooser.setDialogTitle("Select path for projects");
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.showOpenDialog(panel1);
+
+                if (fileChooser.getSelectedFile() == null) {
+                    return;
+                }
                 projectPathField.setText(fileChooser.getSelectedFile().getAbsolutePath());
             }
         };

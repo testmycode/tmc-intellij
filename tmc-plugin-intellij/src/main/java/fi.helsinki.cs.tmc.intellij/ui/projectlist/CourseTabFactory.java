@@ -27,8 +27,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 /**
- * Creates a tab in project list sidewindow
- * and all components it requires
+ * Creates a tab in project list sidewindow and all components it
+ * requires.
  */
 
 public class CourseTabFactory {

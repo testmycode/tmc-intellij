@@ -7,9 +7,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 /**
- * Shows a notification when an operation is in progress
+ * Shows a notification when an operation is in progress.
  */
-
 public class OperationInProgressNotification {
 
     private String notification;

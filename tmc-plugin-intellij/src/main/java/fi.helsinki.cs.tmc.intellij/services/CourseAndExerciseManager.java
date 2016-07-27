@@ -10,14 +10,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Holds a database of courses in memory,
- * allows quick fetching of course when necessary
- * without calling the TmcCore.
+ * Holds a database of courses in memory, allowing quick fetching of course
+ * when necessary without calling the TmcCore.
  *
- * Also gives methods to update project list when necessary
+ * <p>
+ *   Also gives methods to update project list when necessary
+ * </p>
  */
 
 public class CourseAndExerciseManager {
+
+    public static void setDatabase(HashMap<String, ArrayList<Exercise>> database) {
+        CourseAndExerciseManager.database = database;
+    }
 
     static HashMap<String, ArrayList<Exercise>> database;
     private static ArrayList<Course> courses;
@@ -31,12 +36,14 @@ public class CourseAndExerciseManager {
     }
 
     public static void setup() {
-        if (database == null) {
-            try {
-                initiateDatabase();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        if (database != null) {
+            return;
+        }
+
+        try {
+            initiateDatabase();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -73,6 +80,7 @@ public class CourseAndExerciseManager {
         courses = new ArrayList<>();
         courses = (ArrayList<Course>) TmcCoreHolder.get()
                 .listCourses(ProgressObserver.NULL_OBSERVER).call();
+
         for (Course course : courses) {
             ArrayList<Exercise> exercises;
             if (directoriesOnDisk.contains(course.getName())) {
@@ -89,12 +97,14 @@ public class CourseAndExerciseManager {
         }
     }
 
-    public static void updateSinglecourse(String course) {
-        Course crse = new ObjectFinder().findCourseByName(course, TmcCoreHolder.get());
-        ArrayList<Exercise> existing = (ArrayList<Exercise>) new CheckForExistingExercises()
-                .getListOfDownloadedExercises(crse.getExercises());
-        database.put(course, existing);
-        ProjectListManager.refreshCourse(course);
+    public static void updateSinglecourse(String courseName, CheckForExistingExercises checker) {
+        Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
+
+        ArrayList<Exercise> existing = (ArrayList<Exercise>) checker
+                .getListOfDownloadedExercises(course.getExercises());
+
+        database.put(courseName, existing);
+        ProjectListManager.refreshCourse(courseName);
     }
 
     public static void updateAll() {

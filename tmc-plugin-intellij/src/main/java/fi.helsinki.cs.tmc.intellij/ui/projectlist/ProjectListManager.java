@@ -13,9 +13,6 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
-/**
- *
- */
 
 public class ProjectListManager {
 
@@ -75,5 +72,9 @@ public class ProjectListManager {
                 defaultListModel.addElement(ex);
             }
         }
+    }
+
+    public static void setCurrentListElements(HashMap<String, List<JBList>> currentListElements) {
+        ProjectListManager.currentListElements = currentListElements;
     }
 }

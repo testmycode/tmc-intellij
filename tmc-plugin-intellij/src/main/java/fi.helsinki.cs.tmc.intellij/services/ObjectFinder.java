@@ -24,8 +24,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Finds various exercises and courses
- * from the disk or by asking the TMCServer
+ * Finds various exercises and courses from the disk or by
+ * asking the TMCServer.
  */
 
 public class ObjectFinder {
