@@ -25,16 +25,26 @@ public class StartupEvent implements StartupActivity {
     public void runActivity(@NotNull Project project) {
         final OperationInProgressNotification note =
                 new OperationInProgressNotification("Running TMC startup actions");
+
         TmcSettingsManager.setup();
         TmcCoreHolder.setup();
+
         new OpenToolWindowAction().openToolWindow(project);
+
         Long start = System.currentTimeMillis();
         CourseAndExerciseManager.setup();
-        System.out.println(CourseAndExerciseManager.getDatabase());
-        Long end = System.currentTimeMillis() - start;
-        System.out.println("Time it took to download exercise information: " + end);
+
+        printOutInfo(start);
+
         ProjectListManager.setup();
         note.hide();
+    }
+
+    private void printOutInfo(Long startTime) {
+        System.out.println(CourseAndExerciseManager.getDatabase());
+        Long end = System.currentTimeMillis() - startTime;
+
+        System.out.println("Time it took to download exercise information: " + end);
     }
 }
 

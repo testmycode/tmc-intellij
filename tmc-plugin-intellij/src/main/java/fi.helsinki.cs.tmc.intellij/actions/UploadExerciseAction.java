@@ -18,7 +18,6 @@ import com.intellij.openapi.project.Project;
  * Uses CourseAndExerciseManager to update the view after upload,
  * SubmissionResultHandler displays the returned results
  */
-
 public class UploadExerciseAction extends AnAction {
 
     @Override

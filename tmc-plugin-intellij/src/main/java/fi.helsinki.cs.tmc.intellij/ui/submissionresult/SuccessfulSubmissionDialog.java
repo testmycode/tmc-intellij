@@ -4,10 +4,12 @@ import static fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.Boxer.hbo
 import static fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.Boxer.hglue;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
+import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackAnswer;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanel;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanelFactory;
 
@@ -63,6 +65,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
         addFeedbackQuestions(result); //TODO: maybe put in box
         addVSpace(10);
         addOkButton();
+        addOkListener(result, project);
 
         pack();
         this.setLocationRelativeTo(null);
@@ -70,8 +73,29 @@ public class SuccessfulSubmissionDialog extends JDialog {
         this.requestFocusInWindow(true);
     }
 
-    public void addOkListener(ActionListener okListener) {
-        this.okButton.addActionListener(okListener);
+    public void addOkListener(final SubmissionResult result, final Project project) {
+        this.okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                sendFeedback(result, project);
+                setVisible(false);
+                dispose();
+            }
+        });
+    }
+
+    private void sendFeedback(SubmissionResult result, Project project) {
+        List<FeedbackAnswer> answers = getFeedbackAnswers();
+        if (answers.size() != 0) {
+            try {
+                TmcCoreHolder.get().sendFeedback(ProgressObserver.NULL_OBSERVER,
+                        getFeedbackAnswers(), new URI(result.getFeedbackAnswerUrl())).call();
+
+            } catch (Exception ex) {
+                String errorMessage = "Problems with internet.\n" + ex.getMessage();
+                Messages.showErrorDialog(project, errorMessage, "Problem with internet");
+            }
+        }
     }
 
     public List<FeedbackAnswer> getFeedbackAnswers() {
@@ -138,21 +162,24 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
 
     private void addModelSolutionButton(SubmissionResult result, final Project project) {
-        if (result.getSolutionUrl() != null) {
-            final String solutionUrl = result.getSolutionUrl();
-
-            JButton solutionButton = new JButton(
-                    getAbstractAction("View model solution",
-                            solutionUrl,
-                            project));
-
-            getContentPane().add(leftAligned(solutionButton));
+        if (result.getSolutionUrl() == null) {
+            return;
         }
+
+        final String solutionUrl = result.getSolutionUrl();
+        JButton solutionButton = new JButton(
+                getAbstractAction("View model solution",
+                        solutionUrl,
+                        project));
+
+        getContentPane().add(leftAligned(solutionButton));
+
     }
 
     private AbstractAction getAbstractAction(String message,
                                              final String solutionUrl,
                                              final Project project) {
+
         return new AbstractAction(message) {
             @Override
             public void actionPerformed(ActionEvent ev) {
