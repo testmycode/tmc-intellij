@@ -49,7 +49,6 @@ public class UploadExerciseAction extends AnAction {
     private void getResults(Project project, Exercise exercise, TmcCore core) {
         try {
             SubmissionResult result = core.submit(ProgressObserver.NULL_OBSERVER, exercise).call();
-            System.out.println(result);
             SubmissionResultHandler.showResultMessage(exercise, result, project);
         } catch (Exception e) {
             e.printStackTrace();

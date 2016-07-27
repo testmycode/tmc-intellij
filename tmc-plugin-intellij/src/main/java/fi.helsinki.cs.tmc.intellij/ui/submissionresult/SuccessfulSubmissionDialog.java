@@ -4,10 +4,12 @@ import static fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.Boxer.hbo
 import static fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.Boxer.hglue;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
+import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackAnswer;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanel;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanelFactory;
 
@@ -65,6 +67,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
         addFeedbackQuestions(result); //TODO: maybe put in box
         addVSpace(10);
         addOkButton();
+        addOkListener(result, project);
 
         pack();
         this.setLocationRelativeTo(null);
@@ -72,8 +75,27 @@ public class SuccessfulSubmissionDialog extends JDialog {
         this.requestFocusInWindow(true);
     }
 
-    public void addOkListener(ActionListener okListener) {
-        this.okButton.addActionListener(okListener);
+    public void addOkListener(final SubmissionResult result, final Project project) {
+        this.okButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                sendFeedback(result, project);
+                setVisible(false);
+                dispose();
+            }
+        });
+    }
+
+    private void sendFeedback(SubmissionResult result, Project project) {
+        System.out.println(result.getFeedbackAnswerUrl() + " URI:ne toope!");
+        try {
+            TmcCoreHolder.get().sendFeedback(ProgressObserver.NULL_OBSERVER,
+                    getFeedbackAnswers(), new URI(result.getFeedbackAnswerUrl())).call();
+
+        } catch (Exception ex) {
+            String errorMessage = "Problems with internet.\n" + ex.getMessage();
+            Messages.showErrorDialog(project, errorMessage, "Problem with internet");
+        }
     }
 
     public List<FeedbackAnswer> getFeedbackAnswers() {
@@ -150,8 +172,9 @@ public class SuccessfulSubmissionDialog extends JDialog {
                         try {
                             desktop.browse(new URI(solutionUrl));
                         } catch (Exception ex) {
-                            String errorMessage = "Failed to open browser.\n" + ex.getMessage();
-                            Messages.showErrorDialog(project, errorMessage, "Problem with browser");
+                            String errorMessage = "Problems with internet.\n" + ex.getMessage();
+                            Messages.showErrorDialog(project, errorMessage,
+                                    "Problem with internet");
                         }
                     } else {
                         String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";

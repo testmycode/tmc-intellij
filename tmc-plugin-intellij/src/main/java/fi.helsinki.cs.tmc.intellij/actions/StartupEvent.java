@@ -15,7 +15,7 @@ public class StartupEvent implements StartupActivity {
     public void runActivity(@NotNull Project project) {
         TmcSettingsManager.setup();
         TmcCoreHolder.setup();
-        ToolWindowManager.getInstance(project).getToolWindow("TMC Project List").show(null);
+        //Manager.getInstance(project).getToolWindow("TMC Project List").show(null);
     }
 }
 
