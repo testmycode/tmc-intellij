@@ -7,6 +7,7 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
@@ -37,7 +38,7 @@ public class ExerciseDownloadingServiceTest {
         settings.setProjectBasePath("/home/koko");
         CheckForExistingExercises checker = mock(CheckForExistingExercises.class);
 
-        when(checker.clean(excs)).thenReturn(excs);
+        when(checker.clean(excs, TmcSettingsManager.get())).thenReturn(excs);
 
         final Course course = new Course("kurssi");
         when(settings.getCourse()).thenReturn(course);
@@ -60,7 +61,7 @@ public class ExerciseDownloadingServiceTest {
                     }
                 }
         );
-        when(checker.getListOfDownloadedExercises(excs)).thenReturn(excs);
+        when(checker.getListOfDownloadedExercises(excs, TmcSettingsManager.get())).thenReturn(excs);
         CourseAndExerciseManager.setDatabase(new HashMap<String, ArrayList<Exercise>>());
         ProjectListManager.setCurrentListElements(new HashMap<String, List<JBList>>());
         when(core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, excs)).thenReturn(
