@@ -10,6 +10,14 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 
+/**
+ * Uploads the currently active project to TMC Server
+ * Defined in plugin.xml on the line
+ * <action id="Upload Exercise" class="fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction"
+ * Uses CourseAndExerciseManager to update the view after upload,
+ * SubmissionResultHandler displays the returned results
+ */
+
 public class UploadExerciseAction extends AnAction {
 
     @Override

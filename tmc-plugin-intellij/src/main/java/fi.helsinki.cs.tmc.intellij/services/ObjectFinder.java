@@ -23,6 +23,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Finds various exercises and courses
+ * from the disk or by asking the TMCServer
+ */
+
 public class ObjectFinder {
 
     public Exercise findExerciseByName(Course course, String exerciseName) {

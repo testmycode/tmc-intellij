@@ -5,7 +5,13 @@ import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsWindow;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
-public class TmcSettingsAction extends AnAction {
+
+/**
+ * Opens the settings window.
+ * Defined in plugin.xml on line
+ * <action id="Settings" class="fi.helsinki.cs.tmc.intellij.actions.TmcSettingsAction"
+ */
+public class TmcSettingsAction extends AnAction{
 
     private SettingsWindow window;
 

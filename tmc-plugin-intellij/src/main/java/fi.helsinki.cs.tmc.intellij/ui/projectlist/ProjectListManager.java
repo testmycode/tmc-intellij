@@ -13,6 +13,10 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
+/**
+ *
+ */
+
 public class ProjectListManager {
 
     static HashMap<String, List<JBList>> currentListElements;

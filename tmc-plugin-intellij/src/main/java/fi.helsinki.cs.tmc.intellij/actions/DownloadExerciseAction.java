@@ -16,6 +16,15 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
 
+/**
+ * Defined in plugin.xml on line
+ *  <action id="Download Exercises" class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction"
+ * in group actions
+ *
+ * Downloads exercises from the course selected in settings,
+ * uses CheckForExistingExercises to check already downloaded ones,
+ * updates exercise lists with CourseAndExeriseManager
+ */
 public class DownloadExerciseAction extends AnAction {
 
     @Override
