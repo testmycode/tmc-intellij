@@ -42,6 +42,15 @@ import javax.swing.JToolBar;
 
 public class ProjectListWindow {
 
+    public JTabbedPane getTabbedPanelBase() {
+        return tabbedPanelBase;
+    }
+
+    public void setTabbedPanelBase(JTabbedPane tabbedPanelBase) {
+
+        this.tabbedPanelBase = tabbedPanelBase;
+    }
+
     private JTabbedPane tabbedPanelBase;
 
     public JPanel getBasePanel() {
@@ -57,7 +66,9 @@ public class ProjectListWindow {
         addCourseTabsAndExercises();
     }
 
-    private void addCourseTabsAndExercises() {
+    public void addCourseTabsAndExercises() {
+        tabbedPanelBase.removeAll();
+        toolbar.removeAll();
         ObjectFinder finder = new ObjectFinder();
         ArrayList<String> courses = finder.listAllDownloadedCourses();
         final ProjectOpener opener = new ProjectOpener();
@@ -118,11 +129,8 @@ public class ProjectListWindow {
     }
 
     public void refreshProjectList() {
-        tabbedPanelBase.removeAll();
-        toolbar.removeAll();
         CourseAndExerciseManager.updateAll();
         ProjectListManager.refreshAllCourses();
-        addCourseTabsAndExercises();
     }
 
     {

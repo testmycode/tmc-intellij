@@ -12,6 +12,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 /**
  *
@@ -20,17 +21,17 @@ import javax.swing.JPanel;
 public class ProjectListManager {
 
     static HashMap<String, List<JBList>> currentListElements;
-    static ArrayList<JPanel> panelList;
+    static ArrayList<ProjectListWindow> projectListWindows;
 
     public ProjectListManager() {
-        panelList = new ArrayList<>();
+        projectListWindows = new ArrayList<>();
         currentListElements = new HashMap<>();
     }
 
     public static void setup() {
         if (currentListElements == null) {
             currentListElements = new HashMap<>();
-            panelList = new ArrayList<>();
+            projectListWindows = new ArrayList<>();
         }
     }
 
@@ -42,9 +43,8 @@ public class ProjectListManager {
     }
 
     public static void refreshAllCourses() {
-        List<String> courses = new ObjectFinder().listAllDownloadedCourses();
-        for (String course : courses) {
-            refreshCourse(course);
+        for (ProjectListWindow window : projectListWindows) {
+            window.addCourseTabsAndExercises();
         }
     }
 
@@ -76,4 +76,10 @@ public class ProjectListManager {
             }
         }
     }
+
+    public static void addWindow(ProjectListWindow window) {
+        projectListWindows.add(window);
+    }
+    
+    
 }

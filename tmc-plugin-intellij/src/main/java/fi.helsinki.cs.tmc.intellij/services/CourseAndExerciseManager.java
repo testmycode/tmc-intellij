@@ -1,9 +1,13 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
+import fi.helsinki.cs.tmc.intellij.ui.projectlist.CourseTabFactory;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import java.util.ArrayList;
@@ -68,33 +72,43 @@ public class CourseAndExerciseManager {
     }
 
     static void initiateDatabase() throws Exception {
-        ArrayList<String> directoriesOnDisk = new ObjectFinder().listAllDownloadedCourses();
-        database = new HashMap<>();
-        courses = new ArrayList<>();
-        courses = (ArrayList<Course>) TmcCoreHolder.get()
-                .listCourses(ProgressObserver.NULL_OBSERVER).call();
-        for (Course course : courses) {
-            ArrayList<Exercise> exercises;
-            if (directoriesOnDisk.contains(course.getName())) {
-                try {
-                    course = TmcCoreHolder.get()
-                            .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
-                    exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
-                            .getListOfDownloadedExercises(course.getExercises());
-                    database.put(course.getName(), exercises);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        try {
+            ArrayList<String> directoriesOnDisk = new ObjectFinder().listAllDownloadedCourses();
+            database = new HashMap<>();
+            courses = new ArrayList<>();
+            courses = (ArrayList<Course>) TmcCoreHolder.get()
+                    .listCourses(ProgressObserver.NULL_OBSERVER).call();
+            for (Course course : courses) {
+                ArrayList<Exercise> exercises;
+                if (directoriesOnDisk.contains(course.getName())) {
+                    try {
+                        course = TmcCoreHolder.get()
+                                .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
+                        exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
+                                .getListOfDownloadedExercises(course.getExercises());
+                        database.put(course.getName(), exercises);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
+        } catch (TmcCoreException exept) {
+            Messages.showErrorDialog(new ObjectFinder().findCurrentProject(), exept.getMessage()
+                    + " " + exept.toString(), "Error");
         }
     }
 
     public static void updateSinglecourse(String course) {
+        boolean isNewCourse = database.get(course) == null;
         Course crse = new ObjectFinder().findCourseByName(course, TmcCoreHolder.get());
         ArrayList<Exercise> existing = (ArrayList<Exercise>) new CheckForExistingExercises()
                 .getListOfDownloadedExercises(crse.getExercises());
         database.put(course, existing);
-        ProjectListManager.refreshCourse(course);
+        if (isNewCourse) {
+            ProjectListManager.refreshAllCourses();
+        } else {
+            ProjectListManager.refreshCourse(course);
+        }
     }
 
     public static void updateAll() {

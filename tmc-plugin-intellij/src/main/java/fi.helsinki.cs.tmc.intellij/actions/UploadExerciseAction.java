@@ -44,25 +44,28 @@ public class UploadExerciseAction extends AnAction {
         } else {
             exerciseCourse = path.toString().split("\\\\");
         }
-        try {
-            Course course =
-                    finder.findCourseByName(exerciseCourse[exerciseCourse.length - 2], core);
-            Exercise exercise = finder.findExerciseByName(course,
-                    exerciseCourse[exerciseCourse.length - 1]);
-            getResults(project, exercise, core);
-            CourseAndExerciseManager.updateSinglecourse(course.getName());
-        } catch (Exception exept) {
-            Messages.showErrorDialog(project, "Are your credentials correct?\n"
-                    + "Is this a TMC Exercise?\n"
-                    + "Are you connected to the internet?\n"
-                    + exept.getMessage() + " " + exept.toString(), "Error while submitting");
+        if (CourseAndExerciseManager.isCourseInDatabase(exerciseCourse[exerciseCourse.length - 2])) {
+            try {
+                Course course =
+                        finder.findCourseByName(exerciseCourse[exerciseCourse.length - 2], core);
+                Exercise exercise = finder.findExerciseByName(course,
+                        exerciseCourse[exerciseCourse.length - 1]);
+                getResults(project, exercise, core);
+                CourseAndExerciseManager.updateSinglecourse(course.getName());
+            } catch (Exception exept) {
+                Messages.showErrorDialog(project, "Are your credentials correct?\n"
+                        + "Is this a TMC Exercise?\n"
+                        + "Are you connected to the internet?\n"
+                        + exept.getMessage() + " " + exept.toString(), "Error while submitting");
+            }
+        } else {
+            Messages.showErrorDialog(project, "Project not identified as TMC exercise", "Error");
         }
     }
 
     private void getResults(Project project, Exercise exercise, TmcCore core) {
         try {
             SubmissionResult result = core.submit(ProgressObserver.NULL_OBSERVER, exercise).call();
-            System.out.println(result);
             SubmissionResultHandler.showResultMessage(exercise, result, project);
         } catch (Exception e) {
             e.printStackTrace();

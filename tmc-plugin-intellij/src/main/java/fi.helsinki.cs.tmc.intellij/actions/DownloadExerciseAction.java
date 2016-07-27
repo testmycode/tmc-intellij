@@ -33,6 +33,7 @@ import java.util.List;
  * uses CheckForExistingExercises to check already downloaded ones,
  * updates exercise lists with CourseAndExeriseManager
  */
+
 public class DownloadExerciseAction extends AnAction {
 
     private Exercise exercise;

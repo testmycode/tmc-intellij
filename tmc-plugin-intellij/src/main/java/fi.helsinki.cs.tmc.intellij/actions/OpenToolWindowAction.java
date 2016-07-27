@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;
@@ -48,9 +49,11 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+        ProjectListWindow window = new ProjectListWindow();
         ContentFactory cf = ContentFactory.SERVICE.getInstance();
-        Content content = cf.createContent(new ProjectListWindow().getBasePanel(), "", true);
+        Content content = cf.createContent(window.getBasePanel(), "", true);
         toolWindow.getContentManager().addContent(content);
+        ProjectListManager.addWindow(window);
     }
 
     public void hideToolWindow(Project project) {

@@ -1,16 +1,21 @@
 
 package fi.helsinki.cs.tmc.intellij.io;
 
+import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.util.InvalidDataException;
 
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 import org.jdom.JDOMException;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * Opens the project using intellij ProjectManager, when given the path
@@ -19,38 +24,40 @@ import java.nio.file.Path;
 public class ProjectOpener {
 
     public void openProject(String path) {
-        try {
-            ProjectManager.getInstance().loadAndOpenProject(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JDOMException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
+        if (Files.isDirectory(Paths.get(path))) {
+            try {
+                ProjectManager.getInstance().loadAndOpenProject(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JDOMException e) {
+                e.printStackTrace();
+            } catch (InvalidDataException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Messages.showErrorDialog(new ObjectFinder()
+                            .findCurrentProject(),
+                    "Directory no longer exists", "File not found");
+            ProjectListManager.refreshAllCourses();
         }
     }
 
     public void openProject(Path path) {
-        try {
-            ProjectManager.getInstance().loadAndOpenProject(path.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JDOMException e) {
-            e.printStackTrace();
-        } catch (InvalidDataException e) {
-            e.printStackTrace();
+        if (Files.isDirectory(path)) {
+            try {
+                ProjectManager.getInstance().loadAndOpenProject(path.toString());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JDOMException e) {
+                e.printStackTrace();
+            } catch (InvalidDataException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Messages.showErrorDialog(new ObjectFinder()
+                    .findCurrentProject(),
+                    "Directory no longer exists", "File not found");
+            ProjectListManager.refreshAllCourses();
         }
-    }
-
-    public void openPreviousExercise(String path) {
-
-    }
-
-    public void openNextExercise(String path) {
-
-    }
-
-    public void openNextExercise(Course course, Exercise exercise) {
-
     }
 }
