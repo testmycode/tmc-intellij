@@ -12,6 +12,12 @@ import com.intellij.openapi.startup.StartupActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The actions to be executed on project startup
+ * defined in plugin.xml exercises group on line
+ * <postStartupActivity implementation="fi.helsinki.cs.tmc.intellij.actions.StartupEvent">
+ */
+
 public class StartupEvent implements StartupActivity {
 
     @Override

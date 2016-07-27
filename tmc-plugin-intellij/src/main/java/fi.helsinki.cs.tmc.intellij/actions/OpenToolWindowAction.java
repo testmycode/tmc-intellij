@@ -13,6 +13,16 @@ import com.intellij.ui.content.ContentFactory;
 
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Defined in plugin.xml in actions group on line
+ *  <action id="Open TMC Exercise List" class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"
+ * and in extensions
+ *   <toolWindow id="TMC Project List" secondary="false" anchor="right"
+ factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction">
+ * Opens the tool window in the active project window,
+ * generates the content for the window
+ */
+
 public class OpenToolWindowAction extends AnAction implements ToolWindowFactory {
 
     public void actionPerformed(AnActionEvent anActionEvent) {

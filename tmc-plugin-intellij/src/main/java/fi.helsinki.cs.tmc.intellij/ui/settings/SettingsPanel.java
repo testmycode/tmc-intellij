@@ -34,6 +34,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+/**
+ * Swing component displayed in settings window
+ */
 
 public class SettingsPanel {
 

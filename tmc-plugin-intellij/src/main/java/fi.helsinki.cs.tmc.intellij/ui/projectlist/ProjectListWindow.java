@@ -36,6 +36,10 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 
+/**
+ * Swing component that is displayed in the project list side panel
+ */
+
 public class ProjectListWindow {
 
     private JTabbedPane tabbedPanelBase;

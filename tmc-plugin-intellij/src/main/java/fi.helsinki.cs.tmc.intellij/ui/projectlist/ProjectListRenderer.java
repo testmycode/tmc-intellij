@@ -11,8 +11,10 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-
-
+/**
+ * Tells JList how to show its elements,
+ * allowing icons next to exercises
+ */
 
 public class ProjectListRenderer extends DefaultListCellRenderer {
 

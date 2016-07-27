@@ -24,6 +24,15 @@ import com.intellij.openapi.ui.Messages;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Defined in plugin.xml on line
+ *  <action id="Download Exercises" class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction"
+ * in group actions
+ *
+ * Downloads exercises from the course selected in settings,
+ * uses CheckForExistingExercises to check already downloaded ones,
+ * updates exercise lists with CourseAndExeriseManager
+ */
 public class DownloadExerciseAction extends AnAction {
 
     private Exercise exercise;
@@ -36,7 +45,6 @@ public class DownloadExerciseAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-
         OperationInProgressNotification note =
                 new OperationInProgressNotification("Downloading exercises, "
                         + "this may take several minutes");

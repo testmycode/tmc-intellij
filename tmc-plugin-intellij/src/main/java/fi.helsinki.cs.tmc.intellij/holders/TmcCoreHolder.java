@@ -5,6 +5,10 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.langs.util.TaskExecutor;
 import fi.helsinki.cs.tmc.langs.util.TaskExecutorImpl;
 
+/**
+ * Holds the TMC core so other classes can get it when necessary
+ */
+
 public class TmcCoreHolder {
 
     private static TmcCore core;
