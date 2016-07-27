@@ -101,7 +101,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     public List<FeedbackAnswer> getFeedbackAnswers() {
-        List<FeedbackAnswer> answers = new ArrayList<FeedbackAnswer>();
+        List<FeedbackAnswer> answers = new ArrayList<>();
 
         for (FeedbackQuestionPanel panel : feedbackQuestionPanels) {
             FeedbackAnswer answer = panel.getAnswer();
@@ -206,7 +206,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addFeedbackQuestions(SubmissionResult result) {
-        this.feedbackQuestionPanels = new ArrayList<FeedbackQuestionPanel>();
+        this.feedbackQuestionPanels = new ArrayList<>();
 
         if (result.getFeedbackQuestions().isEmpty() || result.getFeedbackQuestions() == null) {
             return;

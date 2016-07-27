@@ -20,11 +20,15 @@ public class ProjectListRenderer extends DefaultListCellRenderer {
     private Font font;
 
     public ProjectListRenderer() {
-        if (TmcSettingsManager.get().getProjectBasePath().contains("/")) {
+        if (osIsUnixBased()) {
             font = new Font("ubuntu", Font.TRUETYPE_FONT, 13);
         } else {
             font = new Font("Arial", Font.TRUETYPE_FONT, 12);
         }
+    }
+
+    private boolean osIsUnixBased() {
+        return TmcSettingsManager.get().getProjectBasePath().contains("/");
     }
 
     @Override
