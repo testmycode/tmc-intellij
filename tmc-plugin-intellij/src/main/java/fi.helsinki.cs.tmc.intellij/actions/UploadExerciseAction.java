@@ -38,14 +38,19 @@ public class UploadExerciseAction extends AnAction {
         } else {
             exerciseCourse = path.toString().split("\\\\");
         }
-
+        try {
             Course course =
                     finder.findCourseByName(exerciseCourse[exerciseCourse.length - 2], core);
             Exercise exercise = finder.findExerciseByName(course,
                     exerciseCourse[exerciseCourse.length - 1]);
             getResults(project, exercise, core, submission);
             CourseAndExerciseManager.updateSinglecourse(course.getName(), finder);
-
+        } catch (Exception exept) {
+            Messages.showErrorDialog(project, "Are your credentials correct?\n"
+                    + "Is this a TMC Exercise?\n"
+                    + "Are you connected to the internet?\n"
+                    + exept.getMessage() + " " + exept.toString(), "Error while submitting");
+        }
     }
 
     private void getResults(Project project, Exercise exercise, TmcCore core,
