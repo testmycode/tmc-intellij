@@ -26,6 +26,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
+/**
+ * Creates a tab in project list sidewindow
+ * and all components it requires
+ */
+
 public class CourseTabFactory {
 
     public void createCourseSpecificTab(ObjectFinder finder,

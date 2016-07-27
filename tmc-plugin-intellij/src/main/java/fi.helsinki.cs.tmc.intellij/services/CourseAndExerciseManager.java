@@ -9,6 +9,14 @@ import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Holds a database of courses in memory,
+ * allows quick fetching of course when necessary
+ * without calling the TmcCore.
+ *
+ * Also gives methods to update project list when necessary
+ */
+
 public class CourseAndExerciseManager {
 
     static HashMap<String, ArrayList<Exercise>> database;

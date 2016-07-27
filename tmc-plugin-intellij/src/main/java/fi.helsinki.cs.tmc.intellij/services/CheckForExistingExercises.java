@@ -7,6 +7,10 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Gets the list of exercises stored on drive
+ */
+
 public class CheckForExistingExercises {
 
     public List<Exercise> clean(List<Exercise> exercises) {
