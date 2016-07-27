@@ -8,3 +8,6 @@ before_install:
   - ./prepare-build.sh
 
 script: mvn package
+
+after_success:
+  - mvn clean cobertura:cobertura coveralls:report 

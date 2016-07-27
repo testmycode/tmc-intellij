@@ -1,5 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.ui.elements;
-
+package fi.helsinki.cs.tmc.intellij.ui.settings;
 
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
@@ -35,6 +34,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JSeparator;
 import javax.swing.JTextField;
 
+/**
+ * Swing component displayed in settings window.
+ */
 
 public class SettingsPanel {
 
@@ -186,6 +188,10 @@ public class SettingsPanel {
                 fileChooser.setDialogTitle("Select path for projects");
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.showOpenDialog(panel1);
+
+                if (fileChooser.getSelectedFile() == null) {
+                    return;
+                }
                 projectPathField.setText(fileChooser.getSelectedFile().getAbsolutePath());
             }
         };

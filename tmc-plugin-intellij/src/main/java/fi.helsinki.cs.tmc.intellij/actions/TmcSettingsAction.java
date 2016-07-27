@@ -1,10 +1,16 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import fi.helsinki.cs.tmc.intellij.ui.SettingsWindow;
+import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 
+
+/**
+ * Opens the settings window.
+ * Defined in plugin.xml on line
+ * &lt;action id="Settings" class="fi.helsinki.cs.tmc.intellij.actions.TmcSettingsAction"&gt;
+ */
 public class TmcSettingsAction extends AnAction{
 
     private SettingsWindow window;
@@ -20,6 +26,5 @@ public class TmcSettingsAction extends AnAction{
         } else {
             window.show();
         }
-
     }
 }

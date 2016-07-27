@@ -40,8 +40,6 @@ import javax.swing.JPanel;
 
 public class SuccessfulSubmissionDialog extends JDialog {
 
-
-
     private JButton okButton;
 
     private List<FeedbackQuestionPanel> feedbackQuestionPanels;
@@ -164,29 +162,41 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
 
     private void addModelSolutionButton(SubmissionResult result, final Project project) {
-        if (result.getSolutionUrl() != null) {
-            final String solutionUrl = result.getSolutionUrl();
-            JButton solutionButton = new JButton(new AbstractAction("View model solution") {
-                @Override
-                public void actionPerformed(ActionEvent ev) {
-                    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-                        try {
-                            desktop.browse(new URI(solutionUrl));
-                        } catch (Exception ex) {
-                            String errorMessage = "Problems with internet.\n" + ex.getMessage();
-                            Messages.showErrorDialog(project, errorMessage,
-                                    "Problem with internet");
-                        }
-                    } else {
-                        String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";
-                        Messages.showErrorDialog(project, errorMessage, "Os problem");
-                    }
-                }
-            });
-
-            getContentPane().add(leftAligned(solutionButton));
+        if (result.getSolutionUrl() == null) {
+            return;
         }
+
+        final String solutionUrl = result.getSolutionUrl();
+        JButton solutionButton = new JButton(
+                getAbstractAction("View model solution",
+                        solutionUrl,
+                        project));
+
+        getContentPane().add(leftAligned(solutionButton));
+
+    }
+
+    private AbstractAction getAbstractAction(String message,
+                                             final String solutionUrl,
+                                             final Project project) {
+
+        return new AbstractAction(message) {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+                if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+                    try {
+                        desktop.browse(new URI(solutionUrl));
+                    } catch (Exception ex) {
+                        String errorMessage = "Failed to open browser.\n" + ex.getMessage();
+                        Messages.showErrorDialog(project, errorMessage, "Problem with browser");
+                    }
+                } else {
+                    String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";
+                    Messages.showErrorDialog(project, errorMessage, "Os problem");
+                }
+            }
+        };
     }
 
     private void addFeedbackQuestions(SubmissionResult result) {

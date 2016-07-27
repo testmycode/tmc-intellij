@@ -15,6 +15,10 @@ import java.util.Locale;
 
 import javax.swing.JFileChooser;
 
+/**
+ * TMC Settings component from Core, has all the necessary settings.
+ */
+
 public class SettingsTmc implements TmcSettings, Serializable {
 
     private String username;

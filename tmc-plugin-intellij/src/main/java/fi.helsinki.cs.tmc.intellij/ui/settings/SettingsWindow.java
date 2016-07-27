@@ -1,7 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.ui;
-
-
-import fi.helsinki.cs.tmc.intellij.ui.elements.SettingsPanel;
+package fi.helsinki.cs.tmc.intellij.ui.settings;
 
 import java.awt.Dimension;
 import javax.swing.JFrame;
@@ -34,4 +31,3 @@ public class SettingsWindow {
         frame.setVisible(true);
     }
 }
-

@@ -24,11 +24,6 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
-        <repository>
-            <id>vektah-openapi</id>
-            <name>3rd party openapi repository</name>
-            <url>https://github.com/Vektah/maven-intellij-openapi/raw/master/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -75,29 +70,12 @@
             <type>maven-plugin</type>
         </dependency>
         <dependency>
-            <scope>provided</scope>
-            <groupId>net.vektah</groupId>
-            <artifactId>intellij-openapi</artifactId>
-            <version>12.1.4</version>
+            <groupId>com.intellij</groupId>
+            <artifactId>openapi</artifactId>
+            <version>7.0.3</version>
         </dependency>
-        <dependency>
-            <scope>provided</scope>
-            <groupId>net.vektah</groupId>
-            <artifactId>intellij-util</artifactId>
-            <version>12.1.4</version>
-        </dependency>
-        <dependency>
-            <scope>provided</scope>
-            <groupId>net.vektah</groupId>
-            <artifactId>intellij-annotations</artifactId>
-            <version>12.1.4</version>
-        </dependency>
-        <dependency>
-            <groupId>net.vektah</groupId>
-            <scope>provided</scope>
-            <artifactId>intellij-extensions</artifactId>
-            <version>12.1.4</version>
-        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -161,6 +139,27 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.2.0</version>
+                <configuration>
+                    <repoToken></repoToken>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>cobertura-maven-plugin</artifactId>
+                <version>2.7</version>
+                <configuration>
+                    <format>xml</format>
+                    <maxmem>256m</maxmem>
+                    <!-- aggregated reports for multi-module projects -->
+                    <aggregate>true</aggregate>
+                    <check/>
+                </configuration>
             </plugin>
         </plugins>
     </build>
