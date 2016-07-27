@@ -65,7 +65,7 @@ public class DownloadExerciseAction extends AnAction {
         List<Exercise> exercises = course.getExercises();
         exercises = checker.clean(exercises);
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
-        CourseAndExerciseManager.updateSinglecourse(course.getName());
+        CourseAndExerciseManager.updateSinglecourse(course.getName(), finder);
         return exercises;
     }
 }

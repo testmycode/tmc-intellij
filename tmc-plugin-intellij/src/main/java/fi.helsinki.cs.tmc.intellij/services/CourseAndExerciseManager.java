@@ -14,12 +14,17 @@ public class CourseAndExerciseManager {
     static HashMap<String, ArrayList<Exercise>> database;
     private static ArrayList<Course> courses;
 
+
     public CourseAndExerciseManager() {
         try {
             initiateDatabase();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void setDatabase(HashMap<String, ArrayList<Exercise>> db) {
+        database  = db;
     }
 
     public static void setup() {
@@ -81,8 +86,8 @@ public class CourseAndExerciseManager {
         }
     }
 
-    public static void updateSinglecourse(String course) {
-        Course crse = new ObjectFinder().findCourseByName(course, TmcCoreHolder.get());
+    public static void updateSinglecourse(String course, ObjectFinder finder) {
+        Course crse = finder.findCourseByName(course, TmcCoreHolder.get());
         ArrayList<Exercise> existing = (ArrayList<Exercise>) new CheckForExistingExercises()
                 .getListOfDownloadedExercises(crse.getExercises());
         database.put(course, existing);

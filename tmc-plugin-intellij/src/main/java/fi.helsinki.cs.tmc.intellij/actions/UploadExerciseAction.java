@@ -24,11 +24,13 @@ public class UploadExerciseAction extends AnAction {
         OperationInProgressNotification note = new
                 OperationInProgressNotification("Uploading exercise, please wait!");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
-        uploadExercise(project, TmcCoreHolder.get(), new ObjectFinder());
+        uploadExercise(project, TmcCoreHolder.get(), new ObjectFinder(),
+                new SubmissionResultHandler());
         note.hide();
     }
 
-    private void uploadExercise(Project project, TmcCore core, ObjectFinder finder) {
+    public void uploadExercise(Project project, TmcCore core, ObjectFinder finder,
+                               SubmissionResultHandler submission) {
         String path = project.getBasePath();
         String[] exerciseCourse;
         if (path.toString().contains("/")) {
@@ -36,26 +38,21 @@ public class UploadExerciseAction extends AnAction {
         } else {
             exerciseCourse = path.toString().split("\\\\");
         }
-        try {
+
             Course course =
                     finder.findCourseByName(exerciseCourse[exerciseCourse.length - 2], core);
             Exercise exercise = finder.findExerciseByName(course,
                     exerciseCourse[exerciseCourse.length - 1]);
-            getResults(project, exercise, core);
-            CourseAndExerciseManager.updateSinglecourse(course.getName());
-        } catch (Exception exept) {
-            Messages.showErrorDialog(project, "Are your credentials correct?\n"
-                    + "Is this a TMC Exercise?\n"
-                    + "Are you connected to the internet?\n"
-                    + exept.getMessage() + " " + exept.toString(), "Error while submitting");
-        }
+            getResults(project, exercise, core, submission);
+            CourseAndExerciseManager.updateSinglecourse(course.getName(), finder);
+
     }
 
-    private void getResults(Project project, Exercise exercise, TmcCore core) {
+    private void getResults(Project project, Exercise exercise, TmcCore core,
+                            SubmissionResultHandler submission) {
         try {
             SubmissionResult result = core.submit(ProgressObserver.NULL_OBSERVER, exercise).call();
-            System.out.println(result);
-            SubmissionResultHandler.showResultMessage(exercise, result, project);
+            submission.showResultMessage(exercise, result, project);
         } catch (Exception e) {
             e.printStackTrace();
         }
