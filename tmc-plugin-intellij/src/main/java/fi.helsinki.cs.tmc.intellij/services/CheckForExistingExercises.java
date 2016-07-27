@@ -10,13 +10,17 @@ import java.util.List;
 public class CheckForExistingExercises {
 
     public List<Exercise> clean(List<Exercise> exercises) {
+        exercises.removeAll(getListOfDownloadedExercises(exercises));
+        return exercises;
+    }
+
+    public List<Exercise> getListOfDownloadedExercises(List<Exercise> exercises) {
         List<Exercise> existing = new ArrayList<Exercise>();
         for (Exercise exercise : exercises) {
             if (exercise.isDownloaded(TmcSettingsManager.get().getTmcProjectDirectory())) {
                 existing.add(exercise);
             }
         }
-        exercises.removeAll(existing);
-        return exercises;
+        return existing;
     }
 }

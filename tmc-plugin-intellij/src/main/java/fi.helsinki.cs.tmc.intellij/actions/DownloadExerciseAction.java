@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
@@ -9,6 +10,8 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 
 import com.intellij.openapi.actionSystem.AnAction;
@@ -34,7 +37,9 @@ public class DownloadExerciseAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
 
-        OperationInProgressNotification note = new OperationInProgressNotification("Downloading");
+        OperationInProgressNotification note =
+                new OperationInProgressNotification("Downloading exercises, "
+                        + "this may take several minutes");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
 
         try {
@@ -44,7 +49,9 @@ public class DownloadExerciseAction extends AnAction {
                     new ProjectOpener());
         } catch (Exception e) {
             Messages.showMessageDialog(project,
-                    "Downloading failed \n" + e.getMessage(), "Result", Messages.getErrorIcon());
+                    "Downloading failed \n"
+                            + "Are your account details correct?\n"
+                            + e.getMessage(), "Result", Messages.getErrorIcon());
         }
         note.hide();
     }
@@ -53,13 +60,12 @@ public class DownloadExerciseAction extends AnAction {
                                                  SettingsTmc settings,
                                                  CheckForExistingExercises checker,
                                                  ProjectOpener opener) throws Exception {
-
-        Course course = core.getCourseDetails(ProgressObserver.NULL_OBSERVER,
-                settings.getCourse()).call();
-
+        ObjectFinder finder = new ObjectFinder();
+        Course course = finder.findCourseByName(settings.getCourse().getName(), core);
         List<Exercise> exercises = course.getExercises();
         exercises = checker.clean(exercises);
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
+        CourseAndExerciseManager.updateSinglecourse(course.getName());
         return exercises;
     }
 }

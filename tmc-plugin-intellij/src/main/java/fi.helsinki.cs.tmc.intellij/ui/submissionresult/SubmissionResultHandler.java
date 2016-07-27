@@ -8,10 +8,11 @@ import com.intellij.openapi.project.Project;
 public class SubmissionResultHandler {
 
     public static void showResultMessage(Exercise exercise,
-                                         SubmissionResult result, Project project) {
+                                         SubmissionResult result,
+                                         Project project) {
+
         if (result.isAllTestsPassed()) {
             new SuccessfulSubmissionDialog(exercise, result, project);
-
         } else {
             new FailedSubmissionDialog(result, project);
         }
