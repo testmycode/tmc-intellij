@@ -17,8 +17,8 @@ import javax.swing.JPanel;
 
 public class ProjectListManager {
 
-    static Map<String, List<JBList>> currentListElements;
-    static List<JPanel> panelList;
+    private static Map<String, List<JBList>> currentListElements;
+    private static List<JPanel> panelList;
 
     public ProjectListManager() {
         panelList = new ArrayList<>();
@@ -75,13 +75,15 @@ public class ProjectListManager {
         }
     }
 
-    private static void addExercisesToListModel(DefaultListModel listModel, List<Exercise> exercises) {
+    private static void addExercisesToListModel(DefaultListModel listModel,
+                                                List<Exercise> exercises) {
         for (Exercise ex : exercises) {
             listModel.addElement(ex);
         }
     }
 
-    private static void addExercisesToListModelAsStrings(DefaultListModel listModel, List<String> exercises) {
+    private static void addExercisesToListModelAsStrings(DefaultListModel listModel,
+                                                         List<String> exercises) {
         for (String ex : exercises) {
             listModel.addElement(ex);
         }

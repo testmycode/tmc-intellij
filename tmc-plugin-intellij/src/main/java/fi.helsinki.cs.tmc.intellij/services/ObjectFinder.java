@@ -27,7 +27,6 @@ import java.util.List;
  * Finds various exercises and courses from the disk or by
  * asking the TMCServer.
  */
-
 public class ObjectFinder {
 
     public Exercise findExerciseByName(Course course, String exerciseName) {
@@ -85,8 +84,8 @@ public class ObjectFinder {
 
                 String[] exerciseCourse = PathResolver.getCourseAndExerciseName(path);
 
-                if (exerciseCourse == null ||
-                        getExerciseName(exerciseCourse).charAt(0) == '.') {
+                if (exerciseCourse == null
+                        || getExerciseName(exerciseCourse).charAt(0) == '.') {
 
                     continue;
                 }
@@ -101,7 +100,7 @@ public class ObjectFinder {
     }
 
     private String getExerciseName(String[] courseAndExerciseName) {
-        return courseAndExerciseName[courseAndExerciseName.length -1];
+        return courseAndExerciseName[courseAndExerciseName.length - 1];
     }
 
     public List<String> listAllDownloadedExercises(String courseName) {

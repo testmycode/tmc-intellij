@@ -15,7 +15,7 @@ public class PathResolver {
      * array and the exercise in the last one.
      * @param project project info is wanted from.
      * @return array containing the course and exercise name derived
-     *   from a project's path
+     *     from a project's path
      */
     public static String[] getCourseAndExerciseName(Project project) {
         return getCourseAndExerciseName(project.getBasePath());
@@ -28,7 +28,7 @@ public class PathResolver {
      * array and the exercise in the last one.
      * @param path path of a project the info is wanted from
      * @return array containing the course and exercise name
-     *   derived from the given path
+     *     derived from the given path
      */
     public static String[] getCourseAndExerciseName(Path path) {
         return getCourseAndExerciseName(path.toString());
@@ -40,7 +40,7 @@ public class PathResolver {
      * array and the exercise in the last one.
      * @param path path of a project as string
      * @return array containing the course and exercise name derived
-     *   from the given path
+     *     from the given path
      */
     public static String[] getCourseAndExerciseName(String path) {
         if (path == null) {
