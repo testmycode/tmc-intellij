@@ -18,12 +18,15 @@ import com.intellij.openapi.ui.Messages;
 
 /**
  * Defined in plugin.xml on line
- *  <action id="Download Exercises" class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction"
+ *  &lt;action id="Download Exercises"
+ *    class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction"&gt;
  * in group actions
  *
+ * <p>
  * Downloads exercises from the course selected in settings,
  * uses CheckForExistingExercises to check already downloaded ones,
  * updates exercise lists with CourseAndExeriseManager
+ * </p>
  */
 public class DownloadExerciseAction extends AnAction {
 

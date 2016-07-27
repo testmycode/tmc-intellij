@@ -15,7 +15,8 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The actions to be executed on project startup
  * defined in plugin.xml exercises group on line
- * <postStartupActivity implementation="fi.helsinki.cs.tmc.intellij.actions.StartupEvent">
+ * &lt;postStartupActivity implementation
+ *   ="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"&gt;
  */
 
 public class StartupEvent implements StartupActivity {

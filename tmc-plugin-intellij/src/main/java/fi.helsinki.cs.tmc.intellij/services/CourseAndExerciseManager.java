@@ -10,11 +10,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Holds a database of courses in memory,
- * allows quick fetching of course when necessary
- * without calling the TmcCore.
+ * Holds a database of courses in memory, allowing quick fetching of course
+ * when necessary without calling the TmcCore.
  *
- * Also gives methods to update project list when necessary
+ * <p>
+ *   Also gives methods to update project list when necessary
+ * </p>
  */
 
 public class CourseAndExerciseManager {

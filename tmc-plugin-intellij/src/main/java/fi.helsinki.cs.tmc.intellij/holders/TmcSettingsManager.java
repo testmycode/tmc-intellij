@@ -6,9 +6,8 @@ import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
 import com.intellij.openapi.components.ServiceManager;
 
 /**
- * Contains the TmcSettings
+ * Contains the TmcSettings.
  */
-
 public final class TmcSettingsManager {
 
     private static final PersistentTmcSettings persistentSettings =

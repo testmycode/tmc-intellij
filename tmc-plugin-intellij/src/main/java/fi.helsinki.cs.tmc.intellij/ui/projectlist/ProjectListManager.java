@@ -13,9 +13,6 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 
-/**
- *
- */
 
 public class ProjectListManager {
 

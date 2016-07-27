@@ -9,7 +9,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 /**
  * Opens the settings window.
  * Defined in plugin.xml on line
- * <action id="Settings" class="fi.helsinki.cs.tmc.intellij.actions.TmcSettingsAction"
+ * &lt;action id="Settings" class="fi.helsinki.cs.tmc.intellij.actions.TmcSettingsAction"&gt;
  */
 public class TmcSettingsAction extends AnAction{
 

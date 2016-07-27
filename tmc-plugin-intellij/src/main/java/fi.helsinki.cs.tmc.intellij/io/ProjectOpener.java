@@ -13,9 +13,8 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 /**
- * Opens the project using intellij ProjectManager, when given the path
+ * Opens the project using intellij ProjectManager, when given the path.
  */
-
 public class ProjectOpener {
 
     public void openProject(String path) {
