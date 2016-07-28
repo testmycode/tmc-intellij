@@ -18,7 +18,7 @@ public class CheckForExistingExercises {
     }
 
     public List<Exercise> getListOfDownloadedExercises(List<Exercise> exercises) {
-        List<Exercise> existing = new ArrayList<Exercise>();
+        List<Exercise> existing = new ArrayList<>();
         for (Exercise exercise : exercises) {
             if (exercise.isDownloaded(TmcSettingsManager.get().getTmcProjectDirectory())) {
                 existing.add(exercise);

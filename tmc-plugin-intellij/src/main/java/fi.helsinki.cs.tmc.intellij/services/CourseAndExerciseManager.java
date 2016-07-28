@@ -8,6 +8,8 @@ import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Holds a database of courses in memory, allowing quick fetching of course
@@ -17,15 +19,14 @@ import java.util.HashMap;
  *   Also gives methods to update project list when necessary
  * </p>
  */
-
 public class CourseAndExerciseManager {
 
-    public static void setDatabase(HashMap<String, ArrayList<Exercise>> database) {
+    public static void setDatabase(Map<String, List<Exercise>> database) {
         CourseAndExerciseManager.database = database;
     }
 
-    static HashMap<String, ArrayList<Exercise>> database;
-    private static ArrayList<Course> courses;
+    static Map<String, List<Exercise>> database;
+    private static List<Course> courses;
 
     public CourseAndExerciseManager() {
         try {
@@ -49,9 +50,9 @@ public class CourseAndExerciseManager {
 
     public static Exercise get(String course, String exercise) {
         try {
-            ArrayList<Exercise> exercises = database.get(course);
+            List<Exercise> exercises = database.get(course);
             for (Exercise exc : exercises) {
-                if (exc.getName().equals(exercise)) {
+                if (exerciseIsTheCorrectOne(exc, exercise)) {
                     return exc;
                 }
             }
@@ -61,7 +62,11 @@ public class CourseAndExerciseManager {
         return null;
     }
 
-    public static ArrayList<Exercise> getExercises(String course) {
+    private static boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
+        return exc.getName().equals(exerciseName);
+    }
+
+    public static List<Exercise> getExercises(String course) {
         try {
             return database.get(course);
         } catch (Exception e) {
@@ -70,37 +75,46 @@ public class CourseAndExerciseManager {
         return null;
     }
 
-    public static HashMap<String, ArrayList<Exercise>> getDatabase() {
+    public static Map<String, List<Exercise>> getDatabase() {
         return database;
     }
 
     static void initiateDatabase() throws Exception {
-        ArrayList<String> directoriesOnDisk = new ObjectFinder().listAllDownloadedCourses();
+        List<String> directoriesOnDisk = new ObjectFinder().listAllDownloadedCourses();
+
         database = new HashMap<>();
         courses = new ArrayList<>();
         courses = (ArrayList<Course>) TmcCoreHolder.get()
                 .listCourses(ProgressObserver.NULL_OBSERVER).call();
 
         for (Course course : courses) {
-            ArrayList<Exercise> exercises;
-            if (directoriesOnDisk.contains(course.getName())) {
-                try {
-                    course = TmcCoreHolder.get()
-                            .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
-                    exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
-                            .getListOfDownloadedExercises(course.getExercises());
-                    database.put(course.getName(), exercises);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            List<Exercise> exercises;
+            if (!directoriesOnDisk.contains(course.getName())) {
+                continue;
             }
+
+            try {
+                course = TmcCoreHolder.get()
+                        .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
+
+                exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
+                        .getListOfDownloadedExercises(course.getExercises());
+                database.put(course.getName(), exercises);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
+    }
+
+    private void updateDatabase(Course course, List<Exercise> exercises) {
+        database.put(course.getName(), exercises);
     }
 
     public static void updateSinglecourse(String courseName, CheckForExistingExercises checker) {
         Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
 
-        ArrayList<Exercise> existing = (ArrayList<Exercise>) checker
+        List<Exercise> existing = (ArrayList<Exercise>) checker
                 .getListOfDownloadedExercises(course.getExercises());
 
         database.put(courseName, existing);

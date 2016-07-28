@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 
 import java.awt.Font;
 
+import java.util.Dictionary;
 import java.util.Hashtable;
 
 import javax.swing.JLabel;
@@ -34,30 +35,38 @@ public class IntRangeQuestionPanel extends FeedbackQuestionPanel {
         valueSlider.setMinimum(naValue);
         valueSlider.setMaximum(question.getIntRangeMax());
 
-        Hashtable<Integer, JLabel> labelTable = new Hashtable<Integer, JLabel>();
+        Dictionary<Integer, JLabel> labelTable = new Hashtable<>();
 
         JLabel naLabel = new JLabel("-");
         naLabel.setFont(naLabel.getFont().deriveFont(Font.PLAIN));
         labelTable.put(naValue, naLabel);
 
+        setFeedbackValues(labelTable, naLabel);
+
+        valueSlider.setLabelTable(labelTable);
+        valueSlider.setValue(naValue);
+    }
+
+    private void setFeedbackValues(Dictionary<Integer, JLabel> labelTable,
+                                   JLabel labelForFont) {
+
         for (int i = question.getIntRangeMin(); i <= question.getIntRangeMax(); ++i) {
-            JLabel label = new JLabel(Integer.toString(i));
-            label.setFont(naLabel.getFont().deriveFont(Font.BOLD));
+            JLabel label = new JLabel("" + i);
+            label.setFont(labelForFont.getFont().deriveFont(Font.BOLD));
             labelTable.put(i, label);
         }
-        valueSlider.setLabelTable(labelTable);
-
-        valueSlider.setValue(naValue);
     }
 
     @Override
     public FeedbackAnswer getAnswer() {
         int sliderValue = valueSlider.getValue();
+
         if (sliderValue == naValue) {
             return null;
-        } else {
-            return new FeedbackAnswer(question, Integer.toString(sliderValue));
         }
+
+        return new FeedbackAnswer(question, Integer.toString(sliderValue));
+
     }
 
     /** This method is called from within the constructor to

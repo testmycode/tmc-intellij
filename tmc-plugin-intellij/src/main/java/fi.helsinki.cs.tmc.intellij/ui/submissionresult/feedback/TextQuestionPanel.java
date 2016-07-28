@@ -20,11 +20,12 @@ public class TextQuestionPanel extends FeedbackQuestionPanel {
     @Override
     public FeedbackAnswer getAnswer() {
         String text = answerTextArea.getText().trim();
+
         if (text.isEmpty()) {
             return null;
-        } else {
-            return new FeedbackAnswer(question, text);
         }
+        return new FeedbackAnswer(question, text);
+
     }
 
     /** This method is called from within the constructor to

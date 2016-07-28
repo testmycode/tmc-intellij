@@ -61,7 +61,7 @@ public class ExerciseDownloadingServiceTest {
                 }
         );
         when(checker.getListOfDownloadedExercises(excs)).thenReturn(excs);
-        CourseAndExerciseManager.setDatabase(new HashMap<String, ArrayList<Exercise>>());
+        CourseAndExerciseManager.setDatabase(new HashMap<String, List<Exercise>>());
         ProjectListManager.setCurrentListElements(new HashMap<String, List<JBList>>());
         when(core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, excs)).thenReturn(
                 new Callable<List<Exercise>>() {

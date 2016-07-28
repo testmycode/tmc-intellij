@@ -8,10 +8,11 @@ public class FeedbackQuestionPanelFactory {
             return new IntRangeQuestionPanel(question);
         } else if (question.isText()) {
             return new TextQuestionPanel(question);
-        } else {
-            throw new IllegalArgumentException(
+        }
+
+        throw new IllegalArgumentException(
                     "Unknown feedback question type: "
                     + question.getKind());
-        }
+
     }
 }

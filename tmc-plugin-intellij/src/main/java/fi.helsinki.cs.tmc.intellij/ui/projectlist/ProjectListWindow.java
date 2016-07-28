@@ -29,6 +29,7 @@ import java.awt.event.ActionListener;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -58,16 +59,28 @@ public class ProjectListWindow {
 
     private void addCourseTabsAndExercises() {
         ObjectFinder finder = new ObjectFinder();
-        ArrayList<String> courses = finder.listAllDownloadedCourses();
+        List<String> courses = finder.listAllDownloadedCourses();
         final ProjectOpener opener = new ProjectOpener();
         CourseTabFactory factory = new CourseTabFactory();
-        for (String course : courses) {
-            factory.createCourseSpecificTab(finder, opener, course, tabbedPanelBase);
-        }
+
+        createCourseSpecificTabs(finder, opener, tabbedPanelBase,
+                courses, factory);
+
         addFunctionalityToHideButton();
         JButton refreshButton = addFunctionalityToRefreshButton();
         toolbar.add(refreshButton);
         addFunctionalityToOpenButton();
+    }
+
+    private void createCourseSpecificTabs(ObjectFinder finder,
+                                          ProjectOpener opener,
+                                          JTabbedPane tabbedPanelBase,
+                                          List<String> courses,
+                                          CourseTabFactory factory) {
+
+        for (String course : courses) {
+            factory.createCourseSpecificTab(finder, opener, course, tabbedPanelBase);
+        }
     }
 
     private void addFunctionalityToOpenButton() {
@@ -77,9 +90,10 @@ public class ProjectListWindow {
                 JBList list = (JBList) tabbedPanelBase
                         .getSelectedComponent().getComponentAt(10, 10)
                         .getComponentAt(10, 10);
+
                 ProjectOpener opener = new ProjectOpener();
-                String courseName =
-                        (list.getName());
+                String courseName = (list.getName());
+
                 opener.openProject(TmcSettingsManager.get().getProjectBasePath()
                         + File.separator + courseName + File.separator
                         + list.getSelectedValue());
@@ -92,6 +106,7 @@ public class ProjectListWindow {
         JButton refreshButton = new JButton(TmcIcons.REFRESH);
         refreshButton.setBorderPainted(true);
         refreshButton.setEnabled(true);
+
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -101,6 +116,7 @@ public class ProjectListWindow {
                 note.hide();
             }
         });
+
         return refreshButton;
     }
 
