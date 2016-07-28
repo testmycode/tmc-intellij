@@ -12,4 +12,4 @@ script:
   - mvn checkstyle:check
 
 after_success:
-  - mvn clean cobertura:cobertura coveralls:report 
+  - mvn cobertura:cobertura coveralls:report

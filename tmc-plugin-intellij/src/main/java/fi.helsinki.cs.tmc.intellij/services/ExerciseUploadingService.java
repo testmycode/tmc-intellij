@@ -52,4 +52,5 @@ public class ExerciseUploadingService {
     private static String getExerciseName(String[] courseAndExercise) {
         return courseAndExercise[courseAndExercise.length - 1];
     }
+
 }
