@@ -89,18 +89,21 @@ public class CourseAndExerciseManager {
 
         for (Course course : courses) {
             List<Exercise> exercises;
-            if (directoriesOnDisk.contains(course.getName())) {
-                try {
-                    course = TmcCoreHolder.get()
-                            .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
-
-                    exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
-                            .getListOfDownloadedExercises(course.getExercises());
-                    database.put(course.getName(), exercises);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            if (!directoriesOnDisk.contains(course.getName())) {
+                continue;
             }
+
+            try {
+                course = TmcCoreHolder.get()
+                        .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
+
+                exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
+                        .getListOfDownloadedExercises(course.getExercises());
+                database.put(course.getName(), exercises);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
