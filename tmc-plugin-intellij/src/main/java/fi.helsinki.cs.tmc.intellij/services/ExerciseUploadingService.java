@@ -20,9 +20,9 @@ public class ExerciseUploadingService {
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
         try {
-            Course course = finder.findCourseByName(exerciseCourse[0], core);
+            Course course = finder.findCourseByName(getCourseName(exerciseCourse), core);
             Exercise exercise = finder.findExerciseByName(course,
-                    exerciseCourse[1]);
+                    getExerciseName(exerciseCourse));
 
             getResults(project, exercise, core);
             CourseAndExerciseManager.updateSinglecourse(course.getName(),
@@ -43,5 +43,13 @@ public class ExerciseUploadingService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private static String getCourseName(String[] courseAndExercise) {
+        return courseAndExercise[courseAndExercise.length -2];
+    }
+
+    private static String getExerciseName(String[] courseAndExercise) {
+        return courseAndExercise[courseAndExercise.length -1];
     }
 }
