@@ -20,7 +20,7 @@ public class ExerciseDownloadingService {
         Course course = finder.findCourseByName(settings.getCourse().getName(), core);
 
         List<Exercise> exercises = course.getExercises();
-        exercises = checker.clean(exercises, settings);
+        exercises = checker.clean(exercises);
 
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
         CourseAndExerciseManager.updateSinglecourse(course.getName(), checker);

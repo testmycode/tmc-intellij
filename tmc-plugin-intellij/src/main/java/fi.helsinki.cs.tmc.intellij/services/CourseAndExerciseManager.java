@@ -98,8 +98,7 @@ public class CourseAndExerciseManager {
                 course = TmcCoreHolder.get()
                         .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
                 exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
-                        .getListOfDownloadedExercises(course.getExercises(),
-                                TmcSettingsManager.get());
+                        .getListOfDownloadedExercises(course.getExercises());
                 database.put(course.getName(), exercises);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -115,7 +114,7 @@ public class CourseAndExerciseManager {
         Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
 
         ArrayList<Exercise> existing = (ArrayList<Exercise>) checker
-                .getListOfDownloadedExercises(course.getExercises(), TmcSettingsManager.get());
+                .getListOfDownloadedExercises(course.getExercises());
 
         database.put(courseName, existing);
         ProjectListManager.refreshCourse(courseName);

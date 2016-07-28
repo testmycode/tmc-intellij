@@ -38,14 +38,13 @@ public class ExerciseDownloadingServiceTest {
         settings.setProjectBasePath("/home/koko");
         CheckForExistingExercises checker = mock(CheckForExistingExercises.class);
 
-        when(checker.clean(excs, TmcSettingsManager.get())).thenReturn(excs);
+        when(checker.clean(excs)).thenReturn(excs);
 
         final Course course = new Course("kurssi");
         when(settings.getCourse()).thenReturn(course);
         course.setExercises(excs);
         final List <Course> courses = new ArrayList<>();
         courses.add(course);
-
         when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
                 new Callable<List<Course>>() {
                     @Override
@@ -62,9 +61,9 @@ public class ExerciseDownloadingServiceTest {
                     }
                 }
         );
-        when(checker.getListOfDownloadedExercises(excs, TmcSettingsManager.get()))
-                .thenReturn(excs);
 
+        when(checker.getListOfDownloadedExercises(excs))
+                .thenReturn(excs);
         CourseAndExerciseManager.setDatabase(new HashMap<String, List<Exercise>>());
 
         ProjectListManager.setCurrentListElements(new HashMap<String, List<JBList>>());

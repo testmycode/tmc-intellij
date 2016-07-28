@@ -20,6 +20,10 @@ public class ProjectListManager {
     private static Map<String, List<JBList>> currentListElements;
     private static List<JPanel> panelList;
 
+    public static void setCurrentListElements(HashMap<String, List<JBList>> currentListElements) {
+        ProjectListManager.currentListElements = currentListElements;
+    }
+
     public ProjectListManager() {
         panelList = new ArrayList<>();
         currentListElements = new HashMap<>();
@@ -87,9 +91,5 @@ public class ProjectListManager {
         for (String ex : exercises) {
             listModel.addElement(ex);
         }
-    }
-
-    public static void setCurrentListElements(HashMap<String, List<JBList>> currentListElements) {
-        ProjectListManager.currentListElements = currentListElements;
     }
 }
