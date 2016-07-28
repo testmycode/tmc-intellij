@@ -46,10 +46,11 @@ public class ExerciseUploadingService {
     }
 
     private static String getCourseName(String[] courseAndExercise) {
-        return courseAndExercise[courseAndExercise.length -2];
+        return courseAndExercise[courseAndExercise.length - 2];
     }
 
     private static String getExerciseName(String[] courseAndExercise) {
-        return courseAndExercise[courseAndExercise.length -1];
+        return courseAndExercise[courseAndExercise.length - 1];
     }
+
 }

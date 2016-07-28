@@ -7,7 +7,9 @@ before_install:
   - chmod +x prepare-build.sh
   - ./prepare-build.sh
 
-script: mvn package
+script:
+  - mvn package
+  - mvn checkstyle:check
 
 after_success:
   - mvn cobertura:cobertura coveralls:report

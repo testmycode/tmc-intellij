@@ -78,7 +78,7 @@ public class ObjectFinder {
                      Files.newDirectoryStream(Paths.get(folderPath))) {
 
             for (Path path : directoryStream) {
-                if (Files.isDirectory(path)) {
+                if (!Files.isDirectory(path)) {
                     continue;
                 }
 
