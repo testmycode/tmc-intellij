@@ -45,6 +45,7 @@ public class ExerciseDownloadingServiceTest {
         course.setExercises(excs);
         final List <Course> courses = new ArrayList<>();
         courses.add(course);
+
         when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
                 new Callable<List<Course>>() {
                     @Override
@@ -61,8 +62,11 @@ public class ExerciseDownloadingServiceTest {
                     }
                 }
         );
-        when(checker.getListOfDownloadedExercises(excs, TmcSettingsManager.get())).thenReturn(excs);
-        CourseAndExerciseManager.setDatabase(new HashMap<String, ArrayList<Exercise>>());
+        when(checker.getListOfDownloadedExercises(excs, TmcSettingsManager.get()))
+                .thenReturn(excs);
+
+        CourseAndExerciseManager.setDatabase(new HashMap<String, List<Exercise>>());
+
         ProjectListManager.setCurrentListElements(new HashMap<String, List<JBList>>());
         when(core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, excs)).thenReturn(
                 new Callable<List<Exercise>>() {

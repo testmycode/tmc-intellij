@@ -27,7 +27,6 @@ import java.util.List;
  * Finds various exercises and courses from the disk or by
  * asking the TMCServer.
  */
-
 public class ObjectFinder {
 
     public Exercise findExerciseByName(Course course, String exerciseName) {
@@ -66,28 +65,32 @@ public class ObjectFinder {
         return null;
     }
 
-    public ArrayList<String> listAllDownloadedCourses() {
-        ArrayList<String> fileNames = getListOfDirectoriesInPath(
+    public List<String> listAllDownloadedCourses() {
+        List<String> fileNames = getListOfDirectoriesInPath(
                 TmcSettingsManager.get().getProjectBasePath());
         return fileNames;
     }
 
-    private ArrayList<String> getListOfDirectoriesInPath(String folderPath) {
-        ArrayList<String> fileNames = new ArrayList<>();
+    private List<String> getListOfDirectoriesInPath(String folderPath) {
+        List<String> fileNames = new ArrayList<>();
+
         try (DirectoryStream<Path> directoryStream =
                      Files.newDirectoryStream(Paths.get(folderPath))) {
+
             for (Path path : directoryStream) {
                 if (Files.isDirectory(path)) {
-                    String[] exerciseCourse;
-                    if (path.toString().contains("/")) {
-                        exerciseCourse = path.toString().split("/");
-                    } else {
-                        exerciseCourse = path.toString().split("\\\\");
-                    }
-                    if (exerciseCourse[exerciseCourse.length - 1].charAt(0) != '.') {
-                        fileNames.add(exerciseCourse[exerciseCourse.length - 1]);
-                    }
+                    continue;
                 }
+
+                String[] exerciseCourse = PathResolver.getCourseAndExerciseName(path);
+
+                if (exerciseCourse == null
+                        || getExerciseName(exerciseCourse).charAt(0) == '.') {
+
+                    continue;
+                }
+
+                fileNames.add(getExerciseName(exerciseCourse));
             }
         } catch (IOException ex)  {
             ex.printStackTrace();
@@ -96,8 +99,13 @@ public class ObjectFinder {
         return fileNames;
     }
 
-    public ArrayList<String> listAllDownloadedExercises(String courseName) {
-        ArrayList<String> fileNames = getListOfDirectoriesInPath(TmcSettingsManager.get()
+    private String getExerciseName(String[] courseAndExerciseName) {
+        return courseAndExerciseName[courseAndExerciseName.length - 1];
+    }
+
+    public List<String> listAllDownloadedExercises(String courseName) {
+
+        List<String> fileNames = getListOfDirectoriesInPath(TmcSettingsManager.get()
                 .getProjectBasePath() + File.separator + courseName);
 
         return fileNames;

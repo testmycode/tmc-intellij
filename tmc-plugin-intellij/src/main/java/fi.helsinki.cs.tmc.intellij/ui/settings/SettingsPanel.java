@@ -20,6 +20,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -37,7 +38,6 @@ import javax.swing.JTextField;
 /**
  * Swing component displayed in settings window.
  */
-
 public class SettingsPanel {
 
     private JPanel panel1;
@@ -104,7 +104,8 @@ public class SettingsPanel {
         browseButton.addActionListener(browseListener);
         ActionListener refreshListener = createActionListenerRefresh();
         refreshButton.addActionListener(refreshListener);
-        ArrayList<Course> courses = new ArrayList<>();
+        List<Course> courses = new ArrayList<>();
+
         try {
             courses = (ArrayList<Course>)
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
@@ -113,6 +114,7 @@ public class SettingsPanel {
         for (Course crs : courses) {
             listOfAvailableCourses.addItem(crs);
         }
+
         listOfAvailableCourses.setSelectedItem(settingsTmc.getCourse());
         projectPathField.setText(settingsTmc.getProjectBasePath());
         selectErrorLanguageField.addItem("English");
@@ -162,7 +164,7 @@ public class SettingsPanel {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                ArrayList<Course> courses = new ArrayList<>();
+                List<Course> courses = new ArrayList<>();
                 listOfAvailableCourses.removeAllItems();
                 saveInformation();
                 try {
@@ -171,12 +173,17 @@ public class SettingsPanel {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                for (Course crs : courses) {
-                    listOfAvailableCourses.addItem(crs);
-                }
+
+                addCourSesToListOfAvailable(courses);
                 listOfAvailableCourses.setSelectedItem(TmcSettingsManager.get().getCourse());
             }
         };
+    }
+
+    private void addCourSesToListOfAvailable(List<Course> courses) {
+        for (Course crs : courses) {
+            listOfAvailableCourses.addItem(crs);
+        }
     }
 
     @NotNull

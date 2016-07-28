@@ -23,17 +23,21 @@ public class Boxer {
 
     public static Box hbox(Component... components) {
         Box box = Box.createHorizontalBox();
-        for (Component component : components) {
-            box.add(component);
-        }
+
+        addComponentsToBox(box, components);
         return box;
     }
 
     public static Box vbox(Component... components) {
         Box box = Box.createVerticalBox();
+
+        addComponentsToBox(box, components);
+        return box;
+    }
+
+    private static void addComponentsToBox(Box box, Component... components) {
         for (Component component : components) {
             box.add(component);
         }
-        return box;
     }
 }

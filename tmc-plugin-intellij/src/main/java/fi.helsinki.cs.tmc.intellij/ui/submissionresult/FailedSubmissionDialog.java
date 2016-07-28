@@ -9,6 +9,7 @@ public class FailedSubmissionDialog {
 
     public FailedSubmissionDialog(SubmissionResult result, Project project) {
         String points = parsePoints(result);
+
         String failMessage = "All tests didn't pass on server!\n"
                 + "Permanent points awarded: " + points;
         Messages.showErrorDialog(project, failMessage, "All tests didn't pass on server!");
@@ -17,8 +18,8 @@ public class FailedSubmissionDialog {
     private String parsePoints(SubmissionResult result) {
         if (result.getPoints().size() == 0) {
             return "0";
-        } else {
-            return result.getPoints().toString();
         }
+
+        return result.getPoints().toString();
     }
 }
