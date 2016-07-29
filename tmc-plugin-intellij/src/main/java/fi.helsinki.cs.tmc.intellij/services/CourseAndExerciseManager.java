@@ -111,8 +111,9 @@ public class CourseAndExerciseManager {
         database.put(course.getName(), exercises);
     }
 
-    public static void updateSinglecourse(String courseName, CheckForExistingExercises checker) {
-        Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
+    public static void updateSinglecourse(String courseName, CheckForExistingExercises checker,
+                                          ObjectFinder finder) {
+        Course course = finder.findCourseByName(courseName, TmcCoreHolder.get());
 
         List<Exercise> existing = (ArrayList<Exercise>) checker
                 .getListOfDownloadedExercises(course.getExercises());
