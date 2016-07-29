@@ -25,7 +25,7 @@ import java.util.concurrent.Callable;
 
 import static org.mockito.Mockito.*;
 
-public class UploadExerciseActionTest {
+public class UploadExerciseServiceTest {
 
     @Test
     public void uploadExercisesTestCallsSubmitMethod() {
