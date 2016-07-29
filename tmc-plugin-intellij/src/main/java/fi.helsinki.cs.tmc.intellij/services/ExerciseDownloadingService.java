@@ -12,9 +12,9 @@ import java.util.List;
 public class ExerciseDownloadingService {
 
     public static List<Exercise> startDownloadExercise(TmcCore core,
-                                                SettingsTmc settings,
-                                                CheckForExistingExercises checker,
-                                                ProjectOpener opener) throws Exception {
+                                                       SettingsTmc settings,
+                                                       CheckForExistingExercises checker,
+                                                       ProjectOpener opener) throws Exception {
 
         ObjectFinder finder = new ObjectFinder();
         Course course = finder.findCourseByName(settings.getCourse().getName(), core);
@@ -23,7 +23,7 @@ public class ExerciseDownloadingService {
         exercises = checker.clean(exercises, settings);
 
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
-        CourseAndExerciseManager.updateSinglecourse(course.getName(), checker);
+        CourseAndExerciseManager.updateSingleCourse(course.getName(), checker, finder, settings);
         return exercises;
     }
 }

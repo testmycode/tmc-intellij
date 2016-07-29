@@ -6,6 +6,7 @@ import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import com.intellij.openapi.ui.Messages;
@@ -120,12 +121,15 @@ public class CourseAndExerciseManager {
         database.put(course.getName(), exercises);
     }
 
-    public static void updateSinglecourse(String courseName, CheckForExistingExercises checker) {
+    public static void updateSingleCourse(String courseName, CheckForExistingExercises checker,
+                                          ObjectFinder finder,
+                                          SettingsTmc settings) {
         boolean isNewCourse = database.get(courseName) == null;
-        Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
+        Course course = finder.findCourseByName(courseName, TmcCoreHolder.get());
+
 
         List<Exercise> existing = (ArrayList<Exercise>) checker
-                .getListOfDownloadedExercises(course.getExercises(), TmcSettingsManager.get());
+                .getListOfDownloadedExercises(course.getExercises(), settings);
 
         database.put(courseName, existing);
 
