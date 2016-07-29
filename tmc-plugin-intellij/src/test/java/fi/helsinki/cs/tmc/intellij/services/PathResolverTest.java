@@ -1,10 +1,19 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+
 import com.intellij.openapi.project.Project;
 
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertNull;
+
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.project.Project;
+
+import org.junit.Test;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -13,15 +22,15 @@ import static org.mockito.Mockito.when;
 public class PathResolverTest {
 
     @Test
-    public void projectPathIsSplitCorrectlyWhenItContainsSlash() throws Exception {
+    public void getCourseAndExerciseNameWorksCorrectly() throws Exception {
 
         Project project = mock(Project.class);
-        String[] check = {"home", "intellij", "TMCProjects"};
+        String[] str = {"home", "intellij", "TMCProjects"};
         when(project.getProjectFilePath()).thenReturn(
                 "home/intellij/TMCProjects"
         );
         assertArrayEquals(PathResolver.getCourseAndExerciseName(project.getProjectFilePath()),
-                check);
+                str);
     }
 
     @Test
