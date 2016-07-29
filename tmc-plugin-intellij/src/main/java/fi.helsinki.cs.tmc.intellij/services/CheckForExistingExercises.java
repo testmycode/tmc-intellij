@@ -1,7 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,17 +12,19 @@ import java.util.List;
  */
 public class CheckForExistingExercises {
 
-    public List<Exercise> clean(List<Exercise> exercises) {
-        exercises.removeAll(getListOfDownloadedExercises(exercises));
+    public List<Exercise> clean(List<Exercise> exercises, SettingsTmc settings) {
+        exercises.removeAll(getListOfDownloadedExercises(exercises, settings));
         return exercises;
     }
 
-    public List<Exercise> getListOfDownloadedExercises(List<Exercise> exercises) {
+
+    public List<Exercise> getListOfDownloadedExercises(List<Exercise> exercises,
+                SettingsTmc settingsTmc) {
 
         List<Exercise> existing = new ArrayList<>();
 
         for (Exercise exercise : exercises) {
-            if (exercise.isDownloaded(TmcSettingsManager.get().getTmcProjectDirectory())) {
+            if (exercise.isDownloaded(settingsTmc.getTmcProjectDirectory())) {
                 existing.add(exercise);
             }
         }
