@@ -23,7 +23,7 @@ public class ExerciseDownloadingService {
         exercises = checker.clean(exercises);
 
         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER, exercises).call();
-        CourseAndExerciseManager.updateSinglecourse(course.getName(), checker);
+        CourseAndExerciseManager.updateSinglecourse(course.getName(), checker, finder);
         return exercises;
     }
 }

@@ -16,7 +16,9 @@ import com.intellij.openapi.ui.Messages;
  */
 public class ExerciseUploadingService {
 
-    public static void startUploadExercise(Project project, TmcCore core, ObjectFinder finder) {
+    public static void startUploadExercise(Project project, TmcCore core, ObjectFinder finder,
+                                           CheckForExistingExercises checker,
+                                           SubmissionResultHandler handler) {
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
         try {
@@ -24,9 +26,9 @@ public class ExerciseUploadingService {
             Exercise exercise = finder.findExerciseByName(course,
                     getExerciseName(exerciseCourse));
 
-            getResults(project, exercise, core);
+            getResults(project, exercise, core, handler);
             CourseAndExerciseManager.updateSinglecourse(course.getName(),
-                    new CheckForExistingExercises());
+                    checker, finder);
         } catch (Exception exception) {
             Messages.showErrorDialog(project, "Are your credentials correct?\n"
                     + "Is this a TMC Exercise?\n"
@@ -34,12 +36,14 @@ public class ExerciseUploadingService {
                     + exception.getMessage() + " "
                     + exception.toString(), "Error while submitting");
         }
+
     }
 
-    private static void getResults(Project project, Exercise exercise, TmcCore core) {
+    private static void getResults(Project project, Exercise exercise, TmcCore core,
+                                   SubmissionResultHandler handler) {
         try {
             SubmissionResult result = core.submit(ProgressObserver.NULL_OBSERVER, exercise).call();
-            SubmissionResultHandler.showResultMessage(exercise, result, project);
+            handler.showResultMessage(exercise, result, project);
         } catch (Exception e) {
             e.printStackTrace();
         }

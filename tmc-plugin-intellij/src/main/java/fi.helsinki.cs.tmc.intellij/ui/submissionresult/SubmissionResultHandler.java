@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project;
 
 public class SubmissionResultHandler {
 
-    public static void showResultMessage(Exercise exercise,
+    public void showResultMessage(Exercise exercise,
                                          SubmissionResult result,
                                          Project project) {
 
