@@ -24,6 +24,7 @@ import static org.mockito.Mockito.when;
 
 public class ExerciseDownloadingServiceTest {
 
+
     @Test
     public void downloadExerciseActionWorksAsIntended() throws Exception {
         Project project = mock(Project.class);
@@ -80,5 +81,6 @@ public class ExerciseDownloadingServiceTest {
         ProjectOpener opener = mock(ProjectOpener.class);
         ExerciseDownloadingService.startDownloadExercise(core, settings, checker, opener);
     }
+
 
 }
