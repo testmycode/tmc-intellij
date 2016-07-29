@@ -23,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
         name = "TmcSettings",
         storages = { @Storage("TMCSettings.xml") }
         )
-
 public class PersistentTmcSettings implements PersistentStateComponent<PersistentTmcSettings> {
 
     @Nullable

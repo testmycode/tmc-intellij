@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
  * &lt;postStartupActivity implementation
  *   ="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"&gt;
  */
-
 public class StartupEvent implements StartupActivity {
 
     @Override

@@ -13,22 +13,23 @@ import java.util.Map;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 
 public class ProjectListManager {
 
     private static Map<String, List<JBList>> currentListElements;
-    private static List<JPanel> panelList;
+    static List<ProjectListWindow> projectListWindows;
 
     public ProjectListManager() {
-        panelList = new ArrayList<>();
+        projectListWindows = new ArrayList<>();
         currentListElements = new HashMap<>();
     }
 
     public static void setup() {
         if (currentListElements == null) {
             currentListElements = new HashMap<>();
-            panelList = new ArrayList<>();
+            projectListWindows = new ArrayList<>();
         }
     }
 
@@ -40,9 +41,8 @@ public class ProjectListManager {
     }
 
     public static void refreshAllCourses() {
-        List<String> courses = new ObjectFinder().listAllDownloadedCourses();
-        for (String course : courses) {
-            refreshCourse(course);
+        for (ProjectListWindow window : projectListWindows) {
+            window.addCourseTabsAndExercises();
         }
     }
 
@@ -92,4 +92,9 @@ public class ProjectListManager {
     public static void setCurrentListElements(HashMap<String, List<JBList>> currentListElements) {
         ProjectListManager.currentListElements = currentListElements;
     }
+
+    public static void addWindow(ProjectListWindow window) {
+        projectListWindows.add(window);
+    }
+
 }

@@ -18,6 +18,7 @@ import com.intellij.openapi.ui.Messages;
 
 /**
  * Defined in plugin.xml on line
+<<<<<<< HEAD
  *  &lt;action id="Download Exercises"
  *    class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction"&gt;
  * in group actions

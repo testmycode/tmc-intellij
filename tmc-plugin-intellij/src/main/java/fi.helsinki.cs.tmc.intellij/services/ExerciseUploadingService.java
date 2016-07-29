@@ -19,6 +19,11 @@ public class ExerciseUploadingService {
     public static void startUploadExercise(Project project, TmcCore core, ObjectFinder finder) {
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
+        if (!CourseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
+            Messages.showErrorDialog(project, "Project not identified as TMC exercise", "Error");
+            return;
+        }
+
         try {
             Course course = finder.findCourseByName(getCourseName(exerciseCourse), core);
             Exercise exercise = finder.findExerciseByName(course,
