@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;
@@ -19,11 +20,12 @@ import org.jetbrains.annotations.NotNull;
  *  class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"&gt;
  *    and in extensions
  *   &lt;toolWindow id="TMC Project List" secondary="false" anchor="right"
- factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"&gt;
- * Opens the tool window in the active project window,
- * generates the content for the window
+ * factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"&gt;
+ * <p>
+ *   Opens the tool window in the active project window,
+ *   generates the content for the window
+ * </p>
  */
-
 public class OpenToolWindowAction extends AnAction implements ToolWindowFactory {
 
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -49,9 +51,11 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+        ProjectListWindow window = new ProjectListWindow();
         ContentFactory cf = ContentFactory.SERVICE.getInstance();
-        Content content = cf.createContent(new ProjectListWindow().getBasePanel(), "", true);
+        Content content = cf.createContent(window.getBasePanel(), "", true);
         toolWindow.getContentManager().addContent(content);
+        ProjectListManager.addWindow(window);
     }
 
     public void hideToolWindow(Project project) {

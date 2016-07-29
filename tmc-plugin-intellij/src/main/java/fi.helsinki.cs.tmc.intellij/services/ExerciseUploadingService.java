@@ -5,6 +5,8 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
 import com.intellij.openapi.project.Project;
@@ -18,8 +20,14 @@ public class ExerciseUploadingService {
 
     public static void startUploadExercise(Project project, TmcCore core, ObjectFinder finder,
                                            CheckForExistingExercises checker,
-                                           SubmissionResultHandler handler) {
+                                           SubmissionResultHandler handler,
+                                           SettingsTmc settings) {
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
+
+        if (!CourseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
+            Messages.showErrorDialog(project, "Project not identified as TMC exercise", "Error");
+            return;
+        }
 
         try {
             Course course = finder.findCourseByName(getCourseName(exerciseCourse), core);
@@ -27,8 +35,8 @@ public class ExerciseUploadingService {
                     getExerciseName(exerciseCourse));
 
             getResults(project, exercise, core, handler);
-            CourseAndExerciseManager.updateSinglecourse(course.getName(),
-                    checker, finder);
+            CourseAndExerciseManager.updateSingleCourse(course.getName(),
+                    checker, finder, settings);
         } catch (Exception exception) {
             Messages.showErrorDialog(project, "Are your credentials correct?\n"
                     + "Is this a TMC Exercise?\n"

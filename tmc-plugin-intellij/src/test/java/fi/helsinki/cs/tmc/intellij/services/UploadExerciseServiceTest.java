@@ -9,6 +9,8 @@ import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseUploadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import com.intellij.openapi.project.Project;
@@ -58,9 +60,15 @@ public class UploadExerciseServiceTest {
 
         final SubmissionResult result = mock(SubmissionResult.class);
 
+        SettingsTmc settings = mock(SettingsTmc.class);
 
-        when(checker.getListOfDownloadedExercises(course.getExercises()))
+        when(checker.getListOfDownloadedExercises(course.getExercises(),
+                settings))
                 .thenReturn(new ArrayList<Exercise>());
+
+
+
+
         when(finder.findCourseByName("home", core)).thenReturn(course);
         when(finder.findExerciseByName(course, "user")).thenReturn(exercise);
         when(project.getBasePath()).thenReturn("/home/user");
@@ -82,7 +90,7 @@ public class UploadExerciseServiceTest {
                 }
         );
 
-        ExerciseUploadingService.startUploadExercise(project, core, finder, checker, handler);
+        ExerciseUploadingService.startUploadExercise(project, core, finder, checker, handler, settings);
         verify(core).submit(ProgressObserver.NULL_OBSERVER, exercise);
     }
 }

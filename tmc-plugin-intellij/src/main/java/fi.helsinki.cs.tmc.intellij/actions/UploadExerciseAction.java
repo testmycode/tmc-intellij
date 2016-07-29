@@ -1,6 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseUploadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
@@ -33,7 +35,8 @@ public class UploadExerciseAction extends AnAction {
 
         ExerciseUploadingService.startUploadExercise(project,
                 TmcCoreHolder.get(), new ObjectFinder(),
-                new CheckForExistingExercises(), new SubmissionResultHandler());
+                new CheckForExistingExercises(), new SubmissionResultHandler(),
+                TmcSettingsManager.get());
 
         note.hide();
     }
