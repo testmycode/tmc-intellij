@@ -96,12 +96,12 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public String clientName() {
-        return null;
+        return "idea_plugin";
     }
 
     @Override
     public String clientVersion() {
-        return "0.9.2";
+        return "0.4.0";
     }
 
     @Override
