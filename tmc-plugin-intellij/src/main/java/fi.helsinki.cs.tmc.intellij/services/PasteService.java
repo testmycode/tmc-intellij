@@ -16,12 +16,10 @@ public class PasteService {
     PasteWindow window;
     Exercise exercise;
     TmcCore core;
-    Project project;
 
     public void showSubmitForm(Project project, TmcCore core) {
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
         try {
-            this.project = project;
             this.exercise = CourseAndExerciseManager.get(exerciseCourse[exerciseCourse.length - 2],
                     exerciseCourse[exerciseCourse.length - 1]);
             this.core = core;
@@ -32,6 +30,10 @@ public class PasteService {
             handleException(exception);
 
         }
+    }
+
+    public void setWindow(PasteWindow window) {
+        this.window = window;
     }
 
     public void setCore(TmcCore core) {
@@ -61,8 +63,10 @@ public class PasteService {
     }
 
     private void handleException(Exception exception) {
-        window.close();
-        Messages.showErrorDialog(project,"Are your credentials correct?\n"
+        if (window != null) {
+            window.close();
+        }
+        Messages.showErrorDialog("Are your credentials correct?\n"
                 + "Is this a TMC Exercise?\n"
                 + "Are you connected to the internet?\n"
                 + exception.getMessage() + " "
