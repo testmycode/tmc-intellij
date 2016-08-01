@@ -24,6 +24,11 @@
                 <updatePolicy>always</updatePolicy>
             </snapshots>
         </repository>
+        <repository>
+            <id>vektah-openapi</id>
+            <name>3rd party openapi repository</name>
+            <url>https://github.com/Vektah/maven-intellij-openapi/raw/master/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -70,9 +75,28 @@
             <type>maven-plugin</type>
         </dependency>
         <dependency>
-            <groupId>com.intellij</groupId>
-            <artifactId>openapi</artifactId>
-            <version>7.0.3</version>
+            <scope>provided</scope>
+            <groupId>net.vektah</groupId>
+            <artifactId>intellij-openapi</artifactId>
+            <version>12.1.4</version>
+        </dependency>
+        <dependency>
+            <scope>provided</scope>
+            <groupId>net.vektah</groupId>
+            <artifactId>intellij-util</artifactId>
+            <version>12.1.4</version>
+        </dependency>
+        <dependency>
+            <scope>provided</scope>
+            <groupId>net.vektah</groupId>
+            <artifactId>intellij-annotations</artifactId>
+            <version>12.1.4</version>
+        </dependency>
+        <dependency>
+            <groupId>net.vektah</groupId>
+            <scope>provided</scope>
+            <artifactId>intellij-extensions</artifactId>
+            <version>12.1.4</version>
         </dependency>
 
 
@@ -120,33 +144,9 @@
                 </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>2.17</version>
-                <executions>
-                    <execution>
-                        <id>validate</id>
-                        <phase>validate</phase>
-                        <configuration>
-                            <configLocation>checkstyle.xml</configLocation>
-                            <encoding>UTF-8</encoding>
-                            <consoleOutput>true</consoleOutput>
-                            <failsOnError>true</failsOnError>
-                            <linkXRef>false</linkXRef>
-                        </configuration>
-                        <goals>
-                            <goal>checkstyle</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.2.0</version>
-                <configuration>
-                    <repoToken></repoToken>
-                </configuration>
             </plugin>
 
             <plugin>

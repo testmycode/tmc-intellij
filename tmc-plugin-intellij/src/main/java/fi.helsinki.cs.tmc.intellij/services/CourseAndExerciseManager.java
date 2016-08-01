@@ -3,8 +3,13 @@ package fi.helsinki.cs.tmc.intellij.services;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
+
+import com.intellij.openapi.ui.Messages;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -80,30 +85,35 @@ public class CourseAndExerciseManager {
     }
 
     static void initiateDatabase() throws Exception {
-        List<String> directoriesOnDisk = new ObjectFinder().listAllDownloadedCourses();
+        try {
+            List<String> directoriesOnDisk = new ObjectFinder().listAllDownloadedCourses();
 
-        database = new HashMap<>();
-        courses = new ArrayList<>();
-        courses = (ArrayList<Course>) TmcCoreHolder.get()
-                .listCourses(ProgressObserver.NULL_OBSERVER).call();
+            database = new HashMap<>();
+            courses = new ArrayList<>();
+            courses = (ArrayList<Course>) TmcCoreHolder.get()
+                    .listCourses(ProgressObserver.NULL_OBSERVER).call();
 
-        for (Course course : courses) {
-            List<Exercise> exercises;
-            if (!directoriesOnDisk.contains(course.getName())) {
-                continue;
+            for (Course course : courses) {
+                List<Exercise> exercises;
+                if (!directoriesOnDisk.contains(course.getName())) {
+                    continue;
+                }
+
+                try {
+                    course = TmcCoreHolder.get()
+                            .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
+                    exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
+                            .getListOfDownloadedExercises(course.getExercises(),
+                                    TmcSettingsManager.get());
+                    database.put(course.getName(), exercises);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
-
-            try {
-                course = TmcCoreHolder.get()
-                        .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
-
-                exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
-                        .getListOfDownloadedExercises(course.getExercises());
-                database.put(course.getName(), exercises);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+        } catch (TmcCoreException exception) {
+            Messages.showErrorDialog(new ObjectFinder().findCurrentProject(),
+                    exception.getMessage()
+                    + " " + exception.toString(), "Error");
         }
     }
 
@@ -111,14 +121,23 @@ public class CourseAndExerciseManager {
         database.put(course.getName(), exercises);
     }
 
-    public static void updateSinglecourse(String courseName, CheckForExistingExercises checker) {
-        Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
+    public static void updateSingleCourse(String courseName, CheckForExistingExercises checker,
+                                          ObjectFinder finder,
+                                          SettingsTmc settings) {
+        boolean isNewCourse = database.get(courseName) == null;
+        Course course = finder.findCourseByName(courseName, TmcCoreHolder.get());
+
 
         List<Exercise> existing = (ArrayList<Exercise>) checker
-                .getListOfDownloadedExercises(course.getExercises());
+                .getListOfDownloadedExercises(course.getExercises(), settings);
 
         database.put(courseName, existing);
-        ProjectListManager.refreshCourse(courseName);
+
+        if (isNewCourse) {
+            ProjectListManager.refreshAllCourses();
+        } else {
+            ProjectListManager.refreshCourse(courseName);
+        }
     }
 
     public static void updateAll() {
