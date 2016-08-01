@@ -23,7 +23,7 @@ public class SubmitPasteAction extends AnAction{
                 || pasteService.getWindow().isClosed()) {
             Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
             pasteService = new PasteService();
-            pasteService.uploadExercise(project, TmcCoreHolder.get());
+            pasteService.showSubmitForm(project, TmcCoreHolder.get());
         } else {
             pasteService.getWindow().show();
         }

@@ -39,7 +39,7 @@ public class SubmitPanel {
                 pasteService.getWindow().close();
             }
         });
-        jlabel2.setText("Creating pastebin item for exercise " 
+        jlabel2.setText("Creating pastebin item for exercise "
                 + pasteService.getExerciseName());
     }
 

@@ -1,7 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
-import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.ui.pastebin.PasteWindow;
@@ -17,10 +16,12 @@ public class PasteService {
     PasteWindow window;
     Exercise exercise;
     TmcCore core;
+    Project project;
 
-    public void uploadExercise(Project project, TmcCore core) {
+    public void showSubmitForm(Project project, TmcCore core) {
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
         try {
+            this.project = project;
             this.exercise = CourseAndExerciseManager.get(exerciseCourse[exerciseCourse.length - 2],
                     exerciseCourse[exerciseCourse.length - 1]);
             this.core = core;
@@ -28,35 +29,21 @@ public class PasteService {
             window.showSubmit(this);
 
         } catch (Exception exception) {
-            Messages.showErrorDialog(project,"Are your credentials correct?\n"
-                    + "Is this a TMC Exercise?\n"
-                    + "Are you connected to the internet?\n"
-                    + exception.getMessage() + " "
-                    + exception.toString(), "Error while uploading to Pastebin");
-            ProjectListManager.refreshAllCourses();
+            handleException(exception);
+
         }
+    }
+
+    public void setCore(TmcCore core) {
+        this.core = core;
+    }
+
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
     }
 
     public PasteWindow getWindow() {
         return window;
-    }
-
-    private static URI sendPaste(String message, Exercise exercise, TmcCore core) {
-        try {
-            return core.pasteWithComment(ProgressObserver.NULL_OBSERVER,
-                    exercise, message).call();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private static String getCourseName(String[] courseAndExercise) {
-        return courseAndExercise[courseAndExercise.length - 2];
-    }
-
-    private static String getExerciseName(String[] courseAndExercise) {
-        return courseAndExercise[courseAndExercise.length - 1];
     }
 
     public String getExerciseName() {
@@ -68,8 +55,20 @@ public class PasteService {
             URI uri = core.pasteWithComment(ProgressObserver.NULL_OBSERVER,
                     exercise, message).call();
             window.showResult(uri);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Exception exception) {
+            handleException(exception);
         }
+    }
+
+    private void handleException(Exception exception) {
+        window.close();
+        Messages.showErrorDialog(project,"Are your credentials correct?\n"
+                + "Is this a TMC Exercise?\n"
+                + "Are you connected to the internet?\n"
+                + exception.getMessage() + " "
+                + exception.toString(), "Error while uploading to TMC Pastebin");
+        CourseAndExerciseManager.updateAll();
+        ProjectListManager.refreshAllCourses();
+        exception.printStackTrace();
     }
 }
