@@ -111,9 +111,13 @@ public class CourseAndExerciseManager {
                 }
             }
         } catch (TmcCoreException exception) {
-            Messages.showErrorDialog(new ObjectFinder().findCurrentProject(),
+            StartupErrorMessageService error = new StartupErrorMessageService();
+            error.showMessage(exception);
+
+            /*Messages.showErrorDialog(new ObjectFinder().findCurrentProject(),
                     exception.getMessage()
                     + " " + exception.toString(), "Error");
+            */
         }
     }
 
