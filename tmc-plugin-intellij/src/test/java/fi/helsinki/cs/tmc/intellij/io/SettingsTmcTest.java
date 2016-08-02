@@ -69,7 +69,7 @@ public class SettingsTmcTest {
     }
 
     @Test
-    public void getCurrentCourseWorksCoreectly() throws Exception {
+    public void getCurrentCourseWorksCorrectly() throws Exception {
         assertEquals(null, settingstmc.getCurrentCourse());
     }
 
@@ -80,13 +80,7 @@ public class SettingsTmcTest {
 
     @Test
     public void clientNameWorksCorrectly() throws Exception {
-        assertEquals(null, settingstmc.clientName());
-    }
-
-    @Test
-    public void clientVersionWorksCorrectly() throws Exception {
-        assertEquals("0.9.2", settingstmc.clientVersion());
-
+        assertEquals("idea_plugin", settingstmc.clientName());
     }
 
     @Test
@@ -105,7 +99,6 @@ public class SettingsTmcTest {
     public void proxyWorksCorrectly() throws Exception {
         assertEquals(null, settingstmc.proxy());
     }
-
 
     @Test
     public void setCourseWorksCorrectly() throws Exception {

@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>fi.helsinki.cs.tmc</id>
   <name>TMC Plugin</name>
-  <version>1.0</version>
+  <version>0.4.0</version>
   <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
   <description><![CDATA[
@@ -41,6 +41,7 @@
       <action id="Download Exercises" class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction" text="Download current course's exercises" description="Download exercise" />
       <action id="Open TMC Exercise List" class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction" text="Open TMC Exercise List" description="Open TMC Exercise List" />
       <action id="TestEvent1" class="fi.helsinki.cs.tmc.intellij.actions.TestEvent" text="Test Event Popup" description="Pop up test" />
+      <action id="Pastebin" class="fi.helsinki.cs.tmc.intellij.actions.SubmitPasteAction" text="Submit code to TMC Pastebin" description="Submit code to TMC Pastebin" />
     </group>
 
     <action class="fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction" id="SubmitButtonAction"  icon="TmcIcons.SUBMIT_BUTTON" >
