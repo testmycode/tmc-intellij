@@ -7,8 +7,8 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationDisplayType;
 import com.intellij.notification.NotificationGroup;
-import com.intellij.notification.Notifications;
 import com.intellij.notification.NotificationType;
+import com.intellij.notification.Notifications;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
@@ -17,19 +17,19 @@ import com.intellij.openapi.project.Project;
 public class StartupErrorMessageService {
 
     private String notifyAboutUsernamePasswordAndServerAddress(TmcCoreException exception) {
-        return errorCode(exception) +
-                "Seems like you don't have your TMC settings initialized. \n" +
-                "Set up your username, password and TMC server address.";
+        return errorCode(exception)
+                + "Seems like you don't have your TMC settings initialized. \n"
+                + "Set up your username, password and TMC server address.";
     }
 
     private String notifyAboutInternetConnection(TmcCoreException exception) {
-        return errorCode(exception) +
-                "Check your internet connection.";
+        return errorCode(exception) + "Check your internet connection.";
     }
 
     private String notifyAboutEmptyServerAddress(TmcCoreException exception) {
-        return errorCode(exception) +
-                "You need to set up TMC server address to be able to download and submit exercises.";
+        return errorCode(exception)
+                + "You need to set up TMC server address "
+                + "to be able to download and submit exercises.";
     }
 
     private String errorCode(TmcCoreException exception) {
@@ -42,8 +42,8 @@ public class StartupErrorMessageService {
 
     private void initializeNotification(String str) {
         Project projects = new ObjectFinder().findCurrentProject();
-        Notification notification = TMC_NOTIFICATION.
-                createNotification(str,
+        Notification notification = TMC_NOTIFICATION
+                .createNotification(str,
                         NotificationType.WARNING);
         Notifications.Bus.notify(notification, projects);
     }
