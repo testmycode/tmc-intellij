@@ -8,7 +8,15 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 
-
+/**
+ * Defined in plugin.xml on line
+ *  &lt;action id="Submit to Pastebin"
+ *    class="fi.helsinki.cs.tmc.intellij.actions.SubmitPasteAction"&gt;
+ * in group actions
+ * <p>
+ *     Submit code to TMC Pastebin.
+ * </p>
+ */
 public class SubmitPasteAction extends AnAction{
 
     private PasteService pasteService;
