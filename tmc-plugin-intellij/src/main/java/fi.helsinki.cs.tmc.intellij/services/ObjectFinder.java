@@ -11,6 +11,7 @@ import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
 
 import java.io.File;
@@ -113,7 +114,13 @@ public class ObjectFinder {
 
     public Project findCurrentProject() {
         DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResult();
+        if (dataContext == null) {
+            Project[] projects = ProjectManager.getInstance().getOpenProjects();
+            return projects[projects.length - 1];
+        }
+
         Project project = DataKeys.PROJECT.getData(dataContext);
+
         return project;
     }
 }
