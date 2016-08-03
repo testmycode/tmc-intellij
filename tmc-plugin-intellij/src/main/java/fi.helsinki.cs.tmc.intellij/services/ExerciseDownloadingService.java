@@ -9,6 +9,9 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
 import java.util.List;
 
+/**
+ * Offers method for downloading exercises from selected course.
+ */
 public class ExerciseDownloadingService {
 
     public static List<Exercise> startDownloadExercise(TmcCore core,
