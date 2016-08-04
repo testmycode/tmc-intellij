@@ -6,7 +6,9 @@ import java.net.URI;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
+/**
+ * Controls the pastebin.
+ */
 public class PasteWindow {
 
     private JFrame frame;

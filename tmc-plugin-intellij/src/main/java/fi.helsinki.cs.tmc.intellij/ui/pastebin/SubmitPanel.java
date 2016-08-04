@@ -17,7 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-
+/**
+ * Creates the Pastebin submit panel.
+ */
 public class SubmitPanel {
     private JTextArea submitMessageTextArea;
     private JButton cancelButton;

@@ -6,9 +6,16 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
+
 import org.jetbrains.annotations.Nullable;
 
 
+/**
+ * Uses the IDE to save settings on disk
+ * Defined in plugin.xml on line in extensions group
+ * <applicationService serviceImplementation
+ *   ="fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase"/>
+ */
 @State(
         name = "TmcExerciseDatabase",
         storages = { @Storage("TmcExerciseDatabase.xml") }

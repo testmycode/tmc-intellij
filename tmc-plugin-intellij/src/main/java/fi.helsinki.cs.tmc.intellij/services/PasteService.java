@@ -11,6 +11,9 @@ import com.intellij.openapi.ui.Messages;
 
 import java.net.URI;
 
+/**
+ *
+ */
 public class PasteService {
 
     PasteWindow window;

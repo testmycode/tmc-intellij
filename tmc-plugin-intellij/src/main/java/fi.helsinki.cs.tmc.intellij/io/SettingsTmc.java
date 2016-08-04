@@ -32,6 +32,9 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.password = password;
     }
 
+    /**
+     * Sets the default folder for TMC project files -> home/IdeaProjects/TMCProjects .
+     */
     public SettingsTmc() {
         JFileChooser fileChooser = new JFileChooser();
         serverAddress = "https://tmc.mooc.fi/staging/org/tmc-intellij/";
