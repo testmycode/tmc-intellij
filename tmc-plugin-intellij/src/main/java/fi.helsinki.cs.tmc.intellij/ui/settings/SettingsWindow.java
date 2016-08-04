@@ -4,6 +4,9 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * Creates and controls the settings window.
+ */
 public class SettingsWindow {
 
     private JFrame frame;

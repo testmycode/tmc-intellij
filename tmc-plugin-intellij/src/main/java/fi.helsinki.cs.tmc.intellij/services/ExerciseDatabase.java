@@ -8,6 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Controls the courses. Used by ExerciseDatabaseManager to set and get the course map.
+ */
 public class ExerciseDatabase implements Serializable {
 
     private Map<String, List<Exercise>> courses;

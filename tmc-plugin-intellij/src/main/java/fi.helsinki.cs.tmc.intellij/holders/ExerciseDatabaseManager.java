@@ -6,7 +6,9 @@ import fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase;
 
 import com.intellij.openapi.components.ServiceManager;
 
-
+/**
+ * Contains the ExerciseDatabase.
+ */
 public class ExerciseDatabaseManager {
 
     private static final PersistentExerciseDatabase persistentExerciseDatabase =

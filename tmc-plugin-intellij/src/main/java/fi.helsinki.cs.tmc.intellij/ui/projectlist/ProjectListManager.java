@@ -12,10 +12,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.swing.DefaultListModel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
-
+/**
+ * Contains the ProjectListWindow.
+ */
 public class ProjectListManager {
 
     private static Map<String, List<JBList>> currentListElements;

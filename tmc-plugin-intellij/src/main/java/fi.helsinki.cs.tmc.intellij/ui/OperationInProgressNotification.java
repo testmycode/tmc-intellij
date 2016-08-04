@@ -11,7 +11,6 @@ import javax.swing.JTextArea;
  */
 public class OperationInProgressNotification {
 
-    private String notification;
     private JFrame frame;
 
     public OperationInProgressNotification(String notification) {

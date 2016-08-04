@@ -20,7 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-
+/**
+ * Creates the Pastebin result panel.
+ */
 public class ResultPanel {
     private JTextField textField1;
     private JButton viewPasteButton;
