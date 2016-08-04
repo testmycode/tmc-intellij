@@ -1,11 +1,9 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
-import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
-import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
@@ -29,32 +27,30 @@ public class ExerciseUploadingService {
             return;
         }
 
-        try {
-            Course course = finder.findCourseByName(getCourseName(exerciseCourse), core);
-            Exercise exercise = finder.findExerciseByName(course,
-                    getExerciseName(exerciseCourse));
-
-            getResults(project, exercise, core, handler);
-            CourseAndExerciseManager.updateSingleCourse(course.getName(),
-                    checker, finder, settings);
-        } catch (Exception exception) {
-            Messages.showErrorDialog(project, "Are your credentials correct?\n"
-                    + "Is this a TMC Exercise?\n"
-                    + "Are you connected to the internet?\n"
-                    + exception.getMessage() + " "
-                    + exception.toString(), "Error while submitting");
-        }
+        Exercise exercise = CourseAndExerciseManager
+                .get(getCourseName(exerciseCourse),
+                        getExerciseName(exerciseCourse));
+        getResults(project, exercise, core, handler);
+        CourseAndExerciseManager.updateSingleCourse(getCourseName(exerciseCourse),
+                checker, finder, settings);
 
     }
 
-    private static void getResults(Project project, Exercise exercise, TmcCore core,
-                                   SubmissionResultHandler handler) {
-        try {
-            SubmissionResult result = core.submit(ProgressObserver.NULL_OBSERVER, exercise).call();
-            handler.showResultMessage(exercise, result, project);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private static void getResults(final Project project,
+                                   final Exercise exercise, final TmcCore core,
+                                   final SubmissionResultHandler handler) {
+        ThreadingService.runWithNotification(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final SubmissionResult result = core
+                            .submit(ProgressObserver.NULL_OBSERVER, exercise).call();
+                    handler.showResultMessage(exercise, result, project);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }, "Uploading exercise, this may take several minutes", project);
     }
 
     private static String getCourseName(String[] courseAndExercise) {

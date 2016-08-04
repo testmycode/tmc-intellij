@@ -122,7 +122,6 @@ public class CourseAndExerciseManager {
                 .getExerciseDatabase().getCourses().get(courseName) == null;
         Course course = finder.findCourseByName(courseName, TmcCoreHolder.get());
 
-
         List<Exercise> existing = (ArrayList<Exercise>) checker
                 .getListOfDownloadedExercises(course.getExercises(), settings);
 

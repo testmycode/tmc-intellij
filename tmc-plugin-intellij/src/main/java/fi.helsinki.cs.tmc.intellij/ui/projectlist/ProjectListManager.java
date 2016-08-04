@@ -46,6 +46,7 @@ public class ProjectListManager {
         }
     }
 
+
     public static void refreshCourse(String course) {
         List<JBList> list = currentListElements.get(course);
         if (list == null) {
@@ -53,7 +54,7 @@ public class ProjectListManager {
         }
 
         for (JBList jbList : list) {
-            if (list == null || !jbList.getName().equals(course)) {
+            if (jbList == null || !jbList.getName().equals(course)) {
                 continue;
             }
             DefaultListModel model = (DefaultListModel) jbList.getModel();
@@ -61,6 +62,7 @@ public class ProjectListManager {
             addExercisesToList(new ObjectFinder(), course, model);
             jbList.setModel(model);
         }
+        refreshAllCourses();
     }
 
     public static void addExercisesToList(ObjectFinder finder,

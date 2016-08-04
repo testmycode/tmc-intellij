@@ -8,7 +8,7 @@ before_install:
   - ./prepare-build.sh
 
 script:
-  - mvn package
+  - mvn test
   - mvn checkstyle:check
 
 after_success:
