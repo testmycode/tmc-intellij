@@ -4,6 +4,9 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
+/**
+ * Offers method for copying text to clip board.
+ */
 public class ClipboardService {
 
     public static void copyToClipBoard(String stringToCopy) {
