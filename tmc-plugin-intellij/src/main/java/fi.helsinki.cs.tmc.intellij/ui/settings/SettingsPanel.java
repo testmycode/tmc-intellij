@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
 
 import com.intellij.openapi.components.ServiceManager;
@@ -170,8 +171,9 @@ public class SettingsPanel {
                 try {
                     courses = (ArrayList<Course>)
                             TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception exception) {
+                    ErrorMessageService error = new ErrorMessageService();
+                    error.showMessage(exception, "Failed to get course list from TmcCore.");
                 }
 
                 addCourSesToListOfAvailable(courses);

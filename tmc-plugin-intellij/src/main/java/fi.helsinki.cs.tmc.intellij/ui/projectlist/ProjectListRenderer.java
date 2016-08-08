@@ -2,6 +2,7 @@ package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 
 import icons.TmcIcons;
 
@@ -49,7 +50,8 @@ public class ProjectListRenderer extends DefaultListCellRenderer {
             }
 
         } catch (Exception ewr) {
-
+            ErrorMessageService error = new ErrorMessageService();
+            error.showMessage(ewr, "Failed to set icon.");
         }
 
         label.setHorizontalTextPosition(JLabel.RIGHT);
