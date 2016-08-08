@@ -32,7 +32,7 @@ public class CourseAndExerciseManager {
         try {
             initiateDatabase();
         } catch (Exception e) {
-            e.printStackTrace();
+            errorMessageService(e);
         }
     }
 
@@ -40,7 +40,7 @@ public class CourseAndExerciseManager {
         try {
             initiateDatabase();
         } catch (Exception e) {
-            e.printStackTrace();
+            errorMessageService(e);
         }
     }
 
@@ -53,8 +53,9 @@ public class CourseAndExerciseManager {
                     return exc;
                 }
             }
-        } catch (Exception e) {
-
+        } catch (Exception exception) {
+            ErrorMessageService error = new ErrorMessageService();
+            error.showMessage(exception, "Could not find the exercise");
         }
         return null;
     }
@@ -67,8 +68,9 @@ public class CourseAndExerciseManager {
         try {
             return PersistentExerciseDatabase.getInstance()
                     .getExerciseDatabase().getCourses().get(course);
-        } catch (Exception e) {
-
+        } catch (Exception exception) {
+            ErrorMessageService error = new ErrorMessageService();
+            error.showMessage(exception, "Could not find the course.");
         }
         return null;
     }
@@ -86,15 +88,14 @@ public class CourseAndExerciseManager {
             for (Course course : courses) {
                 List<Exercise> exercises;
                 try {
-
                     course = TmcCoreHolder.get()
                             .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
                     exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
                             .getListOfDownloadedExercises(course.getExercises(),
                                     TmcSettingsManager.get());
                     database.put(course.getName(), exercises);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception error) {
+                    errorMessageService(error);
                 }
             }
 
@@ -139,8 +140,14 @@ public class CourseAndExerciseManager {
         try {
             initiateDatabase();
         } catch (Exception e) {
-            e.printStackTrace();
+            errorMessageService(e);
         }
+    }
+
+    private static void errorMessageService(Exception exception) {
+        ErrorMessageService error = new ErrorMessageService();
+        error.showMessage(exception, "Could not initiate database.");
+        exception.printStackTrace();
     }
 
     public static boolean isCourseInDatabase(String string) {

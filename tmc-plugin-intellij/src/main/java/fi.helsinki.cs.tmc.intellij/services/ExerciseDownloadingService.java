@@ -39,16 +39,26 @@ public class ExerciseDownloadingService {
             @Override
             public void run() {
                 ObjectFinder finder = new ObjectFinder();
-                final Course course = finder
-                        .findCourseByName(settings.getCourse()
-                                .getName(), core);
-                List<Exercise> exercises = course.getExercises();
-                exercises = checker.clean(exercises, settings);
                 try {
-                    core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
-                            exercises).call();
-                } catch (Exception e) {
+                    final Course course = finder
+                            .findCourseByName(settings.getCourse()
+                                    .getName(), core);
+                    List<Exercise> exercises = course.getExercises();
+                    exercises = checker.clean(exercises, settings);
+                    try {
+                        core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
+                                exercises).call();
+                    } catch (Exception exception) {
+                        ErrorMessageService error = new ErrorMessageService();
+                        error.showMessage(exception, "Failed to download exercises.");
+                    }
+
+                } catch (Exception except) {
+                    ErrorMessageService error = new ErrorMessageService();
+                    error.showMessage(except,
+                            "You need to select a course to be able to download. \n");
                 }
+
                 ApplicationManager.getApplication().invokeLater(
                         new Runnable() {
                             public void run() {
@@ -60,6 +70,7 @@ public class ExerciseDownloadingService {
                                                     CourseAndExerciseManager.updateAll();
                                                     ProjectListManager.refreshAllCourses();
                                                 } catch (Exception exept) {
+                                                    exept.printStackTrace();
                                                 }
                                             }
                                         }

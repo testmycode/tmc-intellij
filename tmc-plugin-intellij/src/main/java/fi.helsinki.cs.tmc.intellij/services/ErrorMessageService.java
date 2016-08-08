@@ -52,12 +52,29 @@ public class ErrorMessageService {
     }
 
     /**
+     * Error message, if TMC username or password is incorrect.
+     * @param exception The cause of an error.
+     * @return String. Error message that will be shown to the user.
+     */
+    private String notifyAboutIncorrectUsernameOrPassword(TmcCoreException exception) {
+        return errorCode(exception) + "TMC Username or Password incorrect.";
+    }
+    /**
      * Error message, prints out the cause of the current exception.
      * @param exception The cause of an error.
      * @return String. Error message that will be shown to the user.
      */
     private String errorCode(TmcCoreException exception) {
         return exception.getCause().getMessage() + ". \n";
+    }
+
+    /**
+     * Error message, prints out the cause of the current exception.
+     * @param exception The cause of an error.
+     * @return String. Error message that will be shown to the user.
+     */
+    private String errorCode(Exception exception, String str) {
+        return exception + ". \n" + str;
     }
 
     /**
@@ -72,16 +89,16 @@ public class ErrorMessageService {
      * Generates a notification popup.
      * @param str Notification message.
      */
-    private void initializeNotification(String str) {
+    private void initializeNotification(String str, NotificationType type) {
         Project projects = new ObjectFinder().findCurrentProject();
         Notification notification = TMC_NOTIFICATION
                 .createNotification(str,
-                        NotificationType.WARNING);
+                        type);
         Notifications.Bus.notify(notification, projects);
     }
 
     /**
-     * Determine which error message will be shown to the user.
+     * Controls which error message will be shown to the user.
      * @param exception The cause of an error.
      */
     public void showMessage(final TmcCoreException exception) {
@@ -90,16 +107,37 @@ public class ErrorMessageService {
             @Override
             public void run() {
                 String str = exception.getCause().getMessage();
-
+                NotificationType type = NotificationType.WARNING;
                 if (str.contains("Download failed: tmc.mooc.fi: unknown error")) {
-                    initializeNotification(notifyAboutInternetConnection(exception));
+                    initializeNotification(notifyAboutInternetConnection(exception), type);
                 } else if (!TmcSettingsManager.get().userDataExists()) {
-                    initializeNotification(notifyAboutUsernamePasswordAndServerAddress(exception));
+                    initializeNotification(notifyAboutUsernamePasswordAndServerAddress(exception),
+                            type);
+                } else if (str.contains("401")) {
+                    initializeNotification(notifyAboutIncorrectUsernameOrPassword(exception),
+                            NotificationType.ERROR);
                 } else if (TmcSettingsManager.get().getServerAddress().isEmpty()) {
-                    initializeNotification(notifyAboutEmptyServerAddress(exception));
+                    initializeNotification(notifyAboutEmptyServerAddress(exception), type);
                 } else {
-                    initializeNotification(errorCode(exception));
+                    initializeNotification(errorCode(exception), NotificationType.ERROR);
+                    exception.printStackTrace();
                 }
+            }
+        });
+    }
+
+    /**
+     * Controls which error message will be shown to the user.
+     * @param exception The cause of an error.
+     * @param errorMessage Error message.
+     */
+    public void showMessage(final Exception exception, final String errorMessage) {
+
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+            @Override
+            public void run() {
+                initializeNotification(errorCode(exception, errorMessage), NotificationType.ERROR);
+                exception.printStackTrace();
             }
         });
     }
