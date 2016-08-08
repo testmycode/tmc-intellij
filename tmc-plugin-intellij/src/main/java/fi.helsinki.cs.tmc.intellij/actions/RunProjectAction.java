@@ -27,12 +27,20 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
 
+
 public class RunProjectAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         runProject(anActionEvent.getProject());
     }
+
+    /**
+     * Main run method, readies project module for running.
+     * First it finds current module, then checks, whether it has a
+     * valid runconfiguration or not. If it does not, it creates one, otherwise
+     * current configuration is run as is as long as it has a main class.
+     */
 
     private void runProject(Project project) {
         RunManager runManager = RunManager.getInstance(project);
@@ -55,6 +63,12 @@ public class RunProjectAction extends AnAction {
         }
     }
 
+    /**
+     * Makes sure the configuration has a defined main class
+     * @param appCon Current configuration
+     * @return Whether the class has a valid main class or not
+     */
+
     private boolean checkForMainClass(Project project,
                                       Module module,
                                       ApplicationConfiguration appCon,
@@ -69,6 +83,11 @@ public class RunProjectAction extends AnAction {
         return true;
     }
 
+    /**
+     * Creates a run configuration, using the Application template.
+     * The created configuration is then added to RunManager.
+     */
+
     @NotNull
     private void createConfiguration(Project project, Module module, RunManager manager) {
         ConfigurationType type = ConfigurationTypeUtil.findConfigurationType("Application");
@@ -78,6 +97,12 @@ public class RunProjectAction extends AnAction {
         manager.addConfiguration(settings, true);
         manager.setSelectedConfiguration(settings);
     }
+
+    /**
+     * Creates an executor, RunnerAndConfigurationSettings implementation,
+     * ProgramRunner and an ExecutionEnvironment and uses them to execute
+     * the current project.
+     */
 
     private void runCreatedConfiguration(Project project,
                                          Module module,
@@ -99,6 +124,12 @@ public class RunProjectAction extends AnAction {
             JavaExecutionUtil.showExecutionErrorMessage(e1, "Error", project);
         }
     }
+
+    /**
+     * Modifies the run configuration by adding parameters to it,
+     * such as a Main class which the user selects.
+     * @param chooser Dialog for user to pick Main class.
+     */
 
     @NotNull
     private ApplicationConfiguration configApplicationConfiguration(Module module,
@@ -134,6 +165,10 @@ public class RunProjectAction extends AnAction {
         }
         return false;
     }
+
+    /**
+     * Ui for the user to pick the Main class.
+     */
 
     @NotNull
     private TreeClassChooser chooseMainClassForProject(Project project, Module module) {
