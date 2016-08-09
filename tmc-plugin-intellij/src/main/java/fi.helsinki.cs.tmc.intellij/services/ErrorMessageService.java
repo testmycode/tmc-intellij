@@ -17,9 +17,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
 /**
- * Pops up user friendly warnings for CourseAndExerciseManager exceptions.
+ * Pops up user friendly warnings and specified error messages.
  * For example pops up an error message on startup if there is no internet connection
- * or TMC user settings (username, password or server address) has not been initialized.
+ * or TMC user settings (username, password or server address) are incorrect.
  */
 public class ErrorMessageService {
 
@@ -41,15 +41,6 @@ public class ErrorMessageService {
     }
 
     /**
-     * Error message, if internet connection appears to be offline.
-     * @param exception The cause of an error.
-     * @return String. Error message that will be shown to the user.
-     */
-    private String notifyAboutInternetConnection(TmcCoreException exception) {
-        return errorCode(exception) + "Check your internet connection.";
-    }
-
-    /**
      * Error message, if TMC server address has not been initialized.
      * @param exception The cause of an error.
      * @return String. Error message that will be shown to the user.
@@ -60,24 +51,9 @@ public class ErrorMessageService {
                 + "to be able to download and submit exercises.";
     }
 
-    private String notifyAboutFailedSubmission(TmcCoreException exception) {
-        return errorCode(exception)
-                + "You need to set up TMC server address "
-                + "to be able to download and submit exercises.";
-    }
-
     private String notifyAboutFailedSubmissionAttempt(TmcCoreException exception) {
         return "Failed to establish connection to the server"
                 + "\n Check your Internet connection";
-    }
-
-    /**
-     * Error message, if TMC server address is incorrect.
-     * @param exception The cause of an error.
-     * @return String. Error message that will be shown to the user.
-     */
-    private String notifyAboutIncorrectServerAddress(TmcCoreException exception) {
-        return errorCode(exception) + "TMC server address is incorrect.";
     }
 
     /**
@@ -114,15 +90,6 @@ public class ErrorMessageService {
     public static final NotificationGroup TMC_NOTIFICATION =
             new NotificationGroup("TMC Error Messages",
                     NotificationDisplayType.STICKY_BALLOON, true);
-
-    /**
-     * Creates a new notification group TMC_ERROR_POPUP
-     * for TMC notifications to the notification board.
-     */
-    public static final NotificationGroup TMC_ERROR_POPUP =
-            new NotificationGroup("TMC Error Messages",
-                    NotificationDisplayType.STICKY_BALLOON, true);
-
     /**
      * Generates a notification popup.
      * @param str Notification message.
@@ -206,14 +173,3 @@ public class ErrorMessageService {
     }
 }
 
-/*
-        ToolBar toolBar = WindowManager.getInstance()
-                .getToolBar(DataKeys.PROJECT.getData(actionEvent.getDataContext()));
-
-        JBPopupFactory.getInstance()
-                .createHtmlTextBalloonBuilder(htmlText, messageType, null)
-                .setFadeoutTime(7500)
-                .createBalloon()
-                .show(RelativePoint.getCenterOf(toolBar.getComponent()),
-                        Balloon.Position.atRight);
-*/
