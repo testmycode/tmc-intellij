@@ -15,20 +15,18 @@ import java.net.URI;
 
 public class PasteService {
 
-    PasteWindow window;
-    Exercise exercise;
-    TmcCore core;
+    private PasteWindow window;
+    private Exercise exercise;
+    private TmcCore core;
 
     public void showSubmitForm(Project project, TmcCore core) {
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
-        this.exercise = CourseAndExerciseManager.get(exerciseCourse[exerciseCourse.length - 2],
-                exerciseCourse[exerciseCourse.length - 1]);
+        this.exercise = new CourseAndExerciseManager().get(getCourseName(exerciseCourse),
+                getExerciseName(exerciseCourse));
         this.core = core;
         this.window = new PasteWindow();
         window.showSubmit(this);
-
-
     }
 
     public void setWindow(PasteWindow window) {
@@ -80,7 +78,15 @@ public class PasteService {
     }
 
     private void updateProjectView() {
-        CourseAndExerciseManager.updateAll();
+        new CourseAndExerciseManager().setup();
         ProjectListManager.refreshAllCourses();
+    }
+
+    private String getCourseName(String[] exerciseCourse) {
+        return exerciseCourse[exerciseCourse.length - 2];
+    }
+
+    private String getExerciseName(String[] exerciseCourse) {
+        return exerciseCourse[exerciseCourse.length - 1];
     }
 }

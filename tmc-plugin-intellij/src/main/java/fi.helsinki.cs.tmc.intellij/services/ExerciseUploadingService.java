@@ -27,11 +27,12 @@ public class ExerciseUploadingService {
             return;
         }
 
-        Exercise exercise = CourseAndExerciseManager
+        CourseAndExerciseManager courseAndExerciseManager = new CourseAndExerciseManager();
+        Exercise exercise = courseAndExerciseManager
                 .get(getCourseName(exerciseCourse),
                         getExerciseName(exerciseCourse));
         getResults(project, exercise, core, handler);
-        CourseAndExerciseManager.updateSingleCourse(getCourseName(exerciseCourse),
+        courseAndExerciseManager.updateSingleCourse(getCourseName(exerciseCourse),
                 checker, finder, settings);
 
     }

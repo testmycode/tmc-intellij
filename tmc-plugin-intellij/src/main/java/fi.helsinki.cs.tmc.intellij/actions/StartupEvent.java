@@ -33,7 +33,7 @@ public class StartupEvent implements StartupActivity {
         new OpenToolWindowAction().openToolWindow(project);
 
         Long start = System.currentTimeMillis();
-        CourseAndExerciseManager.setup();
+        new CourseAndExerciseManager().setup();
 
         printOutInfo(start);
 

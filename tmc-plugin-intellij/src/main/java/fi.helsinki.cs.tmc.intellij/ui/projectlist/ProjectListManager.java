@@ -69,7 +69,7 @@ public class ProjectListManager {
                                           String course, DefaultListModel defaultListModel) {
 
         if (CourseAndExerciseManager.isCourseInDatabase(course)) {
-            List<Exercise> exercises = CourseAndExerciseManager.getExercises(course);
+            List<Exercise> exercises = new CourseAndExerciseManager().getExercises(course);
             addExercisesToListModel(defaultListModel, exercises);
         } else {
             List<String> exercises = finder.listAllDownloadedExercises(course);

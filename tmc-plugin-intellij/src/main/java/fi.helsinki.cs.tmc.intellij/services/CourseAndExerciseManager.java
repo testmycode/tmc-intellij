@@ -29,6 +29,7 @@ public class CourseAndExerciseManager {
         PersistentExerciseDatabase.getInstance().getExerciseDatabase().setCourses(database);
     }
 
+    /*
     public CourseAndExerciseManager() {
         try {
             initiateDatabase();
@@ -36,8 +37,8 @@ public class CourseAndExerciseManager {
             errorMessageService(e);
         }
     }
-
-    public static void setup() {
+    */
+    public void setup() {
         try {
             initiateDatabase();
         } catch (Exception e) {
@@ -45,7 +46,7 @@ public class CourseAndExerciseManager {
         }
     }
 
-    public static Exercise get(String course, String exercise) {
+    public Exercise get(String course, String exercise) {
         try {
             List<Exercise> exercises = PersistentExerciseDatabase.getInstance()
                     .getExerciseDatabase().getCourses().get(course);
@@ -61,14 +62,13 @@ public class CourseAndExerciseManager {
         return null;
     }
 
-    private static boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
+    private boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
         return exc.getName().equals(exerciseName);
     }
 
-    public static List<Exercise> getExercises(String course) {
+    public List<Exercise> getExercises(String course) {
         try {
-            return PersistentExerciseDatabase.getInstance()
-                    .getExerciseDatabase().getCourses().get(course);
+            return getDatabase().getCourses().get(course);
         } catch (Exception exception) {
             ErrorMessageService error = new ErrorMessageService();
             error.showMessage(exception, "Could not find the course.");
@@ -76,11 +76,11 @@ public class CourseAndExerciseManager {
         return null;
     }
 
-    public static Map<String, List<Exercise>> getDatabase() {
-        return PersistentExerciseDatabase.getInstance().getExerciseDatabase().getCourses();
+    public static ExerciseDatabase getDatabase() {
+        return PersistentExerciseDatabase.getInstance().getExerciseDatabase();
     }
 
-    static void initiateDatabase() throws Exception {
+    private void initiateDatabase() throws Exception {
         try {
             Map<String, List<Exercise>> database = new HashMap<>();
             List<Course> courses = (ArrayList<Course>) TmcCoreHolder.get()
@@ -100,7 +100,7 @@ public class CourseAndExerciseManager {
                 }
             }
 
-            PersistentExerciseDatabase.getInstance().getExerciseDatabase().setCourses(database);
+            getDatabase().setCourses(database);
         } catch (TmcCoreException exception) {
             ErrorMessageService error = new ErrorMessageService();
             error.showMessage(exception, false);
@@ -109,7 +109,7 @@ public class CourseAndExerciseManager {
         }
     }
 
-    private static void refreshCoursesOffline() {
+    private void refreshCoursesOffline() {
         Map<String, List<Exercise>> courses = getExerciseDatabase().getCourses();
 
         for (String courseName : courses.keySet()) {
@@ -120,7 +120,7 @@ public class CourseAndExerciseManager {
         getExerciseDatabase().setCourses(courses);
     }
 
-    private static void removeExercisesNotFoundFromLocalDirectories(List<Exercise> exercises,
+    private void removeExercisesNotFoundFromLocalDirectories(List<Exercise> exercises,
                                                                     String courseName) {
 
         List<String> exerciseNamesThroughDirectories =
@@ -137,11 +137,11 @@ public class CourseAndExerciseManager {
         }
     }
 
-    private static List<String> getExerciseNamesThroughDirectories(String courseName) {
+    private List<String> getExerciseNamesThroughDirectories(String courseName) {
         return new ObjectFinder().listAllDownloadedExercises(courseName);
     }
 
-    private static ExerciseDatabase getExerciseDatabase() {
+    private ExerciseDatabase getExerciseDatabase() {
         return PersistentExerciseDatabase.getInstance().getExerciseDatabase();
     }
 
@@ -151,7 +151,7 @@ public class CourseAndExerciseManager {
     }*/
 
 
-    public static void updateSingleCourse(String courseName, CheckForExistingExercises checker,
+    public void updateSingleCourse(String courseName, CheckForExistingExercises checker,
                                           ObjectFinder finder,
                                           SettingsTmc settings) {
 
@@ -174,7 +174,7 @@ public class CourseAndExerciseManager {
         }
     }
 
-    public static void updateAll() {
+    public void updateAll() {
         try {
             initiateDatabase();
         } catch (Exception e) {

@@ -142,7 +142,7 @@ public class ProjectListWindow {
     }
 
     public void refreshProjectList() {
-        CourseAndExerciseManager.updateAll();
+        new CourseAndExerciseManager().updateAll();
         ProjectListManager.refreshAllCourses();
     }
 

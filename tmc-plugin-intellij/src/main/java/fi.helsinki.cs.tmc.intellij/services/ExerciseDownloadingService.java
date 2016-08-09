@@ -67,7 +67,7 @@ public class ExerciseDownloadingService {
                                             @Override
                                             public void run() {
                                                 try {
-                                                    CourseAndExerciseManager.updateAll();
+                                                    new CourseAndExerciseManager().updateAll();
                                                     ProjectListManager.refreshAllCourses();
                                                 } catch (Exception exept) {
                                                     exept.printStackTrace();
