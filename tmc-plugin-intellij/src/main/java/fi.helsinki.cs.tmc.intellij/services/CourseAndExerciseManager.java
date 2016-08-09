@@ -11,6 +11,7 @@ import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -104,12 +105,46 @@ public class CourseAndExerciseManager {
             ErrorMessageService error = new ErrorMessageService();
             error.showMessage(exception);
 
-            /*Messages.showErrorDialog(new ObjectFinder().findCurrentProject(),
-                    exception.getMessage()
-                    + " " + exception.toString(), "Error");
-            */
+            refreshCoursesOffline();
         }
     }
+
+    private static void refreshCoursesOffline() {
+        Map<String, List<Exercise>> courses = getExerciseDatabase().getCourses();
+
+        for (String courseName : courses.keySet()) {
+            List<Exercise> exercises = courses.get(courseName);
+
+            removeExercisesNotFoundFromLocalDirectories(exercises, courseName);
+        }
+        getExerciseDatabase().setCourses(courses);
+    }
+
+    private static void removeExercisesNotFoundFromLocalDirectories(List<Exercise> exercises,
+                                                                    String courseName) {
+
+        List<String> exerciseNamesThroughDirectories =
+                getExerciseNamesThroughDirectories(courseName);
+
+        Iterator<Exercise> iterator = exercises.iterator();
+
+        while (iterator.hasNext()) {
+            Exercise exercise = iterator.next();
+
+            if (!exerciseNamesThroughDirectories.contains(exercise.getName())) {
+                iterator.remove();
+            }
+        }
+    }
+
+    private static List<String> getExerciseNamesThroughDirectories(String courseName) {
+        return new ObjectFinder().listAllDownloadedExercises(courseName);
+    }
+
+    private static ExerciseDatabase getExerciseDatabase() {
+        return PersistentExerciseDatabase.getInstance().getExerciseDatabase();
+    }
+
     /*
     private void updateDatabase(Course course, List<Exercise> exercises) {
         database.put(course.getName(), exercises);
@@ -119,15 +154,14 @@ public class CourseAndExerciseManager {
     public static void updateSingleCourse(String courseName, CheckForExistingExercises checker,
                                           ObjectFinder finder,
                                           SettingsTmc settings) {
-        boolean isNewCourse = PersistentExerciseDatabase.getInstance()
-                .getExerciseDatabase().getCourses().get(courseName) == null;
+
+        boolean isNewCourse = getExerciseDatabase().getCourses().get(courseName) == null;
         Course course = finder.findCourseByName(courseName, TmcCoreHolder.get());
 
         List<Exercise> existing = (ArrayList<Exercise>) checker
                 .getListOfDownloadedExercises(course.getExercises(), settings);
 
-        PersistentExerciseDatabase.getInstance().getExerciseDatabase()
-                .getCourses().put(courseName, existing);
+        getExerciseDatabase().getCourses().put(courseName, existing);
 
         if (isNewCourse) {
             ProjectListManager.refreshAllCourses();

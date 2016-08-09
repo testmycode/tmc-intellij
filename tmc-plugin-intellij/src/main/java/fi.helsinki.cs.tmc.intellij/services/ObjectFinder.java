@@ -94,7 +94,7 @@ public class ObjectFinder {
                 fileNames.add(getExerciseName(exerciseCourse));
             }
         } catch (IOException ex)  {
-            ex.printStackTrace();
+//            ex.printStackTrace();
         }
         Collections.sort(fileNames);
         return fileNames;

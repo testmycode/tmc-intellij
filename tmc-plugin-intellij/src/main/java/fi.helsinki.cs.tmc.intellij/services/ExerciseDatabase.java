@@ -16,7 +16,7 @@ public class ExerciseDatabase implements Serializable {
     private Map<String, List<Exercise>> courses;
 
     public ExerciseDatabase() {
-        this.courses =  new HashMap();
+        courses =  new HashMap();
     }
 
     public Map<String, List<Exercise>> getCourses() {
@@ -26,4 +26,5 @@ public class ExerciseDatabase implements Serializable {
     public void setCourses(Map<String, List<Exercise>> courses) {
         this.courses = courses;
     }
+
 }
