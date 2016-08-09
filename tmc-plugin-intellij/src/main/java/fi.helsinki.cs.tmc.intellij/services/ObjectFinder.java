@@ -46,11 +46,14 @@ public class ObjectFinder {
         try {
             courses = core.listCourses(ProgressObserver.NULL_OBSERVER).call();
         } catch (TmcCoreException e) {
-            Messages.showMessageDialog(findCurrentProject(),
-                            e.getMessage(), "Error", Messages.getErrorIcon());
+            new ErrorMessageService().showMessage(e, false);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        if (courses == null) {
+            return null;
+        }
+
         for (Course course : courses) {
             if (course.getName().equals(courseName)) {
                 try {

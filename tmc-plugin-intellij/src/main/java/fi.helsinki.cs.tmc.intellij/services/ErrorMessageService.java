@@ -11,7 +11,10 @@ import com.intellij.notification.NotificationType;
 import com.intellij.notification.Notifications;
 
 import com.intellij.openapi.application.ApplicationManager;
+
 import com.intellij.openapi.project.Project;
+
+import com.intellij.openapi.ui.Messages;
 
 /**
  * Pops up user friendly warnings for CourseAndExerciseManager exceptions.
@@ -19,6 +22,12 @@ import com.intellij.openapi.project.Project;
  * or TMC user settings (username, password or server address) has not been initialized.
  */
 public class ErrorMessageService {
+
+    private String notifyAboutCourseServerAddressAndInternet() {
+        return "Failed to download courses\n"
+                + "Check that you have the correct course and server address\n"
+                + "that you are connected to Internet";
+    }
 
     /**
      * Error message, if TMC username or password are not initialized.
@@ -51,6 +60,26 @@ public class ErrorMessageService {
                 + "to be able to download and submit exercises.";
     }
 
+    private String notifyAboutFailedSubmission(TmcCoreException exception) {
+        return errorCode(exception)
+                + "You need to set up TMC server address "
+                + "to be able to download and submit exercises.";
+    }
+
+    private String notifyAboutFailedSubmissionAttempt(TmcCoreException exception) {
+        return "Failed to establish connection to the server"
+                + "\n Check your Internet connection";
+    }
+
+    /**
+     * Error message, if TMC server address is incorrect.
+     * @param exception The cause of an error.
+     * @return String. Error message that will be shown to the user.
+     */
+    private String notifyAboutIncorrectServerAddress(TmcCoreException exception) {
+        return errorCode(exception) + "TMC server address is incorrect.";
+    }
+
     /**
      * Error message, if TMC username or password is incorrect.
      * @param exception The cause of an error.
@@ -59,6 +88,7 @@ public class ErrorMessageService {
     private String notifyAboutIncorrectUsernameOrPassword(TmcCoreException exception) {
         return errorCode(exception) + "TMC Username or Password incorrect.";
     }
+
     /**
      * Error message, prints out the cause of the current exception.
      * @param exception The cause of an error.
@@ -86,44 +116,76 @@ public class ErrorMessageService {
                     NotificationDisplayType.STICKY_BALLOON, true);
 
     /**
+     * Creates a new notification group TMC_ERROR_POPUP
+     * for TMC notifications to the notification board.
+     */
+    public static final NotificationGroup TMC_ERROR_POPUP =
+            new NotificationGroup("TMC Error Messages",
+                    NotificationDisplayType.STICKY_BALLOON, true);
+
+    /**
      * Generates a notification popup.
      * @param str Notification message.
      */
-    private void initializeNotification(String str, NotificationType type) {
-        Project projects = new ObjectFinder().findCurrentProject();
-        Notification notification = TMC_NOTIFICATION
-                .createNotification(str,
-                        type);
-        Notifications.Bus.notify(notification, projects);
+    private void initializeNotification(final String str,
+                                        NotificationType type,
+                                        boolean bool) {
+        final Project projects = new ObjectFinder().findCurrentProject();
+        if (bool) {
+            Messages.showMessageDialog(projects,
+                    str, "", Messages.getErrorIcon());
+        } else {
+            Notification notification = TMC_NOTIFICATION
+                    .createNotification(str,
+                            type);
+            Notifications.Bus.notify(notification, projects);
+        }
     }
 
-    /**
-     * Controls which error message will be shown to the user.
-     * @param exception The cause of an error.
-     */
-    public void showMessage(final TmcCoreException exception) {
+    private void notificationCompilerForTmcRefreshButton(TmcCoreException exception, boolean bool) {
+        selectMessage(exception, bool);
+    }
 
-        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
-            @Override
-            public void run() {
-                String str = exception.getCause().getMessage();
-                NotificationType type = NotificationType.WARNING;
-                if (str.contains("Download failed: tmc.mooc.fi: unknown error")) {
-                    initializeNotification(notifyAboutInternetConnection(exception), type);
-                } else if (!TmcSettingsManager.get().userDataExists()) {
-                    initializeNotification(notifyAboutUsernamePasswordAndServerAddress(exception),
-                            type);
-                } else if (str.contains("401")) {
-                    initializeNotification(notifyAboutIncorrectUsernameOrPassword(exception),
-                            NotificationType.ERROR);
-                } else if (TmcSettingsManager.get().getServerAddress().isEmpty()) {
-                    initializeNotification(notifyAboutEmptyServerAddress(exception), type);
-                } else {
-                    initializeNotification(errorCode(exception), NotificationType.ERROR);
-                    exception.printStackTrace();
+    private void selectMessage(TmcCoreException exception, boolean bool) {
+        String str = exception.getCause().getMessage();
+        NotificationType type = NotificationType.WARNING;
+        if (str.contains("Download failed") || str.contains("404") || str.contains("500")) {
+            initializeNotification(notifyAboutCourseServerAddressAndInternet(), type, bool);
+        } else if (exception.getMessage().contains("Failed to fetch courses from the server")) {
+            initializeNotification(notifyAboutFailedSubmissionAttempt(exception), type, bool);
+        } else if (exception.getMessage().contains("Failed to compress project")) {
+            initializeNotification(notifyAboutFailedSubmissionAttempt(exception), type, bool);
+        } else if (!TmcSettingsManager.get().userDataExists()) {
+            initializeNotification(notifyAboutUsernamePasswordAndServerAddress(exception),
+                    type, bool);
+        } else if (str.contains("401")) {
+            initializeNotification(notifyAboutIncorrectUsernameOrPassword(exception),
+                    NotificationType.ERROR, bool);
+        } else if (TmcSettingsManager.get().getServerAddress().isEmpty()) {
+            initializeNotification(notifyAboutEmptyServerAddress(exception), type, bool);
+        } else {
+            initializeNotification(errorCode(exception), NotificationType.ERROR, bool);
+            exception.printStackTrace();
+        }
+    }
+    /**
+     * Controls which error message will be shown to the user. If the parameter bool
+     * is true, the message will be shown as a popup. If not, then it will be
+     * shown at the side.
+     * @param exception The cause of an error.
+     * @param bool if the error message will be a pop up or not
+     */
+    public void showMessage(final TmcCoreException exception, final boolean bool) {
+        if (bool) {
+            notificationCompilerForTmcRefreshButton(exception, bool);
+        } else {
+            ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+                @Override
+                public void run() {
+                    selectMessage(exception, bool);
                 }
-            }
-        });
+            });
+        }
     }
 
     /**
@@ -136,7 +198,8 @@ public class ErrorMessageService {
         ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
             @Override
             public void run() {
-                initializeNotification(errorCode(exception, errorMessage), NotificationType.ERROR);
+                initializeNotification(errorCode(exception, errorMessage),
+                        NotificationType.ERROR, false);
                 exception.printStackTrace();
             }
         });

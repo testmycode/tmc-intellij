@@ -3,12 +3,14 @@ package fi.helsinki.cs.tmc.intellij.services;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.ui.pastebin.PasteWindow;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
+import java.io.IOException;
 import java.net.URI;
 
 public class PasteService {
@@ -19,17 +21,14 @@ public class PasteService {
 
     public void showSubmitForm(Project project, TmcCore core) {
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
-        try {
-            this.exercise = CourseAndExerciseManager.get(exerciseCourse[exerciseCourse.length - 2],
-                    exerciseCourse[exerciseCourse.length - 1]);
-            this.core = core;
-            this.window = new PasteWindow();
-            window.showSubmit(this);
 
-        } catch (Exception exception) {
-            handleException(exception);
+        this.exercise = CourseAndExerciseManager.get(exerciseCourse[exerciseCourse.length - 2],
+                exerciseCourse[exerciseCourse.length - 1]);
+        this.core = core;
+        this.window = new PasteWindow();
+        window.showSubmit(this);
 
-        }
+
     }
 
     public void setWindow(PasteWindow window) {
@@ -57,22 +56,31 @@ public class PasteService {
             URI uri = core.pasteWithComment(ProgressObserver.NULL_OBSERVER,
                     exercise, message).call();
             window.showResult(uri);
-        } catch (Exception exception) {
+//            updateProjectView();
+        } catch (TmcCoreException exception) {
             handleException(exception);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Messages.showErrorDialog("Uknown error", "Error while uploading to TMC Pastebin");
+            updateProjectView();
         }
     }
 
-    private void handleException(Exception exception) {
+    private void handleException(TmcCoreException exception) {
+        closeWindowIfExists();
+
+        new ErrorMessageService().showMessage(exception, false);
+        exception.printStackTrace();
+    }
+
+    private void closeWindowIfExists() {
         if (window != null) {
             window.close();
         }
-        Messages.showErrorDialog("Are your credentials correct?\n"
-                + "Is this a TMC Exercise?\n"
-                + "Are you connected to the internet?\n"
-                + exception.getMessage() + " "
-                + exception.toString(), "Error while uploading to TMC Pastebin");
+    }
+
+    private void updateProjectView() {
         CourseAndExerciseManager.updateAll();
         ProjectListManager.refreshAllCourses();
-        exception.printStackTrace();
     }
 }

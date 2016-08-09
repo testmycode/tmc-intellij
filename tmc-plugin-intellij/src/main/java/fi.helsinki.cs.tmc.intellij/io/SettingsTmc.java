@@ -104,7 +104,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public String clientVersion() {
-        return "0.4.0";
+        return "0.5.0";
     }
 
     @Override

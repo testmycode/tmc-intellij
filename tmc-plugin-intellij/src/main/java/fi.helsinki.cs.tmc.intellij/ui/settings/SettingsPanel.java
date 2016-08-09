@@ -2,9 +2,11 @@ package fi.helsinki.cs.tmc.intellij.ui.settings;
 
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
 
@@ -173,13 +175,21 @@ public class SettingsPanel {
                             TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
                 } catch (Exception exception) {
                     ErrorMessageService error = new ErrorMessageService();
-                    error.showMessage(exception, "Failed to get course list from TmcCore.");
+                    error.showMessage((TmcCoreException) exception, true);
                 }
 
                 addCourSesToListOfAvailable(courses);
-                listOfAvailableCourses.setSelectedItem(TmcSettingsManager.get().getCourse());
+                if ((TmcSettingsManager.get().getCourse()) != null) {
+                    listOfAvailableCourses.setSelectedItem(TmcSettingsManager.get().getCourse());
+                } else {
+                    listOfAvailableCourses.setSelectedItem(getFirstFromAvailableCourses());
+                }
             }
         };
+    }
+
+    private Course getFirstFromAvailableCourses() {
+        return listOfAvailableCourses.getModel().getElementAt(0);
     }
 
     private void addCourSesToListOfAvailable(List<Course> courses) {
