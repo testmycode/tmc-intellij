@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
@@ -13,6 +14,9 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Uploads the currently active project to TMC Server
  * Defined in plugin.xml on the line
@@ -23,9 +27,11 @@ import com.intellij.openapi.project.Project;
  */
 public class UploadExerciseAction extends AnAction {
 
+    private static final Logger logger = LoggerFactory.getLogger(UploadExerciseAction.class);
+
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-
+        logger.info("Performing UploadExerciseAction");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
 
         ExerciseUploadingService.startUploadExercise(project,

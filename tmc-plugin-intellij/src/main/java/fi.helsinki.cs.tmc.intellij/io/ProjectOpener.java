@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+//TODO Loggers are needed here. Also exceptions need refactoring after merging with master.
 /**
  * Opens the project using intellij ProjectManager, when given the path.
  */

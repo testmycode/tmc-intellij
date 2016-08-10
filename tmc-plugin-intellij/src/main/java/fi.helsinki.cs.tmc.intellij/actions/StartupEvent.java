@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
@@ -14,6 +15,9 @@ import com.intellij.openapi.startup.StartupActivity;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * The actions to be executed on project startup
  * defined in plugin.xml exercises group on line
@@ -21,9 +25,11 @@ import org.jetbrains.annotations.NotNull;
  *   ="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"&gt;
  */
 public class StartupEvent implements StartupActivity {
+    private static final Logger logger = LoggerFactory.getLogger(StartupEvent.class);
 
     @Override
     public void runActivity(@NotNull Project project) {
+        logger.info("Opening project.");
         final OperationInProgressNotification note =
                 new OperationInProgressNotification("Running TMC startup actions");
 
@@ -46,6 +52,7 @@ public class StartupEvent implements StartupActivity {
     }
 
     private void printOutInfo(Long startTime) {
+        logger.info("Printing out project download information.");
         System.out.println(CourseAndExerciseManager.getDatabase());
         Long end = System.currentTimeMillis() - startTime;
 
