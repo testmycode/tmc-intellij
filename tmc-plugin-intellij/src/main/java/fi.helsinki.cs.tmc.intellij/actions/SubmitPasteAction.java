@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.PasteService;
 
@@ -31,7 +32,8 @@ public class SubmitPasteAction extends AnAction{
                 || pasteService.getWindow().isClosed()) {
             Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
             pasteService = new PasteService();
-            pasteService.showSubmitForm(project, TmcCoreHolder.get());
+            pasteService.showSubmitForm(project, TmcCoreHolder.get(),
+                    ProjectListManagerHolder.get());
         } else {
             pasteService.getWindow().show();
         }

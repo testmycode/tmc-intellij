@@ -1,6 +1,7 @@
 
 package fi.helsinki.cs.tmc.intellij.io;
 
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
@@ -35,7 +36,8 @@ public class ProjectOpener {
             Messages.showErrorDialog(new ObjectFinder()
                             .findCurrentProject(),
                     "Directory no longer exists", "File not found");
-            ProjectListManager.refreshAllCourses();
+            ProjectListManagerHolder.get().refreshAllCourses();
+
         }
     }
 
@@ -54,7 +56,7 @@ public class ProjectOpener {
             Messages.showErrorDialog(new ObjectFinder()
                     .findCurrentProject(),
                     "Directory no longer exists", "File not found");
-            ProjectListManager.refreshAllCourses();
+            ProjectListManagerHolder.get().refreshAllCourses();
         }
     }
 }

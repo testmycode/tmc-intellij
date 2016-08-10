@@ -5,7 +5,9 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -34,10 +36,11 @@ public class DownloadExerciseAction extends AnAction {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
 
         try {
-            ExerciseDownloadingService.startDownloadExercise(TmcCoreHolder.get(),
+            new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
                     TmcSettingsManager.get(),
                     new CheckForExistingExercises(),
-                    new ProjectOpener());
+                    new ObjectFinder(),
+                    new ErrorMessageService());
         } catch (Exception e) {
             Messages.showMessageDialog(project,
                     "Downloading failed \n"

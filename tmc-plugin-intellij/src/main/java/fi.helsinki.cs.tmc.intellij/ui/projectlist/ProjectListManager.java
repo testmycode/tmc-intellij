@@ -40,14 +40,14 @@ public class ProjectListManager {
         currentListElements.get(list.getName()).add(list);
     }
 
-    public static void refreshAllCourses() {
+    public void refreshAllCourses() {
         for (ProjectListWindow window : projectListWindows) {
             window.addCourseTabsAndExercises();
         }
     }
 
 
-    public static void refreshCourse(String course) {
+    public void refreshCourse(String course) {
         List<JBList> list = currentListElements.get(course);
         if (list == null) {
             return;

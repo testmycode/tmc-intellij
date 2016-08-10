@@ -4,13 +4,13 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.ui.pastebin.PasteWindow;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
-import java.io.IOException;
 import java.net.URI;
 
 public class PasteService {
@@ -49,18 +49,19 @@ public class PasteService {
         return exercise.getName();
     }
 
-    public void uploadToTmcPastebin(String message) {
+    public void uploadToTmcPastebin(String message,
+                                    CourseAndExerciseManager courseAndExerciseManager,
+                                    ProjectListManager projectListManager) {
         try {
             URI uri = core.pasteWithComment(ProgressObserver.NULL_OBSERVER,
                     exercise, message).call();
             window.showResult(uri);
-//            updateProjectView();
+            updateProjectView(courseAndExerciseManager, projectListManager);
         } catch (TmcCoreException exception) {
             handleException(exception);
         } catch (Exception e) {
             e.printStackTrace();
-            Messages.showErrorDialog("Uknown error", "Error while uploading to TMC Pastebin");
-            updateProjectView();
+            Messages.showErrorDialog("Unknown error", "Error while uploading to TMC Pastebin");
         }
     }
 
@@ -77,9 +78,10 @@ public class PasteService {
         }
     }
 
-    private void updateProjectView() {
-        new CourseAndExerciseManager().setup();
-        ProjectListManager.refreshAllCourses();
+    private void updateProjectView(CourseAndExerciseManager courseAndExerciseManager,
+                                   ProjectListManager projectListManager) {
+        courseAndExerciseManager.setup();
+        projectListManager.refreshAllCourses();
     }
 
     private String getCourseName(String[] exerciseCourse) {

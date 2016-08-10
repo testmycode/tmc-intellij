@@ -4,6 +4,7 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
@@ -18,44 +19,45 @@ import java.util.List;
  */
 public class ExerciseDownloadingService {
 
-    public static void startDownloadExercise(final TmcCore core,
-                                             final SettingsTmc settings,
-                                             final CheckForExistingExercises checker,
-                                             ProjectOpener opener) throws Exception {
+    public void startDownloadExercise(final TmcCore core,
+                                      final SettingsTmc settings,
+                                      final CheckForExistingExercises checker,
+                                      ObjectFinder objectFinder,
+                                      ErrorMessageService errorMessageService) throws Exception {
 
-        Thread run = createThread(core, settings, checker);
+        Thread run = createThread(core, settings, checker, objectFinder, errorMessageService);
         ThreadingService
                 .runWithNotification(run,
                         "Downloading exercises, this may take several minutes",
-                        new ObjectFinder().findCurrentProject());
+                        objectFinder.findCurrentProject());
     }
 
     @NotNull
-    private static Thread createThread(final TmcCore core,
-                                       final SettingsTmc settings,
-                                       final CheckForExistingExercises checker) {
+    private Thread createThread(final TmcCore core,
+                               final SettingsTmc settings,
+                               final CheckForExistingExercises checker,
+                               final ObjectFinder finder,
+                               final ErrorMessageService errorMessageService) {
 
         return new Thread() {
             @Override
             public void run() {
-                ObjectFinder finder = new ObjectFinder();
                 try {
                     final Course course = finder
                             .findCourseByName(settings.getCourse()
                                     .getName(), core);
                     List<Exercise> exercises = course.getExercises();
                     exercises = checker.clean(exercises, settings);
+                    System.out.println("exercises are: " + exercises);
                     try {
                         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
                                 exercises).call();
                     } catch (Exception exception) {
-                        ErrorMessageService error = new ErrorMessageService();
-                        error.showMessage(exception, "Failed to download exercises.");
+                        errorMessageService.showMessage(exception, "Failed to download exercises.");
                     }
 
                 } catch (Exception except) {
-                    ErrorMessageService error = new ErrorMessageService();
-                    error.showMessage(except,
+                    errorMessageService.showMessage(except,
                             "You need to select a course to be able to download. \n");
                 }
 
@@ -68,7 +70,7 @@ public class ExerciseDownloadingService {
                                             public void run() {
                                                 try {
                                                     new CourseAndExerciseManager().updateAll();
-                                                    ProjectListManager.refreshAllCourses();
+                                                    ProjectListManagerHolder.get().refreshAllCourses();
                                                 } catch (Exception exept) {
                                                     exept.printStackTrace();
                                                 }

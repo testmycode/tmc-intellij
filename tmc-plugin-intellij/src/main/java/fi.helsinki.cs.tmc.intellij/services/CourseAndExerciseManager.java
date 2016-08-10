@@ -4,6 +4,7 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
@@ -25,8 +26,8 @@ import java.util.Map;
  */
 public class CourseAndExerciseManager {
 
-    public static void setDatabase(Map<String, List<Exercise>> database) {
-        PersistentExerciseDatabase.getInstance().getExerciseDatabase().setCourses(database);
+    public void setDatabase(Map<String, List<Exercise>> database) {
+        getExerciseDatabase().setCourses(database);
     }
 
     /*
@@ -76,7 +77,7 @@ public class CourseAndExerciseManager {
         return null;
     }
 
-    public static ExerciseDatabase getDatabase() {
+    public ExerciseDatabase getDatabase() {
         return PersistentExerciseDatabase.getInstance().getExerciseDatabase();
     }
 
@@ -168,9 +169,9 @@ public class CourseAndExerciseManager {
         getExerciseDatabase().getCourses().put(courseName, existing);
 
         if (isNewCourse) {
-            ProjectListManager.refreshAllCourses();
+            ProjectListManagerHolder.get().refreshAllCourses();
         } else {
-            ProjectListManager.refreshCourse(courseName);
+            ProjectListManagerHolder.get().refreshCourse(courseName);
         }
     }
 

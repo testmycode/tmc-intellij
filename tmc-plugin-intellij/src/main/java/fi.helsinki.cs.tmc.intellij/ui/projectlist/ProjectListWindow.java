@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
 import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
@@ -143,7 +144,7 @@ public class ProjectListWindow {
 
     public void refreshProjectList() {
         new CourseAndExerciseManager().updateAll();
-        ProjectListManager.refreshAllCourses();
+        ProjectListManagerHolder.get().refreshAllCourses();
     }
 
     {

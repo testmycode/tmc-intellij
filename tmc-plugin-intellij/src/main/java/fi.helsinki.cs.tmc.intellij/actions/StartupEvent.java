@@ -42,7 +42,6 @@ public class StartupEvent implements StartupActivity {
     }
 
     private void printOutInfo(Long startTime) {
-        System.out.println(CourseAndExerciseManager.getDatabase());
         Long end = System.currentTimeMillis() - startTime;
 
         System.out.println("Time it took to download exercise information: " + end);
