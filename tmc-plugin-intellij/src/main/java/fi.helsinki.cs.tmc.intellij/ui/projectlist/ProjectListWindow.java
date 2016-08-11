@@ -46,7 +46,6 @@ public class ProjectListWindow {
     }
 
     public void setTabbedPanelBase(JTabbedPane tabbedPanelBase) {
-
         this.tabbedPanelBase = tabbedPanelBase;
     }
 
@@ -74,7 +73,7 @@ public class ProjectListWindow {
         CourseTabFactory factory = new CourseTabFactory();
 
         createCourseSpecificTabs(finder, opener, tabbedPanelBase,
-                courses, factory);
+                courses, factory, new CourseAndExerciseManager());
 
         addFunctionalityToHideButton();
         JButton refreshButton = addFunctionalityToRefreshButton();
@@ -86,10 +85,12 @@ public class ProjectListWindow {
                                           ProjectOpener opener,
                                           JTabbedPane tabbedPanelBase,
                                           List<String> courses,
-                                          CourseTabFactory factory) {
+                                          CourseTabFactory factory,
+                                          CourseAndExerciseManager courseAndExerciseManager) {
 
         for (String course : courses) {
-            factory.createCourseSpecificTab(finder, opener, course, tabbedPanelBase);
+            factory.createCourseSpecificTab(finder, opener, course, tabbedPanelBase,
+                    courseAndExerciseManager);
         }
     }
 
@@ -142,7 +143,7 @@ public class ProjectListWindow {
         });
     }
 
-    public void refreshProjectList() {
+    private void refreshProjectList() {
         new CourseAndExerciseManager().updateAll();
         ProjectListManagerHolder.get().refreshAllCourses();
     }

@@ -189,8 +189,7 @@ public class CourseAndExerciseManager {
         exception.printStackTrace();
     }
 
-    public static boolean isCourseInDatabase(String string) {
-        return PersistentExerciseDatabase.getInstance()
-                .getExerciseDatabase().getCourses().containsKey(string);
+    public boolean isCourseInDatabase(String string) {
+        return getExerciseDatabase().getCourses().containsKey(string);
     }
 }

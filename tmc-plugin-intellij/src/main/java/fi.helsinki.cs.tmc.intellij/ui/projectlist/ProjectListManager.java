@@ -59,16 +59,17 @@ public class ProjectListManager {
             }
             DefaultListModel model = (DefaultListModel) jbList.getModel();
             model.removeAllElements();
-            addExercisesToList(new ObjectFinder(), course, model);
+            addExercisesToList(new ObjectFinder(), course, model, new CourseAndExerciseManager());
             jbList.setModel(model);
         }
         refreshAllCourses();
     }
 
     public static void addExercisesToList(ObjectFinder finder,
-                                          String course, DefaultListModel defaultListModel) {
+                                          String course, DefaultListModel defaultListModel,
+                                          CourseAndExerciseManager courseAndExerciseManager) {
 
-        if (CourseAndExerciseManager.isCourseInDatabase(course)) {
+        if (courseAndExerciseManager.isCourseInDatabase(course)) {
             List<Exercise> exercises = new CourseAndExerciseManager().getExercises(course);
             addExercisesToListModel(defaultListModel, exercises);
         } else {

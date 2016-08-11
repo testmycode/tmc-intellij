@@ -4,6 +4,7 @@ package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
+import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.openapi.ui.JBMenuItem;
@@ -34,14 +35,18 @@ public class CourseTabFactory {
 
     public void createCourseSpecificTab(ObjectFinder finder,
                                         ProjectOpener opener, String course,
-                                        JTabbedPane tabbedPanelBase) {
+                                        JTabbedPane tabbedPanelBase,
+                                        CourseAndExerciseManager courseAndExerciseManager) {
+
         final JBScrollPane panel = new JBScrollPane();
         final JBList list = new JBList();
         list.setCellRenderer(new ProjectListRenderer());
 
         DefaultListModel defaultListModel = new DefaultListModel();
         panel.setBorder(BorderFactory.createTitledBorder(""));
-        ProjectListManager.addExercisesToList(finder, course, defaultListModel);
+
+        ProjectListManager.addExercisesToList(finder, course, defaultListModel,
+                courseAndExerciseManager);
 
         if (defaultListModel.getSize() <= 0) {
             return;
