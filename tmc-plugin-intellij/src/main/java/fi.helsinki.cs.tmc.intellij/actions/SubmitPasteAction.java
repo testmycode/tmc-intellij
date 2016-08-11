@@ -18,7 +18,7 @@ import com.intellij.openapi.project.Project;
  *     Submit code to TMC Pastebin.
  * </p>
  */
-public class SubmitPasteAction extends AnAction{
+public class SubmitPasteAction extends AnAction {
 
     private PasteService pasteService;
 
@@ -32,8 +32,7 @@ public class SubmitPasteAction extends AnAction{
                 || pasteService.getWindow().isClosed()) {
             Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
             pasteService = new PasteService();
-            pasteService.showSubmitForm(project, TmcCoreHolder.get(),
-                    ProjectListManagerHolder.get());
+            pasteService.showSubmitForm(project, TmcCoreHolder.get());
         } else {
             pasteService.getWindow().show();
         }
