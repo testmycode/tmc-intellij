@@ -70,7 +70,8 @@ public class ExerciseDownloadingService {
                                             public void run() {
                                                 try {
                                                     new CourseAndExerciseManager().updateAll();
-                                                    ProjectListManagerHolder.get().refreshAllCourses();
+                                                    ProjectListManagerHolder.get()
+                                                            .refreshAllCourses();
                                                 } catch (Exception exept) {
                                                     exept.printStackTrace();
                                                 }

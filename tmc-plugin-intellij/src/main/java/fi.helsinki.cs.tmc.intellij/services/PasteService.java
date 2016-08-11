@@ -4,7 +4,6 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
-import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.ui.pastebin.PasteWindow;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
@@ -23,7 +22,7 @@ public class PasteService {
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
         this.exercise = new CourseAndExerciseManager().get(getCourseName(exerciseCourse),
-                getExerciseName(exerciseCourse));
+                getExerciseNameFromArray(exerciseCourse));
         this.core = core;
         this.window = new PasteWindow();
         window.showSubmit(this);
@@ -88,7 +87,7 @@ public class PasteService {
         return exerciseCourse[exerciseCourse.length - 2];
     }
 
-    private String getExerciseName(String[] exerciseCourse) {
+    private String getExerciseNameFromArray(String[] exerciseCourse) {
         return exerciseCourse[exerciseCourse.length - 1];
     }
 }

@@ -3,7 +3,7 @@ package fi.helsinki.cs.tmc.intellij.holders;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 /**
- * Holds an instance of ProjectListManager as a singleton
+ * Holds an instance of ProjectListManager as a singleton.
  */
 public class ProjectListManagerHolder {
 
