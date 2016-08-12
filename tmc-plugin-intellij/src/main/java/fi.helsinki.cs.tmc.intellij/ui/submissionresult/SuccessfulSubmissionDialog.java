@@ -19,6 +19,8 @@ import com.intellij.openapi.ui.Messages;
 import icons.TmcIcons;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Component;
 import java.awt.Desktop;
@@ -41,10 +43,12 @@ import javax.swing.JPanel;
 
 public class SuccessfulSubmissionDialog extends JDialog {
 
+    private static final Logger logger = LoggerFactory.getLogger(SuccessfulSubmissionDialog.class);
     private JButton okButton;
     private List<FeedbackQuestionPanel> feedbackQuestionPanels;
 
     public SuccessfulSubmissionDialog(Exercise exercise, SubmissionResult result, Project project) {
+        logger.info("Creating SuccessfulSubmissionDialog. @SuccessfulSubmissionDialog");
         this.setTitle(exercise.getName() + " passed");
 
         JPanel contentPane = new JPanel();
@@ -74,9 +78,11 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     public void addOkListener(final SubmissionResult result, final Project project) {
+        logger.info("Adding action listener for ok button. @SuccessfulSubmissionDialog");
         this.okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
+                logger.info("Ok button pressed. @SuccessfulSubmissionDialog");
                 sendFeedback(result, project);
                 setVisible(false);
                 dispose();
@@ -85,23 +91,31 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void sendFeedback(SubmissionResult result, Project project) {
+        logger.info("Checking if feedback exists. @SuccessfulSubmissionDialog");
         List<FeedbackAnswer> answers = getFeedbackAnswers();
 
         if (answers.size() == 0) {
+            logger.info("No feedback. @SuccessfulSubmissionDialog");
             return;
         }
 
         try {
+            logger.info("Trying to send feedback. @SuccessfulSubmissionDialog");
             TmcCoreHolder.get().sendFeedback(ProgressObserver.NULL_OBSERVER,
                     getFeedbackAnswers(), new URI(result.getFeedbackAnswerUrl())).call();
 
         } catch (Exception ex) {
+            logger.warn("Failed to send feedback. Problems with internet. "
+                    + "@SuccessfulSubmissionDialog",
+                    ex, ex.getStackTrace());
             String errorMessage = "Problems with internet.\n" + ex.getMessage();
             Messages.showErrorDialog(project, errorMessage, "Problem with internet");
         }
     }
 
     public List<FeedbackAnswer> getFeedbackAnswers() {
+        logger.info("Getting feedback answer. @SuccessfulSubmissionDialog");
+
         List<FeedbackAnswer> answers = new ArrayList<>();
 
         for (FeedbackQuestionPanel panel : feedbackQuestionPanels) {
@@ -243,6 +257,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addOkButton() {
+        logger.info("Adding ok button. @SuccessfulSubmissionDialog");
         okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener() {
             @Override

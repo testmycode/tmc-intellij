@@ -2,12 +2,17 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 import com.intellij.openapi.project.Project;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.nio.file.Path;
 
 /**
  * Offers methods to get info from a path.
  */
 public class PathResolver {
+
+    private static final Logger logger = LoggerFactory.getLogger(PathResolver.class);
 
     /**
      * Returns an array containing a course name and exercise name.
@@ -18,6 +23,8 @@ public class PathResolver {
      *     from a project's path
      */
     public static String[] getCourseAndExerciseName(Project project) {
+        logger.info("Processing getCourseAndExerciseName"
+                + " with Project parameter. @PathResolver");
         return getCourseAndExerciseName(project.getBasePath());
 
     }
@@ -31,6 +38,8 @@ public class PathResolver {
      *     derived from the given path
      */
     public static String[] getCourseAndExerciseName(Path path) {
+        logger.info("Processing getCourseAndExerciseName"
+                + " with Path parameter. @PathResolver");
         return getCourseAndExerciseName(path.toString());
     }
 
@@ -43,6 +52,8 @@ public class PathResolver {
      *     from the given path
      */
     public static String[] getCourseAndExerciseName(String path) {
+        logger.info("Processing getCourseAndExerciseName "
+                + "with String parameter. @PathResolver");
         if (path == null) {
             return null;
         }

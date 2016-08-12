@@ -1,9 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
-
-import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

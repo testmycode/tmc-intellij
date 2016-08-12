@@ -1,5 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.ui.settings;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -9,9 +12,12 @@ import javax.swing.JPanel;
  */
 public class SettingsWindow {
 
+    private static final Logger logger = LoggerFactory.getLogger(SettingsWindow.class);
+
     private JFrame frame;
 
     public SettingsWindow() {
+        logger.info("Building SettingsWindow. @SettingsWindow");
         frame = new JFrame();
         JPanel panel = new SettingsPanel(frame).getPanel();
 
@@ -30,6 +36,7 @@ public class SettingsWindow {
     }
 
     public void show() {
+        logger.info("Showing SettingsWindow. @SettingsWindow");
         frame.setVisible(false);
         frame.setVisible(true);
     }

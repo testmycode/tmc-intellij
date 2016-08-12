@@ -1,7 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
-import com.intellij.openapi.ui.Messages;
-import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
@@ -10,6 +8,9 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
+
+import com.intellij.openapi.ui.Messages;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,12 +38,12 @@ public class CourseAndExerciseManager {
 
     public CourseAndExerciseManager() {
         logger.info("CourseAndExerciseManager constructor call.");
-            initiateDatabase();
+        initiateDatabase();
     }
 
     public static void setup() {
         logger.info("Setup CourseAndExerciseManager.");
-            initiateDatabase();
+        initiateDatabase();
     }
 
     public static Exercise get(String course, String exercise) {
@@ -109,7 +110,8 @@ public class CourseAndExerciseManager {
 
             PersistentExerciseDatabase.getInstance().getExerciseDatabase().setCourses(database);
         } catch (TmcCoreException exception) {
-            logger.warn("Failed to fetch courses from TmcCore.", exception, exception.getStackTrace());
+            logger.warn("Failed to fetch courses from TmcCore.",
+                    exception, exception.getStackTrace());
             ErrorMessageService error = new ErrorMessageService();
             error.showMessage(exception);
             /*Messages.showErrorDialog(new ObjectFinder().findCurrentProject(),
@@ -119,8 +121,9 @@ public class CourseAndExerciseManager {
         } catch (Exception exception) {
             logger.warn("Failed to fetch courses from TmcCore.",
                     exception, exception.getStackTrace());
-            Messages.showErrorDialog(exception.getCause().getMessage()
-                    + " Failed to fetch courses from TmcCore. ", exception.toString());
+            Messages.showMessageDialog(new ObjectFinder().findCurrentProject(),
+                    exception.getMessage(), " Failed to fetch courses from TmcCore. ",
+                    Messages.getErrorIcon());
             //TODO After merging with master, implement this to use ErrorMessageService.
         }
     }
@@ -157,6 +160,7 @@ public class CourseAndExerciseManager {
     }
 
     public static boolean isCourseInDatabase(String string) {
+        logger.info("Checking if course " + string + " exists in the database.");
         return PersistentExerciseDatabase.getInstance()
                 .getExerciseDatabase().getCourses().containsKey(string);
     }

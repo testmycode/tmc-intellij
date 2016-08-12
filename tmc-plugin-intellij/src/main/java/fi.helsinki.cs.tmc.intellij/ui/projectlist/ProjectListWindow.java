@@ -19,6 +19,8 @@ import com.intellij.uiDesigner.core.Spacer;
 import icons.TmcIcons;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -39,6 +41,8 @@ import javax.swing.JToolBar;
  * Swing component that is displayed in the project list side panel.
  */
 public class ProjectListWindow {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProjectListWindow.class);
 
     public JTabbedPane getTabbedPanelBase() {
         return tabbedPanelBase;
@@ -61,10 +65,13 @@ public class ProjectListWindow {
     private JToolBar toolbar;
 
     public ProjectListWindow() {
+        logger.info("Adding course tabs and exercises"
+                + " to ProjectListWindow. @ProjectListWindow");
         addCourseTabsAndExercises();
     }
 
     public void addCourseTabsAndExercises() {
+        logger.info("Creating course tabs and exercises. @ProjectListWindow");
         tabbedPanelBase.removeAll();
         toolbar.removeAll();
         ObjectFinder finder = new ObjectFinder();
@@ -86,13 +93,16 @@ public class ProjectListWindow {
                                           JTabbedPane tabbedPanelBase,
                                           List<String> courses,
                                           CourseTabFactory factory) {
-
+        logger.info("Starting to create all course specific tabs. @ProjectListWindow");
         for (String course : courses) {
+            logger.info("Creating course specific tab for "
+                    + course + ". @ProjectListWindow");
             factory.createCourseSpecificTab(finder, opener, course, tabbedPanelBase);
         }
     }
 
     private void addFunctionalityToOpenButton() {
+        logger.info("Adding functionality to open project button. @ProjectListWindow");
         openButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -112,6 +122,8 @@ public class ProjectListWindow {
 
     @NotNull
     private JButton addFunctionalityToRefreshButton() {
+        logger.info("Adding functionality to refresh projects button. "
+                + "@ProjectListWindow");
         JButton refreshButton = new JButton(TmcIcons.REFRESH);
         refreshButton.setBorderPainted(true);
         refreshButton.setEnabled(true);
@@ -130,6 +142,8 @@ public class ProjectListWindow {
     }
 
     private void addFunctionalityToHideButton() {
+        logger.info("Adding functionality to hide project button. "
+                + "@ProjectListWindow");
         hideButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -142,6 +156,8 @@ public class ProjectListWindow {
     }
 
     public void refreshProjectList() {
+        logger.info("Refreshing project list. "
+                + "@ProjectListWindow");
         CourseAndExerciseManager.updateAll();
         ProjectListManager.refreshAllCourses();
     }

@@ -52,7 +52,7 @@ public class StartupEvent implements StartupActivity {
     }
 
     private void printOutInfo(Long startTime) {
-        logger.info("Printing out project download information.");
+        logger.info("Printing out project related information.");
         System.out.println(CourseAndExerciseManager.getDatabase());
         Long end = System.currentTimeMillis() - startTime;
 

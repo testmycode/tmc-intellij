@@ -9,7 +9,11 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import com.intellij.openapi.application.ApplicationManager;
+
 import org.jetbrains.annotations.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -18,11 +22,13 @@ import java.util.List;
  */
 public class ExerciseDownloadingService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ExerciseDownloadingService.class);
+
     public static void startDownloadExercise(final TmcCore core,
                                              final SettingsTmc settings,
                                              final CheckForExistingExercises checker,
                                              ProjectOpener opener) throws Exception {
-
+        logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
         Thread run = createThread(core, settings, checker);
         ThreadingService
                 .runWithNotification(run,
@@ -34,7 +40,7 @@ public class ExerciseDownloadingService {
     private static Thread createThread(final TmcCore core,
                                        final SettingsTmc settings,
                                        final CheckForExistingExercises checker) {
-
+        logger.info("Creating a new thread.");
         return new Thread() {
             @Override
             public void run() {
@@ -45,9 +51,11 @@ public class ExerciseDownloadingService {
                 List<Exercise> exercises = course.getExercises();
                 exercises = checker.clean(exercises, settings);
                 try {
+                    logger.info("Starting to download exercise.");
                     core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
                             exercises).call();
                 } catch (Exception e) {
+                    logger.warn("Failed to download exercises", e, e.getStackTrace());
                 }
                 ApplicationManager.getApplication().invokeLater(
                         new Runnable() {
@@ -56,15 +64,12 @@ public class ExerciseDownloadingService {
                                         new Runnable() {
                                             @Override
                                             public void run() {
-                                                try {
-                                                    CourseAndExerciseManager.updateAll();
-                                                    ProjectListManager.refreshAllCourses();
-                                                } catch (Exception exept) {
-                                                }
+                                                logger.info("Updating project list.");
+                                                CourseAndExerciseManager.updateAll();
+                                                ProjectListManager.refreshAllCourses();
                                             }
                                         }
                                 );
-
                             }
                         });;
             }

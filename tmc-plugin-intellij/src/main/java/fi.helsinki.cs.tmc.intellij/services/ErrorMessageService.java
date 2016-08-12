@@ -13,12 +13,18 @@ import com.intellij.notification.Notifications;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+//TODO Logger messages needed here!
 /**
  * Pops up user friendly warnings for CourseAndExerciseManager exceptions.
  * For example pops up an error message on startup if there is no internet connection
  * or TMC user settings (username, password or server address) has not been initialized.
  */
 public class ErrorMessageService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ErrorMessageService.class);
 
     /**
      * Error message, if TMC username or password are not initialized.

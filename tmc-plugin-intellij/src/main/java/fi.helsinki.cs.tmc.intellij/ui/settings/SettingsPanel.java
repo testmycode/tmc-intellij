@@ -14,6 +14,9 @@ import com.intellij.uiDesigner.core.Spacer;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Dimension;
 import java.awt.Insets;
 
@@ -40,6 +43,7 @@ import javax.swing.JTextField;
  */
 public class SettingsPanel {
 
+    private static final Logger logger = LoggerFactory.getLogger(SettingsPanel.class);
     private JPanel panel1;
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -96,6 +100,7 @@ public class SettingsPanel {
     }
 
     public SettingsPanel(final JFrame frame) {
+        logger.info("Building SettingsPanel");
         SettingsTmc settingsTmc = TmcSettingsManager.get();
         usernameField.setText(settingsTmc.getUsername());
         serverAddressField.setText(settingsTmc.getServerAddress());
@@ -107,9 +112,13 @@ public class SettingsPanel {
         List<Course> courses = new ArrayList<>();
 
         try {
+            logger.info("Getting list of courses from TmcCore. @SettingsPanel");
             courses = (ArrayList<Course>)
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
         } catch (Exception ignored) {
+            logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
+                    ignored, ignored.getStackTrace());
+            ignored.printStackTrace();
         }
         for (Course crs : courses) {
             listOfAvailableCourses.addItem(crs);
@@ -127,6 +136,7 @@ public class SettingsPanel {
     }
 
     public void saveInformation() {
+        logger.info("Saving settings information. @SettingsPanel");
         final PersistentTmcSettings saveSettings =
                 ServiceManager.getService(PersistentTmcSettings.class);
         SettingsTmc settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
@@ -140,9 +150,11 @@ public class SettingsPanel {
     }
 
     private ActionListener createActionListenerOk(final JFrame frame) {
+        logger.info("Create action listener for SettingsPanel ok button. @SettingsPanel");
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("Ok button pressed. @SettingsPanel");
                 saveInformation();
                 frame.dispose();
                 frame.setVisible(false);
@@ -151,9 +163,11 @@ public class SettingsPanel {
     }
 
     private ActionListener createActionListenerCancel(final JFrame frame) {
+        logger.info("Create action listener for SettingsPanel cancel button. @SettingsPanel");
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("Cancel button pressed. @SettingsPanel");
                 frame.dispose();
                 frame.setVisible(false);
             }
@@ -161,17 +175,22 @@ public class SettingsPanel {
     }
 
     private ActionListener createActionListenerRefresh() {
+        logger.info("Create action listener for SettingsPanel refresh button. @SettingsPanel");
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("Refresh button pressed. @SettingsPanel");
                 List<Course> courses = new ArrayList<>();
                 listOfAvailableCourses.removeAllItems();
                 saveInformation();
                 try {
+                    logger.info("Getting list of courses from TmcCore. @SettingsPanel");
                     courses = (ArrayList<Course>)
                             TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } catch (Exception ignored) {
+                    logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
+                            ignored, ignored.getStackTrace());
+                    ignored.printStackTrace();
                 }
 
                 addCourSesToListOfAvailable(courses);
@@ -181,6 +200,7 @@ public class SettingsPanel {
     }
 
     private void addCourSesToListOfAvailable(List<Course> courses) {
+        logger.info("Adding courses to list of availabe courses. @SettingsPanel");
         for (Course crs : courses) {
             listOfAvailableCourses.addItem(crs);
         }
@@ -188,9 +208,11 @@ public class SettingsPanel {
 
     @NotNull
     private ActionListener createActionListener() {
+        logger.info("Creating action listener for browsing. @SettingsPanel");
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("Browsing action performed. @SettingsPanel", actionEvent);
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setDialogTitle("Select path for projects");
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

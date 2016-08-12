@@ -5,6 +5,8 @@ import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.ui.components.JBList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,15 +20,18 @@ import javax.swing.DefaultListModel;
  */
 public class ProjectListManager {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProjectListManager.class);
     private static Map<String, List<JBList>> currentListElements;
     static List<ProjectListWindow> projectListWindows;
 
     public ProjectListManager() {
+        logger.info("Setting up ProjectListWindow. @ProjectListManager");
         projectListWindows = new ArrayList<>();
         currentListElements = new HashMap<>();
     }
 
     public static void setup() {
+        logger.info("Setup ProjectListWindow. @ProjectListManager");
         if (currentListElements == null) {
             currentListElements = new HashMap<>();
             projectListWindows = new ArrayList<>();
@@ -41,6 +46,7 @@ public class ProjectListManager {
     }
 
     public static void refreshAllCourses() {
+        logger.info("Refreshing all courses. @ProjectListManager");
         for (ProjectListWindow window : projectListWindows) {
             window.addCourseTabsAndExercises();
         }
@@ -48,6 +54,7 @@ public class ProjectListManager {
 
 
     public static void refreshCourse(String course) {
+        logger.info("Refreshing course " + course + ". @ProjectListManager");
         List<JBList> list = currentListElements.get(course);
         if (list == null) {
             return;
@@ -67,7 +74,7 @@ public class ProjectListManager {
 
     public static void addExercisesToList(ObjectFinder finder,
                                           String course, DefaultListModel defaultListModel) {
-
+        logger.info("Adding exercises to list for future use. @ProjectListManager");
         if (CourseAndExerciseManager.isCourseInDatabase(course)) {
             List<Exercise> exercises = CourseAndExerciseManager.getExercises(course);
             addExercisesToListModel(defaultListModel, exercises);

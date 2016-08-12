@@ -3,6 +3,9 @@ package fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackAnswer;
 import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Font;
 
 import java.util.Dictionary;
@@ -15,10 +18,14 @@ import javax.swing.JTextField;
 
 public class IntRangeQuestionPanel extends FeedbackQuestionPanel {
 
+    private static final Logger logger = LoggerFactory
+            .getLogger(IntRangeQuestionPanel.class);
     private FeedbackQuestion question;
     private int naValue;
 
     public IntRangeQuestionPanel(FeedbackQuestion question) {
+        logger.info("Creating int range question panel for submission feedback window. "
+                + "@IntRangeQuestionPanel");
         if (!question.isIntRange()) {
             throw new IllegalArgumentException("Invalid panel for question type");
         }
@@ -31,6 +38,8 @@ public class IntRangeQuestionPanel extends FeedbackQuestionPanel {
     }
 
     private void setUpValueSlider(FeedbackQuestion question) {
+        logger.info("Setting up value slider for IntRangeQuestionPanel. "
+                + "@IntRangeQuestionPanel");
         naValue = question.getIntRangeMin() - 1;
         valueSlider.setMinimum(naValue);
         valueSlider.setMaximum(question.getIntRangeMax());
@@ -49,6 +58,8 @@ public class IntRangeQuestionPanel extends FeedbackQuestionPanel {
 
     private void setFeedbackValues(Dictionary<Integer, JLabel> labelTable,
                                    JLabel labelForFont) {
+        logger.info("Setting up feedback values for value slider. "
+                + "@IntRangeQuestionPanel");
 
         for (int i = question.getIntRangeMin(); i <= question.getIntRangeMax(); ++i) {
             JLabel label = new JLabel("" + i);
@@ -59,6 +70,7 @@ public class IntRangeQuestionPanel extends FeedbackQuestionPanel {
 
     @Override
     public FeedbackAnswer getAnswer() {
+        logger.info("Getting feedback answer value. @IntRangeQuestionPanel");
         int sliderValue = valueSlider.getValue();
 
         if (sliderValue == naValue) {
@@ -77,6 +89,8 @@ public class IntRangeQuestionPanel extends FeedbackQuestionPanel {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        logger.info("Initializing components for IntRangeQuestionPanel "
+                + "@IntRangeQuestionPanel");
 
         questionLabel = new javax.swing.JLabel();
         valueSlider = new javax.swing.JSlider();

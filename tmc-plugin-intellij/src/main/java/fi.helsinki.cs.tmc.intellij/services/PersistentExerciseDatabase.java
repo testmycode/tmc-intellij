@@ -9,6 +9,9 @@ import com.intellij.util.xmlb.XmlSerializerUtil;
 
 import org.jetbrains.annotations.Nullable;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Uses the IDE to save settings on disk
@@ -23,29 +26,36 @@ import org.jetbrains.annotations.Nullable;
 public class PersistentExerciseDatabase implements
         PersistentStateComponent<PersistentExerciseDatabase> {
 
+    private static final Logger logger = LoggerFactory.getLogger(PersistentExerciseDatabase.class);
+
     private ExerciseDatabase exerciseDatabase;
 
     public ExerciseDatabase getExerciseDatabase() {
+        logger.info("Getting ExerciseDatabase from PersistentExerciseDatabase.");
         return exerciseDatabase;
     }
 
     public void setExerciseDatabase(ExerciseDatabase exerciseDatabase) {
+        logger.info("Setting ExerciseDatabase @PersistentExerciseDatabase.");
         this.exerciseDatabase = exerciseDatabase;
     }
 
     @Nullable
     @Override
     public PersistentExerciseDatabase getState() {
+        logger.info("Processing getState @PersistentExerciseDatabase.");
         return this;
     }
 
     @Override
     public void loadState(PersistentExerciseDatabase persistentExerciseDatabase) {
+        logger.info("Processing loadState @PersistentExerciseDatabase.");
         XmlSerializerUtil.copyBean(persistentExerciseDatabase, this);
     }
 
     @Nullable
     public static PersistentExerciseDatabase getInstance() {
+        logger.info("Processing getInstance @PersistentExerciseDatabase.");
         return ServiceManager.getService(PersistentExerciseDatabase.class);
     }
 
