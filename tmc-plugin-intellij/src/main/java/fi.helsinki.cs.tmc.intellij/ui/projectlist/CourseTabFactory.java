@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -22,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.JScrollBar;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -59,6 +62,21 @@ public class CourseTabFactory {
 
         ProjectListManager.addList(list);
         tabbedPanelBase.addTab(course, panel);
+        setScrollBarToBottom(course, tabbedPanelBase, panel);
+    }
+
+    private void setScrollBarToBottom(String course, JTabbedPane tabbedPanelBase, JBScrollPane panel) {
+        tabbedPanelBase.addTab(course, panel);
+        JScrollBar bar = panel.getVerticalScrollBar();
+        AdjustmentListener listener = new AdjustmentListener() {
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+            }
+        };
+        bar.addAdjustmentListener(listener);
+        bar.setValueIsAdjusting(true);
+        bar.removeAdjustmentListener(listener);
+        bar.setValue(bar.getMaximum());
     }
 
     @NotNull

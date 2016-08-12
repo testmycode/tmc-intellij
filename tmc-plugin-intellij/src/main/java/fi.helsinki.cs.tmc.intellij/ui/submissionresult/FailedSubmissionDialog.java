@@ -4,6 +4,7 @@ import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 
 public class FailedSubmissionDialog {
 
@@ -12,7 +13,7 @@ public class FailedSubmissionDialog {
 
         String failMessage = "All tests didn't pass on server!\n"
                 + "Permanent points awarded: " + points;
-        Messages.showErrorDialog(project, failMessage, "All tests didn't pass on server!");
+        TestResultPanelFactory.updateMostRecentResult(result.getTestCases());
     }
 
     private String parsePoints(SubmissionResult result) {

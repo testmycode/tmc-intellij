@@ -19,6 +19,12 @@ import com.intellij.ide.util.TreeClassChooser;
 import com.intellij.ide.util.TreeClassChooserFactory;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.actionSystem.CommonDataKeys;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.event.DocumentEvent;
+import com.intellij.openapi.editor.event.DocumentListener;
+import com.intellij.openapi.editor.event.EditorMouseEvent;
+import com.intellij.openapi.editor.event.EditorMouseListener;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -26,13 +32,76 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
+import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.core.spyware.LoggableEvent;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class RunProjectAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
+        byte[] data = {};
+        LoggableEvent event = new LoggableEvent("Run", data);
+        List<LoggableEvent> list = new ArrayList<>();
+        list.add(event);
+        String[] laa = PathResolver.getCourseAndExerciseName(anActionEvent.getProject().getBasePath());
+        try {
+            System.out.println(TmcCoreHolder.get().sendSpywareEvents(ProgressObserver.NULL_OBSERVER,
+                    (new ObjectFinder().findCourseByName(laa[laa.length - 2], TmcCoreHolder.get())), list).call());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        final Editor editor = anActionEvent.getData(CommonDataKeys.EDITOR);
+
+        DocumentListener d = new DocumentListener() {
+            @Override
+            public void beforeDocumentChange(DocumentEvent documentEvent) {
+                if (documentEvent.getNewLength() > 1) {
+                    System.out.println("Added : " + documentEvent.getNewFragment());
+                    System.out.println(documentEvent.getDocument().getText());
+                }
+            }
+
+            @Override
+            public void documentChanged(DocumentEvent documentEvent) {
+                if (documentEvent.getOldLength() > 1) {
+                    System.out.println("Removed : " + documentEvent.getOldFragment());
+                }
+            }
+        };
+        EditorMouseListener listener = new EditorMouseListener() {
+            @Override
+            public void mousePressed(EditorMouseEvent editorMouseEvent) {
+
+            }
+
+            @Override
+            public void mouseClicked(EditorMouseEvent editorMouseEvent) {
+                System.out.println(editor.getDocument());
+            }
+
+            @Override
+            public void mouseReleased(EditorMouseEvent editorMouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(EditorMouseEvent editorMouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(EditorMouseEvent editorMouseEvent) {
+
+            }
+        };
         runProject(anActionEvent.getProject());
     }
 
@@ -63,6 +132,7 @@ public class RunProjectAction extends AnAction {
         if (checkForMainClass(project, module, appCon, runManager)) {
             runCreatedConfiguration(project, module, appCon);
         }
+
     }
 
     private boolean checkConfigurationType(RunManager runManager, String desired) {
