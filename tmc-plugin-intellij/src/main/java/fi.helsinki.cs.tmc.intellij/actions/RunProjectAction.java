@@ -47,61 +47,6 @@ public class RunProjectAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        byte[] data = {};
-        LoggableEvent event = new LoggableEvent("Run", data);
-        List<LoggableEvent> list = new ArrayList<>();
-        list.add(event);
-        String[] laa = PathResolver.getCourseAndExerciseName(anActionEvent.getProject().getBasePath());
-        try {
-            System.out.println(TmcCoreHolder.get().sendSpywareEvents(ProgressObserver.NULL_OBSERVER,
-                    (new ObjectFinder().findCourseByName(laa[laa.length - 2], TmcCoreHolder.get())), list).call());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        final Editor editor = anActionEvent.getData(CommonDataKeys.EDITOR);
-
-        DocumentListener d = new DocumentListener() {
-            @Override
-            public void beforeDocumentChange(DocumentEvent documentEvent) {
-                if (documentEvent.getNewLength() > 1) {
-                    System.out.println("Added : " + documentEvent.getNewFragment());
-                    System.out.println(documentEvent.getDocument().getText());
-                }
-            }
-
-            @Override
-            public void documentChanged(DocumentEvent documentEvent) {
-                if (documentEvent.getOldLength() > 1) {
-                    System.out.println("Removed : " + documentEvent.getOldFragment());
-                }
-            }
-        };
-        EditorMouseListener listener = new EditorMouseListener() {
-            @Override
-            public void mousePressed(EditorMouseEvent editorMouseEvent) {
-
-            }
-
-            @Override
-            public void mouseClicked(EditorMouseEvent editorMouseEvent) {
-                System.out.println(editor.getDocument());
-            }
-
-            @Override
-            public void mouseReleased(EditorMouseEvent editorMouseEvent) {
-
-            }
-
-            @Override
-            public void mouseEntered(EditorMouseEvent editorMouseEvent) {
-
-            }
-
-            @Override
-            public void mouseExited(EditorMouseEvent editorMouseEvent) {
-
-            }
-        };
         runProject(anActionEvent.getProject());
     }
 

@@ -83,11 +83,13 @@ public class ProjectListWindow {
     }
 
     private void setActiveTabToSelectedCourse() {
-        String course = TmcSettingsManager.get().getCourse().getName();
-        for (int i = 0; i < tabbedPanelBase.getTabCount(); i++) {
-            if (tabbedPanelBase.getTitleAt(i).equals(course)) {
-                tabbedPanelBase.setSelectedIndex(i);
-                return;
+        if (TmcSettingsManager.get().getCourse() != null) {
+            String course = TmcSettingsManager.get().getCourse().getName();
+            for (int i = 0; i < tabbedPanelBase.getTabCount(); i++) {
+                if (tabbedPanelBase.getTitleAt(i).equals(course)) {
+                    tabbedPanelBase.setSelectedIndex(i);
+                    return;
+                }
             }
         }
     }
