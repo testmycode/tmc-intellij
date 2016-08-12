@@ -8,6 +8,7 @@ import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -40,7 +41,8 @@ public class DownloadExerciseAction extends AnAction {
                     TmcSettingsManager.get(),
                     new CheckForExistingExercises(),
                     new ObjectFinder(),
-                    new ErrorMessageService());
+                    new ThreadingService(),
+                    project);
         } catch (Exception e) {
             Messages.showMessageDialog(project,
                     "Downloading failed \n"

@@ -27,7 +27,7 @@ import java.util.Map;
 public class CourseAndExerciseManager {
 
     public void setDatabase(Map<String, List<Exercise>> database) {
-        getExerciseDatabase().setCourses(database);
+        getDatabase().setCourses(database);
     }
 
     /*
@@ -111,14 +111,14 @@ public class CourseAndExerciseManager {
     }
 
     private void refreshCoursesOffline() {
-        Map<String, List<Exercise>> courses = getExerciseDatabase().getCourses();
+        Map<String, List<Exercise>> courses = getDatabase().getCourses();
 
         for (String courseName : courses.keySet()) {
             List<Exercise> exercises = courses.get(courseName);
 
             removeExercisesNotFoundFromLocalDirectories(exercises, courseName);
         }
-        getExerciseDatabase().setCourses(courses);
+        getDatabase().setCourses(courses);
     }
 
     private void removeExercisesNotFoundFromLocalDirectories(List<Exercise> exercises,
@@ -142,10 +142,6 @@ public class CourseAndExerciseManager {
         return new ObjectFinder().listAllDownloadedExercises(courseName);
     }
 
-    private ExerciseDatabase getExerciseDatabase() {
-        return PersistentExerciseDatabase.getInstance().getExerciseDatabase();
-    }
-
     /*
     private void updateDatabase(Course course, List<Exercise> exercises) {
         database.put(course.getName(), exercises);
@@ -156,7 +152,7 @@ public class CourseAndExerciseManager {
                                           ObjectFinder finder,
                                           SettingsTmc settings) {
 
-        boolean isNewCourse = getExerciseDatabase().getCourses().get(courseName) == null;
+        boolean isNewCourse = getDatabase().getCourses().get(courseName) == null;
         Course course = finder.findCourseByName(courseName, TmcCoreHolder.get());
 
         if (course == null) {
@@ -166,7 +162,7 @@ public class CourseAndExerciseManager {
         List<Exercise> existing = (ArrayList<Exercise>) checker
                 .getListOfDownloadedExercises(course.getExercises(), settings);
 
-        getExerciseDatabase().getCourses().put(courseName, existing);
+        getDatabase().getCourses().put(courseName, existing);
 
         if (isNewCourse) {
             ProjectListManagerHolder.get().refreshAllCourses();
@@ -190,6 +186,6 @@ public class CourseAndExerciseManager {
     }
 
     public boolean isCourseInDatabase(String string) {
-        return getExerciseDatabase().getCourses().containsKey(string);
+        return getDatabase().getCourses().containsKey(string);
     }
 }

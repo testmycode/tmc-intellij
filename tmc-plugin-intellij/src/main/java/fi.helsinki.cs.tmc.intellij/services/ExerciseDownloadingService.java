@@ -10,6 +10,7 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -23,32 +24,32 @@ public class ExerciseDownloadingService {
                                       final SettingsTmc settings,
                                       final CheckForExistingExercises checker,
                                       ObjectFinder objectFinder,
-                                      ErrorMessageService errorMessageService) throws Exception {
+                                      ThreadingService threadingService,
+                                      Project project) throws Exception {
 
-        Thread run = createThread(core, settings, checker, objectFinder, errorMessageService);
-        ThreadingService
+        Thread run = createThread(core, settings, checker, objectFinder);
+        threadingService
                 .runWithNotification(run,
                         "Downloading exercises, this may take several minutes",
-                        objectFinder.findCurrentProject());
+                        project);
     }
 
     @NotNull
     private Thread createThread(final TmcCore core,
                                final SettingsTmc settings,
                                final CheckForExistingExercises checker,
-                               final ObjectFinder finder,
-                               final ErrorMessageService errorMessageService) {
+                               final ObjectFinder finder) {
 
         return new Thread() {
             @Override
             public void run() {
+                ErrorMessageService errorMessageService = new ErrorMessageService();
                 try {
                     final Course course = finder
                             .findCourseByName(settings.getCourse()
                                     .getName(), core);
                     List<Exercise> exercises = course.getExercises();
                     exercises = checker.clean(exercises, settings);
-                    System.out.println("exercises are: " + exercises);
                     try {
                         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
                                 exercises).call();

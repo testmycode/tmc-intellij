@@ -12,35 +12,38 @@ import com.intellij.openapi.ui.Messages;
 
 
 /**
- * Offers static methods to upload exercises.
+ * Offers method to upload exercises.
  */
 public class ExerciseUploadingService {
 
-    public static void startUploadExercise(Project project, TmcCore core, ObjectFinder finder,
-                                           CheckForExistingExercises checker,
-                                           SubmissionResultHandler handler,
-                                           SettingsTmc settings) {
+    public void startUploadExercise(Project project, TmcCore core, ObjectFinder finder,
+                                    CheckForExistingExercises checker,
+                                    SubmissionResultHandler handler,
+                                    SettingsTmc settings,
+                                    CourseAndExerciseManager courseAndExerciseManager,
+                                    ThreadingService threadingService) {
+
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
-        if (!CourseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
+        if (!courseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
             Messages.showErrorDialog(project, "Project not identified as TMC exercise", "Error");
             return;
         }
 
-        CourseAndExerciseManager courseAndExerciseManager = new CourseAndExerciseManager();
         Exercise exercise = courseAndExerciseManager
                 .get(getCourseName(exerciseCourse),
                         getExerciseName(exerciseCourse));
-        getResults(project, exercise, core, handler);
+        getResults(project, exercise, core, handler, threadingService);
         courseAndExerciseManager.updateSingleCourse(getCourseName(exerciseCourse),
                 checker, finder, settings);
-
     }
 
-    private static void getResults(final Project project,
-                                   final Exercise exercise, final TmcCore core,
-                                   final SubmissionResultHandler handler) {
-        ThreadingService.runWithNotification(new Runnable() {
+    private void getResults(final Project project,
+                            final Exercise exercise, final TmcCore core,
+                            final SubmissionResultHandler handler,
+                            ThreadingService threadingService) {
+
+        threadingService.runWithNotification(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -54,11 +57,11 @@ public class ExerciseUploadingService {
         }, "Uploading exercise, this may take several minutes", project);
     }
 
-    private static String getCourseName(String[] courseAndExercise) {
+    private String getCourseName(String[] courseAndExercise) {
         return courseAndExercise[courseAndExercise.length - 2];
     }
 
-    private static String getExerciseName(String[] courseAndExercise) {
+    private String getExerciseName(String[] courseAndExercise) {
         return courseAndExercise[courseAndExercise.length - 1];
     }
 

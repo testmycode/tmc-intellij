@@ -7,7 +7,7 @@ import com.intellij.openapi.project.Project;
 
 public class ThreadingService {
 
-    public static void runWithNotification(final Runnable run, String title, Project project) {
+    public void runWithNotification(final Runnable run, String title, Project project) {
         final ProgressWindow progressWindow = new ProgressWindow(false, true, project);
         progressWindow.setIndeterminate(true);
         progressWindow.setTitle(title);
