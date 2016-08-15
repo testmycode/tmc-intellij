@@ -65,12 +65,13 @@ public class CourseTabFactory {
         setScrollBarToBottom(course, tabbedPanelBase, panel);
     }
 
-    private void setScrollBarToBottom(String course, JTabbedPane tabbedPanelBase, JBScrollPane panel) {
+    private void setScrollBarToBottom(String course, JTabbedPane tabbedPanelBase,
+                                      JBScrollPane panel) {
         tabbedPanelBase.addTab(course, panel);
         JScrollBar bar = panel.getVerticalScrollBar();
         AdjustmentListener listener = new AdjustmentListener() {
-            public void adjustmentValueChanged(AdjustmentEvent e) {
-                e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+            public void adjustmentValueChanged(AdjustmentEvent event) {
+                event.getAdjustable().setValue(event.getAdjustable().getMaximum());
             }
         };
         bar.addAdjustmentListener(listener);
@@ -108,8 +109,9 @@ public class CourseTabFactory {
         };
     }
 
-    private void addRightMouseButtonFunctionality(
-            MouseEvent mouseEvent, final JBList list, JBScrollPane panel) {
+    private void addRightMouseButtonFunctionality(MouseEvent mouseEvent,
+                                                  final JBList list,
+                                                  JBScrollPane panel) {
 
         if (!SwingUtilities.isRightMouseButton(mouseEvent)) {
             return;

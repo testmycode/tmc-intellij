@@ -1,10 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.wm.ToolWindowManager;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
@@ -16,12 +11,18 @@ import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 import fi.helsinki.cs.tmc.langs.domain.RunResult;
 
+import com.intellij.openapi.actionSystem.AnAction;
+import com.intellij.openapi.actionSystem.AnActionEvent;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.wm.ToolWindowManager;
+
 public class RunTestsAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         String[] cex = PathResolver.getCourseAndExerciseName(anActionEvent.getProject());
         runTests(CourseAndExerciseManager.get(cex[cex.length - 2],
-                cex[cex.length -1]), anActionEvent.getProject());
+                cex[cex.length - 1]), anActionEvent.getProject());
     }
 
 
@@ -32,7 +33,8 @@ public class RunTestsAction extends AnAction {
                 public void run() {
                     RunResult result = null;
                     try {
-                        result = TmcCoreHolder.get().runTests(ProgressObserver.NULL_OBSERVER, exercise).call();
+                        result = TmcCoreHolder.get()
+                                .runTests(ProgressObserver.NULL_OBSERVER, exercise).call();
                         RunResult finalResult = result;
                         showTestResult(finalResult);
                     } catch (Exception e) {

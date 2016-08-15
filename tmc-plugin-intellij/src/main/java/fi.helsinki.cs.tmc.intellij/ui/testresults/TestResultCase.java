@@ -1,7 +1,16 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
-import com.intellij.openapi.ui.popup.JBPopupFactory;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+
+import com.intellij.openapi.ui.popup.JBPopupFactory;
+
+import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -10,17 +19,12 @@ import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.border.Border;
 import javax.tools.FileObject;
-import java.awt.Color;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 public final class TestResultCase extends JPanel {
 
     private final GridBagConstraints constraints = new GridBagConstraints();
-    private Color titleColor, borderColor;
+    private Color titleColor;
+    private Color borderColor;
 
     public TestResultCase(final Color borderColor,
                           final Color titleColor,
@@ -63,7 +67,9 @@ public final class TestResultCase extends JPanel {
                     JTextPane panel = new JTextPane();
                     panel.setText(finalDetailedMessage);
                     panel.setEditable(false);
-                    JBPopupFactory.getInstance().createComponentPopupBuilder(panel, new JLabel("Message")).createPopup().showCenteredInCurrentWindow(new ObjectFinder().findCurrentProject());
+                    JBPopupFactory.getInstance().createComponentPopupBuilder(panel,
+                            new JLabel("Message")).createPopup().showCenteredInCurrentWindow(
+                            new ObjectFinder().findCurrentProject());
                 }
             });
         }

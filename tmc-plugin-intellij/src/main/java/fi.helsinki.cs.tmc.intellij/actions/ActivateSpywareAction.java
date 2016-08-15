@@ -26,58 +26,69 @@ public class ActivateSpywareAction implements TypedActionHandler {
     }
 
     @Override
-    public void execute(@NotNull final Editor editor, char c, @NotNull DataContext dataContext) {
-        if (!listenedDocuments.contains(editor.getDocument())) {
-            DocumentListener d = new DocumentListener() {
-                @Override
-                public void beforeDocumentChange(DocumentEvent documentEvent) {
-                    if (documentEvent.getNewLength() > 1) {
-                        System.out.println("Added : " + documentEvent.getNewFragment());
-               //         System.out.println("Document before edit: \n" + documentEvent.getDocument().getText() + "\nDocument end");
-                    }
-                }
+    public void execute(@NotNull final Editor editor, char character,
+                        @NotNull DataContext dataContext) {
 
-                @Override
-                public void documentChanged(DocumentEvent documentEvent) {
-                    if (documentEvent.getOldLength() > 1) {
-                        System.out.println("Removed : " + documentEvent.getOldFragment());
-                        System.out.println();
-                    }
-                }
-            };
-            editor.getCaretModel().getAllCarets().get(0);
-            EditorActionManager.getInstance().getTypedAction();
-
-            EditorMouseListener listener = new EditorMouseListener() {
-                @Override
-                public void mousePressed(EditorMouseEvent editorMouseEvent) {
-
-                }
-
-                @Override
-                public void mouseClicked(EditorMouseEvent editorMouseEvent) {
-                }
-
-                @Override
-                public void mouseReleased(EditorMouseEvent editorMouseEvent) {
-                    System.out.println(editorMouseEvent.getEditor().getSelectionModel().getSelectedText());
-
-                }
-
-                @Override
-                public void mouseEntered(EditorMouseEvent editorMouseEvent) {
-
-                }
-
-                @Override
-                public void mouseExited(EditorMouseEvent editorMouseEvent) {
-
-                }
-            };
-            editor.addEditorMouseListener(listener);
-            editor.getDocument().addDocumentListener(d);
-            listenedDocuments.add(editor.getDocument());
+        if (listenedDocuments.contains(editor.getDocument())) {
+            handler.execute(editor, character, dataContext);
+            return;
         }
-        handler.execute(editor, c, dataContext);
+
+        DocumentListener docListener = new DocumentListener() {
+            @Override
+            public void beforeDocumentChange(DocumentEvent documentEvent) {
+                if (documentEvent.getNewLength() > 1) {
+                    System.out.println("Added : " + documentEvent.getNewFragment());
+                    //         System.out.println("Document before edit: \n" + documentEvent.getDocument().getText() + "\nDocument end");
+                }
+            }
+
+            @Override
+            public void documentChanged(DocumentEvent documentEvent) {
+                if (documentEvent.getOldLength() > 1) {
+                    System.out.println("Removed : " + documentEvent.getOldFragment());
+                    System.out.println();
+                }
+            }
+        };
+        editor.getCaretModel().getAllCarets().get(0);
+        EditorActionManager.getInstance().getTypedAction();
+
+        EditorMouseListener listener = getEditorMouseListener();
+        editor.addEditorMouseListener(listener);
+        editor.getDocument().addDocumentListener(docListener);
+        listenedDocuments.add(editor.getDocument());
+
+        handler.execute(editor, character, dataContext);
+    }
+
+    private EditorMouseListener getEditorMouseListener() {
+        return new EditorMouseListener() {
+            @Override
+            public void mousePressed(EditorMouseEvent editorMouseEvent) {
+
+            }
+
+            @Override
+            public void mouseClicked(EditorMouseEvent editorMouseEvent) {
+            }
+
+            @Override
+            public void mouseReleased(EditorMouseEvent editorMouseEvent) {
+                System.out.println(editorMouseEvent.getEditor()
+                        .getSelectionModel().getSelectedText());
+
+            }
+
+            @Override
+            public void mouseEntered(EditorMouseEvent editorMouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(EditorMouseEvent editorMouseEvent) {
+
+            }
+        };
     }
 }
