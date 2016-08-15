@@ -19,6 +19,7 @@ import com.intellij.ide.util.TreeClassChooser;
 import com.intellij.ide.util.TreeClassChooserFactory;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
+
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
@@ -26,6 +27,7 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
+
 import org.jetbrains.annotations.NotNull;
 
 
@@ -63,6 +65,7 @@ public class RunProjectAction extends AnAction {
         if (checkForMainClass(project, module, appCon, runManager)) {
             runCreatedConfiguration(project, module, appCon);
         }
+
     }
 
     private boolean checkConfigurationType(RunManager runManager, String desired) {
@@ -206,7 +209,7 @@ public class RunProjectAction extends AnAction {
         return new ClassFilter() {
             @Override
             public boolean isAccepted(PsiClass psiClass) {
-                return psiClass.findMethodsByName("main", true).length > 0;
+                return psiClass.findMethodsByName("main", false).length > 0;
             }
         };
     }
