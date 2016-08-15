@@ -1,13 +1,19 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.diff.impl.incrementalMerge.ui.EditorPlace;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
 import com.intellij.openapi.editor.actionSystem.EditorActionManager;
 import com.intellij.openapi.editor.actionSystem.TypedAction;
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
+import com.intellij.openapi.editor.actions.EditorActionUtil;
+import com.intellij.openapi.fileEditor.impl.EditorWindow;
+import com.intellij.openapi.fileEditor.impl.EditorWindowHolder;
 import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import com.intellij.openapi.project.Project;
@@ -29,8 +35,6 @@ public class StartupEvent implements StartupActivity {
         ExerciseDatabaseManager.setup();
         TmcSettingsManager.setup();
         TmcCoreHolder.setup();
-
-        new OpenToolWindowAction().openToolWindow(project);
 
         CourseAndExerciseManager.setup();
 

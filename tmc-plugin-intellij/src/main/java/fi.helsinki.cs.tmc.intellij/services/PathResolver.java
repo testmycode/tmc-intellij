@@ -1,6 +1,10 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
 import com.intellij.openapi.project.Project;
+import fi.helsinki.cs.tmc.core.TmcCore;
+import fi.helsinki.cs.tmc.core.domain.Course;
+import fi.helsinki.cs.tmc.core.domain.Exercise;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 
 import java.nio.file.Path;
 
@@ -19,7 +23,6 @@ public class PathResolver {
      */
     public static String[] getCourseAndExerciseName(Project project) {
         return getCourseAndExerciseName(project.getBasePath());
-
     }
 
     /**
@@ -55,5 +58,21 @@ public class PathResolver {
 
     private static boolean osIsUnixBased(String path) {
         return path.contains("/");
+    }
+
+    public static Exercise getExercise(String path) {
+        if (path == null) {
+            return null;
+        }
+        String[] split = getCourseAndExerciseName(path);
+        return CourseAndExerciseManager.get(split[split.length - 2], split[split.length - 1]);
+    }
+
+    public static Course getCourse(String path) {
+        if (path == null) {
+            return null;
+        }
+        String[] split = getCourseAndExerciseName(path);
+        return new ObjectFinder().findCourseByName(split[split.length - 2], TmcCoreHolder.get());
     }
 }

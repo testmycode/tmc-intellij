@@ -115,7 +115,7 @@ public class ObjectFinder {
         return fileNames;
     }
 
-    public Project findCurrentProject() {
+    public static Project findCurrentProject() {
         DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResult();
         if (dataContext == null) {
             Project[] projects = ProjectManager.getInstance().getOpenProjects();

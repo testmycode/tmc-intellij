@@ -9,8 +9,10 @@ import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
 import java.io.File;
 import java.io.Serializable;
+import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Locale;
 
 import javax.swing.JFileChooser;
@@ -26,6 +28,8 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private Course course;
     private String projectBasePath;
 
+    private List<URI> spywareUrl;
+
     public SettingsTmc(String serverAddress, String username, String password) {
         this.serverAddress = serverAddress;
         this.username = username;
@@ -40,6 +44,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
         serverAddress = "https://tmc.mooc.fi/staging/org/tmc-intellij/";
         projectBasePath = fileChooser.getFileSystemView().getDefaultDirectory().toString()
                 + File.separator + "IdeaProjects" + File.separator + "TMCProjects";
+    }
+
+    public List<URI> getSpywareUrl() {
+        return spywareUrl;
     }
 
     public void setUsername(String username) {
@@ -89,7 +97,8 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Optional<Course> getCurrentCourse() {
-        return null;
+        Optional<Course> crs = Optional.of(course);
+        return crs;
     }
 
     @Override
@@ -144,6 +153,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Path getConfigRoot() {
-        return null;
+        JFileChooser fileChooser = new JFileChooser();
+        return Paths.get(fileChooser.getFileSystemView().getDefaultDirectory().toString());
     }
 }
