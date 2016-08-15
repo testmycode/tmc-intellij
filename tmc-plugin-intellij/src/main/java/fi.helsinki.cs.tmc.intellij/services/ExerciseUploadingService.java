@@ -4,6 +4,7 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
+import fi.helsinki.cs.tmc.intellij.actions.RunTestsAction;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
@@ -51,6 +52,7 @@ public class ExerciseUploadingService {
                 }
             }
         }, "Uploading exercise, this may take several minutes", project);
+        RunTestsAction.displayTestWindow();
     }
 
     private static String getCourseName(String[] courseAndExercise) {

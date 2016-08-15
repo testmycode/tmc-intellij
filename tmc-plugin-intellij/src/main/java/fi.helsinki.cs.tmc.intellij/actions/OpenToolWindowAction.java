@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListWindow;
 
@@ -34,18 +35,18 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
 
     public void openToolWindow(Project project) {
         try {
-            ToolWindowManager.getInstance(project)
-                    .getToolWindow("Project").setSplitMode(true, null);
-            ToolWindowManager.getInstance(project)
-                    .getToolWindow("Project").show(null);
-            ToolWindowManager.getInstance(project)
-                    .getToolWindow("TMC Project List").activate(null);
-            ToolWindowManager.getInstance(project)
-                    .getToolWindow("TMC Project List").setSplitMode(true, null);
-            ToolWindowManager.getInstance(project)
-                    .getToolWindow("TMC Project List").show(null);
+            ToolWindow projectList =  ToolWindowManager.getInstance(project)
+                    .getToolWindow("TMC Project List");
+            if (projectList.isVisible()) {
+                projectList.hide(null);
+            } else {
+                ToolWindowManager.getInstance(project)
+                        .getToolWindow("TMC Project List").show(null);
+                ToolWindowManager.getInstance(project);
+            }
         } catch (Exception exception) {
-
+            ErrorMessageService service = new ErrorMessageService();
+            service.showMessage(exception, "Opening TMC Project List Failed!");
         }
     }
 

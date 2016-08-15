@@ -79,6 +79,19 @@ public class ProjectListWindow {
         JButton refreshButton = addFunctionalityToRefreshButton();
         toolbar.add(refreshButton);
         addFunctionalityToOpenButton();
+        setActiveTabToSelectedCourse();
+    }
+
+    private void setActiveTabToSelectedCourse() {
+        if (TmcSettingsManager.get().getCourse() != null) {
+            String course = TmcSettingsManager.get().getCourse().getName();
+            for (int i = 0; i < tabbedPanelBase.getTabCount(); i++) {
+                if (tabbedPanelBase.getTitleAt(i).equals(course)) {
+                    tabbedPanelBase.setSelectedIndex(i);
+                    return;
+                }
+            }
+        }
     }
 
     private void createCourseSpecificTabs(ObjectFinder finder,
