@@ -39,6 +39,7 @@ public class ProjectListManager {
     }
 
     public static void addList(JBList list) {
+        logger.info("Processing addList. @ProjectListManager");
         if (currentListElements.get(list.getName()) == null) {
             currentListElements.put(list.getName(), new ArrayList<JBList>());
         }
@@ -74,7 +75,7 @@ public class ProjectListManager {
 
     public static void addExercisesToList(ObjectFinder finder,
                                           String course, DefaultListModel defaultListModel) {
-        logger.info("Adding exercises to list for future use. @ProjectListManager");
+        logger.info("Processing addExercisesToList. @ProjectListManager");
         if (CourseAndExerciseManager.isCourseInDatabase(course)) {
             List<Exercise> exercises = CourseAndExerciseManager.getExercises(course);
             addExercisesToListModel(defaultListModel, exercises);
@@ -86,6 +87,7 @@ public class ProjectListManager {
 
     private static void addExercisesToListModel(DefaultListModel listModel,
                                                 List<Exercise> exercises) {
+        logger.info("Processing addExercisesToListModel. @ProjectListManager");
         for (Exercise ex : exercises) {
             listModel.addElement(ex);
         }
@@ -93,6 +95,7 @@ public class ProjectListManager {
 
     private static void addExercisesToListModelAsStrings(DefaultListModel listModel,
                                                          List<String> exercises) {
+        logger.info("Processing addExercisesToListModelAsStrings. @ProjectListManager");
         for (String ex : exercises) {
             listModel.addElement(ex);
         }

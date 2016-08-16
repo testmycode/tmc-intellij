@@ -1,6 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import fi.helsinki.cs.tmc.core.TmcCore;
+
 import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;
@@ -21,12 +21,12 @@ public class TmcSettingsAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        logger.info("Performing TmcSettingsAction.");
+        logger.info("Performing TmcSettingsAction. @TmcSettingsAction");
         showSettings();
     }
 
     public void showSettings() {
-        logger.info("Opening TMC setting window.");
+        logger.info("Opening TMC setting window. @TmcSettingsAction");
         if ( window == null || window.isClosed()) {
             window = new SettingsWindow();
         } else {

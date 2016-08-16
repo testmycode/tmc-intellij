@@ -4,6 +4,7 @@ package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.openapi.ui.JBMenuItem;
@@ -18,6 +19,8 @@ import org.slf4j.LoggerFactory;
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -25,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.JScrollBar;
 import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
@@ -65,12 +69,28 @@ public class CourseTabFactory {
 
         ProjectListManager.addList(list);
         tabbedPanelBase.addTab(course, panel);
+        setScrollBarToBottom(course, tabbedPanelBase, panel);
+    }
+
+    private void setScrollBarToBottom(String course, JTabbedPane tabbedPanelBase,
+                                      JBScrollPane panel) {
+        tabbedPanelBase.addTab(course, panel);
+        JScrollBar bar = panel.getVerticalScrollBar();
+        AdjustmentListener listener = new AdjustmentListener() {
+            public void adjustmentValueChanged(AdjustmentEvent event) {
+                event.getAdjustable().setValue(event.getAdjustable().getMaximum());
+            }
+        };
+        bar.addAdjustmentListener(listener);
+        bar.setValueIsAdjusting(true);
+        bar.removeAdjustmentListener(listener);
+        bar.setValue(bar.getMaximum());
     }
 
     @NotNull
     private MouseListener createMouseListenerForWindow(
             final ProjectOpener opener, final JBScrollPane panel, final JBList list) {
-        logger.info("Creating mouse listener for course tab.");
+        logger.info("Creating mouse listener for course tab. @CourseTabFactory");
         return new MouseAdapter() {
 
             public void mousePressed(MouseEvent mouseEvent) {
@@ -97,9 +117,10 @@ public class CourseTabFactory {
         };
     }
 
-    private void addRightMouseButtonFunctionality(
-            MouseEvent mouseEvent, final JBList list, JBScrollPane panel) {
-        logger.info("Adding functionality for right mouse button.");
+    private void addRightMouseButtonFunctionality(MouseEvent mouseEvent,
+                                                  final JBList list,
+                                                  JBScrollPane panel) {
+        logger.info("Adding functionality for right mouse button. @CourseTabFactory");
         if (!SwingUtilities.isRightMouseButton(mouseEvent)) {
             return;
         }
@@ -113,7 +134,7 @@ public class CourseTabFactory {
         openInExplorer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                logger.info("Right mouse button action performed.");
+                logger.info("Right mouse button action performed. @CourseTabFactory");
                 try {
                     if (selectedItem.getClass() != Exercise.class) {
                         Desktop.getDesktop().open(new File(TmcSettingsManager
@@ -127,9 +148,12 @@ public class CourseTabFactory {
                                         .get().getTmcProjectDirectory()).toString()));
                     }
                 } catch (IOException e1) {
-                    logger.warn("IOException occurred. Something interrupted the action.",
+                    logger.warn("IOException occurred. Something interrupted "
+                                    + "the mouse action. @CourseTabFactory",
                             e1, e1.getStackTrace());
-                    e1.printStackTrace();
+                    new ErrorMessageService().showMessage(e1,
+                            "IOException occurred. Something interrupted the mouse action.",
+                            true);
                 }
             }
         });

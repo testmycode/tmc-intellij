@@ -2,6 +2,7 @@ package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 
 import icons.TmcIcons;
 import org.slf4j.Logger;
@@ -45,21 +46,26 @@ public class ProjectListRenderer extends DefaultListCellRenderer {
         JLabel label = (JLabel) super.getListCellRendererComponent(
                 list, value, index, isSelected, cellHasFocus);
 
-        if (exerciseUnKnown(value)) {
-            logger.info("Setting UNKNOWN TmcIcon "
-                    + "for exercise in the project list window "
-                    + "@ProjectListManager");
-            label.setIcon(TmcIcons.UNKNOWN);
-        } else if (exerciseCompleted(value)) {
-            logger.info("Setting DONE_EXERCISE TmcIcon"
-                    + " for exercise in the project list window "
-                    + "@ProjectListManager");
-            label.setIcon(TmcIcons.DONE_EXERCISE);
-        } else {
-            logger.info("Setting NOT_DONE_EXERCISE TmcIcon "
-                    + "for exercise in the project list window "
-                    + "@ProjectListManager");
-            label.setIcon(TmcIcons.NOT_DONE_EXERCISE);
+        try {
+            if (exerciseUnKnown(value)) {
+                logger.info("Setting UNKNOWN TmcIcon "
+                        + "for exercise in the project list window "
+                        + "@ProjectListManager");
+                label.setIcon(TmcIcons.UNKNOWN);
+            } else if (exerciseCompleted(value)) {
+                logger.info("Setting DONE_EXERCISE TmcIcon"
+                        + " for exercise in the project list window "
+                        + "@ProjectListManager");
+                label.setIcon(TmcIcons.DONE_EXERCISE);
+            } else {
+                logger.info("Setting NOT_DONE_EXERCISE TmcIcon "
+                        + "for exercise in the project list window "
+                        + "@ProjectListManager");
+                label.setIcon(TmcIcons.NOT_DONE_EXERCISE);
+            }
+        } catch (Exception ewr) {
+            logger.info("Failed to set icon.", ewr, ewr.getStackTrace());
+            new ErrorMessageService().showMessage(ewr, "Failed to set icon.", true);
         }
 
         label.setHorizontalTextPosition(JLabel.RIGHT);

@@ -17,7 +17,7 @@ public class CheckForExistingExercises {
     private static final Logger logger = LoggerFactory.getLogger(CheckForExistingExercises.class);
 
     public List<Exercise> clean(List<Exercise> exercises, SettingsTmc settings) {
-        logger.info("Checking for existing exercises.");
+        logger.info("Checking for existing exercises. @CheckForExistingExercises");
         exercises.removeAll(getListOfDownloadedExercises(exercises, settings));
         return exercises;
     }
@@ -25,7 +25,7 @@ public class CheckForExistingExercises {
 
     public List<Exercise> getListOfDownloadedExercises(List<Exercise> exercises,
                 SettingsTmc settingsTmc) {
-        logger.info("Parsing already existing exercises.");
+        logger.info("Parsing already existing exercises. @CheckForExistingExercises");
         List<Exercise> existing = new ArrayList<>();
 
         for (Exercise exercise : exercises) {

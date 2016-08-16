@@ -1,7 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 
-import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
@@ -37,18 +36,18 @@ public class DownloadExerciseAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
-        logger.info("Performing DownloadExerciseAction.");
+        logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
             ExerciseDownloadingService.startDownloadExercise(TmcCoreHolder.get(),
                     TmcSettingsManager.get(),
                     new CheckForExistingExercises(),
                     new ProjectOpener());
-        } catch (Exception e) {
-            logger.warn("Downloading failed.", e);
+        } catch (Exception exception) {
+            logger.warn("Downloading failed. @DownloadExerciseAction", exception);
             Messages.showMessageDialog(project,
                     "Downloading failed \n"
                             + "Are your account details correct?\n"
-                            + e.getMessage(), "Result", Messages.getErrorIcon());
+                            + exception.getMessage(), "Result", Messages.getErrorIcon());
         }
     }
 }

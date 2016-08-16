@@ -1,6 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import fi.helsinki.cs.tmc.core.TmcCore;
+
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.PasteService;
 
@@ -28,12 +28,12 @@ public class SubmitPasteAction extends AnAction{
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        logger.info("Performing SubmitPasteAction");
+        logger.info("Performing SubmitPasteAction. @SubmitPasteAction");
         paste(anActionEvent);
     }
 
     private void paste(AnActionEvent anActionEvent) {
-        logger.info("Showing paste submit form.");
+        logger.info("Showing paste submit form. @SubmitPasteAction");
         if (pasteService == null || pasteService.getWindow() == null
                 || pasteService.getWindow().isClosed()) {
             Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);

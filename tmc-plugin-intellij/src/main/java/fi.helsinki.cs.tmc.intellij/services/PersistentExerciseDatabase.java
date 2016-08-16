@@ -31,31 +31,31 @@ public class PersistentExerciseDatabase implements
     private ExerciseDatabase exerciseDatabase;
 
     public ExerciseDatabase getExerciseDatabase() {
-        logger.info("Getting ExerciseDatabase from PersistentExerciseDatabase.");
+        logger.info("Getting ExerciseDatabase. @PersistentExerciseDatabase.");
         return exerciseDatabase;
     }
 
     public void setExerciseDatabase(ExerciseDatabase exerciseDatabase) {
-        logger.info("Setting ExerciseDatabase @PersistentExerciseDatabase.");
+        logger.info("Setting ExerciseDatabase. @PersistentExerciseDatabase.");
         this.exerciseDatabase = exerciseDatabase;
     }
 
     @Nullable
     @Override
     public PersistentExerciseDatabase getState() {
-        logger.info("Processing getState @PersistentExerciseDatabase.");
+        logger.info("Processing getState. @PersistentExerciseDatabase.");
         return this;
     }
 
     @Override
     public void loadState(PersistentExerciseDatabase persistentExerciseDatabase) {
-        logger.info("Processing loadState @PersistentExerciseDatabase.");
+        logger.info("Processing loadState. @PersistentExerciseDatabase.");
         XmlSerializerUtil.copyBean(persistentExerciseDatabase, this);
     }
 
     @Nullable
     public static PersistentExerciseDatabase getInstance() {
-        logger.info("Processing getInstance @PersistentExerciseDatabase.");
+        logger.info("Processing getInstance. @PersistentExerciseDatabase.");
         return ServiceManager.getService(PersistentExerciseDatabase.class);
     }
 

@@ -19,7 +19,7 @@ public class TmcCoreHolder {
     private TmcCoreHolder() {}
 
     public static synchronized TmcCore get() {
-        logger.info("Get TmcCore from TmcCoreHolder.");
+        logger.info("Get TmcCore. @TmcCoreHolder.");
         if (core == null) {
             TaskExecutor tmcLangs = new TaskExecutorImpl();
             core = new TmcCore(TmcSettingsManager.get(), tmcLangs);
@@ -28,7 +28,7 @@ public class TmcCoreHolder {
     }
 
     public static synchronized void setup() {
-        logger.info("Setup TmcCore at TmcCoreHolder.");
+        logger.info("Setup TmcCore. @TmcCoreHolder.");
         if (core == null) {
             TaskExecutor tmcLangs = new TaskExecutorImpl();
             core = new TmcCore(TmcSettingsManager.get(), tmcLangs);
@@ -37,7 +37,7 @@ public class TmcCoreHolder {
 
     //Testing only
     public static synchronized TmcCore testGet() {
-        logger.info("Get TmcCore from TmcCoreHolder for testing.");
+        logger.info("Get TmcCore for testing. @TmcCoreHolder");
         if (core == null) {
             TaskExecutor tmcLangs = new TaskExecutorImpl();
             core = new TmcCore(new SettingsTmc("https://tmc.mooc.fi/staging/org/tmc-intellij",

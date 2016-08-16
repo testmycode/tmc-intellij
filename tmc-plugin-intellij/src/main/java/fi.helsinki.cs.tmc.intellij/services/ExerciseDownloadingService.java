@@ -22,7 +22,8 @@ import java.util.List;
  */
 public class ExerciseDownloadingService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ExerciseDownloadingService.class);
+    private static final Logger logger = LoggerFactory
+            .getLogger(ExerciseDownloadingService.class);
 
     public static void startDownloadExercise(final TmcCore core,
                                              final SettingsTmc settings,
@@ -40,23 +41,35 @@ public class ExerciseDownloadingService {
     private static Thread createThread(final TmcCore core,
                                        final SettingsTmc settings,
                                        final CheckForExistingExercises checker) {
-        logger.info("Creating a new thread.");
+        logger.info("Creating a new thread. @ExerciseDownloadingService");
         return new Thread() {
             @Override
             public void run() {
                 ObjectFinder finder = new ObjectFinder();
-                final Course course = finder
-                        .findCourseByName(settings.getCourse()
-                                .getName(), core);
-                List<Exercise> exercises = course.getExercises();
-                exercises = checker.clean(exercises, settings);
                 try {
-                    logger.info("Starting to download exercise.");
-                    core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
-                            exercises).call();
-                } catch (Exception e) {
-                    logger.warn("Failed to download exercises", e, e.getStackTrace());
+                    logger.info("Starting to download exercise. @ExerciseDownloadingService");
+                    final Course course = finder
+                            .findCourseByName(settings.getCourse()
+                                    .getName(), core);
+                    List<Exercise> exercises = course.getExercises();
+                    exercises = checker.clean(exercises, settings);
+                    try {
+                        core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
+                                exercises).call();
+                    } catch (Exception exception) {
+                        logger.info("Failed to download exercises. @ExerciseDownloadingService");
+                        new ErrorMessageService().showMessage(exception,
+                                "Failed to download exercises.", true);
+                    }
+
+                } catch (Exception except) {
+                    logger.warn("Failed to download exercises. "
+                                    + "Course not selected. @ExerciseDownloadingService",
+                            except, except.getStackTrace());
+                    new ErrorMessageService().showMessage(except,
+                            "You need to select a course to be able to download.", true);
                 }
+
                 ApplicationManager.getApplication().invokeLater(
                         new Runnable() {
                             public void run() {
@@ -64,7 +77,8 @@ public class ExerciseDownloadingService {
                                         new Runnable() {
                                             @Override
                                             public void run() {
-                                                logger.info("Updating project list.");
+                                                logger.info("Updating project list. "
+                                                        + "@ExerciseDownloadingService");
                                                 CourseAndExerciseManager.updateAll();
                                                 ProjectListManager.refreshAllCourses();
                                             }

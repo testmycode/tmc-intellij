@@ -33,18 +33,19 @@ public class PersistentTmcSettings implements PersistentStateComponent<Persisten
     @Nullable
     @Override
     public PersistentTmcSettings getState() {
-        logger.info("Processing getState @PersistentTmcSettings.");
+        logger.info("Processing getState. @PersistentTmcSettings.");
         return this;
     }
 
     @Override
     public void loadState(PersistentTmcSettings persistentTmcSettings) {
-        logger.info("Processing loadState @PersistentTmcSettings.");
+        logger.info("Processing loadState. @PersistentTmcSettings.");
         XmlSerializerUtil.copyBean(persistentTmcSettings, this);
     }
 
     @Nullable
     public static PersistentTmcSettings getInstance() {
+        logger.info("Processing getInstance. @PersistentTmcSettings");
         return ServiceManager.getService(PersistentTmcSettings.class);
     }
 
@@ -52,12 +53,12 @@ public class PersistentTmcSettings implements PersistentStateComponent<Persisten
     SettingsTmc settingsTmc;
 
     public SettingsTmc getSettingsTmc() {
-        logger.info("Getting SettingsTmc @PersistentTmcSettings.");
+        logger.info("Getting SettingsTmc. @PersistentTmcSettings.");
         return settingsTmc;
     }
 
     public void setSettingsTmc(SettingsTmc settingsTmc) {
-        logger.info("Setting SettingsTmc @PersistentTmcSettings.");
+        logger.info("Setting SettingsTmc. @PersistentTmcSettings.");
         this.settingsTmc = settingsTmc;
     }
 

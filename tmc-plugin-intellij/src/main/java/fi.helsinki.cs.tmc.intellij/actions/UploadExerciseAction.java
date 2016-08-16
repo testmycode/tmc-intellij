@@ -1,6 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import fi.helsinki.cs.tmc.core.TmcCore;
+
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
@@ -31,7 +31,7 @@ public class UploadExerciseAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
-        logger.info("Performing UploadExerciseAction");
+        logger.info("Performing UploadExerciseAction. @UploadExerciseAction");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
 
         ExerciseUploadingService.startUploadExercise(project,

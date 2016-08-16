@@ -1,6 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.holders;
 
-import fi.helsinki.cs.tmc.core.TmcCore;
+
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
 
@@ -23,7 +23,7 @@ public final class TmcSettingsManager {
     }
 
     public static synchronized SettingsTmc get() {
-        logger.info("Get SettingsTmc from TmcSettingsManager.");
+        logger.info("Get SettingsTmc. @TmcSettingsManager.");
         if (persistentSettings.getSettingsTmc() == null) {
             persistentSettings.setSettingsTmc(new SettingsTmc());
         }
@@ -31,15 +31,9 @@ public final class TmcSettingsManager {
     }
 
     public static synchronized void setup() {
-        logger.info("Setup SettingsTmc at TmcSettingsManager.");
+        logger.info("Setup SettingsTmc. @TmcSettingsManager.");
         if (persistentSettings.getSettingsTmc() == null) {
             persistentSettings.setSettingsTmc(new SettingsTmc());
         }
-
-    }
-
-    public static synchronized void set(SettingsTmc settings) {
-        logger.info("Set SettingsTmc at TmcSettingsManager.");
-        persistentSettings.setSettingsTmc(settings);
     }
 }

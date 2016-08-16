@@ -20,16 +20,17 @@ public class ExerciseDatabase implements Serializable {
     private Map<String, List<Exercise>> courses;
 
     public ExerciseDatabase() {
-        this.courses =  new HashMap();
+        courses =  new HashMap();
     }
 
     public Map<String, List<Exercise>> getCourses() {
-        logger.info("Get courses from ExerciseDatabase.");
+        logger.info("Get courses. @ExerciseDatabase.");
         return courses;
     }
 
     public void setCourses(Map<String, List<Exercise>> courses) {
-        logger.info("Set courses at ExerciseDatabase.");
+        logger.info("Set courses. @ExerciseDatabase.");
         this.courses = courses;
     }
+
 }

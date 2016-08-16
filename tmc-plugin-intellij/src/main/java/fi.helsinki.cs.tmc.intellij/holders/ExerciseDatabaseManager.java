@@ -1,7 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.holders;
 
 
-import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseDatabase;
 import fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase;
 
@@ -24,7 +23,7 @@ public class ExerciseDatabaseManager {
     }
 
     public static synchronized ExerciseDatabase get() {
-        logger.info("Get ExerciseDatabase from ExerciseDatabaseManager.");
+        logger.info("Get ExerciseDatabase. @ExerciseDatabaseManager.");
         if (persistentExerciseDatabase.getExerciseDatabase() == null) {
             persistentExerciseDatabase.setExerciseDatabase(new ExerciseDatabase());
         }
@@ -32,16 +31,9 @@ public class ExerciseDatabaseManager {
     }
 
     public static synchronized void setup() {
-        logger.info("Setup ExerciseDatabase at ExerciseDatabaseManager.");
+        logger.info("Setup ExerciseDatabase. @ExerciseDatabaseManager.");
         if (persistentExerciseDatabase.getExerciseDatabase() == null) {
             persistentExerciseDatabase.setExerciseDatabase(new ExerciseDatabase());
         }
-
     }
-
-    public static synchronized void set(ExerciseDatabase settings) {
-        logger.info("Set ExerciseDatabase at ExerciseDatabaseManager.");
-        persistentExerciseDatabase.setExerciseDatabase(settings);
-    }
-
 }

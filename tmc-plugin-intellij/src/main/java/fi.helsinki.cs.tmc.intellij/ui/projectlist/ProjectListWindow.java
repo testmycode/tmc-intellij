@@ -44,15 +44,6 @@ public class ProjectListWindow {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectListWindow.class);
 
-    public JTabbedPane getTabbedPanelBase() {
-        return tabbedPanelBase;
-    }
-
-    public void setTabbedPanelBase(JTabbedPane tabbedPanelBase) {
-
-        this.tabbedPanelBase = tabbedPanelBase;
-    }
-
     private JTabbedPane tabbedPanelBase;
 
     public JPanel getBasePanel() {
@@ -86,6 +77,20 @@ public class ProjectListWindow {
         JButton refreshButton = addFunctionalityToRefreshButton();
         toolbar.add(refreshButton);
         addFunctionalityToOpenButton();
+        setActiveTabToSelectedCourse();
+    }
+
+    private void setActiveTabToSelectedCourse() {
+        logger.info("Setting active tab to selected course. @ProjectListWindow");
+        if (TmcSettingsManager.get().getCourse() != null) {
+            String course = TmcSettingsManager.get().getCourse().getName();
+            for (int i = 0; i < tabbedPanelBase.getTabCount(); i++) {
+                if (tabbedPanelBase.getTitleAt(i).equals(course)) {
+                    tabbedPanelBase.setSelectedIndex(i);
+                    return;
+                }
+            }
+        }
     }
 
     private void createCourseSpecificTabs(ObjectFinder finder,

@@ -10,6 +10,7 @@ import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanel;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanelFactory;
 
@@ -136,6 +137,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addYayLabel() {
+        logger.info("Adding yay label. @SuccessfulSubmissionDialog");
         JLabel yayLabel = new JLabel("All tests passed on the server.");
 
         Font font = yayLabel.getFont();
@@ -154,6 +156,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addRequiresReviewLabels() {
+        logger.info("Adding required review labels. @SuccessfulSubmissionDialog");
         JLabel lbl1 = new JLabel("This exercise requires a code review.");
         String message = "It will have a yellow marker until it's accepted by an instructor.";
         JLabel lbl2 = new JLabel(message);
@@ -162,6 +165,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addPointsLabel(SubmissionResult result) {
+        logger.info("Adding points label. @SuccessfulSubmissionDialog");
         JLabel pointsLabel = new JLabel(getPointsMsg(result));
         pointsLabel.setFont(pointsLabel.getFont().deriveFont(Font.BOLD));
 
@@ -169,6 +173,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private String getPointsMsg(SubmissionResult result) {
+        logger.info("Getting points message. @SuccessfulSubmissionDialog");
         if (result.getPoints().isEmpty()) {
             return "";
         }
@@ -182,6 +187,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
 
     private void addModelSolutionButton(SubmissionResult result, final Project project) {
+        logger.info("Adding model solution button. @SuccessfulSubmissionDialog");
         if (result.getSolutionUrl() == null) {
             return;
         }
@@ -200,6 +206,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
                                              final String solutionUrl,
                                              final Project project) {
 
+
         return new AbstractAction(message) {
             @Override
             public void actionPerformed(ActionEvent ev) {
@@ -214,6 +221,12 @@ public class SuccessfulSubmissionDialog extends JDialog {
                 try {
                     desktop.browse(new URI(solutionUrl));
                 } catch (Exception ex) {
+                    logger.warn("Failed to open browser. "
+                            + "Problem with browser. @SuccessfulSubmissionDialog",
+                            ex, ex.getStackTrace());
+                    new ErrorMessageService().showMessage(ex,
+                            "Failed to open browser. Problem with browser.",
+                            true);
                     String errorMessage = "Failed to open browser.\n" + ex.getMessage();
                     Messages.showErrorDialog(project, errorMessage, "Problem with browser");
                 }
@@ -222,6 +235,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addFeedbackQuestions(SubmissionResult result) {
+        logger.info("Adding feedback questions. @SuccessfulSubmissionDialog");
         this.feedbackQuestionPanels = new ArrayList<>();
 
         if (result.getFeedbackQuestions().isEmpty() || result.getFeedbackQuestions() == null) {
@@ -245,12 +259,16 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void createQuestionPanelAndAddToPanelList(List<FeedbackQuestion> questions) {
+        logger.info("Getting question panel and add questions to the panel. "
+                + "@SuccessfulSubmissionDialog");
         for (FeedbackQuestion question : questions) {
             try {
                 FeedbackQuestionPanel panel
                         = FeedbackQuestionPanelFactory.getPanelForQuestion(question);
                 feedbackQuestionPanels.add(panel);
             } catch (IllegalArgumentException e) {
+                logger.warn("Failed to add panel. This should not cause any problems. "
+                        + " @SuccessfulSubmissionDialog");
                 continue;
             }
         }

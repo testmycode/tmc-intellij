@@ -4,6 +4,7 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
+import fi.helsinki.cs.tmc.intellij.actions.RunTestsAction;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
@@ -25,7 +26,7 @@ public class ExerciseUploadingService {
                                            CheckForExistingExercises checker,
                                            SubmissionResultHandler handler,
                                            SettingsTmc settings) {
-        logger.info("Starting to upload an exercise.");
+        logger.info("Starting to upload an exercise. @ExerciseUploadingService");
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
         if (!CourseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
@@ -50,26 +51,27 @@ public class ExerciseUploadingService {
             @Override
             public void run() {
                 try {
-                    logger.info("Getting submission results.");
+                    logger.info("Getting submission results. @ExerciseUploadingService");
                     final SubmissionResult result = core
                             .submit(ProgressObserver.NULL_OBSERVER, exercise).call();
                     handler.showResultMessage(exercise, result, project);
                 } catch (Exception exception) {
-                    logger.warn("Could not get submission results.", exception,
-                            exception.getStackTrace());
+                    logger.warn("Could not get submission results. @ExerciseUploadingService",
+                            exception, exception.getStackTrace());
                     exception.printStackTrace();
                 }
             }
         }, "Uploading exercise, this may take several minutes", project);
+        RunTestsAction.displayTestWindow();
     }
 
     private static String getCourseName(String[] courseAndExercise) {
-        logger.info("Getting course name from ExerciseUploadingService.");
+        logger.info("Getting course name. @ExerciseUploadingService.");
         return courseAndExercise[courseAndExercise.length - 2];
     }
 
     private static String getExerciseName(String[] courseAndExercise) {
-        logger.info("Getting exercise name from ExerciseUploadingService.");
+        logger.info("Getting exercise name. @ExerciseUploadingService.");
         return courseAndExercise[courseAndExercise.length - 1];
     }
 

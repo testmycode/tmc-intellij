@@ -29,6 +29,7 @@ public class SettingsWindow {
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setSize(new Dimension(800, 500));
+        frame.setAlwaysOnTop(true);
     }
 
     public boolean isClosed() {
