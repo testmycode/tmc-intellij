@@ -15,6 +15,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Dimension;
@@ -146,6 +147,7 @@ public class SettingsPanel {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                new ButtonInputListener().receiveSettings();
                 saveInformation();
                 frame.dispose();
                 frame.setVisible(false);

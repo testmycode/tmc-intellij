@@ -7,6 +7,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 /**
  * Defined in plugin.xml on line
@@ -27,6 +28,7 @@ public class SubmitPasteAction extends AnAction{
     }
 
     private void paste(AnActionEvent anActionEvent) {
+        new ButtonInputListener().receivePastebin();
         if (pasteService == null || pasteService.getWindow() == null
                 || pasteService.getWindow().isClosed()) {
             Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);

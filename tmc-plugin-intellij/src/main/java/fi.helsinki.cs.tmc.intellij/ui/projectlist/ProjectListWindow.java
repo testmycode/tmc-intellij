@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
+import com.intellij.openapi.application.ApplicationManager;
 import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
@@ -132,10 +133,7 @@ public class ProjectListWindow {
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                OperationInProgressNotification note =
-                        new OperationInProgressNotification("Refreshing exercises");
                 refreshProjectList();
-                note.hide();
             }
         });
 
@@ -155,8 +153,18 @@ public class ProjectListWindow {
     }
 
     public void refreshProjectList() {
-        CourseAndExerciseManager.updateAll();
-        ProjectListManager.refreshAllCourses();
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+            @Override
+            public void run() {
+                CourseAndExerciseManager.updateAll();
+                ApplicationManager.getApplication().invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ProjectListManager.refreshAllCourses();
+                    }
+                });
+            }
+        });
     }
 
     {

@@ -13,6 +13,7 @@ import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 import fi.helsinki.cs.tmc.langs.domain.RunResult;
 
@@ -20,13 +21,19 @@ public class RunTestsAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         String[] cex = PathResolver.getCourseAndExerciseName(anActionEvent.getProject());
-        runTests(CourseAndExerciseManager.get(cex[cex.length - 2],
-                cex[cex.length -1]), anActionEvent.getProject());
+        if (CourseAndExerciseManager.isCourseInDatabase(cex[cex.length - 2])) {
+            runTests(CourseAndExerciseManager.get(cex[cex.length - 2],
+                    cex[cex.length - 1]), anActionEvent.getProject());
+        } else {
+            ErrorMessageService error = new ErrorMessageService();
+            error.showMessage(new Exception(), "Running tests failed, exercise was not recognized");
+        }
     }
 
 
     public void runTests(final Exercise exercise, Project project) {
         if (exercise != null) {
+            new ButtonInputListener().receiveTestRun();
             ThreadingService.runWithNotification(new Runnable() {
                 @Override
                 public void run() {

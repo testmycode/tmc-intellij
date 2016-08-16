@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 
 import com.google.common.base.Optional;
 
+import fi.helsinki.cs.tmc.core.spyware.SpywareSettings;
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
 import java.io.File;
