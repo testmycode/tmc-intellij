@@ -4,6 +4,7 @@ import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
+import fi.helsinki.cs.tmc.intellij.services.PropertySetter;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
@@ -35,8 +36,8 @@ public class StartupEvent implements StartupActivity {
         final OperationInProgressNotification note =
                 new OperationInProgressNotification("Running TMC startup actions");
 
-        //PropertySetter propSet = new PropertySetter();
-        //propSet.setLog4jProperties();
+        PropertySetter propSet = new PropertySetter();
+        propSet.setLog4jProperties();
 
         ExerciseDatabaseManager.setup();
         TmcSettingsManager.setup();

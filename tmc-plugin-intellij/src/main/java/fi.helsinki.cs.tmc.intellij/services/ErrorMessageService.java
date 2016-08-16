@@ -166,6 +166,7 @@ public class ErrorMessageService {
             exception.printStackTrace();
         }
     }
+
     /**
      * Controls which error message will be shown to the user.
      * If the parameter bool is true, the message will be shown as a popup.
