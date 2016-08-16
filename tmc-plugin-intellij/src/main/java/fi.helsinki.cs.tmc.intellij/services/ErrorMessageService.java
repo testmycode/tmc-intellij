@@ -116,8 +116,7 @@ public class ErrorMessageService {
      * Generates a balloon notification or a popup message.
      * @param str Notification message.
      * @param type The type of notification to be shown.
-     * @param bool If the parameter bool is true, the message will be shown as a popup.
-     * If not, then it will be shown at the side.
+     * @param bool If the error message will be a popup or not.
      */
     private void initializeNotification(final String str,
                                         NotificationType type,
@@ -143,8 +142,7 @@ public class ErrorMessageService {
     /**
      * Selects the error message method to be called.
      * @param exception The cause of an error.
-     * @param bool If the parameter bool is true, the message will be shown as a popup.
-     * If not, then it will be shown at the side.
+     * @param bool If the error message will be a popup or not.
      */
     private void selectMessage(TmcCoreException exception, boolean bool) {
         logger.info("Selecting the error message method to be called. @ErrorMessageService");
@@ -173,7 +171,7 @@ public class ErrorMessageService {
      * If the parameter bool is true, the message will be shown as a popup.
      * If not, then it will be shown at the side.
      * @param exception The cause of an error.
-     * @param bool if the error message will be a pop up or not
+     * @param bool if the error message will be a pop up or not.
      */
     public void showMessage(final TmcCoreException exception, final boolean bool) {
         logger.info("Starting to handle TmcCoreException. "
