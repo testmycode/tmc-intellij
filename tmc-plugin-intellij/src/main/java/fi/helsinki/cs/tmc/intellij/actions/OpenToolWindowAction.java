@@ -15,6 +15,9 @@ import com.intellij.ui.content.ContentFactory;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Defined in plugin.xml in actions group on line
  *  &lt;action id="Open TMC Exercise List"
@@ -29,11 +32,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public class OpenToolWindowAction extends AnAction implements ToolWindowFactory {
 
+    private static final Logger logger = LoggerFactory.getLogger(OpenToolWindowAction.class);
+
     public void actionPerformed(AnActionEvent anActionEvent) {
+        logger.info("Performing OpenToolWindowAction. @OpenToolWindowAction");
         openToolWindow(anActionEvent.getProject());
     }
 
     public void openToolWindow(Project project) {
+        logger.info("Opening tool window. @OpenToolWindowAction");
         try {
             ToolWindow projectList =  ToolWindowManager.getInstance(project)
                     .getToolWindow("TMC Project List");
@@ -45,13 +52,15 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
                 ToolWindowManager.getInstance(project);
             }
         } catch (Exception exception) {
+            logger.warn("Failed to open tool window. @OpenToolWindowAction", exception);
             ErrorMessageService service = new ErrorMessageService();
-            service.showMessage(exception, "Opening TMC Project List Failed!");
+            service.showMessage(exception, "Opening TMC Project List Failed!", false);
         }
     }
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+        logger.info("Creating tool window content. @OpenToolWindowAction");
         ProjectListWindow window = new ProjectListWindow();
         ContentFactory cf = ContentFactory.SERVICE.getInstance();
         Content content = cf.createContent(window.getBasePanel(), "", true);
@@ -60,6 +69,7 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
     }
 
     public void hideToolWindow(Project project) {
+        logger.info("Hiding tool window. @OpenToolWindowAction");
         ToolWindowManager.getInstance(project)
                 .getToolWindow("TMC Project List").hide(null);
     }

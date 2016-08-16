@@ -39,14 +39,15 @@ public class RunTestsAction extends AnAction {
                         showTestResult(finalResult);
                     } catch (Exception e) {
                         ErrorMessageService error = new ErrorMessageService();
-                        error.showMessage(e, "Running tests failed!");
+                        error.showMessage(e, "Running tests failed!", true);
                     }
                 }
             }, "Running tests!", project);
             displayTestWindow();
         } else {
             ErrorMessageService error = new ErrorMessageService();
-            error.showMessage(new Exception(), "Running tests failed, exercise was not recognized");
+            error.showMessage(new Exception(),
+                    "Running tests failed, exercise was not recognized",true);
         }
     }
 

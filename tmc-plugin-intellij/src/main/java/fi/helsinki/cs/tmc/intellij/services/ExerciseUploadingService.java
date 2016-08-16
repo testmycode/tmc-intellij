@@ -11,16 +11,22 @@ import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * Offers static methods to upload exercises.
  */
 public class ExerciseUploadingService {
 
+    private static final Logger logger = LoggerFactory.getLogger(CheckForExistingExercises.class);
+
     public static void startUploadExercise(Project project, TmcCore core, ObjectFinder finder,
                                            CheckForExistingExercises checker,
                                            SubmissionResultHandler handler,
                                            SettingsTmc settings) {
+        logger.info("Starting to upload an exercise. @ExerciseUploadingService");
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
         if (!CourseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
@@ -40,14 +46,18 @@ public class ExerciseUploadingService {
     private static void getResults(final Project project,
                                    final Exercise exercise, final TmcCore core,
                                    final SubmissionResultHandler handler) {
+        logger.info("Calling for threadingService from getResult. @ExerciseUploadingService.");
         ThreadingService.runWithNotification(new Runnable() {
             @Override
             public void run() {
                 try {
+                    logger.info("Getting submission results. @ExerciseUploadingService");
                     final SubmissionResult result = core
                             .submit(ProgressObserver.NULL_OBSERVER, exercise).call();
                     handler.showResultMessage(exercise, result, project);
                 } catch (Exception exception) {
+                    logger.warn("Could not get submission results. @ExerciseUploadingService",
+                            exception, exception.getStackTrace());
                     exception.printStackTrace();
                 }
             }
@@ -56,10 +66,12 @@ public class ExerciseUploadingService {
     }
 
     private static String getCourseName(String[] courseAndExercise) {
+        logger.info("Getting course name. @ExerciseUploadingService.");
         return courseAndExercise[courseAndExercise.length - 2];
     }
 
     private static String getExerciseName(String[] courseAndExercise) {
+        logger.info("Getting exercise name. @ExerciseUploadingService.");
         return courseAndExercise[courseAndExercise.length - 1];
     }
 

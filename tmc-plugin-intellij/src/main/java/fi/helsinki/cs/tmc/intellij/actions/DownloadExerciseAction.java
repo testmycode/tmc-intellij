@@ -14,6 +14,8 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Defined in plugin.xml on line
@@ -29,20 +31,23 @@ import com.intellij.openapi.ui.Messages;
  */
 public class DownloadExerciseAction extends AnAction {
 
+    private static final Logger logger = LoggerFactory.getLogger(DownloadExerciseAction.class);
+
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
-
+        logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
             ExerciseDownloadingService.startDownloadExercise(TmcCoreHolder.get(),
                     TmcSettingsManager.get(),
                     new CheckForExistingExercises(),
                     new ProjectOpener());
-        } catch (Exception e) {
+        } catch (Exception exception) {
+            logger.warn("Downloading failed. @DownloadExerciseAction", exception);
             Messages.showMessageDialog(project,
                     "Downloading failed \n"
                             + "Are your account details correct?\n"
-                            + e.getMessage(), "Result", Messages.getErrorIcon());
+                            + exception.getMessage(), "Result", Messages.getErrorIcon());
         }
     }
 }

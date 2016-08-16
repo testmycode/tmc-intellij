@@ -10,6 +10,7 @@ import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanel;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanelFactory;
 
@@ -19,6 +20,8 @@ import com.intellij.openapi.ui.Messages;
 import icons.TmcIcons;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Component;
 import java.awt.Desktop;
@@ -41,10 +44,12 @@ import javax.swing.JPanel;
 
 public class SuccessfulSubmissionDialog extends JDialog {
 
+    private static final Logger logger = LoggerFactory.getLogger(SuccessfulSubmissionDialog.class);
     private JButton okButton;
     private List<FeedbackQuestionPanel> feedbackQuestionPanels;
 
     public SuccessfulSubmissionDialog(Exercise exercise, SubmissionResult result, Project project) {
+        logger.info("Creating SuccessfulSubmissionDialog. @SuccessfulSubmissionDialog");
         this.setTitle(exercise.getName() + " passed");
 
         JPanel contentPane = new JPanel();
@@ -74,9 +79,11 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     public void addOkListener(final SubmissionResult result, final Project project) {
+        logger.info("Adding action listener for ok button. @SuccessfulSubmissionDialog");
         this.okButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ev) {
+                logger.info("Ok button pressed. @SuccessfulSubmissionDialog");
                 sendFeedback(result, project);
                 setVisible(false);
                 dispose();
@@ -85,23 +92,31 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void sendFeedback(SubmissionResult result, Project project) {
+        logger.info("Checking if feedback exists. @SuccessfulSubmissionDialog");
         List<FeedbackAnswer> answers = getFeedbackAnswers();
 
         if (answers.size() == 0) {
+            logger.info("No feedback. @SuccessfulSubmissionDialog");
             return;
         }
 
         try {
+            logger.info("Trying to send feedback. @SuccessfulSubmissionDialog");
             TmcCoreHolder.get().sendFeedback(ProgressObserver.NULL_OBSERVER,
                     getFeedbackAnswers(), new URI(result.getFeedbackAnswerUrl())).call();
 
         } catch (Exception ex) {
+            logger.warn("Failed to send feedback. Problems with internet. "
+                    + "@SuccessfulSubmissionDialog",
+                    ex, ex.getStackTrace());
             String errorMessage = "Problems with internet.\n" + ex.getMessage();
             Messages.showErrorDialog(project, errorMessage, "Problem with internet");
         }
     }
 
     public List<FeedbackAnswer> getFeedbackAnswers() {
+        logger.info("Getting feedback answer. @SuccessfulSubmissionDialog");
+
         List<FeedbackAnswer> answers = new ArrayList<>();
 
         for (FeedbackQuestionPanel panel : feedbackQuestionPanels) {
@@ -122,6 +137,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addYayLabel() {
+        logger.info("Adding yay label. @SuccessfulSubmissionDialog");
         JLabel yayLabel = new JLabel("All tests passed on the server.");
 
         Font font = yayLabel.getFont();
@@ -140,6 +156,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addRequiresReviewLabels() {
+        logger.info("Adding required review labels. @SuccessfulSubmissionDialog");
         JLabel lbl1 = new JLabel("This exercise requires a code review.");
         String message = "It will have a yellow marker until it's accepted by an instructor.";
         JLabel lbl2 = new JLabel(message);
@@ -148,6 +165,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addPointsLabel(SubmissionResult result) {
+        logger.info("Adding points label. @SuccessfulSubmissionDialog");
         JLabel pointsLabel = new JLabel(getPointsMsg(result));
         pointsLabel.setFont(pointsLabel.getFont().deriveFont(Font.BOLD));
 
@@ -155,6 +173,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private String getPointsMsg(SubmissionResult result) {
+        logger.info("Getting points message. @SuccessfulSubmissionDialog");
         if (result.getPoints().isEmpty()) {
             return "";
         }
@@ -168,6 +187,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
 
     private void addModelSolutionButton(SubmissionResult result, final Project project) {
+        logger.info("Adding model solution button. @SuccessfulSubmissionDialog");
         if (result.getSolutionUrl() == null) {
             return;
         }
@@ -186,6 +206,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
                                              final String solutionUrl,
                                              final Project project) {
 
+
         return new AbstractAction(message) {
             @Override
             public void actionPerformed(ActionEvent ev) {
@@ -200,6 +221,12 @@ public class SuccessfulSubmissionDialog extends JDialog {
                 try {
                     desktop.browse(new URI(solutionUrl));
                 } catch (Exception ex) {
+                    logger.warn("Failed to open browser. "
+                            + "Problem with browser. @SuccessfulSubmissionDialog",
+                            ex, ex.getStackTrace());
+                    new ErrorMessageService().showMessage(ex,
+                            "Failed to open browser. Problem with browser.",
+                            true);
                     String errorMessage = "Failed to open browser.\n" + ex.getMessage();
                     Messages.showErrorDialog(project, errorMessage, "Problem with browser");
                 }
@@ -208,6 +235,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void addFeedbackQuestions(SubmissionResult result) {
+        logger.info("Adding feedback questions. @SuccessfulSubmissionDialog");
         this.feedbackQuestionPanels = new ArrayList<>();
 
         if (result.getFeedbackQuestions().isEmpty() || result.getFeedbackQuestions() == null) {
@@ -231,18 +259,23 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void createQuestionPanelAndAddToPanelList(List<FeedbackQuestion> questions) {
+        logger.info("Getting question panel and add questions to the panel. "
+                + "@SuccessfulSubmissionDialog");
         for (FeedbackQuestion question : questions) {
             try {
                 FeedbackQuestionPanel panel
                         = FeedbackQuestionPanelFactory.getPanelForQuestion(question);
                 feedbackQuestionPanels.add(panel);
             } catch (IllegalArgumentException e) {
+                logger.warn("Failed to add panel. This should not cause any problems. "
+                        + " @SuccessfulSubmissionDialog");
                 continue;
             }
         }
     }
 
     private void addOkButton() {
+        logger.info("Adding ok button. @SuccessfulSubmissionDialog");
         okButton = new JButton("OK");
         okButton.addActionListener(new ActionListener() {
             @Override

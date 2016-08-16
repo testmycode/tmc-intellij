@@ -4,6 +4,7 @@ package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.openapi.ui.JBMenuItem;
@@ -11,6 +12,9 @@ import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 
 import org.jetbrains.annotations.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Desktop;
 import java.awt.event.ActionEvent;
@@ -35,9 +39,12 @@ import javax.swing.SwingUtilities;
  */
 public class CourseTabFactory {
 
+    private static final Logger logger = LoggerFactory.getLogger(CourseTabFactory.class);
+
     public void createCourseSpecificTab(ObjectFinder finder,
                                         ProjectOpener opener, String course,
                                         JTabbedPane tabbedPanelBase) {
+        logger.info("Creating course specific tab. @CourseTabFactory");
         final JBScrollPane panel = new JBScrollPane();
         final JBList list = new JBList();
         list.setCellRenderer(new ProjectListRenderer());
@@ -83,6 +90,7 @@ public class CourseTabFactory {
     @NotNull
     private MouseListener createMouseListenerForWindow(
             final ProjectOpener opener, final JBScrollPane panel, final JBList list) {
+        logger.info("Creating mouse listener for course tab. @CourseTabFactory");
         return new MouseAdapter() {
 
             public void mousePressed(MouseEvent mouseEvent) {
@@ -112,7 +120,7 @@ public class CourseTabFactory {
     private void addRightMouseButtonFunctionality(MouseEvent mouseEvent,
                                                   final JBList list,
                                                   JBScrollPane panel) {
-
+        logger.info("Adding functionality for right mouse button. @CourseTabFactory");
         if (!SwingUtilities.isRightMouseButton(mouseEvent)) {
             return;
         }
@@ -126,6 +134,7 @@ public class CourseTabFactory {
         openInExplorer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("Right mouse button action performed. @CourseTabFactory");
                 try {
                     if (selectedItem.getClass() != Exercise.class) {
                         Desktop.getDesktop().open(new File(TmcSettingsManager
@@ -139,7 +148,12 @@ public class CourseTabFactory {
                                         .get().getTmcProjectDirectory()).toString()));
                     }
                 } catch (IOException e1) {
-                    e1.printStackTrace();
+                    logger.warn("IOException occurred. Something interrupted "
+                                    + "the mouse action. @CourseTabFactory",
+                            e1, e1.getStackTrace());
+                    new ErrorMessageService().showMessage(e1,
+                            "IOException occurred. Something interrupted the mouse action.",
+                            true);
                 }
             }
         });

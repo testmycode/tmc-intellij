@@ -5,12 +5,18 @@ import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 
 import com.intellij.ui.components.JBScrollPane;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class TextQuestionPanel extends FeedbackQuestionPanel {
 
+    private static final Logger logger = LoggerFactory.getLogger(TextQuestionPanel.class);
     private FeedbackQuestion question;
 
     public TextQuestionPanel(FeedbackQuestion question) {
+        logger.info("Creating text question panel for submission feedback window "
+                + "@TextQuestionPanel");
         this.question = question;
 
         initComponents();
@@ -19,6 +25,7 @@ public class TextQuestionPanel extends FeedbackQuestionPanel {
 
     @Override
     public FeedbackAnswer getAnswer() {
+        logger.info("Getting feedback answer. @TextQuestionPanel");
         String text = answerTextArea.getText().trim();
 
         if (text.isEmpty()) {
@@ -35,6 +42,8 @@ public class TextQuestionPanel extends FeedbackQuestionPanel {
      */
     @SuppressWarnings("unchecked")
     private void initComponents() {
+        logger.info("Initializing components for TextQuestionPanel "
+                + "@TextQuestionPanel");
 
         questionLabel = new javax.swing.JLabel();
         //textAreaScrollPane = new javax.swing.JScrollPane();

@@ -9,7 +9,11 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import com.intellij.openapi.application.ApplicationManager;
+
 import org.jetbrains.annotations.NotNull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -18,11 +22,14 @@ import java.util.List;
  */
 public class ExerciseDownloadingService {
 
+    private static final Logger logger = LoggerFactory
+            .getLogger(ExerciseDownloadingService.class);
+
     public static void startDownloadExercise(final TmcCore core,
                                              final SettingsTmc settings,
                                              final CheckForExistingExercises checker,
                                              ProjectOpener opener) throws Exception {
-
+        logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
         Thread run = createThread(core, settings, checker);
         ThreadingService
                 .runWithNotification(run,
@@ -34,12 +41,13 @@ public class ExerciseDownloadingService {
     private static Thread createThread(final TmcCore core,
                                        final SettingsTmc settings,
                                        final CheckForExistingExercises checker) {
-
+        logger.info("Creating a new thread. @ExerciseDownloadingService");
         return new Thread() {
             @Override
             public void run() {
                 ObjectFinder finder = new ObjectFinder();
                 try {
+                    logger.info("Starting to download exercise. @ExerciseDownloadingService");
                     final Course course = finder
                             .findCourseByName(settings.getCourse()
                                     .getName(), core);
@@ -49,14 +57,17 @@ public class ExerciseDownloadingService {
                         core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
                                 exercises).call();
                     } catch (Exception exception) {
-                        ErrorMessageService error = new ErrorMessageService();
-                        error.showMessage(exception, "Failed to download exercises.");
+                        logger.info("Failed to download exercises. @ExerciseDownloadingService");
+                        new ErrorMessageService().showMessage(exception,
+                                "Failed to download exercises.", true);
                     }
 
                 } catch (Exception except) {
-                    ErrorMessageService error = new ErrorMessageService();
-                    error.showMessage(except,
-                            "You need to select a course to be able to download. \n");
+                    logger.warn("Failed to download exercises. "
+                                    + "Course not selected. @ExerciseDownloadingService",
+                            except, except.getStackTrace());
+                    new ErrorMessageService().showMessage(except,
+                            "You need to select a course to be able to download.", true);
                 }
 
                 ApplicationManager.getApplication().invokeLater(
@@ -66,16 +77,13 @@ public class ExerciseDownloadingService {
                                         new Runnable() {
                                             @Override
                                             public void run() {
-                                                try {
-                                                    CourseAndExerciseManager.updateAll();
-                                                    ProjectListManager.refreshAllCourses();
-                                                } catch (Exception exept) {
-                                                    exept.printStackTrace();
-                                                }
+                                                logger.info("Updating project list. "
+                                                        + "@ExerciseDownloadingService");
+                                                CourseAndExerciseManager.updateAll();
+                                                ProjectListManager.refreshAllCourses();
                                             }
                                         }
                                 );
-
                             }
                         });;
             }

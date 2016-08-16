@@ -1,5 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.ui;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
@@ -11,9 +14,12 @@ import javax.swing.JTextArea;
  */
 public class OperationInProgressNotification {
 
+    private static final Logger logger = LoggerFactory
+            .getLogger(OperationInProgressNotification.class);
     private JFrame frame;
 
     public OperationInProgressNotification(String notification) {
+        logger.info("Creating OperationInProgressNotification. @OperationInProgressNotification");
         frame = new JFrame();
         JPanel panel = new JPanel();
         panel.add(new JTextArea(notification));
@@ -29,6 +35,7 @@ public class OperationInProgressNotification {
     }
 
     public void hide() {
+        logger.info("Hiding OperationInProgressNotification. @OperationInProgressNotification");
         this.frame.dispose();
         this.frame.setVisible(false);
     }
