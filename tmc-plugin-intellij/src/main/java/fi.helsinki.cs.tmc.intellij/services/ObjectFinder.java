@@ -110,10 +110,11 @@ public class ObjectFinder {
 
                 if (exerciseCourse == null
                         || getExerciseName(exerciseCourse).charAt(0) == '.') {
-                    logger.info("Exercise ");
+                    logger.info("exerciseCourse variable = null. @ObjectFinder");
                     continue;
                 }
-
+                logger.info("Adding exercise " + getExerciseName(exerciseCourse)
+                        + "to list. @ObjectFinder");
                 fileNames.add(getExerciseName(exerciseCourse));
             }
         } catch (Exception ex)  {
