@@ -58,7 +58,6 @@ public class PasteService {
 
         logger.info("Uploading to tmc pastebin. @PasteService");
 
-        ErrorMessageService errorMessageService = new ErrorMessageService();
         try {
             URI uri = core.pasteWithComment(ProgressObserver.NULL_OBSERVER,
                     exercise, message).call();
@@ -67,22 +66,22 @@ public class PasteService {
         } catch (TmcCoreException exception) {
             logger.info("Uploading to pastebin failed. @PasteService",
                     exception, exception.getStackTrace());
-            handleException(exception, errorMessageService);
+            handleException(exception);
         } catch (Exception exception) {
             logger.info("Uploading to pastebin failed. @PasteService",
                     exception, exception.getStackTrace());
 
-            errorMessageService.showMessage(exception,
+            new ErrorMessageService().showMessage(exception,
                     "Error while uploading to TMC Pastebin.", true);
         }
     }
 
+    private void handleException(TmcCoreException exception) {
 
-    private void handleException(TmcCoreException exception, ErrorMessageService errorMessageService) {
         logger.info("Handling the exception from uploading failure. @PasteService");
         closeWindowIfExists();
 
-        errorMessageService.showMessage(exception, false);
+        new ErrorMessageService().showMessage(exception, false);
         exception.printStackTrace();
     }
 

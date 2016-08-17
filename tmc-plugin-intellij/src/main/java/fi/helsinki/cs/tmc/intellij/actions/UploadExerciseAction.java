@@ -8,6 +8,7 @@ import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseUploadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
+import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
@@ -41,7 +42,8 @@ public class UploadExerciseAction extends AnAction {
                 new CheckForExistingExercises(), new SubmissionResultHandler(),
                 TmcSettingsManager.get(),
                 new CourseAndExerciseManager(),
-                new ThreadingService());
+                new ThreadingService(),
+                new TestRunningService());
     }
 
 }

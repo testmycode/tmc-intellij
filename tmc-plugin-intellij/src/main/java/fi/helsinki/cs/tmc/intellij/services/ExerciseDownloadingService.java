@@ -31,19 +31,22 @@ public class ExerciseDownloadingService {
                                              ObjectFinder objectFinder,
                                              ThreadingService threadingService,
                                              Project project) throws Exception {
+
         logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
         Thread run = createThread(core, settings, checker, objectFinder);
-        ThreadingService
-                .runWithNotification(run,
-                        "Downloading exercises, this may take several minutes",
-                        project);
+
+        threadingService.runWithNotification(
+                run,
+                "Downloading exercises, this may take several minutes",
+                project);
     }
 
     @NotNull
     private static Thread createThread(final TmcCore core,
-        final SettingsTmc settings,
-        final CheckForExistingExercises checker,
-        final ObjectFinder finder) {
+                                       final SettingsTmc settings,
+                                       final CheckForExistingExercises checker,
+                                       final ObjectFinder finder) {
+
         logger.info("Creating a new thread. @ExerciseDownloadingService");
 
         return new Thread() {
@@ -52,7 +55,10 @@ public class ExerciseDownloadingService {
                 ErrorMessageService errorMessageService = new ErrorMessageService();
                 try {
                     logger.info("Starting to download exercise. @ExerciseDownloadingService");
-                    final Course course = finder.findCourseByName(settings.getCourse().getName(), core);
+
+                    final Course course = finder.findCourseByName(settings.getCourse().getName(),
+                            core);
+
                     List<Exercise> exercises = course.getExercises();
                     exercises = checker.clean(exercises, settings);
                     try {

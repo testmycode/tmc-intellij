@@ -43,14 +43,6 @@ import javax.swing.JToolBar;
  */
 public class ProjectListWindow {
 
-    public JTabbedPane getTabbedPanelBase() {
-        return tabbedPanelBase;
-    }
-
-    public void setTabbedPanelBase(JTabbedPane tabbedPanelBase) {
-        this.tabbedPanelBase = tabbedPanelBase;
-    }
-
     private static final Logger logger = LoggerFactory.getLogger(ProjectListWindow.class);
 
     private JTabbedPane tabbedPanelBase;
@@ -176,10 +168,9 @@ public class ProjectListWindow {
     }
 
     private void refreshProjectList() {
-        logger.info("Refreshing project list. "
-                + "@ProjectListWindow");
-            new CourseAndExerciseManager().updateAll();
-            ProjectListManagerHolder.get().refreshAllCourses();
+        logger.info("Refreshing project list. @ProjectListWindow");
+        new CourseAndExerciseManager().updateAll();
+        ProjectListManagerHolder.get().refreshAllCourses();
     }
 
     {

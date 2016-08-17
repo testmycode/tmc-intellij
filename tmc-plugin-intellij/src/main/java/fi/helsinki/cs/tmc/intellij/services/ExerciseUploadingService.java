@@ -4,7 +4,6 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
-import fi.helsinki.cs.tmc.intellij.actions.RunTestsAction;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
@@ -23,11 +22,13 @@ public class ExerciseUploadingService {
     private static final Logger logger = LoggerFactory.getLogger(CheckForExistingExercises.class);
 
     public void startUploadExercise(Project project, TmcCore core, ObjectFinder finder,
-                                           CheckForExistingExercises checker,
-                                           SubmissionResultHandler handler,
-                                           SettingsTmc settings,
-                                           CourseAndExerciseManager courseAndExerciseManager,
-                                           ThreadingService threadingService) {
+                                    CheckForExistingExercises checker,
+                                    SubmissionResultHandler handler,
+                                    SettingsTmc settings,
+                                    CourseAndExerciseManager courseAndExerciseManager,
+                                    ThreadingService threadingService,
+                                    TestRunningService testRunningService) {
+
         logger.info("Starting to upload an exercise. @ExerciseUploadingService");
 
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
@@ -40,17 +41,22 @@ public class ExerciseUploadingService {
         Exercise exercise = courseAndExerciseManager
                 .getExercise(getCourseName(exerciseCourse),
                         getExerciseName(exerciseCourse));
-        getResults(project, exercise, core, handler, threadingService);
+        getResults(project, exercise, core, handler, threadingService, testRunningService,
+                finder);
         courseAndExerciseManager.updateSingleCourse(getCourseName(exerciseCourse),
                 checker, finder, settings);
     }
 
     private void getResults(final Project project,
-                                   final Exercise exercise, final TmcCore core,
-                                   final SubmissionResultHandler handler,
-                                   ThreadingService threadingService) {
+                            final Exercise exercise, final TmcCore core,
+                            final SubmissionResultHandler handler,
+                            ThreadingService threadingService,
+                            TestRunningService testRunningService,
+                            ObjectFinder finder) {
+
         logger.info("Calling for threadingService from getResult. @ExerciseUploadingService.");
-        ThreadingService.runWithNotification(new Runnable() {
+
+        threadingService.runWithNotification(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -59,13 +65,13 @@ public class ExerciseUploadingService {
                             .submit(ProgressObserver.NULL_OBSERVER, exercise).call();
                     handler.showResultMessage(exercise, result, project);
                 } catch (Exception exception) {
-                    logger.warn("Could not getExercise submission results. @ExerciseUploadingService",
-                            exception, exception.getStackTrace());
+                    logger.warn("Could not getExercise submission results. "
+                            + "@ExerciseUploadingService", exception, exception.getStackTrace());
                     exception.printStackTrace();
                 }
             }
         }, "Uploading exercise, this may take several minutes", project);
-        RunTestsAction.displayTestWindow();
+        testRunningService.displayTestWindow(finder);
     }
 
     private String getCourseName(String[] courseAndExercise) {

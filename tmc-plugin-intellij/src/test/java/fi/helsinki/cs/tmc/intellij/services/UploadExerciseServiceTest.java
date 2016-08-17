@@ -41,7 +41,7 @@ public class UploadExerciseServiceTest {
 
         new ExerciseUploadingService().startUploadExercise(project, mock(TmcCore.class), finder, checker,
                 mock(SubmissionResultHandler.class), settings,
-                mockCourseAndExerciseManager, threadingService);
+                mockCourseAndExerciseManager, threadingService, mock(TestRunningService.class));
 
         verify(threadingService).runWithNotification(any(Runnable.class), anyString(), any(Project.class));
         verify(mockCourseAndExerciseManager).updateSingleCourse(course.getName(),
