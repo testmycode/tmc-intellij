@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Path;
 
 /**
- * Offers methods to getExercise info from a path.
+ * Offers methods to get info from a path.
  */
 public class PathResolver {
 

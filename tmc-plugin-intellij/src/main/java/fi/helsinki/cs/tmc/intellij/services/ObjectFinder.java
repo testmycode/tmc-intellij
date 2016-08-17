@@ -71,7 +71,7 @@ public class ObjectFinder {
         for (Course course : courses) {
             if (course.getName().equals(courseName)) {
                 try {
-                    logger.info("Trying to getExercise course details from TmcCore. @ObjectFinder");
+                    logger.info("Trying to get course details from TmcCore. @ObjectFinder");
                     return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
                 } catch (TmcCoreException Exception) {
                     logger.warn("Could not find course " + courseName + ". @ObjectFinder",
@@ -118,7 +118,7 @@ public class ObjectFinder {
                 fileNames.add(getExerciseName(exerciseCourse));
             }
         } catch (Exception ex)  {
-            logger.warn("Could not getExercise list of directories in path. @ObjectFinder",
+            logger.warn("Could not get list of directories in path. @ObjectFinder",
                     ex, ex.getStackTrace());
             ex.printStackTrace();
         }
