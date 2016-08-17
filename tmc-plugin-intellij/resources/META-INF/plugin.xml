@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>fi.helsinki.cs.tmc</id>
   <name>TMC Plugin</name>
-  <version>0.5.0</version>
+  <version>0.4.0</version>
   <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
   <description><![CDATA[
@@ -28,6 +28,9 @@
     <toolWindow id="TMC Project List" secondary="false" anchor="right"
                 factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction">
     </toolWindow>
+    <toolWindow id="TMC Test Results" secondary="false" anchor="bottom"
+                factoryClass="fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory">
+    </toolWindow>
     <postStartupActivity implementation="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"></postStartupActivity>
     <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings"/>
     <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase"/>
@@ -43,9 +46,23 @@
       <action id="Open TMC Exercise List" class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction" text="Open TMC Exercise List" description="Open TMC Exercise List" />
       <action id="TestEvent1" class="fi.helsinki.cs.tmc.intellij.actions.TestEvent" text="Test Event Popup" description="Pop up test" />
       <action id="Pastebin" class="fi.helsinki.cs.tmc.intellij.actions.SubmitPasteAction" text="Submit code to TMC Pastebin" description="Submit code to TMC Pastebin" />
+      <action id="Run Project" class="fi.helsinki.cs.tmc.intellij.actions.RunProjectAction" text="Run Project" description="Run Project" />
+      <action id="Run Tests" class="fi.helsinki.cs.tmc.intellij.actions.RunTestsAction" text="Run Tests" description="Run Tests" />
     </group>
 
-    <action class="fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction" id="SubmitButtonAction"  icon="TmcIcons.SUBMIT_BUTTON" >
+    <action class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction" text="Open TMC Exercise List" description="Open TMC Exercise list" id="OpenListAction"  icon="TmcIcons.SUCCESS" >
+      <add-to-group group-id="NavBarToolBar" anchor="first" />
+    </action>
+
+    <action class="fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction" text="Upload current exercise" description="Upload exercise" id="SubmitButtonAction"  icon="TmcIcons.SUBMIT_BUTTON" >
+      <add-to-group group-id="NavBarToolBar" anchor="first" />
+    </action>
+
+    <action class="fi.helsinki.cs.tmc.intellij.actions.RunTestsAction" text="Run tests for current project" description="Run tests for current project" id="RunTestsAction"  icon="TmcIcons.TEST_BUTTON" >
+      <add-to-group group-id="NavBarToolBar" anchor="first" />
+    </action>
+
+    <action class="fi.helsinki.cs.tmc.intellij.actions.RunProjectAction" text="Run current project" description="Run project" id="RunProjectAction"  icon="TmcIcons.RUN_BUTTON" >
       <add-to-group group-id="NavBarToolBar" anchor="first" />
     </action>
 
