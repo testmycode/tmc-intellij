@@ -96,7 +96,7 @@ public class PasteService {
                                    ProjectListManager projectListManager) {
         logger.info("Updating project view. @PasteService");
 
-        courseAndExerciseManager.setup();
+        courseAndExerciseManager.initiateDatabase();
         projectListManager.refreshAllCourses();
     }
 

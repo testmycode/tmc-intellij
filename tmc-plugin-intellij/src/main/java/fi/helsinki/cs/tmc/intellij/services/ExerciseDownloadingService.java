@@ -86,7 +86,7 @@ public class ExerciseDownloadingService {
                                             public void run() {
                                                 logger.info("Updating project list. "
                                                         + "@ExerciseDownloadingService");
-                                                new CourseAndExerciseManager().updateAll();
+                                                new CourseAndExerciseManager().initiateDatabase();
                                                 ProjectListManagerHolder.get().refreshAllCourses();
                                             }
                                         }

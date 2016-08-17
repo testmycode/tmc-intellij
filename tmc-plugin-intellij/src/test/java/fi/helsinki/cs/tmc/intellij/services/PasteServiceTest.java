@@ -48,7 +48,7 @@ public class PasteServiceTest {
         service.uploadToTmcPastebin(message, courseAndExerciseManager, projectListManager);
 
         verify(core).pasteWithComment(ProgressObserver.NULL_OBSERVER, exercise, message);
-        verify(courseAndExerciseManager).setup();
+        verify(courseAndExerciseManager).initiateDatabase();
         verify(projectListManager).refreshAllCourses();
     }
 

@@ -31,16 +31,6 @@ public class CourseAndExerciseManager {
 
     private static final Logger logger = LoggerFactory.getLogger(CourseAndExerciseManager.class);
 
-    public CourseAndExerciseManager() {
-        logger.info("CourseAndExerciseManager constructor call. @CourseAndExerciseManager");
-        initiateDatabase();
-    }
-
-    public void setup() {
-        logger.info("Setup CourseAndExerciseManager. @CourseAndExerciseManager");
-        initiateDatabase();
-    }
-
     public Exercise getExercise(String course, String exercise) {
         logger.info("Get exercise from CourseAndExerciseManager. @CourseAndExerciseManager");
 
@@ -87,7 +77,7 @@ public class CourseAndExerciseManager {
         return PersistentExerciseDatabase.getInstance().getExerciseDatabase();
     }
 
-    private void initiateDatabase() {
+    public void initiateDatabase() {
         logger.info("Initiating database. Fetching courses from TmcCore."
                 + " @CourseAndExerciseManager");
 
@@ -198,11 +188,6 @@ public class CourseAndExerciseManager {
         } else {
             ProjectListManagerHolder.get().refreshCourse(courseName);
         }
-    }
-
-    public void updateAll() {
-        logger.info("UpdateAll call. @CourseAndExerciseManager");
-        initiateDatabase();
     }
 
     private void errorMessageService(Exception exception) {

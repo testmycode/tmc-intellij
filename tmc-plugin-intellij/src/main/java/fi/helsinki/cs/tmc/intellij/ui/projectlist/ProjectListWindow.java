@@ -169,7 +169,7 @@ public class ProjectListWindow {
 
     private void refreshProjectList() {
         logger.info("Refreshing project list. @ProjectListWindow");
-        new CourseAndExerciseManager().updateAll();
+        new CourseAndExerciseManager().initiateDatabase();
         ProjectListManagerHolder.get().refreshAllCourses();
     }
 

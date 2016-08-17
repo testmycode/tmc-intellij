@@ -42,7 +42,7 @@ public class StartupEvent implements StartupActivity {
         ExerciseDatabaseManager.setup();
         TmcSettingsManager.setup();
         TmcCoreHolder.setup();
-        new CourseAndExerciseManager().setup();
+        new CourseAndExerciseManager().initiateDatabase();
 
         ProjectListManager.setup();
         final EditorActionManager actionManager = EditorActionManager.getInstance();

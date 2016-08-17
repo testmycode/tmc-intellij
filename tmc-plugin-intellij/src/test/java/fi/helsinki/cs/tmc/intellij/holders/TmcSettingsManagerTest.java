@@ -29,7 +29,7 @@ public class TmcSettingsManagerTest {
 //        ServiceManager manager = mock(ServiceManager.class);
 //        when(ServiceManager.getService(PersistentTmcSettings.class)).thenReturn(settingsP);
 //        MockitoAnnotations.initMocks(this);
-//        TmcSettingsManager.getExercise();
+//        TmcSettingsManager.get();
     }
 
     @Test
