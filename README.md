@@ -6,30 +6,36 @@
 
 TMC-IntelliJ is the IntelliJ IDEA plugin for University of Helsinki's TestMyCode framework. TestMyCode is used by various online programming courses for exercise testing and submitting.
 
-The plugin is not yet published at the plugin repository of Jetbrains, but feel free to clone the repository if you want to see it in action.
+## New:
+An alpha version of the plugin is now available to download through the Jetbrains plugin repository. 
+- [Instructions here](https://github.com/ohtu-intellij/tmc-intellij/wiki)
 
-### Requirements
 
-* Java Runtime Environment 7
+## If you want to develop the plugin yourself, please refer to the instructions below:
+
+#### Requirements
+
+* Java Runtime Environment 8
 * Linux, Mac OS X or Microsoft Windows
-  * Currently only limited support for Windows
   * Other Unix-like systems may work, but are not tested
 * IntelliJ IDEA, Community or Ultimate version
 
-### Setting up the project locally
+#### Setting up the project locally
 
 Once you have the code on your local environment:
+
 * open the project in your IntelliJ IDEA (both Community and Ultimate versions do).
 * open `File` -> `Project Structure`.
 * set the Project SDK to be the IntelliJ Platform Plugin SDK (it might try to give you only an invalid SDK as an option at first, but in that case press the `New...` button to choose the Plugin SDK.
-* in case you haven't set up the home directory for JDK earlier for IntelliJ IDEA, it will request that first. The plugin actually uses Java 7, but Java 8 is fine to choose there.
+* in case you haven't set up the home directory for JDK earlier for IntelliJ IDEA, it will request that first. The plugin uses Java 8.
 * after that IntelliJ should ask you to give the home directory for the Plugin SDK. Choose the directory where you installed IntelliJ IDEA.
 *  now, the SDK should be set, but to be sure, also check in `Modules` section of `Project Structure` that the SDK is the same in both `tmc-intellij` and `tmc-plugin-intellij` modules (`Dependencies` tab).
 * go to any Java class in the source files. At the bottom of IntelliJ IDEA there should be a request to import Maven dependencies. Accept that. If you don't see the request, open `View` -> `Tool Windows` -> `Event log`.
 
 Now everything should be ready and all the code compilable.
 
-### How to run the plugin
+#### How to run the plugin
+*Note, again, this is just if you want to develop it. If you actually want to use the plugin to submit your course exercises, then you might want to refer to the instructions above about the alpha version.*
 
 * choose `Run` -> `Run`. IntelliJ IDEA should open up a small window suggesting to edit configurations. Click that.
 * add new configuratino by clicking the `+` icon at top left and choose Plugin.
