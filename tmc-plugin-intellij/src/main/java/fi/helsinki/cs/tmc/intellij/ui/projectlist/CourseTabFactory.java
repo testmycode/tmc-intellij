@@ -103,8 +103,9 @@ public class CourseTabFactory {
                 }
 
                 Object selectedItem = list.getSelectedValue();
-                if (selectedItem.getClass() == Exercise.class) {logger.info("Getting TMC project directory "
-                         + " from settingTmc. @CourseTabFactory");
+                if (selectedItem.getClass() == Exercise.class) {
+                    logger.info("Getting TMC project directory "
+                               + " from settingTmc. @CourseTabFactory");
                     opener.openProject(((Exercise) selectedItem)
                             .getExerciseDirectory(TmcSettingsManager.get()
                                     .getTmcProjectDirectory()));
