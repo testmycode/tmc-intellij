@@ -48,23 +48,23 @@ public class ProjectListRenderer extends DefaultListCellRenderer {
 
         try {
             if (exerciseUnKnown(value)) {
-                logger.info("Setting UNKNOWN TmcIcon "
-                        + "for exercise in the project list window "
-                        + "@ProjectListManager");
+//                logger.info("Setting UNKNOWN TmcIcon "
+//                        + "for exercise " + value + " in the project list window "
+//                        + "@ProjectListManager");
                 label.setIcon(TmcIcons.UNKNOWN);
             } else if (exerciseCompleted(value)) {
-                logger.info("Setting DONE_EXERCISE TmcIcon"
-                        + " for exercise in the project list window "
-                        + "@ProjectListManager");
+//                logger.info("Setting DONE_EXERCISE TmcIcon"
+//                        + " for exercise " + value + " in the project list window "
+//                        + "@ProjectListManager");
                 label.setIcon(TmcIcons.DONE_EXERCISE);
             } else {
-                logger.info("Setting NOT_DONE_EXERCISE TmcIcon "
-                        + "for exercise in the project list window "
-                        + "@ProjectListManager");
+//                logger.info("Setting NOT_DONE_EXERCISE TmcIcon "
+//                        + "for exercise " + value + " in the project list window "
+//                        + "@ProjectListManager");
                 label.setIcon(TmcIcons.NOT_DONE_EXERCISE);
             }
         } catch (Exception ewr) {
-            logger.info("Failed to set icon.", ewr, ewr.getStackTrace());
+//            logger.info("Failed to set icon.", ewr, ewr.getStackTrace());
             new ErrorMessageService().showMessage(ewr, "Failed to set icon.", true);
         }
 
