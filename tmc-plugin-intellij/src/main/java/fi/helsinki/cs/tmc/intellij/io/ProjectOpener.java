@@ -22,23 +22,28 @@ public class ProjectOpener {
     private static final Logger logger = LoggerFactory.getLogger(ProjectOpener.class);
 
     public void openProject(String path) {
-        logger.info("Opening project from " + path + ". @ProjectOpener");
-        if (Files.isDirectory(Paths.get(path))) {
-            try {
-                ProjectManager.getInstance().loadAndOpenProject(path);
-            } catch (Exception exception) {
-                logger.warn("Could not open project from path. @ProjectOpener",
-                        exception, exception.getStackTrace());
-                new ErrorMessageService().showMessage(exception,
-                        "Could not open project from path. " + path, true);
-            }
-        } else {
-            logger.warn("Directory no longer exists. @ProjectOpener");
-            Messages.showErrorDialog(new ObjectFinder()
-                    .findCurrentProject(),
-                    "Directory no longer exists", "File not found");
-            ProjectListManager.refreshAllCourses();
+        try {
+            ExerciseImport.importExercise(path);
+        } catch(Exception e) {
+            System.out.println("VIRHE: " + e.getMessage());
         }
+//        logger.info("Opening project from " + path + ". @ProjectOpener");
+//        if (Files.isDirectory(Paths.get(path))) {
+//            try {
+//                ProjectManager.getInstance().loadAndOpenProject(path);
+//            } catch (Exception exception) {
+//                logger.warn("Could not open project from path. @ProjectOpener",
+//                        exception, exception.getStackTrace());
+//                new ErrorMessageService().showMessage(exception,
+//                        "Could not open project from path. " + path, true);
+//            }
+//        } else {
+//            logger.warn("Directory no longer exists. @ProjectOpener");
+//            Messages.showErrorDialog(new ObjectFinder()
+//                    .findCurrentProject(),
+//                    "Directory no longer exists", "File not found");
+//            ProjectListManager.refreshAllCourses();
+//        }
     }
 
     public void openProject(Path path) {
