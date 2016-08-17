@@ -1,17 +1,28 @@
 package fi.helsinki.cs.tmc.intellij.spyware;
 
+
 import com.google.gson.Gson;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.core.spyware.LoggableEvent;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
+import fi.helsinki.cs.tmc.spyware.LoggableEvent;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 import java.util.Collections;
 
+/**
+ * When a button is pressed the responsible action tells this class that an action has happened.
+ * This class then creates a LoggableEvent to be sent to the spyware server.
+ * There are also checks in place to make sure that the course is a TMC course.
+ */
+
 public class ButtonInputListener {
+
+    private static final Logger logger = LoggerFactory.getLogger(ButtonInputListener.class);
 
     public void receiveTestRun() {
         sendProjectActionEvent(getExercise(), "tmc.test");
@@ -23,6 +34,7 @@ public class ButtonInputListener {
 
     @Nullable
     private Exercise getExercise() {
+        logger.info("Making sure current exercise should be tracked");
         if (CourseAndExerciseManager.isCourseInDatabase(PathResolver
                 .getCourseName(ObjectFinder.findCurrentProject().getBasePath()))) {
             return PathResolver.getExercise(ObjectFinder
@@ -44,6 +56,7 @@ public class ButtonInputListener {
     }
 
     private void sendProjectActionEvent(String command) {
+        logger.info("Creating a project action event JSON.");
         Object data = Collections.singletonMap("command", command);
         String json = new Gson().toJson(data);
         byte[] jsonBytes = json.getBytes(Charset.forName("UTF-8"));
@@ -57,11 +70,13 @@ public class ButtonInputListener {
 
     private void sendProjectActionEvent(Exercise ex, String command) {
         if (ex !=  null) {
+            logger.info("Creating a project action event JSON.");
             Object data = Collections.singletonMap("command", command);
             String json = new Gson().toJson(data);
             byte[] jsonBytes = json.getBytes(Charset.forName("UTF-8"));
             LoggableEvent event = new LoggableEvent(ex, "project_action", jsonBytes);
             addEvent(event);
         }
+        logger.warn("Exercise was invalid.");
     }
 }
