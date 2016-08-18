@@ -109,6 +109,8 @@ public class CourseTabFactory {
 
                 Object selectedItem = list.getSelectedValue();
                 if (selectedItem.getClass() == Exercise.class) {
+                    logger.info("Getting TMC project directory "
+                               + " from settingTmc. @CourseTabFactory");
                     opener.openProject(((Exercise) selectedItem)
                             .getExerciseDirectory(TmcSettingsManager.get()
                                     .getTmcProjectDirectory()));
@@ -149,6 +151,8 @@ public class CourseTabFactory {
                                 .getParent().getName() + File.separator
                                 + list.getSelectedValue()));
                     } else {
+                        logger.info("Getting TMC project directory "
+                                + "from settingsTmc. @CourseTabFactory");
                         Desktop.getDesktop().open(new File(((Exercise)selectedItem)
                                 .getExerciseDirectory(TmcSettingsManager
                                         .get().getTmcProjectDirectory()).toString()));

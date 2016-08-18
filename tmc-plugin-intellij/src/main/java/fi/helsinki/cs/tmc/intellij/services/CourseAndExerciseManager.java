@@ -39,6 +39,7 @@ public class CourseAndExerciseManager {
                     .getExerciseDatabase().getCourses().get(course);
             for (Exercise exc : exercises) {
                 if (exerciseIsTheCorrectOne(exc, exercise)) {
+                    logger.info("Found " + exc + " @CourseAndExerciseManager");
                     return exc;
                 }
             }
@@ -52,8 +53,6 @@ public class CourseAndExerciseManager {
     }
 
     private boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
-        logger.info("Checking if " + exc.getName() + " equals "
-                + exerciseName + ". @CourseAndExerciseManager");
         return exc.getName().equals(exerciseName);
     }
 
