@@ -10,6 +10,8 @@ import com.intellij.openapi.editor.event.DocumentListener;
 import com.intellij.openapi.editor.event.EditorMouseEvent;
 import com.intellij.openapi.editor.event.EditorMouseListener;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,10 +19,15 @@ import java.util.List;
 
 public class ActivateSpywareAction implements TypedActionHandler {
 
+    private static final Logger logger = LoggerFactory
+            .getLogger(ActivateSpywareAction.class);
     private TypedActionHandler handler;
     private List<Document> listenedDocuments;
 
     public ActivateSpywareAction(TypedActionHandler originalHandler) {
+        logger.info("ActivatingSpywareHandler constructor initializing "
+                + handler + " -> " + originalHandler + " and " + listenedDocuments
+                + " -> new ArrayList<>();. @ActivateSpywareAction");
         handler = originalHandler;
         listenedDocuments = new ArrayList<>();
     }
@@ -28,7 +35,7 @@ public class ActivateSpywareAction implements TypedActionHandler {
     @Override
     public void execute(@NotNull final Editor editor, char character,
                         @NotNull DataContext dataContext) {
-
+        logger.info("Starting to execute Spyware actions. @ActivateSpywareService");
         if (listenedDocuments.contains(editor.getDocument())) {
             handler.execute(editor, character, dataContext);
             return;

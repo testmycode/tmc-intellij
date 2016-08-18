@@ -128,6 +128,8 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Path getTmcProjectDirectory() {
+//        logger.info("Getting TMC project directory "
+//                + Paths.get(projectBasePath) + ". @SettingsTmc");
         return Paths.get(projectBasePath);
     }
 
