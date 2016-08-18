@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.utilities.JsonMaker;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.ClipboardService;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
@@ -39,7 +40,7 @@ public class TextInputListener implements DocumentListener {
         modified = documentEvent.getDocument().getText();
         if (isThisCorrectProject()) {
             if (makeSureChangeIsNotJustWhitespace(documentEvent)) {
-                logger.info("Creating patches for " + documentEvent.getSource());
+                logger.info("Creating patches for ", documentEvent.getSource());
                 createPatches(PathResolver.
                         getExercise(ObjectFinder.findCurrentProject().getBasePath()), documentEvent);
             }
@@ -88,6 +89,7 @@ public class TextInputListener implements DocumentListener {
         return JsonMaker.create()
                 .add("file", source)
                 .add("patches", diff.patch_toText(patches))
+                .add("full_document", documentEvent.getNewLength() == documentEvent.getDocument().getTextLength())
                 .toString();
     }
 
@@ -99,6 +101,8 @@ public class TextInputListener implements DocumentListener {
         LoggableEvent event = new LoggableEvent(exercise, eventType, text.getBytes());
         System.out.println(event);
         SpywareEventManager.add(event);
+
     }
+
 
 }

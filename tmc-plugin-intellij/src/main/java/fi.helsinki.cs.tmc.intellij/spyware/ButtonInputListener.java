@@ -2,7 +2,10 @@ package fi.helsinki.cs.tmc.intellij.spyware;
 
 
 import com.google.gson.Gson;
+import fi.helsinki.cs.tmc.core.configuration.TmcSettings;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
+import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
@@ -65,6 +68,7 @@ public class ButtonInputListener {
     }
 
     private void addEvent(LoggableEvent event) {
+        logger.info("Checking that spyware setting is enabled.");
         SpywareEventManager.add(event);
     }
 

@@ -25,30 +25,34 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private Course course;
     private String projectBasePath;
 
-    private List<URI> spywareUrl;
+    private boolean spyware;
 
     public SettingsTmc(String serverAddress, String username, String password) {
+        this.spyware = true;
         this.serverAddress = serverAddress;
         this.username = username;
         this.password = password;
     }
 
+
     /**
      * Sets the default folder for TMC project files -> home/IdeaProjects/TMCProjects .
      */
     public SettingsTmc() {
+        spyware = true;
         JFileChooser fileChooser = new JFileChooser();
         serverAddress = "https://tmc.mooc.fi/staging/org/tmc-intellij/";
         projectBasePath = fileChooser.getFileSystemView().getDefaultDirectory().toString()
                 + File.separator + "IdeaProjects" + File.separator + "TMCProjects";
     }
 
-    public List<URI> getSpywareUrl() {
-        return spywareUrl;
-    }
-
     public void setUsername(String username) {
         this.username = username;
+    }
+
+
+    public void setSpyware(boolean spyware) {
+        this.spyware = spyware;
     }
 
     public void setPassword(String password) {
@@ -61,6 +65,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     public String getProjectBasePath() {
         return projectBasePath;
+    }
+
+    public boolean isSpyware() {
+        return spyware;
     }
 
     public void setProjectBasePath(String projectBasePath) {

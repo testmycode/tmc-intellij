@@ -2,6 +2,7 @@ package fi.helsinki.cs.tmc.intellij.spyware;
 
 
 import fi.helsinki.cs.tmc.core.communication.TmcServerCommunicationTaskFactory;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.spyware.EventSendBuffer;
 import fi.helsinki.cs.tmc.spyware.EventStore;
 import fi.helsinki.cs.tmc.spyware.LoggableEvent;
@@ -33,8 +34,15 @@ public class SpywareEventManager {
             new TmcServerCommunicationTaskFactory(), new EventStore());
 
     public static void add(LoggableEvent log) {
-        buffer.receiveEvent(log);
+        if (spywareIsActivated()) {
+            buffer.receiveEvent(log);
+        }
         logger.info("Event has been added to the buffer.");
+    }
+
+
+    private static boolean spywareIsActivated() {
+        return TmcSettingsManager.get().isSpyware();
     }
 
     public static EventSendBuffer get() {

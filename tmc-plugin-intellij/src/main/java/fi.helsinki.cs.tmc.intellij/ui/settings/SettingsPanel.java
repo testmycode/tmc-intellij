@@ -8,6 +8,7 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
 
 import com.intellij.openapi.components.ServiceManager;
@@ -108,10 +109,13 @@ public class SettingsPanel {
         browseButton.addActionListener(browseListener);
         ActionListener refreshListener = createActionListenerRefresh();
         refreshButton.addActionListener(refreshListener);
+        if (TmcSettingsManager.get().isSpyware()) {
+            sendSnapshotsOfYourCheckBox.doClick();
+        }
         List<Course> courses = new ArrayList<>();
 
         try {
-            courses = (ArrayList<Course>)
+            courses =
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
         } catch (Exception ignored) {
         }
@@ -138,8 +142,11 @@ public class SettingsPanel {
         settingsTmc.setUsername(usernameField.getText());
         settingsTmc.setPassword(passwordField.getText());
         settingsTmc.setServerAddress(serverAddressField.getText());
-        settingsTmc.setCourse((Course) listOfAvailableCourses.getSelectedItem());
+        settingsTmc.setCourse(new ObjectFinder()
+                .findCourseByName(((Course)listOfAvailableCourses
+                        .getSelectedItem()).getName(), TmcCoreHolder.get()));
         settingsTmc.setProjectBasePath(projectPathField.getText());
+        settingsTmc.setSpyware(sendSnapshotsOfYourCheckBox.isSelected());
         saveSettings.setSettingsTmc(settingsTmc);
     }
 

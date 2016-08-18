@@ -3,6 +3,7 @@ package fi.helsinki.cs.tmc.intellij.ui.testresults;
 import com.intellij.ui.JBProgressBar;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
+import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 import fi.helsinki.cs.tmc.langs.domain.TestResult;
 
 import javax.swing.JPanel;
@@ -43,9 +44,15 @@ public class TestResultsPanel {
         bar.setStringPainted(true);
         newpanel.add(bar);
         int success = 0;
+        new OperationInProgressNotification(results.toString());
         for (TestResult result : results) {
-            System.out.println(result);
-            newpanel.add(new TestResultCase(getColor(result.isSuccessful()), Color.BLUE, result.getName(), result.getMessage(), new JPanel(), result.getException()));
+            List<String> error;
+            if (result.getDetailedMessage().size() > 0) {
+                error = result.getDetailedMessage();
+            } else {
+                error = result.getException();
+            }
+            newpanel.add(new TestResultCase(getColor(result.isSuccessful()), Color.BLUE, result.getName(), result.getMessage(), new JPanel(), error));
             if (result.isSuccessful()) {
                 success++;
             }

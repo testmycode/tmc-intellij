@@ -7,11 +7,14 @@ import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
 import com.intellij.openapi.editor.event.DocumentListener;
+import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
+import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.spyware.TextInputListener;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +39,7 @@ public class ActivateSpywareAction implements TypedActionHandler {
 
     @Override
     public void execute(@NotNull final Editor editor, char c, @NotNull DataContext dataContext) {
-        if (!listenedDocuments.contains(editor.getDocument())) {
+        if (!listenedDocuments.contains(editor.getDocument()) && isThisCorrectProject()) {
             DocumentListener d = new TextInputListener();
             editor.getDocument().addDocumentListener(d);
             listenedDocuments.add(editor.getDocument());
@@ -52,9 +55,15 @@ public class ActivateSpywareAction implements TypedActionHandler {
                 }
             });
 
-            logger.info("Added document listener to " + editor.getDocument().toString());
+            logger.info("Added document listener to ", editor.getDocument().toString());
             UsagesCollector.doPersistProjectUsages(ObjectFinder.findCurrentProject());
         }
         handler.execute(editor, c, dataContext);
+    }
+
+    private Boolean isThisCorrectProject() {
+        logger.info("Making sure current exercise should be tracked");
+        return CourseAndExerciseManager.isCourseInDatabase(PathResolver
+                .getCourseName(ObjectFinder.findCurrentProject().getBasePath()));
     }
 }
