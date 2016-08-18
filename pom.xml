@@ -159,6 +159,14 @@
                     <!-- aggregated reports for multi-module projects -->
                     <aggregate>true</aggregate>
                     <check/>
+                    <instrumentation>
+                        <ignoreTrivial>true</ignoreTrivial>
+                        <excludes>
+                            <exclude>**/TmcIcons.class</exclude>
+                            <exclude>**/**/ui/**/*.class</exclude>
+                            <exclude>**/**/actions/*.class</exclude>
+                        </excludes>
+                    </instrumentation>
                 </configuration>
             </plugin>
         </plugins>
