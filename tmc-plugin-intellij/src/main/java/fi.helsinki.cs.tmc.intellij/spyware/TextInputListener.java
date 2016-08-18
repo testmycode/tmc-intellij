@@ -4,6 +4,7 @@ import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.utilities.JsonMaker;
+import fi.helsinki.cs.tmc.intellij.services.ClipboardService;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
@@ -73,7 +74,10 @@ public class TextInputListener implements DocumentListener {
     }
 
     private boolean isPasteEvent(DocumentEvent documentEvent) {
-        return (documentEvent.getNewLength() > 2);
+        return (documentEvent.getNewLength() > 2) &&
+                ClipboardService.getClipBoard().trim()
+                        .equals(documentEvent.getNewFragment()
+                                .toString().trim());
     }
 
     private String generatePatchDescription(DocumentEvent documentEvent,

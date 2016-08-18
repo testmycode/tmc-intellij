@@ -1,5 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+import com.intellij.openapi.application.ex.ClipboardUtil;
+
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -14,5 +16,9 @@ public class ClipboardService {
         Clipboard clipboard = toolkit.getSystemClipboard();
         StringSelection selection = new StringSelection(stringToCopy);
         clipboard.setContents(selection, null);
+    }
+
+    public static String getClipBoard() {
+        return ClipboardUtil.getTextInClipboard();
     }
 }
