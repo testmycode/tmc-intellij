@@ -182,7 +182,7 @@ public class ErrorMessageService {
             selectMessage(exception, bool);
         } else {
             logger.info("Executing on pooled thread. @ErrorMessageService");
-            ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+            ApplicationManager.getApplication().invokeLater(new Runnable() {
                 @Override
                 public void run() {
                     logger.info("Redirecting to selectMessage . @ErrorMessageService");
@@ -193,22 +193,14 @@ public class ErrorMessageService {
     }
 
     /**
-     * Controls which error message will be shown to the user.
+     * Redirecting the error handling to another showMessage method with boolean parameter.
      * @param exception The cause of an error.
      * @param errorMessage Error message.
      */
     public void showMessage(final Exception exception, final String errorMessage) {
-        logger.info("Starting to handle Exception "
-                + exception + ". @ErrorMessageService");
-        logger.info("Executing on pooled thread. @ErrorMessageService");
-        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
-            @Override
-            public void run() {
-                initializeNotification(errorCode(exception, errorMessage),
-                        NotificationType.ERROR, false);
-                exception.printStackTrace();
-            }
-        });
+        logger.info("Redirecting Error message handling to showMessage(Exception, "
+                + "String, boolean), boolean as false. @ErrorMessageService");
+        showMessage(exception, errorMessage, false);
     }
 
     /**
@@ -221,9 +213,14 @@ public class ErrorMessageService {
                             final boolean bool) {
         logger.info("Starting to handle Exception "
                 + exception + ". @ErrorMessageService");
-        initializeNotification(errorCode(exception, errorMessage),
-                NotificationType.ERROR, bool);
-        exception.printStackTrace();
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                initializeNotification(errorCode(exception, errorMessage),
+                        NotificationType.ERROR, bool);
+                exception.printStackTrace();
+            }
+        });
     }
 }
 

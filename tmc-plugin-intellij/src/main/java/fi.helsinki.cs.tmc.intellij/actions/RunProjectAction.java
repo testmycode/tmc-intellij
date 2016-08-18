@@ -29,9 +29,14 @@ import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
 
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class RunProjectAction extends AnAction {
+
+    private static final Logger logger = LoggerFactory
+            .getLogger(RunProjectAction.class);
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -46,6 +51,7 @@ public class RunProjectAction extends AnAction {
      */
 
     private void runProject(Project project) {
+        logger.info("Starting to run project. @RunProjectAction");
         RunManager runManager = RunManager.getInstance(project);
         Module module = ProjectRootManager.getInstance(project)
                 .getFileIndex().getModuleForFile(ProjectRootManager
@@ -65,7 +71,6 @@ public class RunProjectAction extends AnAction {
         if (checkForMainClass(project, module, appCon, runManager)) {
             runCreatedConfiguration(project, module, appCon);
         }
-
     }
 
     private boolean checkConfigurationType(RunManager runManager, String desired) {
