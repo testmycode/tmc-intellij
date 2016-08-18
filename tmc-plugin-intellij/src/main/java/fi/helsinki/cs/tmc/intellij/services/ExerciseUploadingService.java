@@ -4,7 +4,6 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
-import fi.helsinki.cs.tmc.intellij.actions.RunTestsAction;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
@@ -16,38 +15,48 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * Offers static methods to upload exercises.
+ * Offers method to upload exercises.
  */
 public class ExerciseUploadingService {
 
     private static final Logger logger = LoggerFactory.getLogger(CheckForExistingExercises.class);
 
-    public static void startUploadExercise(Project project, TmcCore core, ObjectFinder finder,
-                                           CheckForExistingExercises checker,
-                                           SubmissionResultHandler handler,
-                                           SettingsTmc settings) {
+    public void startUploadExercise(Project project, TmcCore core, ObjectFinder finder,
+                                    CheckForExistingExercises checker,
+                                    SubmissionResultHandler handler,
+                                    SettingsTmc settings,
+                                    CourseAndExerciseManager courseAndExerciseManager,
+                                    ThreadingService threadingService,
+                                    TestRunningService testRunningService) {
+
         logger.info("Starting to upload an exercise. @ExerciseUploadingService");
+
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
-        if (!CourseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
+        if (!courseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
             Messages.showErrorDialog(project, "Project not identified as TMC exercise", "Error");
             return;
         }
 
-        Exercise exercise = CourseAndExerciseManager
-                .get(getCourseName(exerciseCourse),
+        Exercise exercise = courseAndExerciseManager
+                .getExercise(getCourseName(exerciseCourse),
                         getExerciseName(exerciseCourse));
-        getResults(project, exercise, core, handler);
-        CourseAndExerciseManager.updateSingleCourse(getCourseName(exerciseCourse),
+        getResults(project, exercise, core, handler, threadingService, testRunningService,
+                finder);
+        courseAndExerciseManager.updateSingleCourse(getCourseName(exerciseCourse),
                 checker, finder, settings);
-
     }
 
-    private static void getResults(final Project project,
-                                   final Exercise exercise, final TmcCore core,
-                                   final SubmissionResultHandler handler) {
+    private void getResults(final Project project,
+                            final Exercise exercise, final TmcCore core,
+                            final SubmissionResultHandler handler,
+                            ThreadingService threadingService,
+                            TestRunningService testRunningService,
+                            ObjectFinder finder) {
+
         logger.info("Calling for threadingService from getResult. @ExerciseUploadingService.");
-        ThreadingService.runWithNotification(new Runnable() {
+
+        threadingService.runWithNotification(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -56,21 +65,21 @@ public class ExerciseUploadingService {
                             .submit(ProgressObserver.NULL_OBSERVER, exercise).call();
                     handler.showResultMessage(exercise, result, project);
                 } catch (Exception exception) {
-                    logger.warn("Could not get submission results. @ExerciseUploadingService",
-                            exception, exception.getStackTrace());
+                    logger.warn("Could not getExercise submission results. "
+                            + "@ExerciseUploadingService", exception, exception.getStackTrace());
                     exception.printStackTrace();
                 }
             }
         }, "Uploading exercise, this may take several minutes", project);
-        RunTestsAction.displayTestWindow();
+        testRunningService.displayTestWindow(finder);
     }
 
-    private static String getCourseName(String[] courseAndExercise) {
+    private String getCourseName(String[] courseAndExercise) {
         logger.info("Getting course name. @ExerciseUploadingService.");
         return courseAndExercise[courseAndExercise.length - 2];
     }
 
-    private static String getExerciseName(String[] courseAndExercise) {
+    private String getExerciseName(String[] courseAndExercise) {
         logger.info("Getting exercise name. @ExerciseUploadingService.");
         return courseAndExercise[courseAndExercise.length - 1];
     }

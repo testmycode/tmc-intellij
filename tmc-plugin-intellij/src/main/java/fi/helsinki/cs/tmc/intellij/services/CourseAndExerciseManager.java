@@ -4,12 +4,10 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
-
-import com.intellij.openapi.ui.Messages;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,19 +31,9 @@ public class CourseAndExerciseManager {
 
     private static final Logger logger = LoggerFactory.getLogger(CourseAndExerciseManager.class);
 
-    public CourseAndExerciseManager() {
-        logger.info("CourseAndExerciseManager constructor call. @CourseAndExerciseManager");
-        initiateDatabase();
-    }
-
-    public static void setup() {
-        logger.info("Setup CourseAndExerciseManager. @CourseAndExerciseManager");
-        initiateDatabase();
-
-    }
-
-    public static Exercise get(String course, String exercise) {
+    public Exercise getExercise(String course, String exercise) {
         logger.info("Get exercise from CourseAndExerciseManager. @CourseAndExerciseManager");
+
         try {
             List<Exercise> exercises = PersistentExerciseDatabase.getInstance()
                     .getExerciseDatabase().getCourses().get(course);
@@ -63,16 +51,16 @@ public class CourseAndExerciseManager {
         }
         return null;
     }
-
+    
     private static boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
         return exc.getName().equals(exerciseName);
     }
 
-    public static List<Exercise> getExercises(String course) {
+    public List<Exercise> getExercises(String course) {
         logger.info("Getting list of exercises. @CourseAndExerciseManager");
+
         try {
-            return PersistentExerciseDatabase.getInstance()
-                    .getExerciseDatabase().getCourses().get(course);
+            return getDatabase().getCourses().get(course);
         } catch (Exception exception) {
             logger.warn("Course was not found. @CourseAndExerciseManager",
                     exception, exception.getStackTrace());
@@ -82,14 +70,16 @@ public class CourseAndExerciseManager {
         return null;
     }
 
-    public static Map<String, List<Exercise>> getDatabase() {
+
+    public ExerciseDatabase getDatabase() {
         logger.info("Get database from CourseAndExerciseManager. @CourseAndExerciseManager");
-        return PersistentExerciseDatabase.getInstance().getExerciseDatabase().getCourses();
+        return PersistentExerciseDatabase.getInstance().getExerciseDatabase();
     }
 
-    static void initiateDatabase() {
+    public void initiateDatabase() {
         logger.info("Initiating database. Fetching courses from TmcCore."
                 + " @CourseAndExerciseManager");
+
         try {
             Map<String, List<Exercise>> database = new HashMap<>();
             List<Course> courses = (ArrayList<Course>) TmcCoreHolder.get()
@@ -112,7 +102,7 @@ public class CourseAndExerciseManager {
                 }
             }
 
-            PersistentExerciseDatabase.getInstance().getExerciseDatabase().setCourses(database);
+            getDatabase().setCourses(database);
         } catch (TmcCoreException exception) {
             logger.warn("Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
                     exception, exception.getStackTrace());
@@ -128,7 +118,7 @@ public class CourseAndExerciseManager {
         }
     }
 
-    private static void refreshCoursesOffline() {
+    private void refreshCoursesOffline() {
         logger.info("Refreshing side panel course view for user while offline. "
                 + " @CourseAndExerciseManager");
         Map<String, List<Exercise>> courses = getExerciseDatabase().getCourses();
@@ -138,10 +128,10 @@ public class CourseAndExerciseManager {
 
             removeExercisesNotFoundFromLocalDirectories(exercises, courseName);
         }
-        getExerciseDatabase().setCourses(courses);
+        getDatabase().setCourses(courses);
     }
 
-    private static void removeExercisesNotFoundFromLocalDirectories(List<Exercise> exercises,
+    private void removeExercisesNotFoundFromLocalDirectories(List<Exercise> exercises,
                                                                     String courseName) {
         logger.info("Removing all exercises from the side panel, that are not "
                 + "found from local directories . @CourseAndExerciseManager");
@@ -161,7 +151,7 @@ public class CourseAndExerciseManager {
         }
     }
 
-    private static List<String> getExerciseNamesThroughDirectories(String courseName) {
+    private List<String> getExerciseNamesThroughDirectories(String courseName) {
         logger.info("Fetching " + courseName + "course exercise names "
                 + "from the local directories. @CourseAndExerciseManager");
         return new ObjectFinder().listAllDownloadedExercises(courseName);
@@ -174,11 +164,13 @@ public class CourseAndExerciseManager {
     }
 
 
-    public static void updateSingleCourse(String courseName, CheckForExistingExercises checker,
+    public void updateSingleCourse(String courseName, CheckForExistingExercises checker,
                                           ObjectFinder finder,
                                           SettingsTmc settings) {
+
         logger.info("Updating single course. @CourseAndExerciseManager");
-        boolean isNewCourse = getExerciseDatabase().getCourses().get(courseName) == null;
+        boolean isNewCourse = getDatabase().getCourses().get(courseName) == null;
+
         Course course = finder.findCourseByName(courseName, TmcCoreHolder.get());
 
         if (course == null) {
@@ -188,31 +180,25 @@ public class CourseAndExerciseManager {
         List<Exercise> existing = (ArrayList<Exercise>) checker
                 .getListOfDownloadedExercises(course.getExercises(), settings);
 
-        getExerciseDatabase().getCourses().put(courseName, existing);
+        getDatabase().getCourses().put(courseName, existing);
 
         if (isNewCourse) {
-            ProjectListManager.refreshAllCourses();
+            ProjectListManagerHolder.get().refreshAllCourses();
         } else {
-            ProjectListManager.refreshCourse(courseName);
+            ProjectListManagerHolder.get().refreshCourse(courseName);
         }
     }
 
-    public static void updateAll() {
-        logger.info("UpdateAll call. @CourseAndExerciseManager");
-        initiateDatabase();
-    }
-
-    private static void errorMessageService(Exception exception) {
+    private void errorMessageService(Exception exception) {
         logger.info("Redirecting local method error to ErrorMessageService. "
                 + "@CourseAndExerciseManager");
         ErrorMessageService error = new ErrorMessageService();
         error.showMessage(exception, "Could not initiate database.", true);
     }
 
-    public static boolean isCourseInDatabase(String string) {
+    public boolean isCourseInDatabase(String string) {
         logger.info("Checking if course " + string
                 + " exists in the database. @CourseAndExerciseManager");
-        return PersistentExerciseDatabase.getInstance()
-                .getExerciseDatabase().getCourses().containsKey(string);
+        return getDatabase().getCourses().containsKey(string);
     }
 }

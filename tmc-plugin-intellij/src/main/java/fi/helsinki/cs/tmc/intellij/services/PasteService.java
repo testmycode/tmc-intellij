@@ -16,18 +16,17 @@ import java.net.URI;
 
 public class PasteService {
 
+    private PasteWindow window;
+    private Exercise exercise;
+    private TmcCore core;
     private static final Logger logger = LoggerFactory.getLogger(PasteService.class);
-
-    PasteWindow window;
-    Exercise exercise;
-    TmcCore core;
 
     public void showSubmitForm(Project project, TmcCore core) {
         logger.info("Opening paste submit form. @PasteService");
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
 
-        this.exercise = CourseAndExerciseManager.get(exerciseCourse[exerciseCourse.length - 2],
-                exerciseCourse[exerciseCourse.length - 1]);
+        this.exercise = new CourseAndExerciseManager().getExercise(getCourseName(exerciseCourse),
+                getExerciseNameFromArray(exerciseCourse));
         this.core = core;
         this.window = new PasteWindow();
         window.showSubmit(this);
@@ -53,13 +52,17 @@ public class PasteService {
         return exercise.getName();
     }
 
-    public void uploadToTmcPastebin(String message) {
+    public void uploadToTmcPastebin(String message,
+                                    CourseAndExerciseManager courseAndExerciseManager,
+                                    ProjectListManager projectListManager) {
+
         logger.info("Uploading to tmc pastebin. @PasteService");
+
         try {
             URI uri = core.pasteWithComment(ProgressObserver.NULL_OBSERVER,
                     exercise, message).call();
             window.showResult(uri);
-
+            updateProjectView(courseAndExerciseManager, projectListManager);
         } catch (TmcCoreException exception) {
             logger.info("Uploading to pastebin failed. @PasteService",
                     exception, exception.getStackTrace());
@@ -67,14 +70,14 @@ public class PasteService {
         } catch (Exception exception) {
             logger.info("Uploading to pastebin failed. @PasteService",
                     exception, exception.getStackTrace());
+
             new ErrorMessageService().showMessage(exception,
                     "Error while uploading to TMC Pastebin.", true);
-            updateProjectView();
         }
     }
 
-
     private void handleException(TmcCoreException exception) {
+
         logger.info("Handling the exception from uploading failure. @PasteService");
         closeWindowIfExists();
 
@@ -89,9 +92,20 @@ public class PasteService {
         }
     }
 
-    private void updateProjectView() {
+    private void updateProjectView(CourseAndExerciseManager courseAndExerciseManager,
+                                   ProjectListManager projectListManager) {
         logger.info("Updating project view. @PasteService");
-        CourseAndExerciseManager.updateAll();
-        ProjectListManager.refreshAllCourses();
+
+        courseAndExerciseManager.initiateDatabase();
+        projectListManager.refreshAllCourses();
     }
+
+    private String getCourseName(String[] exerciseCourse) {
+        return exerciseCourse[exerciseCourse.length - 2];
+    }
+
+    private String getExerciseNameFromArray(String[] exerciseCourse) {
+        return exerciseCourse[exerciseCourse.length - 1];
+    }
+
 }

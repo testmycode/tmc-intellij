@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
 import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
@@ -71,7 +72,7 @@ public class ProjectListWindow {
         CourseTabFactory factory = new CourseTabFactory();
 
         createCourseSpecificTabs(finder, opener, tabbedPanelBase,
-                courses, factory);
+                courses, factory, new CourseAndExerciseManager());
 
         addFunctionalityToHideButton();
         JButton refreshButton = addFunctionalityToRefreshButton();
@@ -82,6 +83,7 @@ public class ProjectListWindow {
 
     private void setActiveTabToSelectedCourse() {
         logger.info("Setting active tab to selected course. @ProjectListWindow");
+
         if (TmcSettingsManager.get().getCourse() != null) {
             String course = TmcSettingsManager.get().getCourse().getName();
             for (int i = 0; i < tabbedPanelBase.getTabCount(); i++) {
@@ -97,17 +99,21 @@ public class ProjectListWindow {
                                           ProjectOpener opener,
                                           JTabbedPane tabbedPanelBase,
                                           List<String> courses,
-                                          CourseTabFactory factory) {
+                                          CourseTabFactory factory,
+                                          CourseAndExerciseManager courseAndExerciseManager) {
+
         logger.info("Starting to create all course specific tabs. @ProjectListWindow");
         for (String course : courses) {
             logger.info("Creating course specific tab for "
                     + course + ". @ProjectListWindow");
-            factory.createCourseSpecificTab(finder, opener, course, tabbedPanelBase);
+            factory.createCourseSpecificTab(finder, opener, course, tabbedPanelBase,
+                    courseAndExerciseManager);
         }
     }
 
     private void addFunctionalityToOpenButton() {
         logger.info("Adding functionality to open project button. @ProjectListWindow");
+
         openButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -149,6 +155,7 @@ public class ProjectListWindow {
     private void addFunctionalityToHideButton() {
         logger.info("Adding functionality to hide project button. "
                 + "@ProjectListWindow");
+
         hideButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -160,11 +167,10 @@ public class ProjectListWindow {
         });
     }
 
-    public void refreshProjectList() {
-        logger.info("Refreshing project list. "
-                + "@ProjectListWindow");
-        CourseAndExerciseManager.updateAll();
-        ProjectListManager.refreshAllCourses();
+    private void refreshProjectList() {
+        logger.info("Refreshing project list. @ProjectListWindow");
+        new CourseAndExerciseManager().initiateDatabase();
+        ProjectListManagerHolder.get().refreshAllCourses();
     }
 
     {

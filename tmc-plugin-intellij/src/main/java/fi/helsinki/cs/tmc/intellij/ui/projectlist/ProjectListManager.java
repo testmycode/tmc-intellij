@@ -22,7 +22,7 @@ public class ProjectListManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectListManager.class);
     private static Map<String, List<JBList>> currentListElements;
-    static List<ProjectListWindow> projectListWindows;
+    private static List<ProjectListWindow> projectListWindows;
 
     public ProjectListManager() {
         logger.info("Setting up ProjectListWindow. @ProjectListManager");
@@ -46,16 +46,16 @@ public class ProjectListManager {
         currentListElements.get(list.getName()).add(list);
     }
 
-    public static void refreshAllCourses() {
+    public void refreshAllCourses() {
         logger.info("Refreshing all courses. @ProjectListManager");
         for (ProjectListWindow window : projectListWindows) {
             window.addCourseTabsAndExercises();
         }
     }
 
-
-    public static void refreshCourse(String course) {
+    public void refreshCourse(String course) {
         logger.info("Refreshing course " + course + ". @ProjectListManager");
+
         List<JBList> list = currentListElements.get(course);
         if (list == null) {
             return;
@@ -67,17 +67,20 @@ public class ProjectListManager {
             }
             DefaultListModel model = (DefaultListModel) jbList.getModel();
             model.removeAllElements();
-            addExercisesToList(new ObjectFinder(), course, model);
+            addExercisesToList(new ObjectFinder(), course, model, new CourseAndExerciseManager());
             jbList.setModel(model);
         }
         refreshAllCourses();
     }
 
     public static void addExercisesToList(ObjectFinder finder,
-                                          String course, DefaultListModel defaultListModel) {
+                                          String course, DefaultListModel defaultListModel,
+                                          CourseAndExerciseManager courseAndExerciseManager) {
+
+
         logger.info("Processing addExercisesToList. @ProjectListManager");
-        if (CourseAndExerciseManager.isCourseInDatabase(course)) {
-            List<Exercise> exercises = CourseAndExerciseManager.getExercises(course);
+        if (courseAndExerciseManager.isCourseInDatabase(course)) {
+            List<Exercise> exercises = courseAndExerciseManager.getExercises(course);
             addExercisesToListModel(defaultListModel, exercises);
         } else {
             List<String> exercises = finder.listAllDownloadedExercises(course);
@@ -99,10 +102,6 @@ public class ProjectListManager {
         for (String ex : exercises) {
             listModel.addElement(ex);
         }
-    }
-
-    public static void setCurrentListElements(HashMap<String, List<JBList>> currentListElements) {
-        ProjectListManager.currentListElements = currentListElements;
     }
 
     public static void addWindow(ProjectListWindow window) {
