@@ -51,8 +51,8 @@ public class CourseAndExerciseManager {
         }
         return null;
     }
-    
-    private static boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
+
+    private boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
         return exc.getName().equals(exerciseName);
     }
 
