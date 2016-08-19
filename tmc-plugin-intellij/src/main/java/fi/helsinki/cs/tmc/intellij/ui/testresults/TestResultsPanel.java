@@ -6,6 +6,9 @@ import com.intellij.ui.JBProgressBar;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Color;
 import java.awt.GridLayout;
 
@@ -16,6 +19,9 @@ import javax.swing.JScrollPane;
 
 
 public class TestResultsPanel {
+
+    private static final Logger logger = LoggerFactory
+            .getLogger(TestResultsPanel.class);
     private JPanel basePanel;
     private JScrollPane scrollPanel;
     private JPanel newpanel;
@@ -25,6 +31,7 @@ public class TestResultsPanel {
     }
 
     private void addTestCases() {
+        logger.info("Adding Test cases. @TestResultsPanel");
         basePanel = new JPanel();
         basePanel.setLayout(new GridLayout(1,1));
         final JScrollPane scrollPane1 = new JBScrollPane();
@@ -45,6 +52,7 @@ public class TestResultsPanel {
     }
 
     public void showTest(List<TestResult> results) {
+        logger.info("Showing all test results. @TestResultsPanel");
         newpanel.removeAll();
         newpanel.setLayout(new GridLayout(results.size() + 1, 1));
         JBProgressBar bar = new JBProgressBar();
@@ -54,6 +62,7 @@ public class TestResultsPanel {
         newpanel.add(bar);
         int success = 0;
         for (TestResult result : results) {
+            logger.info("Showing test result {}. @TestResultsPanel", result);
             newpanel.add(new TestResultCase(getColor(result.isSuccessful()),
                     Color.BLUE, result.getName(),
                     result.getMessage(),

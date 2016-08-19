@@ -10,11 +10,16 @@ import com.intellij.ui.content.ContentFactory;
 
 import org.jetbrains.annotations.NotNull;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TestResultPanelFactory implements ToolWindowFactory {
 
+    private static final Logger logger = LoggerFactory
+            .getLogger(TestResultPanelFactory.class);
     private static List<TestResultsPanel> panels;
 
     public TestResultPanelFactory() {
@@ -23,6 +28,8 @@ public class TestResultPanelFactory implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
+        logger.info("Creating tool window content for test results. "
+                + "@TestResultPanelFactory");
         TestResultsPanel panel = new TestResultsPanel();
         ContentFactory cf = ContentFactory.SERVICE.getInstance();
         Content content = cf.createContent(panel.getBasePanel(), "", true);
@@ -31,6 +38,7 @@ public class TestResultPanelFactory implements ToolWindowFactory {
     }
 
     public static void updateMostRecentResult(List<TestResult> result) {
+        logger.info("Updating the most recent test result. @TestResultPanelFactory.");
         for (TestResultsPanel panel : panels) {
             panel.showTest(result);
             panel.getBasePanel().repaint();

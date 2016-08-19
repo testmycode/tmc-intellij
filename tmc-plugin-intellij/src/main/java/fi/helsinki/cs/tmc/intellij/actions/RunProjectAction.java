@@ -51,7 +51,7 @@ public class RunProjectAction extends AnAction {
      */
 
     private void runProject(Project project) {
-        logger.info("Starting to run project. @RunProjectAction");
+        logger.info("Starting to run current project. @RunProjectAction");
         RunManager runManager = RunManager.getInstance(project);
         Module module = ProjectRootManager.getInstance(project)
                 .getFileIndex().getModuleForFile(ProjectRootManager
@@ -74,6 +74,8 @@ public class RunProjectAction extends AnAction {
     }
 
     private boolean checkConfigurationType(RunManager runManager, String desired) {
+        logger.info("Checking configuration type for RunManager {}. @RunProjectAction",
+                runManager);
         return !runManager.getSelectedConfiguration()
                 .getConfiguration().getType()
                 .getDisplayName().equals(desired);
@@ -89,6 +91,8 @@ public class RunProjectAction extends AnAction {
                                       Module module,
                                       ApplicationConfiguration appCon,
                                       RunManager runManager) {
+        logger.info("Making sure that the configuration has a defined main class."
+                + "@RunProjectAction");
         if (appCon.getMainClass() == null) {
             TreeClassChooser chooser = chooseMainClassForProject(project, module);
             if (chooser.getSelected() == null) {
@@ -106,6 +110,8 @@ public class RunProjectAction extends AnAction {
 
     @NotNull
     private void createConfiguration(Project project, Module module, RunManager manager) {
+        logger.info("Creating run configuration and adding it to RunManager. "
+                + "@RunProjectAction");
         ConfigurationType type = ConfigurationTypeUtil.findConfigurationType("Application");
         RunnerAndConfigurationSettings settings =
                 manager.createRunConfiguration(module
@@ -123,6 +129,7 @@ public class RunProjectAction extends AnAction {
     private void runCreatedConfiguration(Project project,
                                          Module module,
                                          ApplicationConfiguration appCon) {
+        logger.info("Starting to execute created configuration. @RunProjectAction");
         if (checkAtLeastOneProjectIsOpen()) {
             return;
         }
@@ -137,6 +144,7 @@ public class RunProjectAction extends AnAction {
         try {
             runner.execute(environment);
         } catch (ExecutionException e1) {
+            logger.warn("Could not execute created configuration!", e1);
             JavaExecutionUtil.showExecutionErrorMessage(e1, "Error", project);
         }
     }
@@ -151,6 +159,7 @@ public class RunProjectAction extends AnAction {
     private ApplicationConfiguration configApplicationConfiguration(Module module,
                                                                     RunManager runManager,
                                                                     TreeClassChooser chooser) {
+        logger.info("Configuring application configuration. @RunProjectAction");
         ApplicationConfiguration appCon =
                 (ApplicationConfiguration) runManager
                         .getSelectedConfiguration().getConfiguration();
@@ -161,6 +170,7 @@ public class RunProjectAction extends AnAction {
 
     private ProgramRunner getRunner(Executor executor,
                                     RunnerAndConfigurationSettingsImpl selectedConfiguration) {
+        logger.info("Preparing runner for execution. @RunProjectAction");
         return RunnerRegistry.getInstance()
                 .getRunner(executor.getId(), selectedConfiguration
                         .getConfiguration());
@@ -169,11 +179,13 @@ public class RunProjectAction extends AnAction {
     @NotNull
     private RunnerAndConfigurationSettingsImpl getRunnerAndConfigurationSettings(
             RunManager runManager, ApplicationConfiguration appCon) {
+        logger.info("Getting runner and configuration settings. RunProjectAction");
         return new RunnerAndConfigurationSettingsImpl((RunManagerImpl) runManager,
                 appCon, runManager.getSelectedConfiguration().isTemplate());
     }
 
     private boolean checkAtLeastOneProjectIsOpen() {
+        logger.info("Checking that at least one project is open. @RunProjectAction");
         ProjectManager projectManager = ProjectManager.getInstance();
         Project[] openProjects = projectManager.getOpenProjects();
         if (openProjects.length == 0) {
@@ -188,6 +200,7 @@ public class RunProjectAction extends AnAction {
 
     @NotNull
     private TreeClassChooser chooseMainClassForProject(Project project, Module module) {
+        logger.info("Creating ui for the user to pick the main class. @RunProjectAction");
         TreeClassChooser chooser;
         while (true) {
             TreeClassChooserFactory factory = TreeClassChooserFactory

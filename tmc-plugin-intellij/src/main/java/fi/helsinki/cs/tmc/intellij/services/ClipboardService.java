@@ -15,7 +15,7 @@ public class ClipboardService {
     private static final Logger logger = LoggerFactory.getLogger(ClipboardService.class);
 
     public static void copyToClipBoard(String stringToCopy) {
-        logger.info("Copying " + stringToCopy + " to the clip board. @ClipboardService");
+        logger.info("Copying {} to the clip board. @ClipboardService", stringToCopy);
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Clipboard clipboard = toolkit.getSystemClipboard();
         StringSelection selection = new StringSelection(stringToCopy);

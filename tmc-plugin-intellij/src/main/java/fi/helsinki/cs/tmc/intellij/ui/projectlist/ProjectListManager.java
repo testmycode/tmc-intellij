@@ -55,7 +55,7 @@ public class ProjectListManager {
 
 
     public static void refreshCourse(String course) {
-        logger.info("Refreshing course " + course + ". @ProjectListManager");
+        logger.info("Refreshing course {}. @ProjectListManager", course);
         List<JBList> list = currentListElements.get(course);
         if (list == null) {
             return;

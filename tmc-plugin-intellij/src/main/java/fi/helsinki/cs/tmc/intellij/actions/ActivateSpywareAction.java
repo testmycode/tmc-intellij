@@ -26,8 +26,8 @@ public class ActivateSpywareAction implements TypedActionHandler {
 
     public ActivateSpywareAction(TypedActionHandler originalHandler) {
         logger.info("ActivatingSpywareHandler constructor initializing "
-                + handler + " -> " + originalHandler + " and " + listenedDocuments
-                + " -> new ArrayList<>();. @ActivateSpywareAction");
+                + " {}  -> {} and {} -> new ArrayList<>();. @ActivateSpywareAction",
+                handler, originalHandler, listenedDocuments);
         handler = originalHandler;
         listenedDocuments = new ArrayList<>();
     }
