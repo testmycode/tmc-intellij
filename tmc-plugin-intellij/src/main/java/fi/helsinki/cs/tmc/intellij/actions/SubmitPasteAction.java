@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.PasteService;
 
@@ -21,7 +20,7 @@ import org.slf4j.LoggerFactory;
  *     Submit code to TMC Pastebin.
  * </p>
  */
-public class SubmitPasteAction extends AnAction{
+public class SubmitPasteAction extends AnAction {
 
     private static final Logger logger = LoggerFactory.getLogger(SubmitPasteAction.class);
     private PasteService pasteService;
@@ -34,6 +33,7 @@ public class SubmitPasteAction extends AnAction{
 
     private void paste(AnActionEvent anActionEvent) {
         logger.info("Showing paste submit form. @SubmitPasteAction");
+
         if (pasteService == null || pasteService.getWindow() == null
                 || pasteService.getWindow().isClosed()) {
             Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);

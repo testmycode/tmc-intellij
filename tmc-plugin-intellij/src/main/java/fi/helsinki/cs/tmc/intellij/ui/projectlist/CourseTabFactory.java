@@ -4,6 +4,7 @@ package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
+import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
@@ -43,7 +44,8 @@ public class CourseTabFactory {
 
     public void createCourseSpecificTab(ObjectFinder finder,
                                         ProjectOpener opener, String course,
-                                        JTabbedPane tabbedPanelBase) {
+                                        JTabbedPane tabbedPanelBase,
+                                        CourseAndExerciseManager courseAndExerciseManager) {
         logger.info("Creating course specific tab. @CourseTabFactory");
         final JBScrollPane panel = new JBScrollPane();
         final JBList list = new JBList();
@@ -51,7 +53,9 @@ public class CourseTabFactory {
 
         DefaultListModel defaultListModel = new DefaultListModel();
         panel.setBorder(BorderFactory.createTitledBorder(""));
-        ProjectListManager.addExercisesToList(finder, course, defaultListModel);
+
+        ProjectListManager.addExercisesToList(finder, course, defaultListModel,
+                courseAndExerciseManager);
 
         if (defaultListModel.getSize() <= 0) {
             return;
@@ -90,6 +94,7 @@ public class CourseTabFactory {
     @NotNull
     private MouseListener createMouseListenerForWindow(
             final ProjectOpener opener, final JBScrollPane panel, final JBList list) {
+
         logger.info("Creating mouse listener for course tab. @CourseTabFactory");
         return new MouseAdapter() {
 
@@ -104,6 +109,8 @@ public class CourseTabFactory {
 
                 Object selectedItem = list.getSelectedValue();
                 if (selectedItem.getClass() == Exercise.class) {
+                    logger.info("Getting TMC project directory "
+                               + " from settingTmc. @CourseTabFactory");
                     opener.openProject(((Exercise) selectedItem)
                             .getExerciseDirectory(TmcSettingsManager.get()
                                     .getTmcProjectDirectory()));
@@ -120,6 +127,7 @@ public class CourseTabFactory {
     private void addRightMouseButtonFunctionality(MouseEvent mouseEvent,
                                                   final JBList list,
                                                   JBScrollPane panel) {
+
         logger.info("Adding functionality for right mouse button. @CourseTabFactory");
         if (!SwingUtilities.isRightMouseButton(mouseEvent)) {
             return;
@@ -143,6 +151,8 @@ public class CourseTabFactory {
                                 .getParent().getName() + File.separator
                                 + list.getSelectedValue()));
                     } else {
+                        logger.info("Getting TMC project directory "
+                                + "from settingsTmc. @CourseTabFactory");
                         Desktop.getDesktop().open(new File(((Exercise)selectedItem)
                                 .getExerciseDirectory(TmcSettingsManager
                                         .get().getTmcProjectDirectory()).toString()));

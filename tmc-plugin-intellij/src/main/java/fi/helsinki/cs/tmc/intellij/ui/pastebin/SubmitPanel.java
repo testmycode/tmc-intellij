@@ -1,5 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.pastebin;
 
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.PasteService;
 
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -32,7 +34,9 @@ public class SubmitPanel {
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                pasteService.uploadToTmcPastebin(submitMessageTextArea.getText());
+                pasteService.uploadToTmcPastebin(submitMessageTextArea.getText(),
+                        new CourseAndExerciseManager(),
+                        ProjectListManagerHolder.get());
             }
         });
         cancelButton.addActionListener(new ActionListener() {

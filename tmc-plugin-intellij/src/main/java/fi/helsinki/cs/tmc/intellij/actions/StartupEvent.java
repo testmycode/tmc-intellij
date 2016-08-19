@@ -43,8 +43,8 @@ public class StartupEvent implements StartupActivity {
         ExerciseDatabaseManager.setup();
         TmcSettingsManager.setup();
         TmcCoreHolder.setup();
+        new CourseAndExerciseManager().initiateDatabase();
 
-        CourseAndExerciseManager.setup();
         ProjectListManager.setup();
         final EditorActionManager actionManager = EditorActionManager.getInstance();
         final TypedAction typedAction = actionManager.getTypedAction();
@@ -52,5 +52,6 @@ public class StartupEvent implements StartupActivity {
         typedAction.setupHandler(new ActivateSpywareAction(originalHandler));
         note.hide();
     }
+
 }
 
