@@ -52,7 +52,7 @@ public class CourseAndExerciseManager {
         return null;
     }
 
-    private static boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
+    private boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
         logger.info("Checking if {} equals {}. @CourseAndExerciseManager",
                 exc.getName(), exerciseName);
 
@@ -155,7 +155,7 @@ public class CourseAndExerciseManager {
         }
     }
 
-    private static List<String> getExerciseNamesThroughDirectories(String courseName) {
+    private List<String> getExerciseNamesThroughDirectories(String courseName) {
         logger.info("Fetching {} course exercise names from the local "
                 + "directories. @CourseAndExerciseManager", courseName);
 
@@ -194,7 +194,7 @@ public class CourseAndExerciseManager {
         }
     }
 
-    public static boolean isCourseInDatabase(String string) {
+    public boolean isCourseInDatabase(String string) {
         logger.info("Checking if course {} exists in the database."
                 + " @CourseAndExerciseManager", string);
         return PersistentExerciseDatabase.getInstance()
