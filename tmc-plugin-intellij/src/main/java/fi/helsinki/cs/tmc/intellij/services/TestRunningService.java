@@ -10,12 +10,17 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class TestRunningService {
+
+    private static final Logger logger = LoggerFactory.getLogger(TestRunningService.class);
 
     public void runTests(final Exercise exercise, Project project,
                          ThreadingService threadingService,
                          ObjectFinder finder) {
-
+        logger.info("Starting to run tests for current project. @TestRunningService");
         if (exercise != null) {
             threadingService.runWithNotification(new Runnable() {
                 @Override
@@ -26,21 +31,25 @@ public class TestRunningService {
                                 .runTests(ProgressObserver.NULL_OBSERVER, exercise).call();
                         RunResult finalResult = result;
                         showTestResult(finalResult);
-                    } catch (Exception e) {
-                        ErrorMessageService error = new ErrorMessageService();
-                        error.showMessage(e, "Running tests failed!", true);
+                    } catch (Exception exception) {
+                        logger.warn("Could not run tests. @TestRunningService", exception);
+                        new ErrorMessageService().showMessage(exception,
+                                "Running tests failed!", true);
                     }
                 }
             }, "Running tests!", project);
             displayTestWindow(finder);
         } else {
-            ErrorMessageService error = new ErrorMessageService();
-            error.showMessage(new Exception(),
+            Exception exception = new Exception();
+            logger.warn("Running tests failed, exercise {} was not "
+                    + "recognized. @TestRunningService", exercise, exception);
+            new ErrorMessageService().showMessage(exception,
                     "Running tests failed, exercise was not recognized",true);
         }
     }
 
     public void displayTestWindow(ObjectFinder finder) {
+        logger.info("Displaying test window. @TestRunningService");
         Project project = finder.findCurrentProject();
 
         ToolWindowManager.getInstance(project)
@@ -50,6 +59,7 @@ public class TestRunningService {
     }
 
     public void showTestResult(final RunResult finalResult) {
+        logger.info("Showing the final test result after updating. @RunTestsAction");
         ApplicationManager.getApplication().invokeLater((new Runnable() {
             @Override
             public void run() {

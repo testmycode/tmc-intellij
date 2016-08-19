@@ -28,11 +28,12 @@ import org.slf4j.LoggerFactory;
  *   ="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"&gt;
  */
 public class StartupEvent implements StartupActivity {
+
     private static final Logger logger = LoggerFactory.getLogger(StartupEvent.class);
 
     @Override
     public void runActivity(@NotNull Project project) {
-        logger.info("Opening project.");
+        logger.info("Opening project {}. @StartupEvent", project);
         final OperationInProgressNotification note =
                 new OperationInProgressNotification("Running TMC startup actions");
 

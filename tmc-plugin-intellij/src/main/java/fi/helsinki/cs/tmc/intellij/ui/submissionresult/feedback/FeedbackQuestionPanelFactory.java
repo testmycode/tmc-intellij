@@ -11,8 +11,8 @@ public class FeedbackQuestionPanelFactory {
             .getLogger(FeedbackQuestionPanelFactory.class);
 
     public static FeedbackQuestionPanel getPanelForQuestion(FeedbackQuestion question) {
-        logger.info("Checking if FeedbackQuestion " + question
-                + " is int range question or text question.");
+        logger.info("Checking if FeedbackQuestion {}"
+                + " is int range question or text question.", question);
         if (question.isIntRange()) {
             return new IntRangeQuestionPanel(question);
         } else if (question.isText()) {

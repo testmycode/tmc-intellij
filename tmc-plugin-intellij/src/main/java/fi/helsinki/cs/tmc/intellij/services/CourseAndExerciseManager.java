@@ -53,6 +53,9 @@ public class CourseAndExerciseManager {
     }
 
     private boolean exerciseIsTheCorrectOne(Exercise exc, String exerciseName) {
+        logger.info("Checking if {} equals {}. @CourseAndExerciseManager",
+                exc.getName(), exerciseName);
+
         return exc.getName().equals(exerciseName);
     }
 
@@ -88,7 +91,7 @@ public class CourseAndExerciseManager {
             for (Course course : courses) {
                 List<Exercise> exercises;
                 try {
-                    logger.info("Initiating database. @CourseAndExerciseManager");
+                    logger.info("Fetching {} from TmcCore. @CourseAndExerciseManager", course);
                     course = TmcCoreHolder.get()
                             .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
                     exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
@@ -98,7 +101,8 @@ public class CourseAndExerciseManager {
                 } catch (Exception exception) {
                     logger.warn("Failed to initiate database. @CourseAndExerciseManager",
                             exception, exception.getStackTrace());
-                    errorMessageService(exception);
+                    new ErrorMessageService().showMessage(exception,
+                            "Failed to initiate database", true);
                 }
             }
 
@@ -144,7 +148,7 @@ public class CourseAndExerciseManager {
             Exercise exercise = iterator.next();
 
             if (!exerciseNamesThroughDirectories.contains(exercise.getName())) {
-                logger.info("Removed " + exercise.getName() + ". @CourseAndExerciseManager");
+                logger.info("Removed {}. @CourseAndExerciseManager", exercise.getName());
                 iterator.remove();
             }
 
@@ -152,8 +156,9 @@ public class CourseAndExerciseManager {
     }
 
     private List<String> getExerciseNamesThroughDirectories(String courseName) {
-        logger.info("Fetching " + courseName + "course exercise names "
-                + "from the local directories. @CourseAndExerciseManager");
+        logger.info("Fetching {} course exercise names from the local "
+                + "directories. @CourseAndExerciseManager", courseName);
+
         return new ObjectFinder().listAllDownloadedExercises(courseName);
     }
 
@@ -189,16 +194,11 @@ public class CourseAndExerciseManager {
         }
     }
 
-    private void errorMessageService(Exception exception) {
-        logger.info("Redirecting local method error to ErrorMessageService. "
-                + "@CourseAndExerciseManager");
-        ErrorMessageService error = new ErrorMessageService();
-        error.showMessage(exception, "Could not initiate database.", true);
-    }
-
     public boolean isCourseInDatabase(String string) {
-        logger.info("Checking if course " + string
-                + " exists in the database. @CourseAndExerciseManager");
-        return getDatabase().getCourses().containsKey(string);
+        logger.info("Checking if course {} exists in the database."
+                + " @CourseAndExerciseManager", string);
+        return PersistentExerciseDatabase.getInstance()
+                .getExerciseDatabase().getCourses().containsKey(string);
+
     }
 }

@@ -48,27 +48,27 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     public void setUsername(String username) {
-        logger.info("Setting username -> " + username + ". @SettingsTmc");
+        logger.info("Setting username -> {}. @SettingsTmc", username);
         this.username = username;
     }
 
     public void setPassword(String password) {
-        logger.info("Setting password -> " + password + ". @SettingsTmc");
+        logger.info("Setting password. @SettingsTmc");
         this.password = password;
     }
 
     public void setServerAddress(String serverAddress) {
-        logger.info("Setting server address -> " + serverAddress + ". @SettingsTmc");
+        logger.info("Setting server address -> {}. @SettingsTmc", serverAddress);
         this.serverAddress = serverAddress;
     }
 
     public String getProjectBasePath() {
-        logger.info("Getting project base path <- " + projectBasePath + ". @SettingsTmc");
+        logger.info("Getting project base path <- {}. @SettingsTmc", projectBasePath);
         return projectBasePath;
     }
 
     public void setProjectBasePath(String projectBasePath) {
-        logger.info("Setting project base path -> " + projectBasePath + ". @SettingsTmc");
+        logger.info("Setting project base path -> {}. @SettingsTmc", projectBasePath);
         if (projectBasePath.contains("TMCProjects")) {
             this.projectBasePath = projectBasePath;
         } else {
@@ -78,19 +78,19 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public String getServerAddress() {
-        logger.info("Getting server address <- " + serverAddress + ". @SettingsTmc");
+        logger.info("Getting server address <- {}. @SettingsTmc", serverAddress);
         return serverAddress;
     }
 
     @Override
     public String getPassword() {
-        logger.info("Getting password <- " + password + ". @SettingsTmc");
+        logger.info("Getting user password. @SettingsTmc");
         return password;
     }
 
     @Override
     public String getUsername() {
-        logger.info("Getting username <- " + username + ". @SettingsTmc");
+        logger.info("Getting username <- {}. @SettingsTmc", username);
         return username;
     }
 
@@ -128,8 +128,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Path getTmcProjectDirectory() {
-//        logger.info("Getting TMC project directory "
-//                + Paths.get(projectBasePath) + ". @SettingsTmc");
         return Paths.get(projectBasePath);
     }
 

@@ -159,7 +159,7 @@ public class CourseTabFactory {
                     }
                 } catch (IOException e1) {
                     logger.warn("IOException occurred. Something interrupted "
-                                    + "the mouse action. @CourseTabFactory",
+                            + "the mouse action. @CourseTabFactory",
                             e1, e1.getStackTrace());
                     new ErrorMessageService().showMessage(e1,
                             "IOException occurred. Something interrupted the mouse action.",

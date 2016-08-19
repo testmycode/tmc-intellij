@@ -36,30 +36,31 @@ public class ObjectFinder {
     private static final Logger logger = LoggerFactory.getLogger(ObjectFinder.class);
 
     public Exercise findExerciseByName(Course course, String exerciseName) {
-        logger.info("Processing findExerciseByName " + exerciseName + ". @ObjectFinder");
+        logger.info("Processing findExerciseByName {}. @ObjectFinder", exerciseName);
         List<Exercise> exercises = course.getExercises();
 
         for (Exercise exercise: exercises) {
             if (exercise.getName().equals(exerciseName)) {
-                logger.info("Found " + exercise + ". @ObjectFinder");
+                logger.info("Found {}. @ObjectFinder", exercise);
                 return exercise;
             }
         }
-        logger.info("Could not find exercise with the name " + exerciseName + ".");
+        logger.info("Could not find exercise with the name {}. @ObjectFinder",
+                exerciseName);
         return null;
     }
 
     public Course findCourseByName(String courseName, TmcCore core) {
-        logger.info("Processing findCourseByName " + courseName + ". @ObjectFinder");
+        logger.info("Processing findCourseByName {}. @ObjectFinder", courseName);
         List<Course> courses = null;
         try {
             courses = core.listCourses(ProgressObserver.NULL_OBSERVER).call();
         } catch (TmcCoreException e) {
-            logger.warn("Could not find course " + courseName + ". @ObjectFinder",
+            logger.warn("Could not find course {}. @ObjectFinder", courseName,
                     e, e.getStackTrace());
             new ErrorMessageService().showMessage(e, false);
         } catch (Exception e) {
-            logger.warn("Could not find course " + courseName + ". @ObjectFinder",
+            logger.warn("Could not find course {}. @ObjectFinder", courseName,
                     e, e.getStackTrace());
             new ErrorMessageService().showMessage(e,
                     "Could not find course. " + courseName, true);
@@ -73,12 +74,12 @@ public class ObjectFinder {
                 try {
                     logger.info("Trying to get course details from TmcCore. @ObjectFinder");
                     return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
-                } catch (TmcCoreException Exception) {
-                    logger.warn("Could not find course " + courseName + ". @ObjectFinder",
-                            Exception, Exception.getStackTrace());
-                    new ErrorMessageService().showMessage(Exception, false);
+                } catch (TmcCoreException exception) {
+                    logger.warn("Could not find course {}. @ObjectFinder", courseName,
+                            exception, exception.getStackTrace());
+                    new ErrorMessageService().showMessage(exception, false);
                 } catch (Exception e) {
-                    logger.warn("Could not find course " + courseName + ". @ObjectFinder",
+                    logger.warn("Could not find course {}. @ObjectFinder", courseName,
                             e, e.getStackTrace());
                     new ErrorMessageService().showMessage(e, "Could not find course.", true);
                 }
@@ -113,8 +114,8 @@ public class ObjectFinder {
                     logger.info("exerciseCourse variable = null. @ObjectFinder");
                     continue;
                 }
-                logger.info("Adding exercise " + getExerciseName(exerciseCourse)
-                        + "to list. @ObjectFinder");
+                logger.info("Adding exercise to list. @ObjectFinder",
+                        getExerciseName(exerciseCourse));
                 fileNames.add(getExerciseName(exerciseCourse));
             }
         } catch (Exception ex)  {
@@ -132,8 +133,8 @@ public class ObjectFinder {
     }
 
     public List<String> listAllDownloadedExercises(String courseName) {
-        logger.info("Processing listAllDownloadedExercises from course "
-                + courseName + ". @ObjectFinder");
+        logger.info("Processing listAllDownloadedExercises from course {}. @ObjectFinder",
+                courseName);
         List<String> fileNames = getListOfDirectoriesInPath(TmcSettingsManager.get()
                 .getProjectBasePath() + File.separator + courseName);
 

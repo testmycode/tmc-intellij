@@ -150,15 +150,15 @@ public class ErrorMessageService {
         NotificationType type = NotificationType.WARNING;
         if (str.contains("Download failed") || str.contains("404") || str.contains("500")) {
             initializeNotification(notifyAboutCourseServerAddressAndInternet(), type, bool);
-        } else if (exception.getMessage().contains("Failed to fetch courses from the server")
-                || exception.getMessage().contains("Failed to compress project")) {
-            initializeNotification(notifyAboutFailedSubmissionAttempt(exception), type, bool);
         } else if (!TmcSettingsManager.get().userDataExists()) {
             initializeNotification(notifyAboutUsernamePasswordAndServerAddress(exception),
                     type, bool);
         } else if (str.contains("401")) {
             initializeNotification(notifyAboutIncorrectUsernameOrPassword(exception),
                     NotificationType.ERROR, bool);
+        } else if (exception.getMessage().contains("Failed to fetch courses from the server")
+                || exception.getMessage().contains("Failed to compress project")) {
+            initializeNotification(notifyAboutFailedSubmissionAttempt(exception), type, bool);
         } else if (TmcSettingsManager.get().getServerAddress().isEmpty()) {
             initializeNotification(notifyAboutEmptyServerAddress(exception), type, bool);
         } else {
@@ -175,8 +175,8 @@ public class ErrorMessageService {
      * @param bool if the error message will be a pop up or not.
      */
     public void showMessage(final TmcCoreException exception, final boolean bool) {
-        logger.info("Starting to handle TmcCoreException. "
-                + exception + "@ErrorMessageService");
+        logger.info("Starting to handle TmcCoreException."
+                + " {} @ErrorMessageService", exception);
         if (bool) {
             logger.info("Redirecting to selectMessage. @ErrorMessageService");
             selectMessage(exception, bool);
@@ -212,7 +212,7 @@ public class ErrorMessageService {
                             final String errorMessage,
                             final boolean bool) {
         logger.info("Starting to handle Exception "
-                + exception + ". @ErrorMessageService");
+                + " {} . @ErrorMessageService", exception);
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
