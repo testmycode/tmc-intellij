@@ -2,7 +2,6 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
-import fi.helsinki.cs.tmc.intellij.actions.RunTestsAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 import fi.helsinki.cs.tmc.langs.domain.RunResult;
@@ -13,8 +12,6 @@ import com.intellij.openapi.wm.ToolWindowManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static com.puppycrawl.tools.checkstyle.grammars.javadoc.JavadocLexer.exception;
 
 public class TestRunningService {
 
