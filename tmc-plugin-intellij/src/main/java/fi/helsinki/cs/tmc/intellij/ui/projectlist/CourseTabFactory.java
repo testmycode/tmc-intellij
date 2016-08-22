@@ -1,9 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
 
-import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
@@ -11,6 +10,7 @@ import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.openapi.ui.JBMenuItem;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 
@@ -113,7 +113,7 @@ public class CourseTabFactory {
                 Object selectedItem = list.getSelectedValue();
                 if (selectedItem.getClass() == Exercise.class) {
                     logger.info("Getting TMC project directory "
-                               + " from settingTmc. @CourseTabFactory");
+                            + " from settingTmc. @CourseTabFactory");
                     opener.openProject(((Exercise) selectedItem)
                             .getExerciseDirectory(TmcSettingsManager.get()
                                     .getTmcProjectDirectory()));
@@ -155,7 +155,8 @@ public class CourseTabFactory {
     }
 
     @NotNull
-    private ActionListener createOpenInExploreListener(final JBList list, final Object selectedItem) {
+    private ActionListener createOpenInExploreListener(final JBList list,
+                                                       final Object selectedItem) {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -187,38 +188,39 @@ public class CourseTabFactory {
     }
 
     @NotNull
-    private ActionListener createDeleteButtonActionListener(final JBList list, final Object selectedItem) {
+    private ActionListener createDeleteButtonActionListener(final JBList list,
+                                                            final Object selectedItem) {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.info("Trying to delete folder. @CourseTabFactory");
-                 if(Messages
+                if (Messages
                         .showYesNoDialog("Are you sure you wish to permanently delete this folder?",
-                        "Delete exercise", Messages.getWarningIcon()) == 0) {
-                     try {
-                         if (selectedItem.getClass() != Exercise.class) {
-                             FileUtils.deleteDirectory(new File(TmcSettingsManager
-                                     .get().getProjectBasePath()
-                                     + File.separator + list.getParent()
-                                     .getParent().getName() + File.separator
-                                     + list.getSelectedValue()));
-                         } else {
-                             logger.info("Getting TMC project directory "
-                                     + "from settingsTmc. @CourseTabFactory");
-                             FileUtils.deleteDirectory(new File(((Exercise) selectedItem)
-                                     .getExerciseDirectory(TmcSettingsManager
-                                             .get().getTmcProjectDirectory()).toString()));
-                         }
-                         //TODO: REFRESH COURSES WHEN IT WORKS AGAIN
-                     } catch (IOException e1) {
-                         logger.warn("IOException occurred. Something interrupted "
-                                         + "the mouse action. @CourseTabFactory",
-                                 e1, e1.getStackTrace());
-                         new ErrorMessageService().showMessage(e1,
-                                 "IOException occurred. Something interrupted the mouse action.",
-                                 true);
-                     }
-                 }
+                                "Delete exercise", Messages.getWarningIcon()) == 0) {
+                    try {
+                        if (selectedItem.getClass() != Exercise.class) {
+                            FileUtils.deleteDirectory(new File(TmcSettingsManager
+                                    .get().getProjectBasePath()
+                                    + File.separator + list.getParent()
+                                    .getParent().getName() + File.separator
+                                    + list.getSelectedValue()));
+                        } else {
+                            logger.info("Getting TMC project directory "
+                                    + "from settingsTmc. @CourseTabFactory");
+                            FileUtils.deleteDirectory(new File(((Exercise) selectedItem)
+                                    .getExerciseDirectory(TmcSettingsManager
+                                            .get().getTmcProjectDirectory()).toString()));
+                        }
+                        //TODO: REFRESH COURSES WHEN IT WORKS AGAIN
+                    } catch (IOException e1) {
+                        logger.warn("IOException occurred. Something interrupted "
+                                        + "the mouse action. @CourseTabFactory",
+                                e1, e1.getStackTrace());
+                        new ErrorMessageService().showMessage(e1,
+                                "IOException occurred. Something interrupted the mouse action.",
+                                true);
+                    }
+                }
             }
         };
     }

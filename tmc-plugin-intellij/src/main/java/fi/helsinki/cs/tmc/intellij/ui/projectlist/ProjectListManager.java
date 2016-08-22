@@ -1,11 +1,12 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
-import com.intellij.openapi.application.ApplicationManager;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.ui.components.JBList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
