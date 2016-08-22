@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
-import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
@@ -10,6 +9,7 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -17,8 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
-import static com.puppycrawl.tools.checkstyle.grammars.javadoc.JavadocLexer.exception;
 
 /**
  * Offers method for downloading exercises from selected course.
@@ -65,13 +63,15 @@ public class ExerciseDownloadingService {
                     List<Exercise> exercises = course.getExercises();
                     exercises = checker.clean(exercises, settings);
                     try {
-                        List<Exercise> exerciseList = core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
+                        List<Exercise> exerciseList = core
+                                .downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
                                 exercises).call();
                         ApplicationManager.getApplication().invokeLater(new Runnable() {
                             @Override
                             public void run() {
                                 if (0 == Messages
-                                        .showYesNoDialog("Would you like to open the first of the downloaded exercises?",
+                                        .showYesNoDialog("Would you like to open the first "
+                                                        + "of the downloaded exercises?",
                                         "Download complete", null)) {
                                     NextExerciseFetcher.openFirst(exerciseList);
                                 }

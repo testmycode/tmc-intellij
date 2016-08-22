@@ -107,7 +107,8 @@ public class SuccessfulSubmissionDialog extends JDialog {
             public void actionPerformed(ActionEvent ev) {
                 logger.info("Next Exercise button pressed. @SuccessfulSubmissionDialog");
                 String path = project.getBasePath();
-                NextExerciseFetcher fetcher = new NextExerciseFetcher(PathResolver.getCourseName(path),
+                NextExerciseFetcher fetcher = new NextExerciseFetcher(PathResolver
+                        .getCourseName(path),
                         PathResolver.getExercise(path), project);
                 fetcher.tryToOpenNext();
                 setVisible(false);

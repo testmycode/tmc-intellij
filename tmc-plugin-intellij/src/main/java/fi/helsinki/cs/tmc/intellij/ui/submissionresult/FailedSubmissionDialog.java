@@ -1,11 +1,11 @@
 package fi.helsinki.cs.tmc.intellij.ui.submissionresult;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
