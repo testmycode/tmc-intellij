@@ -29,7 +29,6 @@ public class OpenNextExerciseAction extends com.intellij.openapi.actionSystem.An
     public void openExercise(Project project) {
         logger.info("Opening next exercise");
         SettingsTmc settings = TmcSettingsManager.get();
-        System.out.println(settings.getCourseName() + " " + PathResolver.getCourseName(project.getBasePath()));
         if (settings.getCourse() != null && (project == null || project.getBasePath() == null
                 || !PathResolver.getCourseName(project.getBasePath())
                 .equals(settings.getCourseName()))) {
