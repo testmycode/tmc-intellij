@@ -77,7 +77,8 @@ public class NextExerciseFetcher {
             if (!ex.isCompleted() && ex.getName()
                     .compareTo(exercise.getName()) < 0 && next == null) {
                 next = ex;
-            } else if (!ex.getName().equals(exercise.getName()) && !ex.isCompleted()) {
+            } else if (!ex.isCompleted() && ex.getName()
+                    .compareTo(exercise.getName()) > 0) {
                 logger.info("Next exercise found.");
                 return ex;
             }
