@@ -1,5 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.submissionresult;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 
@@ -17,8 +19,14 @@ public class FailedSubmissionDialog {
         logger.info("Showing error message for failed submission. @FailedSubmissionDialog");
         String points = parsePoints(result);
 
-        String failMessage = "All tests didn't pass on server!\n"
+        String failMessage = "All tests didn't pass on server!\nSee Test results for more details\n"
                 + "Permanent points awarded: " + points;
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Messages.showErrorDialog(failMessage, "Some tests failed!");
+            }
+        });
         TestResultPanelFactory.updateMostRecentResult(result.getTestCases());
     }
 

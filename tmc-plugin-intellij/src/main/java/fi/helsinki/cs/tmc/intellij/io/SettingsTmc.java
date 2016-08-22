@@ -57,6 +57,13 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.password = password;
     }
 
+    public String getCourseName() {
+        if (course != null) {
+            return course.getName();
+        }
+        return null;
+    }
+
     public void setServerAddress(String serverAddress) {
         logger.info("Setting server address -> {}. @SettingsTmc", serverAddress);
         this.serverAddress = serverAddress;
