@@ -46,6 +46,14 @@ public class ButtonInputListener {
         return null;
     }
 
+    public void receiveRunAction() {
+        sendProjectActionEvent(getExercise(), "COMMAND_RUN");
+    }
+
+    public void receiveDebugRunAction() {
+        sendProjectActionEvent(getExercise(), "COMMAND_DEBUG");
+    }
+
     public void receivePastebin() {
         sendProjectActionEvent(getExercise(), "tmc.paste");
     }
