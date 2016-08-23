@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.importExercise;
+package fi.helsinki.cs.tmc.intellij.importexercise;
 
 import com.intellij.ide.util.importProject.LibraryDescriptor;
 import com.intellij.ide.util.importProject.ModuleDescriptor;
@@ -54,11 +54,11 @@ public class ProjectFromSourcesBuilderImplModified {
     private static final Logger logger = LoggerFactory
             .getLogger(ProjectFromSourcesBuilderImplModified.class);
 
-    /**
+    /*
      * Collects info to build module and libraries and then creates them.
      * In original class only creates them from info gotten from wizard.
-     * @param project
-     * @param path
+     * @param project where these modules and libraries should go.
+     * @param path project root dir
      * @return
      */
     public static void commit(@NotNull final Project project, String path) {

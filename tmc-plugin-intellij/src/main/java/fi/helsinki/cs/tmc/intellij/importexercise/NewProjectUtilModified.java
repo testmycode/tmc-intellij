@@ -1,4 +1,7 @@
-package fi.helsinki.cs.tmc.intellij.importExercise;
+package fi.helsinki.cs.tmc.intellij.importexercise;
+
+import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
+import static com.intellij.ide.impl.NewProjectUtil.applyJdkToProject;
 
 import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.application.ApplicationManager;
@@ -18,17 +21,14 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 
-import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
-import static com.intellij.ide.impl.NewProjectUtil.applyJdkToProject;
-
 public class NewProjectUtilModified {
     private static final Logger logger = LoggerFactory
             .getLogger(NewProjectUtilModified.class);
 
-    /**
+    /*
      * Handles importing exercises to intellij only using file root as source of info.
      * In original execution method is named "doImport(param.)"
-     * @param path
+     * @param path project root dir
      * @throws IOException
      */
     public static void importExercise(String path) throws IOException {
@@ -66,19 +66,19 @@ public class NewProjectUtilModified {
                     ? path + "out" : path + "/out";;
             CommandProcessor.getInstance().executeCommand(newProject, () ->
                     ApplicationManager.getApplication().runWriteAction(() -> {
-                String canonicalPath = compileOutput;
-                try {
-                    canonicalPath = FileUtil.resolveShortWindowsName(compileOutput);
-                }
-                catch (IOException e) {
-                    //file doesn't exist
-                    logger.warn("File doesn't exist.", e);
-                }
+                        String canonicalPath = compileOutput;
+                        try {
+                            canonicalPath = FileUtil.resolveShortWindowsName(compileOutput);
+                        }
+                        catch (IOException e) {
+                            //file doesn't exist
+                            logger.warn("File doesn't exist.", e);
+                        }
 
-                canonicalPath = FileUtil.toSystemIndependentName(canonicalPath);
-                CompilerProjectExtension.getInstance(newProject)
-                        .setCompilerOutputUrl(VfsUtilCore.pathToUrl(canonicalPath));
-            }), null, null);
+                        canonicalPath = FileUtil.toSystemIndependentName(canonicalPath);
+                        CompilerProjectExtension.getInstance(newProject)
+                                .setCompilerOutputUrl(VfsUtilCore.pathToUrl(canonicalPath));
+                    }), null, null);
             logger.info("Saving project created this far");
             // without save method nothing happens
             if (!ApplicationManager.getApplication().isUnitTestMode()) {

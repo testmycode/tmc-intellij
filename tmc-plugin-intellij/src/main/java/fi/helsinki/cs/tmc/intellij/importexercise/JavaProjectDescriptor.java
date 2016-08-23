@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.importExercise;
+package fi.helsinki.cs.tmc.intellij.importexercise;
 
 import com.intellij.ide.util.importProject.JavaModuleInsight;
 import com.intellij.ide.util.importProject.LibraryDescriptor;
@@ -11,11 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.Set;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
 public class JavaProjectDescriptor {
@@ -24,9 +24,9 @@ public class JavaProjectDescriptor {
 
     /**
      * Creates ProjectDescriptor so project can be build from it's info.
-     * @param path
-     * @param ignoredNames
-     * @return
+     * @param path project root dir
+     * @param ignoredNames ie. compile output path
+     * @return ProjectDescriptor
      */
     public static ProjectDescriptor create(
             String path, Set<String> ignoredNames) {
