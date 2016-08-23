@@ -9,6 +9,7 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -62,8 +63,20 @@ public class ExerciseDownloadingService {
                     List<Exercise> exercises = course.getExercises();
                     exercises = checker.clean(exercises, settings);
                     try {
-                        core.downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
+                        List<Exercise> exerciseList = core
+                                .downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
                                 exercises).call();
+                        ApplicationManager.getApplication().invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (0 == Messages
+                                        .showYesNoDialog("Would you like to open the first "
+                                                        + "of the downloaded exercises?",
+                                        "Download complete", null)) {
+                                    NextExerciseFetcher.openFirst(exerciseList);
+                                }
+                            }
+                        });
                     } catch (Exception exception) {
                         logger.info("Failed to download exercises. @ExerciseDownloadingService");
                         new ErrorMessageService().showMessage(exception,

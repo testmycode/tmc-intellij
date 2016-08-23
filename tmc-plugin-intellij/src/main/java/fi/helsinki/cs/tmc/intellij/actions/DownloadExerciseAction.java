@@ -37,6 +37,10 @@ public class DownloadExerciseAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+        downloadExercises(project);
+    }
+
+    public void downloadExercises(Project project) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
             new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),

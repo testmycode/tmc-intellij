@@ -10,7 +10,12 @@ import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.NextExerciseFetcher;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanel;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanelFactory;
 
@@ -46,6 +51,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
     private static final Logger logger = LoggerFactory.getLogger(SuccessfulSubmissionDialog.class);
     private JButton okButton;
+    private JButton nextExerciseButton;
     private List<FeedbackQuestionPanel> feedbackQuestionPanels;
 
     public SuccessfulSubmissionDialog(Exercise exercise, SubmissionResult result, Project project) {
@@ -70,7 +76,10 @@ public class SuccessfulSubmissionDialog extends JDialog {
         addFeedbackQuestions(result); //TODO: maybe put in box
         addVSpace(10);
         addOkButton();
+        addNextExerciseButton();
+        addNextExerciseListener(result, project);
         addOkListener(result, project);
+        setAlwaysOnTop(true);
 
         pack();
         this.setLocationRelativeTo(null);
@@ -85,6 +94,23 @@ public class SuccessfulSubmissionDialog extends JDialog {
             public void actionPerformed(ActionEvent ev) {
                 logger.info("Ok button pressed. @SuccessfulSubmissionDialog");
                 sendFeedback(result, project);
+                setVisible(false);
+                dispose();
+            }
+        });
+    }
+
+    public void addNextExerciseListener(final SubmissionResult result, final Project project) {
+        logger.info("Adding action listener for next exercise button. @SuccessfulSubmissionDialog");
+        this.nextExerciseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ev) {
+                logger.info("Next Exercise button pressed. @SuccessfulSubmissionDialog");
+                String path = project.getBasePath();
+                NextExerciseFetcher fetcher = new NextExerciseFetcher(PathResolver
+                        .getCourseName(path),
+                        PathResolver.getExercise(path), project);
+                fetcher.tryToOpenNext();
                 setVisible(false);
                 dispose();
             }
@@ -285,5 +311,18 @@ public class SuccessfulSubmissionDialog extends JDialog {
             }
         });
         getContentPane().add(hbox(hglue(), okButton));
+    }
+
+    private void addNextExerciseButton() {
+        logger.info("Adding next exercise button. @SuccessfulSubmissionDialog");
+        nextExerciseButton = new JButton("Open Next Exercise");
+        nextExerciseButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent action) {
+                setVisible(false);
+                dispose();
+            }
+        });
+        getContentPane().add(hbox(hglue(), nextExerciseButton));
     }
 }

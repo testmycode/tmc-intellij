@@ -44,6 +44,7 @@
       <action id="Upload Exercise" class="fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction" text="Upload current exercise" description="Upload exercise" />
       <action id="Download Exercises" class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction" text="Download current course's exercises" description="Download exercise" />
       <action id="Open TMC Exercise List" class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction" text="Open TMC Exercise List" description="Open TMC Exercise List" />
+      <action id="Open Next Exercise" class="fi.helsinki.cs.tmc.intellij.actions.OpenNextExerciseAction" text="Open Next Exercise" description="Open TMC Next Exercise" />
       <action id="TestEvent1" class="fi.helsinki.cs.tmc.intellij.actions.TestEvent" text="Test Event Popup" description="Pop up test" />
       <action id="Pastebin" class="fi.helsinki.cs.tmc.intellij.actions.SubmitPasteAction" text="Submit code to TMC Pastebin" description="Submit code to TMC Pastebin" />
       <action id="Run Project" class="fi.helsinki.cs.tmc.intellij.actions.RunProjectAction" text="Run Project" description="Run Project" />

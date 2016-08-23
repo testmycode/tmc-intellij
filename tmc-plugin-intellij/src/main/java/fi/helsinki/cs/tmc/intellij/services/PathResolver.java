@@ -1,5 +1,10 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+
+import fi.helsinki.cs.tmc.core.domain.Course;
+import fi.helsinki.cs.tmc.core.domain.Exercise;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+
 import com.intellij.openapi.project.Project;
 
 import org.slf4j.Logger;
@@ -63,6 +68,33 @@ public class PathResolver {
         }
         return path.split("\\\\");
     }
+
+
+    public static Exercise getExercise(String path) {
+        if (path == null) {
+            return null;
+        }
+        String[] split = getCourseAndExerciseName(path);
+        CourseAndExerciseManager manager = new CourseAndExerciseManager();
+        return manager.getExercise(split[split.length - 2], split[split.length - 1]);
+    }
+
+    public static Course getCourse(String path) {
+        if (path == null) {
+            return null;
+        }
+        String[] split = getCourseAndExerciseName(path);
+        return new ObjectFinder().findCourseByName(split[split.length - 2], TmcCoreHolder.get());
+    }
+
+    public static String getCourseName(String path) {
+        if (path == null) {
+            return null;
+        }
+        String[] split = getCourseAndExerciseName(path);
+        return split[split.length - 2];
+    }
+
 
     private static boolean osIsUnixBased(String path) {
         return path.contains("/");

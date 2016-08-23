@@ -170,6 +170,6 @@ public class CourseTabFactory {
 
         menu.add(openInExplorer);
         menu.show(panel, mouseEvent.getX(), mouseEvent.getY());
-
+        menu.setLocation(mouseEvent.getXOnScreen(), mouseEvent.getYOnScreen());
     }
 }

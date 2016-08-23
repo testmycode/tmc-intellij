@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
 
@@ -25,7 +26,9 @@ public class ProjectOpener {
         logger.info("Opening project from {}. @ProjectOpener", path);
         if (Files.isDirectory(Paths.get(path))) {
             try {
+                Project project = new ObjectFinder().findCurrentProject();
                 ProjectManager.getInstance().loadAndOpenProject(path);
+                ProjectManager.getInstance().closeProject(project);
             } catch (Exception exception) {
                 logger.warn("Could not open project from path. @ProjectOpener",
                         exception, exception.getStackTrace());
