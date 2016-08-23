@@ -57,7 +57,7 @@ public class NewProjectUtilModified {
             if (jdk != null) {
                 CommandProcessor.getInstance().executeCommand(newProject, ()
                         -> ApplicationManager.getApplication().runWriteAction(()
-                        -> applyJdkToProject(newProject, jdk)), null, null);
+                            -> applyJdkToProject(newProject, jdk)), null, null);
             }
 
 
@@ -69,8 +69,7 @@ public class NewProjectUtilModified {
                         String canonicalPath = compileOutput;
                         try {
                             canonicalPath = FileUtil.resolveShortWindowsName(compileOutput);
-                        }
-                        catch (IOException e) {
+                        } catch (IOException e) {
                             //file doesn't exist
                             logger.warn("File doesn't exist.", e);
                         }
@@ -97,8 +96,7 @@ public class NewProjectUtilModified {
                 newProject.save();
             }
             logger.info("Exercise import progress is finished.");
-        }
-        finally {
+        } finally {
 
         }
     }
