@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
@@ -45,7 +46,6 @@ public class StartupEvent implements StartupActivity {
         TmcCoreHolder.setup();
         new CourseAndExerciseManager().initiateDatabase();
 
-        ProjectListManager.setup();
         final EditorActionManager actionManager = EditorActionManager.getInstance();
         final TypedAction typedAction = actionManager.getTypedAction();
         TypedActionHandler originalHandler = actionManager.getTypedAction().getHandler();

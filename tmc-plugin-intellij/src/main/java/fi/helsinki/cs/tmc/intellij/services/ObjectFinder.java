@@ -92,6 +92,7 @@ public class ObjectFinder {
         logger.info("Processing listAllDownloadedCourses. @ObjectFinder");
         List<String> fileNames = getListOfDirectoriesInPath(
                 TmcSettingsManager.get().getProjectBasePath());
+
         return fileNames;
     }
 

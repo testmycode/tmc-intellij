@@ -68,6 +68,7 @@ public class ProjectListWindow {
         toolbar.removeAll();
         ObjectFinder finder = new ObjectFinder();
         List<String> courses = finder.listAllDownloadedCourses();
+
         final ProjectOpener opener = new ProjectOpener();
         CourseTabFactory factory = new CourseTabFactory();
 
