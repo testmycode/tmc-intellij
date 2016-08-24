@@ -1,10 +1,10 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
-import com.intellij.openapi.project.Project;
-import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+
+import com.intellij.openapi.project.Project;
 
 import java.nio.file.Path;
 
@@ -93,7 +93,8 @@ public class PathResolver {
     }
 
     public static String getPathRelativeToProject(String path) {
-        String[] paths = path.split(getExerciseName(ObjectFinder.findCurrentProject().getBasePath()));
+        String[] paths = path.split(getExerciseName(ObjectFinder
+                .findCurrentProject().getBasePath()));
         return paths[paths.length - 1];
     }
 }

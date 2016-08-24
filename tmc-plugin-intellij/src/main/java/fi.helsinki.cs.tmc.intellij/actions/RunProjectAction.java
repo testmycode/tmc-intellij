@@ -1,13 +1,16 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.intellij.runners.RunProject;
+
 import com.intellij.execution.RunManager;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
-import fi.helsinki.cs.tmc.intellij.runners.RunProject;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

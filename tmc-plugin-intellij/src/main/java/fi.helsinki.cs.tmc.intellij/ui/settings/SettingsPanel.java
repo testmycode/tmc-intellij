@@ -10,13 +10,13 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 
-import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Dimension;

@@ -1,22 +1,22 @@
 package fi.helsinki.cs.tmc.intellij.spyware;
 
-import com.intellij.openapi.editor.event.DocumentEvent;
-import com.intellij.openapi.editor.event.DocumentListener;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.utilities.JsonMaker;
-import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.ClipboardService;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.spyware.LoggableEvent;
+
+import com.intellij.openapi.editor.event.DocumentEvent;
+import com.intellij.openapi.editor.event.DocumentListener;
+
 import name.fraser.neil.plaintext.DiffMatchPatch;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-
-import static org.mozilla.javascript.ScriptRuntime.add;
 
 /**
  * When a change in the listened document happens this class creates a diff patch.
@@ -43,8 +43,9 @@ public class TextInputListener implements DocumentListener {
         if (isThisCorrectProject()) {
             if (makeSureChangeIsNotJustWhitespace(documentEvent)) {
                 logger.info("Creating patches for ", documentEvent.getSource());
-                createPatches(PathResolver.
-                        getExercise(ObjectFinder.findCurrentProject().getBasePath()), documentEvent);
+                createPatches(PathResolver
+                        .getExercise(ObjectFinder
+                                .findCurrentProject().getBasePath()), documentEvent);
             }
         }
     }
@@ -55,9 +56,9 @@ public class TextInputListener implements DocumentListener {
     }
 
     private boolean makeSureChangeIsNotJustWhitespace(DocumentEvent documentEvent) {
-        return !documentEvent.
-                getNewFragment().toString().trim().isEmpty() || !documentEvent.
-                getOldFragment().toString().trim().isEmpty();
+        return !documentEvent
+                .getNewFragment().toString().trim().isEmpty() || !documentEvent
+                .getOldFragment().toString().trim().isEmpty();
     }
 
     private void createPatches(Exercise exercise, DocumentEvent documentEvent) {
@@ -80,8 +81,8 @@ public class TextInputListener implements DocumentListener {
         if (ClipboardService.getClipBoard() == null) {
             return false;
         }
-        return (documentEvent.getNewLength() > 2) &&
-                ClipboardService.getClipBoard().trim()
+        return (documentEvent.getNewLength() > 2)
+                && ClipboardService.getClipBoard().trim()
                         .equals(documentEvent.getNewFragment()
                                 .toString().trim());
     }
@@ -94,7 +95,8 @@ public class TextInputListener implements DocumentListener {
         return JsonMaker.create()
                 .add("file", PathResolver.getPathRelativeToProject(source))
                 .add("patches", diff.patch_toText(patches))
-                .add("full_document", documentEvent.getNewLength() == documentEvent.getDocument().getTextLength())
+                .add("full_document",
+                        documentEvent.getNewLength() == documentEvent.getDocument().getTextLength())
                 .toString();
     }
 
@@ -104,7 +106,6 @@ public class TextInputListener implements DocumentListener {
 
     private void addEventToManager(Exercise exercise, String eventType, String text) {
         LoggableEvent event = new LoggableEvent(exercise, eventType, text.getBytes());
-        System.out.println(event);
         SpywareEventManager.add(event);
 
     }

@@ -1,5 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.runners;
 
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+
 import com.intellij.execution.RunManager;
 import com.intellij.execution.RunnerAndConfigurationSettings;
 import com.intellij.execution.application.ApplicationConfiguration;
@@ -13,8 +15,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.search.GlobalSearchScope;
-import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+
 import org.jetbrains.annotations.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,7 +111,6 @@ public class RunConfigurationFactory {
     /**
      * Modifies the run configuration by adding parameters to it,
      * such as a Main class which the user selects.
-     * @param chooser
      */
 
     @NotNull

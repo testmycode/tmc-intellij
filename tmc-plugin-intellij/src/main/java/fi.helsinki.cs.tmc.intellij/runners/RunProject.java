@@ -15,7 +15,9 @@ public class RunProject {
     public RunProject(RunManager runManager, Module module, String configurationType) {
         logger.info("Creating RunConfigurationFactory.");
         factory = new RunConfigurationFactory(runManager, module, configurationType);
-        if (makeSureConfigurationIsCorrectType(runManager)) return;
+        if (makeSureConfigurationIsCorrectType(runManager)) {
+            return;
+        }
         factory.createRunner();
     }
 
@@ -25,7 +27,7 @@ public class RunProject {
             logger.info("Prompting user to choose main class with Chooser.");
             TreeClassChooser chooser = factory.chooseMainClassForProject();
             if (chooser.getSelected() == null) {
-                logger.info("Choosing main class returned null and running the project is cancelled.");
+                logger.warn("Choosing main class returned null and running is cancelled.");
                 return true;
             }
             logger.info("Creating configurations.");

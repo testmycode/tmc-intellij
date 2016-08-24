@@ -1,18 +1,18 @@
 package fi.helsinki.cs.tmc.intellij.io;
 
-import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.configuration.TmcSettings;
 import fi.helsinki.cs.tmc.core.domain.Course;
+
+import com.google.common.base.Optional;
+
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
-import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.Serializable;
-import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Locale;
+import javax.swing.JFileChooser;
 
 /**
  * TMC Settings component from Core, has all the necessary settings.

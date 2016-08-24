@@ -1,16 +1,15 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
-import com.intellij.openapi.application.ApplicationManager;
 import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
-import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBList;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -26,10 +25,8 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.File;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
