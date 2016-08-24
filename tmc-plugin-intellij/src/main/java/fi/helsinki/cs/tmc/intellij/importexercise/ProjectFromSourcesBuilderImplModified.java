@@ -1,5 +1,10 @@
 package fi.helsinki.cs.tmc.intellij.importexercise;
 
+import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
+import static com.intellij.ide.util.projectWizard.importSources.impl.ProjectFromSourcesBuilderImpl.getPackagePrefix;
+
+import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
+
 import com.intellij.ide.util.importProject.LibraryDescriptor;
 import com.intellij.ide.util.importProject.ModuleDescriptor;
 import com.intellij.ide.util.importProject.ModuleInsight;
@@ -9,8 +14,8 @@ import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.importSources.DetectedSourceRoot;
 import com.intellij.openapi.application.AccessToken;
 import com.intellij.openapi.application.WriteAction;
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModifiableModuleModel;
+import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
 import com.intellij.openapi.module.ModuleWithNameAlreadyExists;
 import com.intellij.openapi.options.ConfigurationException;
@@ -18,11 +23,11 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.CompilerModuleExtension;
 import com.intellij.openapi.roots.ContentEntry;
 import com.intellij.openapi.roots.IdeaModifiableModelsProvider;
-import com.intellij.openapi.roots.libraries.Library;
-import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.ModifiableModelsProvider;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.libraries.Library;
+import com.intellij.openapi.roots.libraries.LibraryTable;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.io.FileUtil;
@@ -30,7 +35,6 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 
-import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -46,9 +50,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
-import static com.intellij.ide.util.projectWizard.importSources.impl.ProjectFromSourcesBuilderImpl.getPackagePrefix;
 
 public class ProjectFromSourcesBuilderImplModified {
     private static final Logger logger = LoggerFactory
@@ -95,12 +96,10 @@ public class ProjectFromSourcesBuilderImplModified {
 
                 projectLibraryTable.commit();
 
-            }
-            finally {
+            } finally {
                 token.finish();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LOG.warn(e);
             new ErrorMessageService().showMessage(e,
                     "Error adding module to project", true);
@@ -138,8 +137,7 @@ public class ProjectFromSourcesBuilderImplModified {
             finally {
                 token.finish();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LOG.warn(e);
             new ErrorMessageService().showMessage(e,
                     "Error adding module to project", true);
@@ -244,12 +242,12 @@ public class ProjectFromSourcesBuilderImplModified {
     }
 
     private static boolean isTestRootName(final String name) {
-        return "test".equalsIgnoreCase(name) ||
-                "tests".equalsIgnoreCase(name) ||
-                "testSource".equalsIgnoreCase(name) ||
-                "testSources".equalsIgnoreCase(name) ||
-                "testSrc".equalsIgnoreCase(name) ||
-                "tst".equalsIgnoreCase(name);
+        return "test".equalsIgnoreCase(name)
+                || "tests".equalsIgnoreCase(name)
+                || "testSource".equalsIgnoreCase(name)
+                || "testSources".equalsIgnoreCase(name)
+                || "testSrc".equalsIgnoreCase(name)
+                || "tst".equalsIgnoreCase(name);
     }
 
     private static Set<String> getIgnoredFileNamesSet() {

@@ -57,7 +57,7 @@ public class NewProjectUtilModified {
             if (jdk != null) {
                 CommandProcessor.getInstance().executeCommand(newProject, ()
                         -> ApplicationManager.getApplication().runWriteAction(()
-                            -> applyJdkToProject(newProject, jdk)), null, null);
+                                -> applyJdkToProject(newProject, jdk)), null, null);
             }
 
 
@@ -79,7 +79,8 @@ public class NewProjectUtilModified {
                                 .setCompilerOutputUrl(VfsUtilCore.pathToUrl(canonicalPath));
                     }), null, null);
             logger.info("Saving project created this far");
-            // without save method nothing happens
+
+            // Saving changes seems to write things up.
             if (!ApplicationManager.getApplication().isUnitTestMode()) {
                 newProject.save();
             }
@@ -95,9 +96,9 @@ public class NewProjectUtilModified {
             if (!ApplicationManager.getApplication().isUnitTestMode()) {
                 newProject.save();
             }
-            logger.info("Exercise import progress is finished.");
-        } finally {
-
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
         }
+        logger.info("Exercise import progress is finished.");
     }
 }
