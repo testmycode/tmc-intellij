@@ -40,7 +40,7 @@ public class ExerciseImport {
 
         virtualFile.refresh(false, false);
         if (virtualFile.isDirectory()
-                && virtualFile.findChild(Project.DIRECTORY_STORE_FOLDER) != null
+                && virtualFile.findChild(Project.DIRECTORY_STORE_FOLDER) == null
                 && virtualFile.findChild("nbproject") != null) {
             return true;
         }
