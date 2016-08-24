@@ -2,25 +2,17 @@ package fi.helsinki.cs.tmc.intellij.spyware;
 
 
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFileCopyEvent;
-import com.intellij.openapi.vfs.VirtualFileEvent;
-import com.intellij.openapi.vfs.VirtualFileListener;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.vfs.VirtualFileMoveEvent;
-import com.intellij.openapi.vfs.VirtualFilePropertyEvent;
-import com.intellij.util.messages.MessageBusConnection;
-import com.intellij.util.messages.MessageHandler;
-import org.jetbrains.annotations.NotNull;
-
-import java.lang.reflect.Method;
-
-import static com.intellij.ui.content.ContentManagerEvent.ContentOperation.add;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ActivateSpywareListeners {
+
+    private static final Logger logger = LoggerFactory.getLogger(TextInputListener.class);
 
     private Project project;
 
     public ActivateSpywareListeners(Project project) {
+        logger.info("Activating spyware listeners.");
         this.project = project;
         new SpywareRunListener(project);
         new SpywareFileListener(project);

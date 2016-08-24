@@ -1,8 +1,16 @@
 package fi.helsinki.cs.tmc.intellij.spyware;
 
 
+import com.intellij.openapi.application.ApplicationManager;
+import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.communication.TmcServerCommunicationTaskFactory;
+import fi.helsinki.cs.tmc.core.configuration.TmcSettings;
+import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.spyware.EventSendBuffer;
 import fi.helsinki.cs.tmc.spyware.EventStore;
 import fi.helsinki.cs.tmc.spyware.LoggableEvent;
@@ -30,14 +38,26 @@ public class SpywareEventManager {
             return true;
         }
     };
+
     private static EventSendBuffer buffer = new EventSendBuffer(spywareSettings,
             new TmcServerCommunicationTaskFactory(), new EventStore());
 
-    public static void add(LoggableEvent log) {
+    public static void add(final LoggableEvent log) {
         if (spywareIsActivated()) {
-            buffer.receiveEvent(log);
+            ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        TmcCore core = TmcCoreHolder.get();
+                        TmcSettingsHolder.get().setCourse(core.getCourseDetails(ProgressObserver.NULL_OBSERVER,
+                                TmcSettingsManager.get().getCourse()).call());
+                    } catch (Exception e) {
+                    }
+                    buffer.receiveEvent(log);
+                    logger.info("Event has been added to the buffer.");
+                }
+            });
         }
-        logger.info("Event has been added to the buffer.");
     }
 
 

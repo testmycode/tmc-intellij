@@ -1,48 +1,32 @@
 package fi.helsinki.cs.tmc.intellij.spyware;
 
-import com.intellij.AppTopics;
-import com.intellij.ProjectTopics;
-import com.intellij.execution.Executor;
-import com.intellij.execution.RunManager;
-import com.intellij.execution.ui.RunContentDescriptor;
 import com.intellij.execution.ui.RunContentManager;
-import com.intellij.execution.ui.RunContentWithExecutorListener;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.ComponentManager;
-import com.intellij.openapi.editor.actionSystem.EditorAction;
-import com.intellij.openapi.editor.actionSystem.EditorActionManager;
-import com.intellij.openapi.fileEditor.FileEditorManagerListener;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFileEvent;
-import com.intellij.openapi.vfs.ex.VirtualFileManagerEx;
-import com.intellij.openapi.vfs.impl.local.VirtualFileInfoAction;
-import com.intellij.openapi.vfs.pointers.VirtualFilePointer;
-import com.intellij.openapi.vfs.pointers.VirtualFilePointerContainer;
-import com.intellij.openapi.vfs.pointers.VirtualFilePointerManager;
 import com.intellij.util.messages.MessageBusConnection;
 import com.intellij.util.messages.MessageHandler;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 
 public class SpywareRunListener  {
 
-    private Project project;
+
+    private static final Logger logger = LoggerFactory.getLogger(SpywareRunListener.class);
 
     public SpywareRunListener(Project project) {
-        this.project = project;
         connectToMessageBus(project);
     }
 
     private void connectToMessageBus(Project project) {
+        logger.info("Connecting to message bus.");
         MessageBusConnection bus = project.getMessageBus().connect();
         bus.setDefaultHandler(new MessageHandler() {
             @Override
             public void handle(Method method, Object... objects) {
-                System.out.println(method);
+                logger.info("Method call observed in message bus.");
                 for (Object object : objects) {
-                    if (method.toString().contains("contentSelected")) {
+                    if (method.toString().toLowerCase().contains("contentselected")) {
                         if (object.toString().toLowerCase().contains("debug")) {
                             new ButtonInputListener().receiveDebugRunAction();
                         } else if (object.toString().contains("DefaultRunExecutor")) {
@@ -52,9 +36,7 @@ public class SpywareRunListener  {
                 }
             }
         });
-//        bus.subscribe(AppTopics.FILE_DOCUMENT_SYNC);
-//        bus.subscribe(ProjectTopics.MODULES);
+        logger.info("Subscribing to RunContentManager topic.");
         bus.subscribe(RunContentManager.TOPIC);
-//        bus.subscribe(ProjectTopics.PROJECT_ROOTS);
     }
 }

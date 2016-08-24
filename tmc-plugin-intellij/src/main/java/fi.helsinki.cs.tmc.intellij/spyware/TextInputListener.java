@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static org.mozilla.javascript.ScriptRuntime.add;
+
 /**
  * When a change in the listened document happens this class creates a diff patch.
  * That created patch is then analyzed and a json is generated from it that is added
@@ -75,6 +77,9 @@ public class TextInputListener implements DocumentListener {
     }
 
     private boolean isPasteEvent(DocumentEvent documentEvent) {
+        if (ClipboardService.getClipBoard() == null) {
+            return false;
+        }
         return (documentEvent.getNewLength() > 2) &&
                 ClipboardService.getClipBoard().trim()
                         .equals(documentEvent.getNewFragment()
@@ -87,7 +92,7 @@ public class TextInputListener implements DocumentListener {
         String source = documentEvent.getSource().toString();
         source = source.substring(20, source.length() - 1);
         return JsonMaker.create()
-                .add("file", source)
+                .add("file", PathResolver.getPathRelativeToProject(source))
                 .add("patches", diff.patch_toText(patches))
                 .add("full_document", documentEvent.getNewLength() == documentEvent.getDocument().getTextLength())
                 .toString();

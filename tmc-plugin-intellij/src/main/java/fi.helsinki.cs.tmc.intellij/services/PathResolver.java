@@ -83,4 +83,17 @@ public class PathResolver {
         String[] split = getCourseAndExerciseName(path);
         return split[split.length - 2];
     }
+
+    public static String getExerciseName(String path) {
+        if (path == null) {
+            return null;
+        }
+        String[] split = getCourseAndExerciseName(path);
+        return split[split.length - 1];
+    }
+
+    public static String getPathRelativeToProject(String path) {
+        String[] paths = path.split(getExerciseName(ObjectFinder.findCurrentProject().getBasePath()));
+        return paths[paths.length - 1];
+    }
 }

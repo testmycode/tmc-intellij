@@ -25,7 +25,6 @@ import java.util.List;
 /**
  * This class substitutes the normal TypedActionHandler.
  * It attempts to add a listener to the current document when a key is pressed.
- * It also makes sure that the current course has all the necessary data for sending spyware events.
  */
 
 public class ActivateSpywareAction implements TypedActionHandler {
@@ -43,18 +42,6 @@ public class ActivateSpywareAction implements TypedActionHandler {
             DocumentListener d = new TextInputListener();
             editor.getDocument().addDocumentListener(d);
             listenedDocuments.add(editor.getDocument());
-
-            ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        TmcSettingsHolder.get().setCourse(PathResolver
-                                .getCourse(ObjectFinder.findCurrentProject().getBasePath()));
-                    } catch (Exception e) {
-                    }
-                }
-            });
-
             logger.info("Added document listener to ", editor.getDocument().toString());
             UsagesCollector.doPersistProjectUsages(ObjectFinder.findCurrentProject());
         }
