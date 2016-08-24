@@ -26,9 +26,9 @@ import com.intellij.openapi.roots.IdeaModifiableModelsProvider;
 import com.intellij.openapi.roots.ModifiableModelsProvider;
 import com.intellij.openapi.roots.ModifiableRootModel;
 import com.intellij.openapi.roots.ModuleRootManager;
+import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
-import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
@@ -214,8 +214,7 @@ public class ProjectFromSourcesBuilderImplModified {
             final Library projectLib = projectLibs.get(libDescriptor);
             if (projectLib != null) {
                 rootModel.addLibraryEntry(projectLib);
-            }
-            else {
+            } else {
                 // add as module library
                 final Collection<File> jars = libDescriptor.getJars();
                 for (File file : jars) {
