@@ -222,5 +222,18 @@ public class ErrorMessageService {
             }
         });
     }
+
+    public void downloadErrorMessage() {
+        //final Project projects = new ObjectFinder().findCurrentProject();
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                Messages.showMessageDialog(
+                        "All exercises are up to date.", "Nothing happened",
+                        Messages.getInformationIcon());
+            }
+        });
+
+    }
 }
 

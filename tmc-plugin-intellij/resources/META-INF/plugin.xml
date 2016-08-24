@@ -51,6 +51,10 @@
       <action id="Run Tests" class="fi.helsinki.cs.tmc.intellij.actions.RunTestsAction" text="Run Tests" description="Run Tests" />
     </group>
 
+    <action class="fi.helsinki.cs.tmc.intellij.actions.TmcSettingsAction" text="Get started with TMC" description="Get started with TMC" id="TmcSettingsAction" icon="TmcIcons.RUN_BUTTON" >
+      <add-to-group group-id="WelcomeScreen.QuickStart" anchor="first" />
+    </action>
+
     <action class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction" text="Open TMC Exercise List" description="Open TMC Exercise list" id="OpenListAction"  icon="TmcIcons.SUCCESS" >
       <add-to-group group-id="NavBarToolBar" anchor="first" />
     </action>

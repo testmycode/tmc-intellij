@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 /**
  * Opens the project using intellij ProjectManager, when given the path.
  */
@@ -28,7 +29,9 @@ public class ProjectOpener {
             try {
                 Project project = new ObjectFinder().findCurrentProject();
                 ProjectManager.getInstance().loadAndOpenProject(path);
-                ProjectManager.getInstance().closeProject(project);
+                if (project != null) {
+                    ProjectManager.getInstance().closeProject(project);
+                }
             } catch (Exception exception) {
                 logger.warn("Could not open project from path. @ProjectOpener",
                         exception, exception.getStackTrace());
