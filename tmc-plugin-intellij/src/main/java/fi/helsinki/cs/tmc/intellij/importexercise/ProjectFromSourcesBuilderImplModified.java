@@ -122,8 +122,7 @@ public class ProjectFromSourcesBuilderImplModified {
                                         FileUtil.toSystemIndependentName(
                                                 moduleDescriptor.computeModuleFilePath()));
                         module = moduleLoader.createModule(moduleModel);
-                    }
-                    else {
+                    } else {
                         module = createModule(projectDescriptor,
                                 moduleDescriptor, projectLibs, moduleModel);
                     }
@@ -133,8 +132,7 @@ public class ProjectFromSourcesBuilderImplModified {
                 logger.info("Saving up created modules");
                 moduleModel.commit();
 
-            }
-            finally {
+            } finally {
                 token.finish();
             }
         } catch (Exception e) {
