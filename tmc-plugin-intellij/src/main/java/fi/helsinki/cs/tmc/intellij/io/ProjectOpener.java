@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 /**
  * Opens the project using intellij ProjectManager, when given the path.
  */
