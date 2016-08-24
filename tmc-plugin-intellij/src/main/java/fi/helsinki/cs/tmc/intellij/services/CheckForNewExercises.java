@@ -2,6 +2,7 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.commands.GetUpdatableExercises.UpdateResult;
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction;
@@ -34,16 +35,16 @@ public class CheckForNewExercises {
                 Project project = new ObjectFinder().findCurrentProject();
                 TmcCore core = TmcCoreHolder.get();
                 SettingsTmc settings = TmcSettingsManager.get();
-                settings.setCourse(new ObjectFinder()
-                        .findCourseNoDetails(settings.getCourseName(), core));
-                CourseAndExerciseManager manager = new CourseAndExerciseManager();
-                try {
-                    if (settings.getCourse() != null) {
+                Course course = new ObjectFinder()
+                        .findCourseNoDetails(settings.getCourseName(), core);
+                if (course != null) {
+                    settings.setCourse(course);
+                    CourseAndExerciseManager manager = new CourseAndExerciseManager();
+                    try {
                         logger.info("Trying to get exercise update data.");
                         UpdateResult result = core
                                 .getExerciseUpdates(ProgressObserver.NULL_OBSERVER,
-                                settings.getCourse()).call();
-                        System.out.println(result.getNewExercises());
+                                        settings.getCourse()).call();
                         if (!compareExerciseLists(result.getNewExercises(),
                                 manager.getExercises(settings.getCourseName()))) {
                             ErrorMessageService.TMC_NOTIFICATION
@@ -52,12 +53,13 @@ public class CheckForNewExercises {
                                             NotificationType.INFORMATION,
                                             (notification, hyperlinkEvent) ->
                                                     new DownloadExerciseAction()
-                                                    .downloadExercises(project))
+                                                            .downloadExercises(project))
                                     .notify(project);
                         }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         });
