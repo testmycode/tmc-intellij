@@ -6,6 +6,7 @@ import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
+import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -28,7 +29,7 @@ public class ProjectOpener {
             try {
                 Project project = new ObjectFinder().findCurrentProject();
                 ExerciseImport.importExercise(path);
-                com.intellij.ide.impl.ProjectUtil.openOrImport(path, project, true);
+                ProjectUtil.openOrImport(path, project, true);
             } catch (Exception exception) {
                 logger.warn("Could not open project from path. @ProjectOpener",
                         exception, exception.getStackTrace());
