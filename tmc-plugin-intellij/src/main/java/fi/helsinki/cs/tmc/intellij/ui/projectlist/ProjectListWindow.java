@@ -6,7 +6,7 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
-import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
+import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;
@@ -142,10 +142,16 @@ public class ProjectListWindow {
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                OperationInProgressNotification note =
-                        new OperationInProgressNotification("Refreshing exercises");
-                refreshProjectList();
-                note.hide();
+                ThreadingService threadingService = new ThreadingService();
+                threadingService.runWithNotification(
+                        new Thread() {
+                            @Override
+                            public void run() {
+                                refreshProjectList();
+                            }
+                        },
+                        "Refreshing project list.",
+                        new ObjectFinder().findCurrentProject());
             }
         });
 
