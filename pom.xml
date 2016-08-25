@@ -165,6 +165,7 @@
                             <exclude>**/TmcIcons.class</exclude>
                             <exclude>**/**/ui/**/*.class</exclude>
                             <exclude>**/**/actions/*.class</exclude>
+                            <exclude>**/**/importexercise/*.class</exclude>
                         </excludes>
                     </instrumentation>
                 </configuration>

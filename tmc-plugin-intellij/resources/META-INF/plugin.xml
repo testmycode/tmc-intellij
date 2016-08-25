@@ -25,6 +25,7 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
+
     <toolWindow id="TMC Project List" secondary="false" anchor="right"
                 factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction">
     </toolWindow>
@@ -36,6 +37,8 @@
     <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase"/>
     <!--<applicationConfigurable displayName="TMC Settings" id="TMC Settings" instance="fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanelLauncher"/>-->
   </extensions>
+
+
 
   <actions>
     <group id="TMC.Menu" text="TMC" description="TMC Menu">

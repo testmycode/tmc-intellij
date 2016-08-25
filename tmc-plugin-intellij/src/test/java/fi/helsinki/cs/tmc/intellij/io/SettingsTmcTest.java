@@ -9,8 +9,10 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 import org.junit.Before;
 import org.junit.Test;
 
+import javax.swing.JFileChooser;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 
 public class SettingsTmcTest {
@@ -69,11 +71,6 @@ public class SettingsTmcTest {
     }
 
     @Test
-    public void getCurrentCourseWorksCorrectly() throws Exception {
-        assertEquals(null, settingstmc.getCurrentCourse());
-    }
-
-    @Test
     public void apiVersionWorksCorrectly() throws Exception {
         assertEquals("7", settingstmc.apiVersion());
     }
@@ -110,7 +107,9 @@ public class SettingsTmcTest {
 
     @Test
     public void getConfigRootWorksCorrectly() throws Exception {
-        assertEquals(null, settingstmc.getConfigRoot());
+        JFileChooser fileChooser = new JFileChooser();
+        Path path = Paths.get(fileChooser.getFileSystemView().getDefaultDirectory().toString());
+        assertEquals(path, settingstmc.getConfigRoot());
     }
 
 

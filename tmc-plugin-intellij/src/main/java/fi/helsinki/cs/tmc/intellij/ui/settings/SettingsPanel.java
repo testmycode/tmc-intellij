@@ -11,6 +11,7 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
@@ -117,12 +118,15 @@ public class SettingsPanel {
         browseButton.addActionListener(browseListener);
         ActionListener refreshListener = createActionListenerRefresh();
         refreshButton.addActionListener(refreshListener);
+        if (TmcSettingsManager.get().isSpyware()) {
+            sendSnapshotsOfYourCheckBox.doClick();
+        }
         List<Course> courses = new ArrayList<>();
 
         try {
-            logger.info("Getting list of courses from TmcCore. @SettingsPanel");
-            courses = (ArrayList<Course>)
+            courses =
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
+            logger.info("Getting list of courses from TmcCore. @SettingsPanel");
         } catch (Exception ignored) {
             logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
                     ignored, ignored.getStackTrace());
@@ -172,8 +176,11 @@ public class SettingsPanel {
         settingsTmc.setUsername(usernameField.getText());
         settingsTmc.setPassword(passwordField.getText());
         settingsTmc.setServerAddress(serverAddressField.getText());
-        settingsTmc.setCourse((Course) listOfAvailableCourses.getSelectedItem());
+        settingsTmc.setCourse(new ObjectFinder()
+                .findCourseByName(((Course)listOfAvailableCourses
+                        .getSelectedItem()).getName(), TmcCoreHolder.get()));
         settingsTmc.setProjectBasePath(projectPathField.getText());
+        settingsTmc.setSpyware(sendSnapshotsOfYourCheckBox.isSelected());
         saveSettings.setSettingsTmc(settingsTmc);
     }
 
@@ -182,6 +189,7 @@ public class SettingsPanel {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                new ButtonInputListener().receiveSettings();
                 logger.info("Ok button pressed. @SettingsPanel");
                 saveInformation();
                 frame.dispose();

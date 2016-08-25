@@ -2,9 +2,11 @@
 package fi.helsinki.cs.tmc.intellij.io;
 
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
+import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
@@ -28,7 +30,8 @@ public class ProjectOpener {
         if (Files.isDirectory(Paths.get(path))) {
             try {
                 Project project = new ObjectFinder().findCurrentProject();
-                ProjectManager.getInstance().loadAndOpenProject(path);
+                ExerciseImport.importExercise(path);
+                ProjectUtil.openOrImport(path, project, true);
                 if (project != null) {
                     ProjectManager.getInstance().closeProject(project);
                 }
