@@ -9,6 +9,7 @@ public class ProgressWindowMaker {
         ProgressWindow progressWindow = new ProgressWindow(true, true, project);
         progressWindow.setIndeterminate(true);
         progressWindow.setTitle(title);
+        progressWindow.setDelayInMillis(500);
 
         return progressWindow;
     }
