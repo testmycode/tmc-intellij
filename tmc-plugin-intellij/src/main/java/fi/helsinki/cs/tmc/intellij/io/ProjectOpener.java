@@ -8,6 +8,7 @@ import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
 
 import org.slf4j.Logger;
@@ -31,6 +32,9 @@ public class ProjectOpener {
                 Project project = new ObjectFinder().findCurrentProject();
                 ExerciseImport.importExercise(path);
                 ProjectUtil.openOrImport(path, project, true);
+                if (project != null) {
+                    ProjectManager.getInstance().closeProject(project);
+                }
             } catch (Exception exception) {
                 logger.warn("Could not open project from path. @ProjectOpener",
                         exception, exception.getStackTrace());
