@@ -66,6 +66,7 @@ public class ProjectListWindow {
         toolbar.removeAll();
         ObjectFinder finder = new ObjectFinder();
         List<String> courses = finder.listAllDownloadedCourses();
+
         final ProjectOpener opener = new ProjectOpener();
         CourseTabFactory factory = new CourseTabFactory();
 
@@ -163,12 +164,17 @@ public class ProjectListWindow {
     }
 
     public void refreshProjectList() {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
             @Override
             public void run() {
                 new CourseAndExerciseManager().initiateDatabase();
-                logger.info("Refreshing project list. @ProjectListWindow");
-                ProjectListManagerHolder.get().refreshAllCourses();
+                ApplicationManager.getApplication().invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        logger.info("Refreshing project list. @ProjectListWindow");
+                        ProjectListManagerHolder.get().refreshAllCourses();
+                    }
+                });
             }
         });
     }

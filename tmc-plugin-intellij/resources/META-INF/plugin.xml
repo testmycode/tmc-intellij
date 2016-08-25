@@ -25,6 +25,7 @@
   -->
 
   <extensions defaultExtensionNs="com.intellij">
+
     <toolWindow id="TMC Project List" secondary="false" anchor="right"
                 factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction">
     </toolWindow>
@@ -36,6 +37,8 @@
     <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase"/>
     <!--<applicationConfigurable displayName="TMC Settings" id="TMC Settings" instance="fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanelLauncher"/>-->
   </extensions>
+
+
 
   <actions>
     <group id="TMC.Menu" text="TMC" description="TMC Menu">
@@ -50,6 +53,10 @@
       <action id="Run Project" class="fi.helsinki.cs.tmc.intellij.actions.RunProjectAction" text="Run Project" description="Run Project" />
       <action id="Run Tests" class="fi.helsinki.cs.tmc.intellij.actions.RunTestsAction" text="Run Tests" description="Run Tests" />
     </group>
+
+    <action class="fi.helsinki.cs.tmc.intellij.actions.TmcSettingsAction" text="Get started with TMC" description="Get started with TMC" id="TmcSettingsAction" icon="TmcIcons.RUN_BUTTON" >
+      <add-to-group group-id="WelcomeScreen.QuickStart" anchor="first" />
+    </action>
 
     <action class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction" text="Open TMC Exercise List" description="Open TMC Exercise list" id="OpenListAction"  icon="TmcIcons.SUCCESS" >
       <add-to-group group-id="NavBarToolBar" anchor="first" />

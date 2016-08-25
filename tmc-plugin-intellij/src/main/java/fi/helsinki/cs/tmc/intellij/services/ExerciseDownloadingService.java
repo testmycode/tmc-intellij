@@ -62,6 +62,10 @@ public class ExerciseDownloadingService {
 
                     List<Exercise> exercises = course.getExercises();
                     exercises = checker.clean(exercises, settings);
+                    if (exercises == null || exercises.size() == 0) {
+                        new ErrorMessageService().downloadErrorMessage();
+                        return;
+                    }
                     try {
                         List<Exercise> exerciseList = core
                                 .downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
