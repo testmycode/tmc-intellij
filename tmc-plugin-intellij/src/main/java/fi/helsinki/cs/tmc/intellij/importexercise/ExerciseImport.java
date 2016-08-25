@@ -59,7 +59,7 @@ public class ExerciseImport {
         String[] names = file.list();
 
 
-        for(String name : names) {
+        for (String name : names) {
             if (name.equals("nbproject")) {
                 return true;
             }
