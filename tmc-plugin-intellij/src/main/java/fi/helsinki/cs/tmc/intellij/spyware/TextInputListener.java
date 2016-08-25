@@ -43,8 +43,8 @@ public class TextInputListener implements DocumentListener {
             if (makeSureChangeIsNotJustWhitespace(documentEvent)) {
                 logger.info("Creating patches for ", documentEvent.getSource());
                 createPatches(PathResolver
-                        .getExercise(new ObjectFinder
-                                ().findCurrentProject().getBasePath()), documentEvent);
+                        .getExercise(new ObjectFinder()
+                                .findCurrentProject().getBasePath()), documentEvent);
             }
         }
     }
@@ -82,8 +82,8 @@ public class TextInputListener implements DocumentListener {
         }
         return (documentEvent.getNewLength() > 2)
                 && ClipboardService.getClipBoard().trim()
-                        .equals(documentEvent.getNewFragment()
-                                .toString().trim());
+                .equals(documentEvent.getNewFragment()
+                        .toString().trim());
     }
 
     private String generatePatchDescription(DocumentEvent documentEvent,

@@ -7,6 +7,7 @@ import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -15,7 +16,6 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
-import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
