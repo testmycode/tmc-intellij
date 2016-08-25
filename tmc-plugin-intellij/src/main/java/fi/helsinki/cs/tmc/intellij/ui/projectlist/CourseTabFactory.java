@@ -77,7 +77,8 @@ public class CourseTabFactory {
         setScrollBarToBottom(course, tabbedPanelBase, panel);
     }
 
-    private void setScrollBarToBottom(String course, JTabbedPane tabbedPanelBase,
+    private void setScrollBarToBottom(String course,
+                                      JTabbedPane tabbedPanelBase,
                                       JBScrollPane panel) {
         tabbedPanelBase.addTab(course, panel);
         JScrollBar bar = panel.getVerticalScrollBar();

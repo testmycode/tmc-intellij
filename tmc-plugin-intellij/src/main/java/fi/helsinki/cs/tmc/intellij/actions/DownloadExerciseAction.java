@@ -7,6 +7,7 @@ import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -37,8 +38,10 @@ public class DownloadExerciseAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+        new ButtonInputListener().receiveDownloadExercise();
         downloadExercises(project);
     }
+
 
     public void downloadExercises(Project project) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");

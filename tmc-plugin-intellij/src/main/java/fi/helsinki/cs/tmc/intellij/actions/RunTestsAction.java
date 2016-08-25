@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -20,6 +21,8 @@ public class RunTestsAction extends AnAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
         logger.info("Run tests action performed. @RunTestsAction");
         String[] courseExercise = PathResolver.getCourseAndExerciseName(anActionEvent.getProject());
+
+        new ButtonInputListener().receiveTestRun();
 
         new TestRunningService().runTests(
                 new CourseAndExerciseManager().getExercise(getCourseName(courseExercise),

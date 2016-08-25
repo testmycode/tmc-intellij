@@ -6,16 +6,15 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.PropertySetter;
+import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
 import com.intellij.openapi.editor.actionSystem.EditorActionManager;
 import com.intellij.openapi.editor.actionSystem.TypedAction;
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
-
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
-
 
 import org.jetbrains.annotations.NotNull;
 
@@ -41,9 +40,10 @@ public class StartupEvent implements StartupActivity {
         PropertySetter propSet = new PropertySetter();
         propSet.setLog4jProperties();
 
-        ExerciseDatabaseManager.setup();
         TmcSettingsManager.setup();
         TmcCoreHolder.setup();
+
+        new ActivateSpywareListeners(project);
         new CourseAndExerciseManager().initiateDatabase();
 
         final EditorActionManager actionManager = EditorActionManager.getInstance();
