@@ -4,6 +4,7 @@ import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.services.CheckForNewExercises;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.PropertySetter;
 import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
@@ -51,6 +52,7 @@ public class StartupEvent implements StartupActivity {
         TypedActionHandler originalHandler = actionManager.getTypedAction().getHandler();
         typedAction.setupHandler(new ActivateSpywareAction(originalHandler));
         note.hide();
+        new CheckForNewExercises().doCheck();
     }
 
 }

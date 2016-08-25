@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 
 import com.intellij.ide.DataManager;
@@ -107,9 +108,7 @@ public class ObjectFinder {
                 if (!Files.isDirectory(path)) {
                     continue;
                 }
-
                 String[] exerciseCourse = PathResolver.getCourseAndExerciseName(path);
-
                 if (exerciseCourse == null
                         || getExerciseName(exerciseCourse).charAt(0) == '.') {
                     logger.info("exerciseCourse variable = null. @ObjectFinder");
@@ -153,5 +152,18 @@ public class ObjectFinder {
         Project project = DataKeys.PROJECT.getData(dataContext);
 
         return project;
+    }
+
+    public Course findCourseNoDetails(String courseName, TmcCore core) {
+        try {
+            List<Course> list = core.listCourses(ProgressObserver.NULL_OBSERVER).call();
+            for (Course cor: list) {
+                if (cor.getName().equals(courseName)) {
+                    return cor;
+                }
+            }
+        } catch (Exception e) {
+        }
+        return null;
     }
 }
