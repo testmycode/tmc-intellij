@@ -7,8 +7,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-
 /*
  * Class handles as main tool for imports
  */
