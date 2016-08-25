@@ -4,6 +4,8 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,13 +40,31 @@ public class ExerciseImport {
             logger.warn("Cannot find virtual file matching this path @ExerciseImport");
             return false;
         }
-
         virtualFile.refresh(false, false);
         if (virtualFile.isDirectory()
                 && virtualFile.findChild(Project.DIRECTORY_STORE_FOLDER) == null
-                && virtualFile.findChild("nbproject") != null) {
+                && hasNbproject(path)) {
             return true;
         }
+        return false;
+    }
+
+    private static boolean hasNbproject(String path) {
+        File file = new File(path);
+
+        if (!file.isDirectory()) {
+            return false;
+        }
+
+        String[] names = file.list();
+
+
+        for(String name : names) {
+            if (name.equals("nbproject")) {
+                return true;
+            }
+        }
+
         return false;
     }
 }
