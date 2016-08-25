@@ -54,12 +54,10 @@ public class SpywareFileListener implements Closeable {
 
     public void createAndAddListener() {
         if (listener == null) {
-            System.out.println("making new one");
             listener = getVirtualFileListener();
             VirtualFileManager.getInstance()
                     .addVirtualFileListener(listener);
         } else {
-            System.out.println("replacing an existing one");
             VirtualFileManager.getInstance()
                     .removeVirtualFileListener(listener);
             listener = getVirtualFileListener();
@@ -212,7 +210,6 @@ public class SpywareFileListener implements Closeable {
     }
 
     private void sendMetadata(JsonMaker metadata) {
-        System.out.println(projectPath);
         if (!TmcSettingsManager.get().isSpyware()
                 || !new CourseAndExerciseManager().isCourseInDatabase(PathResolver
                 .getCourseName(projectPath))) {
@@ -251,7 +248,8 @@ public class SpywareFileListener implements Closeable {
                 || virtualFile.toString().contains("/out/")
                 || virtualFile.toString().contains(".txt")
                 || virtualFile.toString().contains("/build")
-                || virtualFile.toString().contains(".zip"));
+                || virtualFile.toString().contains(".zip")
+                || virtualFile.toString().contains(".jar"));
     }
 
     private static class SnapshotThread extends Thread {
