@@ -50,7 +50,8 @@ public class StartupEvent implements StartupActivity {
 
                         final EditorActionManager actionManager = EditorActionManager.getInstance();
                         final TypedAction typedAction = actionManager.getTypedAction();
-                        TypedActionHandler originalHandler = actionManager.getTypedAction().getHandler();
+                        TypedActionHandler originalHandler =
+                                actionManager.getTypedAction().getHandler();
                         typedAction.setupHandler(new ActivateSpywareAction(originalHandler));
                         new CheckForNewExercises().doCheck();
                     }
