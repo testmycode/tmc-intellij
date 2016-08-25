@@ -16,9 +16,10 @@
  */
 
 /**
- * @author Eugene Zhuravlev
+ * @author Eugene Zhuravlev.
  *         Date: Jul 17, 2007
  */
+
 package fi.helsinki.cs.tmc.intellij.importexercise;
 
 import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
