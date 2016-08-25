@@ -5,8 +5,9 @@ import com.intellij.openapi.project.Project;
 
 public class ProgressWindowMaker {
 
-    public static ProgressWindow make(String title, Project project) {
-        ProgressWindow progressWindow = new ProgressWindow(true, true, project);
+    public static ProgressWindow make(String title, Project project,
+                                      boolean cancelable, boolean hidable) {
+        ProgressWindow progressWindow = new ProgressWindow(cancelable, hidable, project);
         progressWindow.setIndeterminate(true);
         progressWindow.setTitle(title);
         progressWindow.setDelayInMillis(500);

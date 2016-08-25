@@ -6,12 +6,14 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 
 import com.intellij.ide.DataManager;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.ui.components.JBList;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -139,6 +141,9 @@ public class ProjectListWindow {
         refreshButton.setBorderPainted(true);
         refreshButton.setEnabled(true);
 
+        ProgressWindow window = ProgressWindowMaker.make("Refreshing project list",
+                new ObjectFinder().findCurrentProject(), false, true);
+
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -150,8 +155,8 @@ public class ProjectListWindow {
                                 refreshProjectList();
                             }
                         },
-                        "Refreshing project list.",
-                        new ObjectFinder().findCurrentProject());
+                        new ObjectFinder().findCurrentProject(),
+                        window);
             }
         });
 

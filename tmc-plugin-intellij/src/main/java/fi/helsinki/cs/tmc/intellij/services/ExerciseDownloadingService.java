@@ -37,7 +37,7 @@ public class ExerciseDownloadingService {
         logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
 
         ProgressWindow window = ProgressWindowMaker.make(
-                "Downloading exercises, this may take several minutes", project);
+                "Downloading exercises, this may take several minutes", project, true, true);
         CoreProgressObserver observer = new CoreProgressObserver(window);
 
         Thread run = createThread(core, settings, checker, objectFinder, observer);
