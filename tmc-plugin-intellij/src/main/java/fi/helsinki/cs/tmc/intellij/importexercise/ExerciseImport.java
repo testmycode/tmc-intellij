@@ -21,7 +21,7 @@ public class ExerciseImport {
      * @throws IOException when writing or reading files.
      */
     public static boolean importExercise(String path) {
-        if (!isUnImportedNbProject(path)) {
+        if (isUnImportedNbProject(path)) {
             try {
                 NewProjectUtilModified.importExercise(path);
                 return true;
