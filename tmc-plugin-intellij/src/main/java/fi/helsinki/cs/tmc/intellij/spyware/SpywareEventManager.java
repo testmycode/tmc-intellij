@@ -48,7 +48,8 @@ public class SpywareEventManager {
                 public void run() {
                     try {
                         if (TmcSettingsManager.get().getCourse() != null
-                                && TmcSettingsManager.get().getCourse().getSpywareUrls().size() == 0) {
+                                && TmcSettingsManager.get()
+                                .getCourse().getSpywareUrls().size() == 0) {
                             logger.info("Trying to get course info.");
                             TmcCore core = TmcCoreHolder.get();
                             TmcSettingsManager.get().setCourse(core

@@ -29,8 +29,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.mozilla.javascript.ScriptRuntime.add;
-
 public class SpywareFileListener implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(SpywareFileListener.class);
@@ -57,14 +55,16 @@ public class SpywareFileListener implements Closeable {
                             if (Files.isDirectory(Paths.get(path))) {
                                 JsonMaker metadata = JsonMaker.create()
                                         .add("cause", "folder_rename")
-                                        .add("file", new PathResolver().getPathRelativeToProject(path))
+                                        .add("file", new PathResolver()
+                                                .getPathRelativeToProject(path))
                                         .add("previous_name", virtualFilePropertyEvent
                                                 .getOldValue().toString());
                                 sendMetadata(metadata);
                             } else {
                                 JsonMaker metadata = JsonMaker.create()
                                         .add("cause", "file_rename")
-                                        .add("file", new PathResolver().getPathRelativeToProject(path))
+                                        .add("file", new PathResolver()
+                                                .getPathRelativeToProject(path))
                                         .add("previous_name", virtualFilePropertyEvent
                                                 .getOldValue().toString());
                                 sendMetadata(metadata);
@@ -79,7 +79,8 @@ public class SpywareFileListener implements Closeable {
                             String path = virtualFileEvent.getSource().toString().substring(7);
                             JsonMaker metadata = JsonMaker.create()
                                     .add("cause", "file_change")
-                                    .add("file", new PathResolver().getPathRelativeToProject(path));
+                                    .add("file", new PathResolver()
+                                    .getPathRelativeToProject(path));
                             sendMetadata(metadata);
                         }
                     }
@@ -92,12 +93,14 @@ public class SpywareFileListener implements Closeable {
                             if (Files.isDirectory(Paths.get(path))) {
                                 JsonMaker metadata = JsonMaker.create()
                                         .add("cause", "folder_create")
-                                        .add("file", new PathResolver().getPathRelativeToProject(path));
+                                        .add("file", new PathResolver()
+                                                .getPathRelativeToProject(path));
                                 sendMetadata(metadata);
                             } else {
                                 JsonMaker metadata = JsonMaker.create()
                                         .add("cause", "file_create")
-                                        .add("file", new PathResolver().getPathRelativeToProject(path));
+                                        .add("file", new PathResolver()
+                                                .getPathRelativeToProject(path));
                                 sendMetadata(metadata);
                             }
                         }
@@ -115,14 +118,16 @@ public class SpywareFileListener implements Closeable {
                             if (Files.isDirectory(Paths.get(path))) {
                                 JsonMaker metadata = JsonMaker.create()
                                         .add("cause", "folder_move")
-                                        .add("file", new PathResolver().getPathRelativeToProject(path))
+                                        .add("file", new PathResolver()
+                                                .getPathRelativeToProject(path))
                                         .add("from",
                                                 virtualFileMoveEvent.getOldParent().toString());
                                 sendMetadata(metadata);
                             } else {
                                 JsonMaker metadata = JsonMaker.create()
                                         .add("cause", "file_move")
-                                        .add("file", new PathResolver().getPathRelativeToProject(path))
+                                        .add("file", new PathResolver()
+                                                .getPathRelativeToProject(path))
                                         .add("from",
                                                 virtualFileMoveEvent.getOldParent().toString());
                                 sendMetadata(metadata);

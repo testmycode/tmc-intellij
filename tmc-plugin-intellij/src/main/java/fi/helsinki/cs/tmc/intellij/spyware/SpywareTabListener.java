@@ -88,9 +88,9 @@ public class SpywareTabListener {
                                                 fileEditorManagerEvent.getNewFile().getName())
                                         .add("old_value",
                                                 fileEditorManagerEvent.getOldFile().getName())
-                                        .add("file", new PathResolver
-                                                ().getPathRelativeToProject(fileEditorManagerEvent
-                                                        .getNewFile().getPath()))
+                                        .add("file", new PathResolver()
+                                                .getPathRelativeToProject(fileEditorManagerEvent
+                                                .getNewFile().getPath()))
                                         .toString();
                             } else {
                                 data = JsonMaker.create()

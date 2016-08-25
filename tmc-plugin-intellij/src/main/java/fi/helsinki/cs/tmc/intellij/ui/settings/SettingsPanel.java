@@ -122,7 +122,7 @@ public class SettingsPanel {
         try {
             courses =
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
-                    logger.info("Getting list of courses from TmcCore. @SettingsPanel");
+            logger.info("Getting list of courses from TmcCore. @SettingsPanel");
         } catch (Exception ignored) {
             logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
                     ignored, ignored.getStackTrace());
