@@ -43,28 +43,9 @@ public class ExerciseImport {
         virtualFile.refresh(false, false);
         if (virtualFile.isDirectory()
                 && virtualFile.findChild(Project.DIRECTORY_STORE_FOLDER) == null
-                && hasNbproject(path)) {
+                && virtualFile.findChild("nbproject") != null) {
             return true;
         }
-        return false;
-    }
-
-    private static boolean hasNbproject(String path) {
-        File file = new File(path);
-
-        if (!file.isDirectory()) {
-            return false;
-        }
-
-        String[] names = file.list();
-
-
-        for (String name : names) {
-            if (name.equals("nbproject")) {
-                return true;
-            }
-        }
-
         return false;
     }
 }
