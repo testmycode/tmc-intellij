@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
@@ -33,7 +34,7 @@ public class ExerciseDownloadingServiceTest {
         new ExerciseDownloadingService().startDownloadExercise(core, settings, checker, mock(ObjectFinder.class),
                 threadingServiceMock, project);
 
-        verify(threadingServiceMock).runWithNotification(any(Runnable.class), any(String.class), any(Project.class));
+        verify(threadingServiceMock).runWithNotification(any(Runnable.class), any(Project.class), any(ProgressWindow.class));
     }
 
 

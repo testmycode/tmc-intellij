@@ -2,6 +2,7 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 
 
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
@@ -43,7 +44,7 @@ public class UploadExerciseServiceTest {
                 mock(SubmissionResultHandler.class), settings,
                 mockCourseAndExerciseManager, threadingService, mock(TestRunningService.class));
 
-        verify(threadingService).runWithNotification(any(Runnable.class), anyString(), any(Project.class));
+        verify(threadingService).runWithNotification(any(Runnable.class), any(Project.class), any(ProgressWindow.class));
         verify(mockCourseAndExerciseManager).updateSingleCourse(course.getName(),
                 checker, finder, settings);
     }

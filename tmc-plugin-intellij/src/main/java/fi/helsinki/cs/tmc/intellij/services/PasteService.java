@@ -2,11 +2,12 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.ui.pastebin.PasteWindow;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 
 import org.slf4j.Logger;
@@ -58,22 +59,30 @@ public class PasteService {
 
         logger.info("Uploading to tmc pastebin. @PasteService");
 
-        try {
-            URI uri = core.pasteWithComment(ProgressObserver.NULL_OBSERVER,
-                    exercise, message).call();
-            window.showResult(uri);
-            updateProjectView(courseAndExerciseManager, projectListManager);
-        } catch (TmcCoreException exception) {
-            logger.info("Uploading to pastebin failed. @PasteService",
-                    exception, exception.getStackTrace());
-            handleException(exception);
-        } catch (Exception exception) {
-            logger.info("Uploading to pastebin failed. @PasteService",
-                    exception, exception.getStackTrace());
-
-            new ErrorMessageService().showMessage(exception,
-                    "Error while uploading to TMC Pastebin.", true);
-        }
+        ProgressWindow progressWindow = ProgressWindowMaker.make(
+                "Uploading code to pastebin, this may take several minutes", null);
+        CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
+        ThreadingService threadingService = new ThreadingService();
+        threadingService.runWithNotification(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URI uri = core.pasteWithComment(observer,
+                            exercise, message).call();
+                    window.showResult(uri);
+                    updateProjectView(courseAndExerciseManager, projectListManager);
+                } catch (TmcCoreException exception) {
+                    logger.info("Uploading to pastebin failed. @PasteService",
+                            exception, exception.getStackTrace());
+                    handleException(exception);
+                } catch (Exception exception) {
+                    logger.info("Uploading to pastebin failed. @PasteService",
+                            exception, exception.getStackTrace());
+                    new ErrorMessageService().showMessage(exception,
+                            "Error while uploading to TMC Pastebin.", true);
+                }
+            }
+        }, null, progressWindow);
     }
 
     private void handleException(TmcCoreException exception) {

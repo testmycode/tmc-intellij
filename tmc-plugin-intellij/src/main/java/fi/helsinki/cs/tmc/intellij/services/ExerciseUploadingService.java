@@ -2,11 +2,12 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -56,13 +57,17 @@ public class ExerciseUploadingService {
 
         logger.info("Calling for threadingService from getResult. @ExerciseUploadingService.");
 
+        ProgressWindow window = ProgressWindowMaker.make(
+                "Uploading exercise, this may take several minutes", project);
+        CoreProgressObserver observer = new CoreProgressObserver(window);
+
         threadingService.runWithNotification(new Runnable() {
             @Override
             public void run() {
                 try {
                     logger.info("Getting submission results. @ExerciseUploadingService");
                     final SubmissionResult result = core
-                            .submit(ProgressObserver.NULL_OBSERVER, exercise).call();
+                            .submit(observer, exercise).call();
                     handler.showResultMessage(exercise, result, project);
                 } catch (Exception exception) {
                     logger.warn("Could not getExercise submission results. "
@@ -70,7 +75,7 @@ public class ExerciseUploadingService {
                     exception.printStackTrace();
                 }
             }
-        }, "Uploading exercise, this may take several minutes", project);
+        }, project, window);
         testRunningService.displayTestWindow(finder);
     }
 

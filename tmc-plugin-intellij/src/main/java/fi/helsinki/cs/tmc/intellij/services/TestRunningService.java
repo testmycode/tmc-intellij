@@ -1,12 +1,13 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 import fi.helsinki.cs.tmc.langs.domain.RunResult;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.wm.ToolWindowManager;
 
@@ -21,6 +22,10 @@ public class TestRunningService {
                          ThreadingService threadingService,
                          ObjectFinder finder) {
         logger.info("Starting to run tests for current project. @TestRunningService");
+
+        ProgressWindow window = ProgressWindowMaker.make("Running tests", project);
+        CoreProgressObserver observer = new CoreProgressObserver(window);
+
         if (exercise != null) {
             threadingService.runWithNotification(new Runnable() {
                 @Override
@@ -28,7 +33,7 @@ public class TestRunningService {
                     RunResult result = null;
                     try {
                         result = TmcCoreHolder.get()
-                                .runTests(ProgressObserver.NULL_OBSERVER, exercise).call();
+                                .runTests(observer, exercise).call();
                         RunResult finalResult = result;
                         showTestResult(finalResult);
                     } catch (Exception exception) {
@@ -37,7 +42,7 @@ public class TestRunningService {
                                 "Running tests failed!", true);
                     }
                 }
-            }, "Running tests!", project);
+            }, project, window);
             displayTestWindow(finder);
         } else {
             Exception exception = new Exception();
