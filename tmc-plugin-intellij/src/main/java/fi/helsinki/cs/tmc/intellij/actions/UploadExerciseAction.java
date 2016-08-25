@@ -8,6 +8,7 @@ import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseUploadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
@@ -36,6 +37,8 @@ public class UploadExerciseAction extends AnAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
         logger.info("Performing UploadExerciseAction. @UploadExerciseAction");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+
+        new ButtonInputListener().receiveSubmit();
 
         new ExerciseUploadingService().startUploadExercise(project,
                 TmcCoreHolder.get(), new ObjectFinder(),

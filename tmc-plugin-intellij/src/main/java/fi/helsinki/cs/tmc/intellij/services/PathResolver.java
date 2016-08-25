@@ -1,8 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
 
-import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 
 import com.intellij.openapi.project.Project;
@@ -31,7 +31,6 @@ public class PathResolver {
         logger.info("Processing getCourseAndExerciseName"
                 + " with Project parameter. @PathResolver");
         return getCourseAndExerciseName(project.getBasePath());
-
     }
 
     /**
@@ -98,5 +97,19 @@ public class PathResolver {
 
     private static boolean osIsUnixBased(String path) {
         return path.contains("/");
+    }
+
+    public static String getExerciseName(String path) {
+        if (path == null) {
+            return null;
+        }
+        String[] split = getCourseAndExerciseName(path);
+        return split[split.length - 1];
+    }
+
+    public String getPathRelativeToProject(String path) {
+        String[] paths = path.split(getExerciseName(new ObjectFinder()
+                .findCurrentProject().getBasePath()));
+        return paths[paths.length - 1];
     }
 }

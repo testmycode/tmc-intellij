@@ -15,7 +15,6 @@ import java.io.Serializable;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
-
 import javax.swing.JFileChooser;
 
 /**
@@ -30,16 +29,21 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private Course course;
     private String projectBasePath;
 
+    private boolean spyware;
+
     public SettingsTmc(String serverAddress, String username, String password) {
+        this.spyware = true;
         this.serverAddress = serverAddress;
         this.username = username;
         this.password = password;
     }
 
+
     /**
      * Sets the default folder for TMC project files -> home/IdeaProjects/TMCProjects .
      */
     public SettingsTmc() {
+        spyware = true;
         logger.info("Setting default folder for TMC project files. @SettingsTmc");
         JFileChooser fileChooser = new JFileChooser();
         serverAddress = "https://tmc.mooc.fi/staging/org/tmc-intellij/";
@@ -50,6 +54,11 @@ public class SettingsTmc implements TmcSettings, Serializable {
     public void setUsername(String username) {
         logger.info("Setting username -> {}. @SettingsTmc", username);
         this.username = username;
+    }
+
+
+    public void setSpyware(boolean spyware) {
+        this.spyware = spyware;
     }
 
     public void setPassword(String password) {
@@ -72,6 +81,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
     public String getProjectBasePath() {
         logger.info("Getting project base path <- {}. @SettingsTmc", projectBasePath);
         return projectBasePath;
+    }
+
+    public boolean isSpyware() {
+        return spyware;
     }
 
     public void setProjectBasePath(String projectBasePath) {
@@ -110,7 +123,8 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Optional<Course> getCurrentCourse() {
-        return null;
+        Optional<Course> crs = Optional.of(course);
+        return crs;
     }
 
     @Override
@@ -167,6 +181,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Path getConfigRoot() {
-        return null;
+        JFileChooser fileChooser = new JFileChooser();
+        return Paths.get(fileChooser.getFileSystemView().getDefaultDirectory().toString());
     }
 }

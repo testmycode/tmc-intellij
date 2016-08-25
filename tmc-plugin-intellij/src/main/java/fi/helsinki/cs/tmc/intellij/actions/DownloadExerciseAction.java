@@ -15,6 +15,7 @@ import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,8 +38,10 @@ public class DownloadExerciseAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+        new ButtonInputListener().receiveDownloadExercise();
         downloadExercises(project);
     }
+
 
     public void downloadExercises(Project project) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
