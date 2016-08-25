@@ -4,9 +4,12 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
+import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -64,6 +67,13 @@ public class ExerciseUploadingService {
                     final SubmissionResult result = core
                             .submit(ProgressObserver.NULL_OBSERVER, exercise).call();
                     handler.showResultMessage(exercise, result, project);
+                    refreshExerciseList();
+                    ApplicationManager.getApplication().invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            TestResultPanelFactory.updateMostRecentResult(result.getTestCases());
+                        }
+                    });
                 } catch (Exception exception) {
                     logger.warn("Could not getExercise submission results. "
                             + "@ExerciseUploadingService", exception, exception.getStackTrace());
@@ -82,6 +92,21 @@ public class ExerciseUploadingService {
     private String getExerciseName(String[] courseAndExercise) {
         logger.info("Getting exercise name. @ExerciseUploadingService.");
         return courseAndExercise[courseAndExercise.length - 1];
+    }
+
+    private static void refreshExerciseList() {
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+            @Override
+            public void run() {
+                new CourseAndExerciseManager().initiateDatabase();
+                ApplicationManager.getApplication().invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ProjectListManagerHolder.get().refreshAllCourses();
+                    }
+                });
+            }
+        });
     }
 
 }

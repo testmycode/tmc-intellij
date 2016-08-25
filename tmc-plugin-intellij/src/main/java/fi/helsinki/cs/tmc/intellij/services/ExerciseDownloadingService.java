@@ -35,7 +35,6 @@ public class ExerciseDownloadingService {
 
         logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
         Thread run = createThread(core, settings, checker, objectFinder);
-
         threadingService.runWithNotification(
                 run,
                 "Downloading exercises, this may take several minutes",
@@ -103,8 +102,7 @@ public class ExerciseDownloadingService {
                                             public void run() {
                                                 logger.info("Updating project list. "
                                                         + "@ExerciseDownloadingService");
-                                                new CourseAndExerciseManager().initiateDatabase();
-                                                ProjectListManagerHolder.get().refreshAllCourses();
+                                                refreshExerciseList();
                                             }
                                         }
                                 );
@@ -112,5 +110,20 @@ public class ExerciseDownloadingService {
                         });;
             }
         };
+    }
+
+    private static void refreshExerciseList() {
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+            @Override
+            public void run() {
+                new CourseAndExerciseManager().initiateDatabase();
+                ApplicationManager.getApplication().invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ProjectListManagerHolder.get().refreshAllCourses();
+                    }
+                });
+            }
+        });
     }
 }

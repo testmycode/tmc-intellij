@@ -42,6 +42,7 @@ public class SpywareEventManager {
             new TmcServerCommunicationTaskFactory(), new EventStore());
 
     public static void add(final LoggableEvent log) {
+        buffer.setSavingInterval(6000);
         if (spywareIsActivated()) {
             ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
                 @Override
@@ -58,7 +59,9 @@ public class SpywareEventManager {
                         }
                     } catch (Exception e) {
                     }
+                    System.out.println(log);
                     buffer.receiveEvent(log);
+                    buffer.setSavingInterval(6000);
                     logger.info("Event has been added to the buffer.");
                 }
             });
