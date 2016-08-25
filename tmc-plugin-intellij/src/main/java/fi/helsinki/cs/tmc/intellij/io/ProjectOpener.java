@@ -2,9 +2,12 @@
 package fi.helsinki.cs.tmc.intellij.io;
 
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
+import com.intellij.ide.impl.ProjectUtil;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
 
@@ -14,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 /**
  * Opens the project using intellij ProjectManager, when given the path.
  */
@@ -25,7 +29,12 @@ public class ProjectOpener {
         logger.info("Opening project from {}. @ProjectOpener", path);
         if (Files.isDirectory(Paths.get(path))) {
             try {
-                ProjectManager.getInstance().loadAndOpenProject(path);
+                Project project = new ObjectFinder().findCurrentProject();
+                ExerciseImport.importExercise(path);
+                ProjectUtil.openOrImport(path, project, true);
+                if (project != null) {
+                    ProjectManager.getInstance().closeProject(project);
+                }
             } catch (Exception exception) {
                 logger.warn("Could not open project from path. @ProjectOpener",
                         exception, exception.getStackTrace());

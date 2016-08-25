@@ -3,6 +3,7 @@ package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
@@ -57,7 +58,7 @@ public class CourseTabFactory {
         DefaultListModel defaultListModel = new DefaultListModel();
         panel.setBorder(BorderFactory.createTitledBorder(""));
 
-        ProjectListManager.addExercisesToList(finder, course, defaultListModel,
+        ProjectListManagerHolder.get().addExercisesToList(finder, course, defaultListModel,
                 courseAndExerciseManager);
 
         if (defaultListModel.getSize() <= 0) {
@@ -74,12 +75,13 @@ public class CourseTabFactory {
         panel.setName(course);
         panel.setViewportView(list);
 
-        ProjectListManager.addList(list);
+        ProjectListManagerHolder.get().addList(list);
         tabbedPanelBase.addTab(course, panel);
         setScrollBarToBottom(course, tabbedPanelBase, panel);
     }
 
-    private void setScrollBarToBottom(String course, JTabbedPane tabbedPanelBase,
+    private void setScrollBarToBottom(String course,
+                                      JTabbedPane tabbedPanelBase,
                                       JBScrollPane panel) {
         tabbedPanelBase.addTab(course, panel);
         JScrollBar bar = panel.getVerticalScrollBar();
@@ -184,6 +186,7 @@ public class CourseTabFactory {
                             true);
                 }
             }
+            
         };
     }
 

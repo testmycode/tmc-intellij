@@ -2,6 +2,7 @@ package fi.helsinki.cs.tmc.intellij.actions;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.PasteService;
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
@@ -32,8 +33,8 @@ public class SubmitPasteAction extends AnAction {
     }
 
     private void paste(AnActionEvent anActionEvent) {
+        new ButtonInputListener().receivePastebin();
         logger.info("Showing paste submit form. @SubmitPasteAction");
-
         if (pasteService == null || pasteService.getWindow() == null
                 || pasteService.getWindow().isClosed()) {
             Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);

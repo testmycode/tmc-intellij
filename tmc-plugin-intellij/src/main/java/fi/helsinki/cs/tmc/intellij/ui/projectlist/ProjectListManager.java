@@ -32,15 +32,7 @@ public class ProjectListManager {
         currentListElements = new HashMap<>();
     }
 
-    public static void setup() {
-        logger.info("Setup ProjectListWindow. @ProjectListManager");
-        if (currentListElements == null) {
-            currentListElements = new HashMap<>();
-            projectListWindows = new ArrayList<>();
-        }
-    }
-
-    public static void addList(JBList list) {
+    public void addList(JBList list) {
         logger.info("Processing addList. @ProjectListManager");
         if (currentListElements.get(list.getName()) == null) {
             currentListElements.put(list.getName(), new ArrayList<JBList>());
@@ -79,10 +71,9 @@ public class ProjectListManager {
         refreshAllCourses();
     }
 
-    public static void addExercisesToList(ObjectFinder finder,
+    public void addExercisesToList(ObjectFinder finder,
                                           String course, DefaultListModel defaultListModel,
                                           CourseAndExerciseManager courseAndExerciseManager) {
-
 
         logger.info("Processing addExercisesToList. @ProjectListManager");
         if (courseAndExerciseManager.isCourseInDatabase(course)) {
@@ -94,7 +85,7 @@ public class ProjectListManager {
         }
     }
 
-    private static void addExercisesToListModel(DefaultListModel listModel,
+    private void addExercisesToListModel(DefaultListModel listModel,
                                                 List<Exercise> exercises) {
         logger.info("Processing addExercisesToListModel. @ProjectListManager");
         for (Exercise ex : exercises) {
@@ -102,7 +93,7 @@ public class ProjectListManager {
         }
     }
 
-    private static void addExercisesToListModelAsStrings(DefaultListModel listModel,
+    private void addExercisesToListModelAsStrings(DefaultListModel listModel,
                                                          List<String> exercises) {
         logger.info("Processing addExercisesToListModelAsStrings. @ProjectListManager");
         for (String ex : exercises) {
@@ -110,7 +101,7 @@ public class ProjectListManager {
         }
     }
 
-    public static void addWindow(ProjectListWindow window) {
+    public void addWindow(ProjectListWindow window) {
         projectListWindows.add(window);
     }
 
