@@ -5,95 +5,80 @@ package fi.helsinki.cs.tmc.intellij.services;
 import com.intellij.openapi.project.Project;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
-import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
-import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
-import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
+import org.junit.Rule;
 import org.junit.Test;
-
-import java.util.ArrayList;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
+import org.junit.rules.ExpectedException;
 
 import static org.mockito.Mockito.*;
 
 public class UploadExerciseServiceTest {
 
-    // commented out for now
-    // fails at CourseAndExerciseManager.setDatabase(map)
-    // due to IntelliJ's ServiceManager seemingly unable
-    // to create service within text context
     /*
+    Note that this doesn't really test much actual functionality beyond that the
+    ThreadingService is used in some level. At the moment checking for its
+    actual functionality is fairly impossible or at least very hard to do
+    in any meaningful way (so that it would test also our functionality instead of
+    only the TmcCore functioning, which is tested already in its own repository) as
+    it would require an actual ThreadingService object (instead of mocking it),
+    but calling its 'runWithNotification' method breaks because some IntelliJ's
+    openapi stuff isn't possible to produce sensibly within text context.
+     */
     @Test
-    public void uploadExercisesTestCallsSubmitMethod() {
-        SubmissionResultHandler handler = mock(SubmissionResultHandler.class);
-        Map<String, List<Exercise>> map = new HashMap<>();
-
-        CourseAndExerciseManager.setDatabase(map);
-        ProjectListManager.setup();
-
+    public void afterUploadingExercisesTheCourseIsUpdated() {
         ObjectFinder finder = mock(ObjectFinder.class);
         CheckForExistingExercises checker = mock(CheckForExistingExercises.class);
-        CourseAndExerciseManager manager = mock(CourseAndExerciseManager.class);
+        SettingsTmc settings = mock(SettingsTmc.class);
+        ThreadingService threadingService = mock(ThreadingService.class);
+        Course course = new Course("home");
 
         Project project = mock(Project.class);
-        TmcCore core = mock(TmcCore.class);
-        TmcCoreHolder.set(core);
-
-        Exercise exercise = mock(Exercise.class);
-        exercise.setName("user");
-
-        List<Exercise> exerciseList = new ArrayList<>();
-        exerciseList.add(exercise);
-
-        Course course = new Course();
-        course.setName("home");
-        course.setExercises(exerciseList);
-        map.put("home", course.getExercises());
-
-        final List<Course> courseList = new ArrayList<>();
-        courseList.add(course);
-
-        final SubmissionResult result = mock(SubmissionResult.class);
-
-        SettingsTmc settings = mock(SettingsTmc.class);
-
-        when(checker.getListOfDownloadedExercises(course.getExercises(),
-                settings))
-                .thenReturn(new ArrayList<Exercise>());
-
-
-
-
-        when(finder.findCourseByName("home", core)).thenReturn(course);
-        when(finder.findExerciseByName(course, "user")).thenReturn(exercise);
         when(project.getBasePath()).thenReturn("/home/user");
 
-        when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
-                new Callable<List<Course>>() {
-                    @Override
-                    public List<Course> call() throws Exception {
-                        return courseList;
-                    }
-                }
-        );
-        when(core.submit(ProgressObserver.NULL_OBSERVER, exercise)).thenReturn(
-                new Callable<SubmissionResult>() {
-                    @Override
-                    public SubmissionResult call() throws Exception {
-                        return result;
-                    }
-                }
-        );
+        CourseAndExerciseManager mockCourseAndExerciseManager = mock(CourseAndExerciseManager.class);
+        when(mockCourseAndExerciseManager.isCourseInDatabase(course.getName())).thenReturn(true);
 
-        ExerciseUploadingService.startUploadExercise(project, core, finder, checker, handler, settings);
-        verify(core).submit(ProgressObserver.NULL_OBSERVER, exercise);
+        new ExerciseUploadingService().startUploadExercise(project, mock(TmcCore.class), finder, checker,
+                mock(SubmissionResultHandler.class), settings,
+                mockCourseAndExerciseManager, threadingService, mock(TestRunningService.class));
+
+        verify(threadingService).runWithNotification(any(Runnable.class), anyString(), any(Project.class));
+        verify(mockCourseAndExerciseManager).updateSingleCourse(course.getName(),
+                checker, finder, settings);
+    }
+
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
+
+    // commented out for now, works in IntelliJ, but fails in Maven,
+    // runs into ExceptionInInitializerError along with
+    // java.util.MissingResourceException: Can't find bundle for base name messages.CommonBundle, locale en_US
+    /*
+    @Test
+    public void submittingFailsIfExerciseIsNotTmcExercise() {
+        ObjectFinder finder = mock(ObjectFinder.class);
+        CheckForExistingExercises checker = mock(CheckForExistingExercises.class);
+        SettingsTmc settings = mock(SettingsTmc.class);
+        ThreadingService threadingService = mock(ThreadingService.class);
+        Course course = new Course("home");
+
+        Project project = mock(Project.class);
+        when(project.getBasePath()).thenReturn("/home/user");
+
+        CourseAndExerciseManager mockCourseAndExerciseManager = mock(CourseAndExerciseManager.class);
+        when(mockCourseAndExerciseManager.isCourseInDatabase(course.getName())).thenReturn(false);
+        SubmissionResultHandler handler = new SubmissionResultHandler();
+
+        exception.expect(IllegalStateException.class);
+        new ExerciseUploadingService().startUploadExercise(project, mock(TmcCore.class), finder, checker,
+                handler, settings,
+                mockCourseAndExerciseManager, threadingService);
+
+        verify(threadingService, never()).runWithNotification(any(Runnable.class), anyString(), any(Project.class));
+        verify(mockCourseAndExerciseManager, never()).updateSingleCourse(course.getName(),
+                checker, finder, settings);
     }
     */
 }

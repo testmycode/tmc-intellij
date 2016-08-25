@@ -13,19 +13,19 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/log4j/log4j/1.2.17/log4j-1.2.17.jar!/" />
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/slf4j-api-1.7.10.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library" exported="">
+    <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.21/slf4j-api-1.7.21.jar!/" />
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/slf4j-log4j12-1.7.10.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -42,6 +42,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:core:0.5.2-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:core:0.8.3-SNAPSHOT" level="project" />
   </component>
 </module>
