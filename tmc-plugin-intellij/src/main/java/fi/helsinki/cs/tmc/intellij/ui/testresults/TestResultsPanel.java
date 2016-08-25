@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
-import fi.helsinki.cs.tmc.intellij.ui.OperationInProgressNotification;
 import fi.helsinki.cs.tmc.langs.domain.TestResult;
 
 import com.intellij.ui.JBProgressBar;

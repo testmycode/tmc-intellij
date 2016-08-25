@@ -1,3 +1,9 @@
+
+/*
+ * @author Eugene Zhuravlev.
+ *         Date: Jul 17, 2007
+ */
+
 package fi.helsinki.cs.tmc.intellij.importexercise;
 
 import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
@@ -51,6 +57,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/*
+*  this code is modified form intellij code. url below
+*  original class: ProjectFromSourcesBuilderImpl
+*  https://github.com/JetBrains/intellij-community/blob/1fb6ce35950512b62c1f4a397d907de8b702d762/java/idea-ui/src/com/intellij/ide/util/projectWizard/importSources/impl/ProjectFromSourcesBuilderImpl.java
+*/
+
 public class ProjectFromSourcesBuilderImplModified {
     private static final Logger logger = LoggerFactory
             .getLogger(ProjectFromSourcesBuilderImplModified.class);
@@ -58,6 +70,7 @@ public class ProjectFromSourcesBuilderImplModified {
     /*
      * Collects info to build module and libraries and then creates them.
      * In original class only creates them from info gotten from wizard.
+     * This is modified to work only with project and root path info.
      * @param project where these modules and libraries should go.
      * @param path project root dir
      * @return
@@ -176,7 +189,7 @@ public class ProjectFromSourcesBuilderImplModified {
         compilerModuleExtension.setExcludeOutput(true);
         rootModel.inheritSdk();
 
-        //Module root model seems to have .iml files root dependencies. (src, test, lib)
+        //Module root model seems to store .iml files root dependencies. (src, test, lib)
         logger.info("Starting setupRootModel in ProjectFromSourcesBuilderImplModified");
         final Set<File> contentRoots = descriptor.getContentRoots();
         for (File contentRoot : contentRoots) {
