@@ -11,6 +11,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
 
+import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,11 +30,13 @@ public class ProjectOpener {
         logger.info("Opening project from {}. @ProjectOpener", path);
         Project project = new ObjectFinder().findCurrentProject();
         if (Files.isDirectory(Paths.get(path))) {
-            if (!path.equals(project.getBasePath())) {
+            if (project == null
+                    || !path.equals(project.getBasePath())) {
                 try {
                     ExerciseImport.importExercise(path);
                     ProjectUtil.openOrImport(path, project, true);
                     if (project != null) {
+                        new ActivateSpywareListeners(project).removeListeners();
                         ProjectManager.getInstance().closeProject(project);
                     }
                 } catch (Exception exception) {
