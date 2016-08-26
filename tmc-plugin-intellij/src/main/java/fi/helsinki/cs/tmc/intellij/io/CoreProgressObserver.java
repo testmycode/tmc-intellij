@@ -21,7 +21,6 @@ public class CoreProgressObserver extends ProgressObserver{
     @Override
     public void progress(long mysteryLong, Double progress, String status) {
         progressWindow.setText2(status);
-        progressWindow.setIndeterminate(false);
         progressWindow.setFraction(progress);
         progressWindow.checkCanceled();
     }

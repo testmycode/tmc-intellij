@@ -40,7 +40,7 @@ public class StartupEvent implements StartupActivity {
         ThreadingService threadingService = new ThreadingService();
 
         ProgressWindow progressWindow = ProgressWindowMaker.make(
-                "Running TMC startup actions.", project, false, true);
+                "Running TMC startup actions.", project, false, false, false);
 
         CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
 
@@ -48,20 +48,24 @@ public class StartupEvent implements StartupActivity {
                 new Thread() {
                     @Override
                     public void run() {
+                        observer.progress(0, 0.0, "Initializing loggers");
                         PropertySetter propSet = new PropertySetter();
                         propSet.setLog4jProperties();
-
+                        observer.progress(0, 0.14, "xd");
                         TmcSettingsManager.setup();
+                        observer.progress(0, 0.28, "Holding core");
                         TmcCoreHolder.setup();
-
+                        observer.progress(0, 0.42, "Activating listeners");
                         new ActivateSpywareListeners(project);
+                        observer.progress(0, 0.56, "Initializing database");
                         new CourseAndExerciseManager().initiateDatabase();
-
+                        observer.progress(0, 0.70, "Setting handlers");
                         final EditorActionManager actionManager = EditorActionManager.getInstance();
                         final TypedAction typedAction = actionManager.getTypedAction();
                         TypedActionHandler originalHandler =
                                 actionManager.getTypedAction().getHandler();
                         typedAction.setupHandler(new ActivateSpywareAction(originalHandler));
+                        observer.progress(0, 0.84, "Checking for new exercises");
                         new CheckForNewExercises().doCheck();
                     }
                 },

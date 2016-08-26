@@ -58,7 +58,7 @@ public class ExerciseUploadingService {
         logger.info("Calling for threadingService from getResult. @ExerciseUploadingService.");
 
         ProgressWindow window = ProgressWindowMaker.make(
-                "Uploading exercise, this may take several minutes", project, true, true);
+                "Uploading exercise, this may take several minutes", project, true, true, true);
         CoreProgressObserver observer = new CoreProgressObserver(window);
 
         threadingService.runWithNotification(new Runnable() {

@@ -60,7 +60,7 @@ public class PasteService {
         logger.info("Uploading to tmc pastebin. @PasteService");
 
         ProgressWindow progressWindow = ProgressWindowMaker.make(
-                "Uploading code to pastebin, this may take several minutes", null, true, true);
+                "Uploading code to pastebin, this may take several minutes", null, true, true, true);
         CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
         ThreadingService threadingService = new ThreadingService();
         threadingService.runWithNotification(new Runnable() {

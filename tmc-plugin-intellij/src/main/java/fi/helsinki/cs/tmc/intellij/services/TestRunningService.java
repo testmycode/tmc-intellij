@@ -23,7 +23,7 @@ public class TestRunningService {
                          ObjectFinder finder) {
         logger.info("Starting to run tests for current project. @TestRunningService");
 
-        ProgressWindow window = ProgressWindowMaker.make("Running tests", project, true, true);
+        ProgressWindow window = ProgressWindowMaker.make("Running tests", project, true, true, true);
         CoreProgressObserver observer = new CoreProgressObserver(window);
 
         if (exercise != null) {
