@@ -90,13 +90,17 @@ public class TextInputListener implements DocumentListener {
                                             List<DiffMatchPatch.Patch> patches) {
         logger.info("Creating JSON from patches.");
         String source = documentEvent.getSource().toString();
-        source = source.substring(20, source.length() - 1);
-        return JsonMaker.create()
-                .add("file", new PathResolver().getPathRelativeToProject(source))
-                .add("patches", diff.patch_toText(patches))
-                .add("full_document",
-                        documentEvent.getNewLength() == documentEvent.getDocument().getTextLength())
-                .toString();
+        if (documentEvent.getSource().toString().length() > 20) {
+            source = source.substring(20, source.length() - 1);
+            return JsonMaker.create()
+                    .add("file", new PathResolver().getPathRelativeToProject(source))
+                    .add("patches", diff.patch_toText(patches))
+                    .add("full_document",
+                            documentEvent
+                                    .getNewLength() == documentEvent.getDocument().getTextLength())
+                    .toString();
+        }
+        return null;
     }
 
     private boolean isRemoveEvent(DocumentEvent documentEvent) {
@@ -104,8 +108,10 @@ public class TextInputListener implements DocumentListener {
     }
 
     private void addEventToManager(Exercise exercise, String eventType, String text) {
-        LoggableEvent event = new LoggableEvent(exercise, eventType, text.getBytes());
-        SpywareEventManager.add(event);
+        if (text != null) {
+            LoggableEvent event = new LoggableEvent(exercise, eventType, text.getBytes());
+            SpywareEventManager.add(event);
+        }
 
     }
 

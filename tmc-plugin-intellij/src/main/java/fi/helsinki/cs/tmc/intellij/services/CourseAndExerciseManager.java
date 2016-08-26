@@ -46,8 +46,6 @@ public class CourseAndExerciseManager {
         } catch (Exception exception) {
             logger.warn("Exercise was not found. @CourseAndExerciseManager",
                     exception, exception.getStackTrace());
-            ErrorMessageService error = new ErrorMessageService();
-            error.showMessage(exception, "Could not find the exercise", false);
         }
         return null;
     }

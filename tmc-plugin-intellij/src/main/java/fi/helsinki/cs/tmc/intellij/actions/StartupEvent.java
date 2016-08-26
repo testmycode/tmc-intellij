@@ -10,12 +10,14 @@ import fi.helsinki.cs.tmc.intellij.services.PropertySetter;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.actionSystem.EditorActionManager;
 import com.intellij.openapi.editor.actionSystem.TypedAction;
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
+import com.intellij.openapi.wm.ToolWindowManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -51,7 +53,7 @@ public class StartupEvent implements StartupActivity {
                         observer.progress(0, 0.0, "Initializing loggers");
                         PropertySetter propSet = new PropertySetter();
                         propSet.setLog4jProperties();
-                        observer.progress(0, 0.14, "xd");
+                        observer.progress(0, 0.14, "Loading settings");
                         TmcSettingsManager.setup();
                         observer.progress(0, 0.28, "Holding core");
                         TmcCoreHolder.setup();
@@ -62,16 +64,27 @@ public class StartupEvent implements StartupActivity {
                         observer.progress(0, 0.70, "Setting handlers");
                         final EditorActionManager actionManager = EditorActionManager.getInstance();
                         final TypedAction typedAction = actionManager.getTypedAction();
-                        TypedActionHandler originalHandler =
-                                actionManager.getTypedAction().getHandler();
+                        TypedActionHandler originalHandler = actionManager
+                                .getTypedAction().getHandler();
                         typedAction.setupHandler(new ActivateSpywareAction(originalHandler));
                         observer.progress(0, 0.84, "Checking for new exercises");
-                        new CheckForNewExercises().doCheck();
+                        if (TmcSettingsManager.get().isCheckForExercises()) {
+                            new CheckForNewExercises().doCheck();
+                        }
+                        ApplicationManager.getApplication().invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (ToolWindowManager.getInstance(project)
+                                        .getToolWindow("Project") != null) {
+                                    ToolWindowManager.getInstance(project)
+                                            .getToolWindow("Project").activate(null);
+                                }
+                            }
+                        });
                     }
                 },
                 project,
                 progressWindow);
-
     }
 }
 

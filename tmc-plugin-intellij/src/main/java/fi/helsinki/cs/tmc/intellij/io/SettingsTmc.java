@@ -28,11 +28,12 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private String serverAddress;
     private Course course;
     private String projectBasePath;
-
+    private boolean checkForExercises;
     private boolean spyware;
 
     public SettingsTmc(String serverAddress, String username, String password) {
         this.spyware = true;
+        this.checkForExercises = true;
         this.serverAddress = serverAddress;
         this.username = username;
         this.password = password;
@@ -44,11 +45,20 @@ public class SettingsTmc implements TmcSettings, Serializable {
      */
     public SettingsTmc() {
         spyware = true;
+        this.checkForExercises = true;
         logger.info("Setting default folder for TMC project files. @SettingsTmc");
         JFileChooser fileChooser = new JFileChooser();
         serverAddress = "https://tmc.mooc.fi/staging/org/tmc-intellij/";
         projectBasePath = fileChooser.getFileSystemView().getDefaultDirectory().toString()
                 + File.separator + "IdeaProjects" + File.separator + "TMCProjects";
+    }
+
+    public boolean isCheckForExercises() {
+        return checkForExercises;
+    }
+
+    public void setCheckForExercises(boolean checkForExercises) {
+        this.checkForExercises = checkForExercises;
     }
 
     public void setUsername(String username) {
@@ -139,7 +149,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public String clientVersion() {
-        return "0.5.0";
+        return "0.6.0";
     }
 
     @Override

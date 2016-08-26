@@ -110,8 +110,7 @@ public class ExerciseDownloadingService {
                                             public void run() {
                                                 logger.info("Updating project list. "
                                                         + "@ExerciseDownloadingService");
-                                                new CourseAndExerciseManager().initiateDatabase();
-                                                ProjectListManagerHolder.get().refreshAllCourses();
+                                                refreshExerciseList();
                                             }
                                         }
                                 );
@@ -119,5 +118,20 @@ public class ExerciseDownloadingService {
                         });;
             }
         };
+    }
+
+    private static void refreshExerciseList() {
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+            @Override
+            public void run() {
+                new CourseAndExerciseManager().initiateDatabase();
+                ApplicationManager.getApplication().invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        ProjectListManagerHolder.get().refreshAllCourses();
+                    }
+                });
+            }
+        });
     }
 }

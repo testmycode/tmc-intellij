@@ -1,17 +1,25 @@
 <idea-plugin version="2">
   <id>fi.helsinki.cs.tmc</id>
-  <name>TMC Plugin</name>
-  <version>0.4.0</version>
-  <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+  <name>TMC Plugin for Intellij</name>
+  <version>0.6.0</version>
+  <vendor email="" url="https://github.com/ohtu-intellij/tmc-intellij">Ohtu IntelliJ team @ Github</vendor>
 
   <description><![CDATA[
-      Enter short description for your plugin here.<br>
-      <em>most HTML tags may be used</em>
+    TMC-IntelliJ is the IntelliJ IDEA plugin for University of Helsinki's TestMyCode framework.
+    TestMyCode is used by various online programming courses for exercise testing and submitting.
+    <p>
+      Set your TMC settings in the TMC menu and you're ready to go! When you have any exercises downloaded
+      open up the project view from the smiley button at top right.
+    </p>
+    <p>
+      Note that the plugin is still in beta. If you run into any bugs, please submit an issue of it
+      at the Github repository.
+    </p>
     ]]></description>
 
   <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+      - Projets now open completely automatically.<br>
+      - Plenty of bug fixes and minor changes to make the plugin more comfortable to use<em>
     ]]>
   </change-notes>
 

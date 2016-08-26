@@ -28,9 +28,11 @@ public class SpywareTabListener {
     private static final Logger logger = LoggerFactory.getLogger(SpywareTabListener.class);
 
     private Project project;
+    private String basePath;
 
     public SpywareTabListener(Project project) {
         this.project = project;
+        this.basePath = project.getBasePath();
         createAndAddListeners(project);
     }
 
@@ -119,7 +121,7 @@ public class SpywareTabListener {
     private void addEventToBuffer(LoggableEvent event) {
         if (TmcSettingsManager.get().isSpyware()
                 && new CourseAndExerciseManager().isCourseInDatabase(PathResolver
-                .getCourseName(project.getBasePath()))) {
+                .getCourseName(basePath))) {
             SpywareEventManager.add(event);
         }
     }
@@ -127,14 +129,14 @@ public class SpywareTabListener {
     public Course getCourse() {
         SettingsTmc settings = TmcSettingsManager.get();
         if (settings.getCourse().getName().equals(PathResolver
-                .getCourseName(project.getBasePath()))) {
+                .getCourseName(basePath))) {
             return settings.getCourse();
         }
         return new ObjectFinder().findCourseByName(PathResolver
-                .getCourseName(project.getBasePath()), TmcCoreHolder.get());
+                .getCourseName(basePath), TmcCoreHolder.get());
     }
 
     public Exercise getExercise() {
-        return PathResolver.getExercise(project.getBasePath());
+        return PathResolver.getExercise(basePath);
     }
 }

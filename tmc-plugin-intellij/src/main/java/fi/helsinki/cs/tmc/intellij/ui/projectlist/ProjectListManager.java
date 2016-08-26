@@ -4,7 +4,9 @@ import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.ui.components.JBList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +42,14 @@ public class ProjectListManager {
 
     public void refreshAllCourses() {
         logger.info("Refreshing all courses. @ProjectListManager");
-        for (ProjectListWindow window : projectListWindows) {
-            window.addCourseTabsAndExercises();
-        }
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                for (ProjectListWindow window : projectListWindows) {
+                    window.addCourseTabsAndExercises();
+                }
+            }
+        });
     }
 
     public void refreshCourse(String course) {

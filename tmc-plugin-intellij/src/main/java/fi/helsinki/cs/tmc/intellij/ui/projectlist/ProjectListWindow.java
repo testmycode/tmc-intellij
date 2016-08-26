@@ -142,7 +142,7 @@ public class ProjectListWindow {
         refreshButton.setEnabled(true);
 
         ProgressWindow window = ProgressWindowMaker.make("Refreshing project list",
-                new ObjectFinder().findCurrentProject(), false, true);
+                new ObjectFinder().findCurrentProject(), false, true, true);
 
         refreshButton.addActionListener(new ActionListener() {
             @Override
