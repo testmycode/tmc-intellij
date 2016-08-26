@@ -5,13 +5,13 @@ import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 
 import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 import com.intellij.openapi.ui.Messages;
 
-import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
