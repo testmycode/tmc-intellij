@@ -121,6 +121,9 @@ public class SettingsPanel {
         if (TmcSettingsManager.get().isSpyware()) {
             sendSnapshotsOfYourCheckBox.doClick();
         }
+        if (TmcSettingsManager.get().isCheckForExercises()) {
+            checkForNewOrCheckBox.doClick();
+        }
         List<Course> courses = new ArrayList<>();
 
         try {
@@ -134,6 +137,9 @@ public class SettingsPanel {
         }
         for (Course crs : courses) {
             listOfAvailableCourses.addItem(crs);
+        }
+        if (listOfAvailableCourses.getItemCount() == 0) {
+            listOfAvailableCourses.addItem(TmcSettingsManager.get().getCourse());
         }
 
         listOfAvailableCourses.setSelectedItem(settingsTmc.getCourse());
@@ -176,9 +182,16 @@ public class SettingsPanel {
         settingsTmc.setUsername(usernameField.getText());
         settingsTmc.setPassword(passwordField.getText());
         settingsTmc.setServerAddress(serverAddressField.getText());
-        settingsTmc.setCourse(new ObjectFinder()
-                .findCourseByName(((Course)listOfAvailableCourses
-                        .getSelectedItem()).getName(), TmcCoreHolder.get()));
+        if (listOfAvailableCourses.getSelectedItem() != null) {
+            Course course = (Course) listOfAvailableCourses.getSelectedItem();
+            settingsTmc.setCourse(new ObjectFinder()
+                    .findCourseByName(((Course) listOfAvailableCourses
+                            .getSelectedItem()).getName(), TmcCoreHolder.get()));
+            if (settingsTmc.getCourse() == null) {
+                settingsTmc.setCourse(course);
+            }
+        }
+        settingsTmc.setCheckForExercises(checkForNewOrCheckBox.isSelected());
         settingsTmc.setProjectBasePath(projectPathField.getText());
         settingsTmc.setSpyware(sendSnapshotsOfYourCheckBox.isSelected());
         saveSettings.setSettingsTmc(settingsTmc);
@@ -235,6 +248,9 @@ public class SettingsPanel {
                     listOfAvailableCourses.setSelectedItem(TmcSettingsManager.get().getCourse());
                 } else {
                     listOfAvailableCourses.setSelectedItem(getFirstFromAvailableCourses());
+                }
+                if (listOfAvailableCourses.getItemCount() == 0) {
+                    listOfAvailableCourses.addItem(TmcSettingsManager.get().getCourse());
                 }
             }
         };
@@ -343,7 +359,6 @@ public class SettingsPanel {
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sendSnapshotsOfYourCheckBox = new JCheckBox();
-        sendSnapshotsOfYourCheckBox.setSelected(true);
         sendSnapshotsOfYourCheckBox.setText("Send snapshots of your progress for study");
         panel1.add(sendSnapshotsOfYourCheckBox, new GridConstraints(9, 1, 1, 2,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,

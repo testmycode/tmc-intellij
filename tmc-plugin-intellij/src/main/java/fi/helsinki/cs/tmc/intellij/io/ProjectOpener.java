@@ -27,24 +27,26 @@ public class ProjectOpener {
 
     public void openProject(String path) {
         logger.info("Opening project from {}. @ProjectOpener", path);
+        Project project = new ObjectFinder().findCurrentProject();
         if (Files.isDirectory(Paths.get(path))) {
-            try {
-                Project project = new ObjectFinder().findCurrentProject();
-                ExerciseImport.importExercise(path);
-                ProjectUtil.openOrImport(path, project, true);
-                if (project != null) {
-                    ProjectManager.getInstance().closeProject(project);
+            if (!path.equals(project.getBasePath())) {
+                try {
+                    ExerciseImport.importExercise(path);
+                    ProjectUtil.openOrImport(path, project, true);
+                    if (project != null) {
+                        ProjectManager.getInstance().closeProject(project);
+                    }
+                } catch (Exception exception) {
+                    logger.warn("Could not open project from path. @ProjectOpener",
+                            exception, exception.getStackTrace());
+                    new ErrorMessageService().showMessage(exception,
+                            "Could not open project from path. " + path, true);
                 }
-            } catch (Exception exception) {
-                logger.warn("Could not open project from path. @ProjectOpener",
-                        exception, exception.getStackTrace());
-                new ErrorMessageService().showMessage(exception,
-                        "Could not open project from path. " + path, true);
             }
         } else {
             logger.warn("Directory no longer exists. @ProjectOpener");
             Messages.showErrorDialog(new ObjectFinder()
-                    .findCurrentProject(),
+                            .findCurrentProject(),
                     "Directory no longer exists", "File not found");
             ProjectListManagerHolder.get().refreshAllCourses();
         }

@@ -1,6 +1,9 @@
 package fi.helsinki.cs.tmc.intellij.spyware;
 
 
+import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.spyware.HostInformationGenerator;
 
 import com.intellij.openapi.project.Project;
@@ -17,9 +20,23 @@ public class ActivateSpywareListeners {
     public ActivateSpywareListeners(Project project) {
         logger.info("Activating spyware listeners.");
         this.project = project;
-        new HostInformationGenerator().updateHostInformation(SpywareEventManager.get());
-        new SpywareRunListener(project);
-        new SpywareFileListener(project);
-        new SpywareTabListener(project);
+        if (isCourseInDatabase(project)) {
+            new HostInformationGenerator().updateHostInformation(SpywareEventManager.get());
+            new SpywareRunListener(project);
+            new SpywareFileListener(project).createAndAddListener();
+            new SpywareTabListener(project);
+        } else {
+            new SpywareFileListener(project).removeListener();
+        }
+    }
+
+    public void removeListeners() {
+
+    }
+
+    private boolean isCourseInDatabase(Project project) {
+        return new CourseAndExerciseManager()
+                .isCourseInDatabase(PathResolver
+                        .getCourseName(project.getBasePath()));
     }
 }
