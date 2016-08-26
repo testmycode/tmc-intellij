@@ -47,7 +47,7 @@ public class StartupEvent implements StartupActivity {
                         TmcSettingsManager.setup();
                         TmcCoreHolder.setup();
 
-                        new ActivateSpywareListeners(project);
+                        new ActivateSpywareListeners(project).activateListeners();
                         new CourseAndExerciseManager().initiateDatabase();
 
                         final EditorActionManager actionManager = EditorActionManager.getInstance();
