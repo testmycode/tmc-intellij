@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 
 import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.project.Project;
@@ -29,11 +30,13 @@ public class ProjectOpener {
         logger.info("Opening project from {}. @ProjectOpener", path);
         Project project = new ObjectFinder().findCurrentProject();
         if (Files.isDirectory(Paths.get(path))) {
-            if (!path.equals(project.getBasePath())) {
+            if (project == null
+                    || !path.equals(project.getBasePath())) {
                 try {
                     ExerciseImport.importExercise(path);
                     ProjectUtil.openOrImport(path, project, true);
                     if (project != null) {
+                        new ActivateSpywareListeners(project).removeListeners();
                         ProjectManager.getInstance().closeProject(project);
                     }
                 } catch (Exception exception) {

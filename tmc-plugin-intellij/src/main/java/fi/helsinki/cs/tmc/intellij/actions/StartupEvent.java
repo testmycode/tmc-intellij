@@ -58,7 +58,7 @@ public class StartupEvent implements StartupActivity {
                         observer.progress(0, 0.28, "Holding core");
                         TmcCoreHolder.setup();
                         observer.progress(0, 0.42, "Activating listeners");
-                        new ActivateSpywareListeners(project);
+                        new ActivateSpywareListeners(project).activateListeners();
                         observer.progress(0, 0.56, "Initializing database");
                         new CourseAndExerciseManager().initiateDatabase();
                         observer.progress(0, 0.70, "Setting handlers");
