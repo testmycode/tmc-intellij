@@ -32,13 +32,13 @@ public class ExerciseDownloadingService {
                                              final CheckForExistingExercises checker,
                                              ObjectFinder objectFinder,
                                              ThreadingService threadingService,
-                                             Project project) throws Exception {
+                                             Project project,
+                                             ProgressWindow window,
+                                             CoreProgressObserver observer) throws Exception {
 
         logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
 
-        ProgressWindow window = ProgressWindowMaker.make(
-                "Downloading exercises, this may take several minutes", project, true, true, false);
-        CoreProgressObserver observer = new CoreProgressObserver(window);
+        
 
         Thread run = createThread(core, settings, checker, objectFinder, observer);
 

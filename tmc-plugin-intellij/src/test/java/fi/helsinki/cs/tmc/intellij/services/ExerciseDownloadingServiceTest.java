@@ -3,12 +3,14 @@ package fi.helsinki.cs.tmc.intellij.services;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import fi.helsinki.cs.tmc.core.TmcCore;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import org.junit.Test;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 
 public class ExerciseDownloadingServiceTest {
 
@@ -30,11 +32,13 @@ public class ExerciseDownloadingServiceTest {
 
         CheckForExistingExercises checker = mock(CheckForExistingExercises.class);
         ThreadingService threadingServiceMock = mock(ThreadingService.class);
-
+        ProgressWindowMaker maker = mock(ProgressWindowMaker.class);
+        ProgressWindow window = mock(ProgressWindow.class);
+        CoreProgressObserver observer = mock(CoreProgressObserver.class);
         new ExerciseDownloadingService().startDownloadExercise(core, settings, checker, mock(ObjectFinder.class),
-                threadingServiceMock, project);
+                threadingServiceMock, project,window, observer);
 
-        verify(threadingServiceMock).runWithNotification(any(Runnable.class), any(Project.class), any(ProgressWindow.class));
+        verify(threadingServiceMock).runWithNotification(any(Runnable.class), any(Project.class),any(ProgressWindow.class));
     }
 
 

@@ -1,12 +1,11 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 
+import com.intellij.openapi.progress.util.ProgressWindow;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
-import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
-import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
-import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
-import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
+import fi.helsinki.cs.tmc.intellij.services.*;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
@@ -46,12 +45,17 @@ public class DownloadExerciseAction extends AnAction {
     public void downloadExercises(Project project) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
+            ProgressWindow window = ProgressWindowMaker.make(
+                    "Downloading exercises, this may take several minutes", project, true, true, false);
+            CoreProgressObserver observer = new CoreProgressObserver(window);
             new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
                     TmcSettingsManager.get(),
                     new CheckForExistingExercises(),
                     new ObjectFinder(),
                     new ThreadingService(),
-                    project);
+                    project,
+                    window,
+                    observer);
 
 
         } catch (Exception exception) {

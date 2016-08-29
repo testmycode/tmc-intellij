@@ -31,7 +31,9 @@ public class ExerciseUploadingService {
                                     SettingsTmc settings,
                                     CourseAndExerciseManager courseAndExerciseManager,
                                     ThreadingService threadingService,
-                                    TestRunningService testRunningService) {
+                                    TestRunningService testRunningService,
+                                    CoreProgressObserver observer,
+                                    ProgressWindow window) {
 
         logger.info("Starting to upload an exercise. @ExerciseUploadingService");
 
@@ -46,7 +48,7 @@ public class ExerciseUploadingService {
                 .getExercise(getCourseName(exerciseCourse),
                         getExerciseName(exerciseCourse));
         getResults(project, exercise, core, handler, threadingService, testRunningService,
-                finder);
+                finder,observer, window );
         courseAndExerciseManager.updateSingleCourse(getCourseName(exerciseCourse),
                 checker, finder, settings);
     }
@@ -56,13 +58,13 @@ public class ExerciseUploadingService {
                             final SubmissionResultHandler handler,
                             ThreadingService threadingService,
                             TestRunningService testRunningService,
-                            ObjectFinder finder) {
+                            ObjectFinder finder,
+                            CoreProgressObserver observer,
+                            ProgressWindow window) {
 
         logger.info("Calling for threadingService from getResult. @ExerciseUploadingService.");
 
-        ProgressWindow window = ProgressWindowMaker.make(
-                "Uploading exercise, this may take several minutes", project, true, true, true);
-        CoreProgressObserver observer = new CoreProgressObserver(window);
+
 
         threadingService.runWithNotification(new Runnable() {
             @Override

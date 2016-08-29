@@ -1,15 +1,12 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 
+import com.intellij.openapi.progress.util.ProgressWindow;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
-import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
-import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.intellij.services.ExerciseUploadingService;
-import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
+import fi.helsinki.cs.tmc.intellij.services.*;
 
-import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
-import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
@@ -40,13 +37,19 @@ public class UploadExerciseAction extends AnAction {
 
         new ButtonInputListener().receiveSubmit();
 
+        ProgressWindow window = ProgressWindowMaker.make(
+                "Uploading exercise, this may take several minutes", project, true, true, true);
+        CoreProgressObserver observer = new CoreProgressObserver(window);
+
         new ExerciseUploadingService().startUploadExercise(project,
                 TmcCoreHolder.get(), new ObjectFinder(),
                 new CheckForExistingExercises(), new SubmissionResultHandler(),
                 TmcSettingsManager.get(),
                 new CourseAndExerciseManager(),
                 new ThreadingService(),
-                new TestRunningService());
+                new TestRunningService(),
+                observer,
+                window);
     }
 
 }

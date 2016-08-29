@@ -1,7 +1,9 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
+import com.intellij.openapi.application.ApplicationManager;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
+import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.ui.pastebin.PasteWindow;
@@ -58,17 +60,11 @@ public class PasteService {
                                     ProjectListManager projectListManager) {
 
         logger.info("Uploading to tmc pastebin. @PasteService");
-
-        ProgressWindow progressWindow = ProgressWindowMaker.make(
-                "Uploading code to pastebin, this may take several minutes",
-                null, true, true, true);
-        CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
-        ThreadingService threadingService = new ThreadingService();
-        threadingService.runWithNotification(new Runnable() {
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URI uri = core.pasteWithComment(observer,
+                    URI uri = core.pasteWithComment(ProgressObserver.NULL_OBSERVER,
                             exercise, message).call();
                     window.showResult(uri);
                     updateProjectView(courseAndExerciseManager, projectListManager);
@@ -83,7 +79,7 @@ public class PasteService {
                             "Error while uploading to TMC Pastebin.", true);
                 }
             }
-        }, null, progressWindow);
+        });
     }
 
     private void handleException(TmcCoreException exception) {

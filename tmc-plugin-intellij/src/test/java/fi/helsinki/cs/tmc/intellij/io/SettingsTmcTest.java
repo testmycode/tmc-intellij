@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import javax.swing.JFileChooser;
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Optional;
@@ -49,10 +50,10 @@ public class SettingsTmcTest {
     public void setProjectBasePathWorksCorrectly() throws Exception {
         settingstmc.setProjectBasePath("koira");
         String user = settingstmc.getProjectBasePath();
-        assertEquals("koira/TMCProjects", user);
-        settingstmc.setUsername("koira/TMCProjects");
+        assertEquals("koira" + File.separator + "TMCProjects", user);
+        settingstmc.setUsername("koira" + File.separator + "TMCProjects");
         user = settingstmc.getUsername();
-        assertEquals("koira/TMCProjects", user);
+        assertEquals("koira" + File.separator + "TMCProjects", user);
     }
 
     @Test
@@ -87,7 +88,7 @@ public class SettingsTmcTest {
 
     @Test
     public void getTmcProjectDirectoryWorksCorrectly() throws Exception {
-        Path path = Paths.get("koira/TMCProjects");
+        Path path = Paths.get("koira" + File.separator + "TMCProjects");
         settingstmc.setProjectBasePath(path.toString());
         assertEquals(path, settingstmc.getTmcProjectDirectory());
     }
