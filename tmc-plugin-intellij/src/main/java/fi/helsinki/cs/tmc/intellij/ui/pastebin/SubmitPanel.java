@@ -1,15 +1,12 @@
 package fi.helsinki.cs.tmc.intellij.ui.pastebin;
 
-import com.intellij.openapi.progress.util.ProgressWindow;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
-import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.PasteService;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 
 import java.awt.Dimension;
 import java.awt.Insets;

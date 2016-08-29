@@ -1,17 +1,20 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-
-import com.intellij.openapi.progress.util.ProgressWindow;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
-import fi.helsinki.cs.tmc.intellij.services.*;
+
+import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
+import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -46,7 +49,8 @@ public class DownloadExerciseAction extends AnAction {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
             ProgressWindow window = ProgressWindowMaker.make(
-                    "Downloading exercises, this may take several minutes", project, true, true, false);
+                    "Downloading exercises, this may take several minutes",
+                    project, true, true, false);
             CoreProgressObserver observer = new CoreProgressObserver(window);
             new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
                     TmcSettingsManager.get(),
