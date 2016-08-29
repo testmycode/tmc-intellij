@@ -37,17 +37,14 @@ public class ExerciseImport {
                 .refreshAndFindFileByPath(path);
         if (virtualFile == null) {
             logger.warn("Cannot find virtual file matching this path @ExerciseImport");
-            System.out.println("NULLI");
             return false;
         }
         virtualFile.refresh(false, false);
         if (virtualFile.isDirectory()
                 && virtualFile.findChild("nbproject") != null
                 && virtualFile.findChild(".idea") != null) {
-            System.out.println("Löytyi");
             return true;
         }
-        System.out.println("Loppu");
         return false;
     }
 }
