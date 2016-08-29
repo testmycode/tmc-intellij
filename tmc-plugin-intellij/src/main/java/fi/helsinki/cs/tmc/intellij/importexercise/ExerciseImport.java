@@ -42,7 +42,7 @@ public class ExerciseImport {
         virtualFile.refresh(false, false);
         if (virtualFile.isDirectory()
                 && virtualFile.findChild("nbproject") != null
-                && virtualFile.findChild(".idea") != null) {
+                && virtualFile.findChild(".idea") == null) {
             return true;
         }
         return false;
