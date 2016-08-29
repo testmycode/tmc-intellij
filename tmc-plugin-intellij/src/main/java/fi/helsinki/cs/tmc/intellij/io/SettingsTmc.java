@@ -32,7 +32,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private boolean spyware;
 
     public SettingsTmc(String serverAddress, String username, String password) {
-        this.spyware = true;
+        this.spyware = false;
         this.checkForExercises = true;
         this.serverAddress = serverAddress;
         this.username = username;
@@ -44,7 +44,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
      * Sets the default folder for TMC project files -> home/IdeaProjects/TMCProjects .
      */
     public SettingsTmc() {
-        spyware = true;
+        spyware = false;
         this.checkForExercises = true;
         logger.info("Setting default folder for TMC project files. @SettingsTmc");
         JFileChooser fileChooser = new JFileChooser();
