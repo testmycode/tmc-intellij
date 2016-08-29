@@ -39,9 +39,6 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
-import static java.awt.SystemColor.menu;
-
 /**
  * Creates a tab in project list sidewindow and all components it
  * requires.

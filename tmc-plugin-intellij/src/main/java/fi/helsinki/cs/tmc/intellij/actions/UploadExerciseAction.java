@@ -37,7 +37,10 @@ public class UploadExerciseAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         logger.info("Performing UploadExerciseAction. @UploadExerciseAction");
-        Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+
+    }
+
+    public void uploadExercise(Project project) {
 
         new ButtonInputListener().receiveSubmit();
 
