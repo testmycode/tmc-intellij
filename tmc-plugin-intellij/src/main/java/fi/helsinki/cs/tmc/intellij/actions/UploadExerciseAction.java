@@ -16,6 +16,7 @@ import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 
 import org.slf4j.Logger;
@@ -39,6 +40,8 @@ public class UploadExerciseAction extends AnAction {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
 
         new ButtonInputListener().receiveSubmit();
+
+        FileDocumentManager.getInstance().saveAllDocuments();
 
         new ExerciseUploadingService().startUploadExercise(project,
                 TmcCoreHolder.get(), new ObjectFinder(),

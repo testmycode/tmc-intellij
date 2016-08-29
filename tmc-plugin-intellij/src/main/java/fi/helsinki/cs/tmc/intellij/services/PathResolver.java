@@ -108,6 +108,11 @@ public class PathResolver {
     }
 
     public String getPathRelativeToProject(String path) {
+        Project project = new ObjectFinder().findCurrentProject();
+        if (project == null) {
+            System.out.println("NULI PROJEKTII WWWWWWWWWWWWWW");
+            return null;
+        }
         String[] paths = path.split(getExerciseName(new ObjectFinder()
                 .findCurrentProject().getBasePath()));
         return paths[paths.length - 1];
