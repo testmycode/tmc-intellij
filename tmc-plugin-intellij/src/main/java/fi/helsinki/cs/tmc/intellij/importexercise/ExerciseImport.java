@@ -18,8 +18,9 @@ public class ExerciseImport {
      * @param path project root dir
      * @throws IOException when writing or reading files.
      */
+
     public static boolean importExercise(String path) {
-        if (isUnImportedNbProject(path)) {
+        if ((isUnImportedNbProject(path))) {
             try {
                 NewProjectUtilModified.importExercise(path);
                 return true;
@@ -40,8 +41,8 @@ public class ExerciseImport {
         }
         virtualFile.refresh(false, false);
         if (virtualFile.isDirectory()
-                && virtualFile.findChild(Project.DIRECTORY_STORE_FOLDER) == null
-                && virtualFile.findChild("nbproject") != null) {
+                && virtualFile.findChild("nbproject") != null
+                && virtualFile.findChild(".idea") == null) {
             return true;
         }
         return false;

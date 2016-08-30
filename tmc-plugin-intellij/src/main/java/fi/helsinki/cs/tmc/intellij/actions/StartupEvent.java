@@ -74,6 +74,9 @@ public class StartupEvent implements StartupActivity {
                         ApplicationManager.getApplication().invokeLater(new Runnable() {
                             @Override
                             public void run() {
+                                while (project.isDisposed()) {
+
+                                }
                                 if (ToolWindowManager.getInstance(project)
                                         .getToolWindow("Project") != null) {
                                     ToolWindowManager.getInstance(project)

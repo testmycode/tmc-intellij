@@ -1,14 +1,17 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
+import fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 import fi.helsinki.cs.tmc.langs.domain.RunResult;
+import fi.helsinki.cs.tmc.langs.domain.TestResult;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.wm.ToolWindowManager;
 
 import org.slf4j.Logger;
@@ -37,6 +40,7 @@ public class TestRunningService {
                                 .runTests(observer, exercise).call();
                         RunResult finalResult = result;
                         showTestResult(finalResult);
+                        checkIfAllTestsPassed(finalResult, project);
                     } catch (Exception exception) {
                         logger.warn("Could not run tests. @TestRunningService", exception);
                         new ErrorMessageService().showMessage(exception,
@@ -72,5 +76,27 @@ public class TestRunningService {
                 TestResultPanelFactory.updateMostRecentResult(finalResult.testResults);
             }
         }));
+    }
+
+    private void checkIfAllTestsPassed(RunResult finalResult, Project project) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                boolean allpassed = true;
+                for (TestResult test : finalResult.testResults) {
+                    if (!test.isSuccessful()) {
+                        allpassed = false;
+                    }
+                }
+
+                if (allpassed) {
+                    if (Messages.showYesNoDialog(project,
+                            "Would you like to submit the exercise?",
+                            "All tests passed!", null) == 0) {
+                        new UploadExerciseAction().uploadExercise(project);
+                    }
+                }
+            }
+        });
     }
 }

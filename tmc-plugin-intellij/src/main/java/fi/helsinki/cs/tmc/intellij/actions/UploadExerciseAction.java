@@ -15,7 +15,7 @@ import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 
@@ -37,7 +37,10 @@ public class UploadExerciseAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         logger.info("Performing UploadExerciseAction. @UploadExerciseAction");
-        Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
+
+    }
+
+    public void uploadExercise(Project project) {
 
         new ButtonInputListener().receiveSubmit();
 
@@ -45,6 +48,7 @@ public class UploadExerciseAction extends AnAction {
                 "Uploading exercise, this may take several minutes",
                 project, true, true, true);
         CoreProgressObserver observer = new CoreProgressObserver(window);
+        FileDocumentManager.getInstance().saveAllDocuments();
 
         new ExerciseUploadingService().startUploadExercise(project,
                 TmcCoreHolder.get(), new ObjectFinder(),

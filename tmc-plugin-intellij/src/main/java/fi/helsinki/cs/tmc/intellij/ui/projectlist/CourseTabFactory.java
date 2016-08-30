@@ -10,6 +10,7 @@ import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.ui.JBMenuItem;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.components.JBList;
@@ -77,7 +78,98 @@ public class CourseTabFactory {
 
         ProjectListManagerHolder.get().addList(list);
         tabbedPanelBase.addTab(course, panel);
+        tabbedPanelBase.addMouseListener(tabMouseListener(tabbedPanelBase));
         setScrollBarToBottom(course, tabbedPanelBase, panel);
+    }
+
+    @NotNull
+    private MouseListener tabMouseListener(final JTabbedPane tabbedPanelBase) {
+        return new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent mouseEvent) {
+                if (mouseEvent.getButton() == 3) {
+                    PopUpMenu menu = new PopUpMenu();
+                    JBMenuItem openInExplorer = new JBMenuItem("Open path");
+                    openInExplorer
+                            .addActionListener(openCourseActionListener(tabbedPanelBase));
+                    JBMenuItem deleteFolder =
+                            new JBMenuItem("Delete course "
+                                    + tabbedPanelBase.getSelectedComponent().getName());
+                    deleteFolder
+                            .addActionListener(deleteCourseActionListener(tabbedPanelBase));
+                    menu.add(openInExplorer);
+                    menu.add(deleteFolder);
+                    menu.show(tabbedPanelBase, mouseEvent.getX(), mouseEvent.getY());
+                }
+
+            }
+
+            @Override
+            public void mousePressed(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent mouseEvent) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent mouseEvent) {
+
+            }
+        };
+    }
+
+    @NotNull
+    private ActionListener openCourseActionListener(final JTabbedPane tabbedPanelBase) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    logger.info("Opening course directory.");
+                    Desktop.getDesktop().open(new File(TmcSettingsManager
+                            .get().getProjectBasePath()
+                            + File.separator + tabbedPanelBase
+                            .getSelectedComponent().getName()));
+                } catch (IOException e) {
+                    logger.warn("Opening course directory failed.", e.getStackTrace());
+                    e.printStackTrace();
+                }
+            }
+        };
+    }
+
+    @NotNull
+    private ActionListener deleteCourseActionListener(final JTabbedPane tabbedPanelBase) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("Trying to delete course folder.");
+                if (Messages
+                        .showYesNoDialog("Are you sure you wish to permanently delete the course "
+                                        + tabbedPanelBase.getSelectedComponent().getName()
+                                        + " and all its exercises?",
+                                "Delete course", Messages.getWarningIcon()) == 0) {
+                    try {
+                        FileUtils.deleteDirectory(new File(TmcSettingsManager
+                                .get().getProjectBasePath()
+                                + File.separator
+                                + tabbedPanelBase.getSelectedComponent().getName()));
+                        refreshList();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                        logger.warn("Deleting course folder failed",
+                                e1, e1.getStackTrace());
+                    }
+                }
+            }
+        };
     }
 
     private void setScrollBarToBottom(String course,
@@ -186,7 +278,7 @@ public class CourseTabFactory {
                             true);
                 }
             }
-            
+
         };
     }
 
@@ -214,7 +306,7 @@ public class CourseTabFactory {
                                     .getExerciseDirectory(TmcSettingsManager
                                             .get().getTmcProjectDirectory()).toString()));
                         }
-                        //TODO: REFRESH COURSES WHEN IT WORKS AGAIN
+                        refreshList();
                     } catch (IOException e1) {
                         logger.warn("IOException occurred. Something interrupted "
                                         + "the mouse action. @CourseTabFactory",
@@ -226,5 +318,21 @@ public class CourseTabFactory {
                 }
             }
         };
+    }
+
+    private void refreshList() {
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+            @Override
+            public void run() {
+                new CourseAndExerciseManager().initiateDatabase();
+                ApplicationManager.getApplication().invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        logger.info("Refreshing project list. @ProjectListWindow");
+                        ProjectListManagerHolder.get().refreshAllCourses();
+                    }
+                });
+            }
+        });
     }
 }
