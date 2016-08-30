@@ -33,10 +33,12 @@ public class ProjectOpener {
             if (project == null
                     || !path.equals(project.getBasePath())) {
                 try {
+                    if (project != null) {
+                        new ActivateSpywareListeners(project).removeListeners();
+                    }
                     ExerciseImport.importExercise(path);
                     ProjectUtil.openOrImport(path, project, true);
                     if (project != null) {
-                        new ActivateSpywareListeners(project).removeListeners();
                         ProjectManager.getInstance().closeProject(project);
                     }
                 } catch (Exception exception) {
