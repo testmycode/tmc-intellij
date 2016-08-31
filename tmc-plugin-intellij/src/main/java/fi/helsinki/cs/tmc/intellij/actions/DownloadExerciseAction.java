@@ -43,13 +43,7 @@ public class DownloadExerciseAction extends AnAction {
     public void downloadExercises(Project project) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
-            new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
-                    TmcSettingsManager.get(),
-                    new CheckForExistingExercises(),
-                    new ObjectFinder(),
-                    new ThreadingService(),
-                    project);
-
+            startDownloadExercise(project);
 
         } catch (Exception exception) {
             logger.warn("Downloading failed. @DownloadExerciseAction", exception);
@@ -58,5 +52,14 @@ public class DownloadExerciseAction extends AnAction {
                             + "Are your account details correct?\n"
                             + exception.getMessage(), "Result", Messages.getErrorIcon());
         }
+    }
+
+    private void startDownloadExercise(Project project) throws Exception {
+        new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
+                TmcSettingsManager.get(),
+                new CheckForExistingExercises(),
+                new ObjectFinder(),
+                new ThreadingService(),
+                project);
     }
 }

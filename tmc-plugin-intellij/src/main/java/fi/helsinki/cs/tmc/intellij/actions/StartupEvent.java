@@ -37,9 +37,19 @@ public class StartupEvent implements StartupActivity {
         final OperationInProgressNotification note =
                 new OperationInProgressNotification("Running TMC startup actions");
 
+        configureLogger();
+
+        setup();
+
+        note.hide();
+    }
+
+    private void configureLogger() {
         PropertySetter propSet = new PropertySetter();
         propSet.setLog4jProperties();
+    }
 
+    private void setup() {
         ExerciseDatabaseManager.setup();
         TmcSettingsManager.setup();
         TmcCoreHolder.setup();
@@ -50,7 +60,6 @@ public class StartupEvent implements StartupActivity {
         final TypedAction typedAction = actionManager.getTypedAction();
         TypedActionHandler originalHandler = actionManager.getTypedAction().getHandler();
         typedAction.setupHandler(new ActivateSpywareAction(originalHandler));
-        note.hide();
     }
 
 }

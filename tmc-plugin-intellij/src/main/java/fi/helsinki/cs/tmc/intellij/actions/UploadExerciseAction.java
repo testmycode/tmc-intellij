@@ -37,6 +37,11 @@ public class UploadExerciseAction extends AnAction {
         logger.info("Performing UploadExerciseAction. @UploadExerciseAction");
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
 
+        callExerciseUploadService(project);
+    }
+
+    private void callExerciseUploadService(Project project) {
+
         new ExerciseUploadingService().startUploadExercise(project,
                 TmcCoreHolder.get(), new ObjectFinder(),
                 new CheckForExistingExercises(), new SubmissionResultHandler(),
