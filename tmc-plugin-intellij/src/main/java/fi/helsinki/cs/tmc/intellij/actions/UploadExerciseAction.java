@@ -50,10 +50,12 @@ public class UploadExerciseAction extends AnAction {
         CoreProgressObserver observer = new CoreProgressObserver(window);
         FileDocumentManager.getInstance().saveAllDocuments();
 
-        callExerciseUploadService(project);
+        callExerciseUploadService(project, observer, window);
     }
 
-    private void callExerciseUploadService(Project project) {
+    private void callExerciseUploadService(Project project,
+                                           CoreProgressObserver observer,
+                                           ProgressWindow window) {
 
         new ExerciseUploadingService().startUploadExercise(project,
                 TmcCoreHolder.get(), new ObjectFinder(),
