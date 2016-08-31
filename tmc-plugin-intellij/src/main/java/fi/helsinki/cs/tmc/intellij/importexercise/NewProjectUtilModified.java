@@ -1,3 +1,8 @@
+
+/*
+ * @author max
+ */
+
 package fi.helsinki.cs.tmc.intellij.importexercise;
 
 import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
@@ -20,6 +25,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
+
+ /*
+ * this code is modified form intellij code. url below
+ * original class: NewProjectUtil
+ * https://github.com/JetBrains/intellij-community/blob/9132043620dd78fbff9e77e78d00efb8972613bc/java/idea-ui/src/com/intellij/ide/impl/NewProjectUtil.java
+ */
 
 public class NewProjectUtilModified {
     private static final Logger logger = LoggerFactory

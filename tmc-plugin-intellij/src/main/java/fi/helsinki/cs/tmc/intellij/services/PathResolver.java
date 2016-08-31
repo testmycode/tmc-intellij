@@ -31,7 +31,6 @@ public class PathResolver {
         logger.info("Processing getCourseAndExerciseName"
                 + " with Project parameter. @PathResolver");
         return getCourseAndExerciseName(project.getBasePath());
-
     }
 
     /**
@@ -98,5 +97,23 @@ public class PathResolver {
 
     private static boolean osIsUnixBased(String path) {
         return path.contains("/");
+    }
+
+    public static String getExerciseName(String path) {
+        if (path == null) {
+            return null;
+        }
+        String[] split = getCourseAndExerciseName(path);
+        return split[split.length - 1];
+    }
+
+    public String getPathRelativeToProject(String path) {
+        Project project = new ObjectFinder().findCurrentProject();
+        if (project == null) {
+            return null;
+        }
+        String[] paths = path.split(getExerciseName(new ObjectFinder()
+                .findCurrentProject().getBasePath()));
+        return paths[paths.length - 1];
     }
 }

@@ -1,16 +1,21 @@
 package fi.helsinki.cs.tmc.intellij.ui.settings;
 
+
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
+import fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-
 import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
+import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.components.ServiceManager;
+import com.intellij.openapi.project.Project;
+
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -22,9 +27,9 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.Dimension;
 import java.awt.Insets;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +66,7 @@ public class SettingsPanel {
     private JButton browseButton;
     private JButton okButton;
     private JButton cancelButton;
+    private JButton downloadCourseExercisesButton;
 
     public JTextField getUsernameField() {
         return usernameField;
@@ -112,12 +118,18 @@ public class SettingsPanel {
         browseButton.addActionListener(browseListener);
         ActionListener refreshListener = createActionListenerRefresh();
         refreshButton.addActionListener(refreshListener);
+        if (TmcSettingsManager.get().isSpyware()) {
+            sendSnapshotsOfYourCheckBox.doClick();
+        }
+        if (TmcSettingsManager.get().isCheckForExercises()) {
+            checkForNewOrCheckBox.doClick();
+        }
         List<Course> courses = new ArrayList<>();
 
         try {
-            logger.info("Getting list of courses from TmcCore. @SettingsPanel");
-            courses = (ArrayList<Course>)
+            courses =
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
+            logger.info("Getting list of courses from TmcCore. @SettingsPanel");
         } catch (Exception ignored) {
             logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
                     ignored, ignored.getStackTrace());
@@ -125,6 +137,9 @@ public class SettingsPanel {
         }
         for (Course crs : courses) {
             listOfAvailableCourses.addItem(crs);
+        }
+        if (listOfAvailableCourses.getItemCount() == 0) {
+            listOfAvailableCourses.addItem(TmcSettingsManager.get().getCourse());
         }
 
         listOfAvailableCourses.setSelectedItem(settingsTmc.getCourse());
@@ -136,6 +151,26 @@ public class SettingsPanel {
         ActionListener cancelListener = createActionListenerCancel(frame);
         cancelButton.addActionListener(cancelListener);
 
+        ActionListener downloadListener = createActionListenerDownload(frame);
+        downloadCourseExercisesButton.addActionListener(downloadListener);
+    }
+
+    private ActionListener createActionListenerDownload(final JFrame frame) {
+        return new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                logger.info("Download button pressed. @SettingsPanel");
+
+                saveInformation();
+
+                Project project = new ObjectFinder().findCurrentProject();
+                DownloadExerciseAction action = new DownloadExerciseAction();
+                action.downloadExercises(project);
+
+                frame.dispose();
+                frame.setVisible(false);
+            }
+        };
     }
 
     public void saveInformation() {
@@ -147,8 +182,18 @@ public class SettingsPanel {
         settingsTmc.setUsername(usernameField.getText());
         settingsTmc.setPassword(passwordField.getText());
         settingsTmc.setServerAddress(serverAddressField.getText());
-        settingsTmc.setCourse((Course) listOfAvailableCourses.getSelectedItem());
+        if (listOfAvailableCourses.getSelectedItem() != null) {
+            Course course = (Course) listOfAvailableCourses.getSelectedItem();
+            settingsTmc.setCourse(new ObjectFinder()
+                    .findCourseByName(((Course) listOfAvailableCourses
+                            .getSelectedItem()).getName(), TmcCoreHolder.get()));
+            if (settingsTmc.getCourse() == null) {
+                settingsTmc.setCourse(course);
+            }
+        }
+        settingsTmc.setCheckForExercises(checkForNewOrCheckBox.isSelected());
         settingsTmc.setProjectBasePath(projectPathField.getText());
+        settingsTmc.setSpyware(sendSnapshotsOfYourCheckBox.isSelected());
         saveSettings.setSettingsTmc(settingsTmc);
     }
 
@@ -157,6 +202,7 @@ public class SettingsPanel {
         return new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+                new ButtonInputListener().receiveSettings();
                 logger.info("Ok button pressed. @SettingsPanel");
                 saveInformation();
                 frame.dispose();
@@ -203,6 +249,9 @@ public class SettingsPanel {
                 } else {
                     listOfAvailableCourses.setSelectedItem(getFirstFromAvailableCourses());
                 }
+                if (listOfAvailableCourses.getItemCount() == 0) {
+                    listOfAvailableCourses.addItem(TmcSettingsManager.get().getCourse());
+                }
             }
         };
     }
@@ -238,6 +287,7 @@ public class SettingsPanel {
         };
     }
 
+
     {
 // GUI initializer generated by IntelliJ IDEA GUI Designer
 // >>> IMPORTANT!! <<<
@@ -254,17 +304,17 @@ public class SettingsPanel {
      */
     private void setupUi() {
         panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(16, 6, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new GridLayoutManager(15, 6, new Insets(0, 0, 0, 0), -1, -1));
         usernameField = new JTextField();
         panel1.add(usernameField, new GridConstraints(1, 2, 1, 1,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED,
                 null, new Dimension(150, -1), null, 0, false));
         final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(13, 2, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL,
-                1, GridConstraints.SIZEPOLICY_FIXED,
-                null, null, null, 0, false));
+        panel1.add(spacer1, new GridConstraints(12, 2, 1, 1,
+                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1,
+                GridConstraints.SIZEPOLICY_FIXED, null,
+                new Dimension(11, 23), null, 0, false));
         passwordField = new JPasswordField();
         panel1.add(passwordField, new GridConstraints(2, 2, 1, 1,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
@@ -275,7 +325,7 @@ public class SettingsPanel {
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED,
                 null, new Dimension(150, -1), null, 0, false));
-        listOfAvailableCourses = new JComboBox<Course>();
+        listOfAvailableCourses = new JComboBox();
         panel1.add(listOfAvailableCourses, new GridConstraints(4, 2, 1, 1,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED,
@@ -299,41 +349,34 @@ public class SettingsPanel {
                 GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED,
                 null, new Dimension(150, -1), null, 0, false));
         final JSeparator separator2 = new JSeparator();
-        panel1.add(separator2, new GridConstraints(7, 0, 1, 6,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
-                GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED,
-                null, null, null, 0, false));
+        panel1.add(separator2, new GridConstraints(7, 0, 1, 6, GridConstraints.ANCHOR_CENTER,
+                GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW,
+                GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         checkForNewOrCheckBox = new JCheckBox();
         checkForNewOrCheckBox.setText("Check for new or updated exercises regularly");
         panel1.add(checkForNewOrCheckBox, new GridConstraints(8, 1, 1, 2,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        checkThatAllActiveCheckBox = new JCheckBox();
-        checkThatAllActiveCheckBox.setText("Check that all active exercises are open on startup");
-        panel1.add(checkThatAllActiveCheckBox, new GridConstraints(9, 1, 1, 2,
-                GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
-                GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         sendSnapshotsOfYourCheckBox = new JCheckBox();
         sendSnapshotsOfYourCheckBox.setText("Send snapshots of your progress for study");
-        panel1.add(sendSnapshotsOfYourCheckBox, new GridConstraints(10, 1, 1, 2,
+        panel1.add(sendSnapshotsOfYourCheckBox, new GridConstraints(9, 1, 1, 2,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JSeparator separator3 = new JSeparator();
-        panel1.add(separator3, new GridConstraints(11, 0, 1, 6,
+        panel1.add(separator3, new GridConstraints(10, 0, 1, 6,
                 GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED,
                 null, null, null, 0, false));
-        selectErrorLanguageField = new JComboBox<String>();
-        panel1.add(selectErrorLanguageField, new GridConstraints(12, 2, 1, 1,
+        selectErrorLanguageField = new JComboBox();
+        panel1.add(selectErrorLanguageField, new GridConstraints(11, 2, 1, 1,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED,
                 null, null, null, 0, false));
         final JLabel label1 = new JLabel();
         label1.setText("Error message language");
-        panel1.add(label1, new GridConstraints(12, 1, 1, 1,
+        panel1.add(label1, new GridConstraints(11, 1, 1, 1,
                 GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED,
                 null, null, null, 0, false));
@@ -380,13 +423,13 @@ public class SettingsPanel {
                 new Dimension(-1, 20), new Dimension(-1, 20), 0, false));
         cancelButton = new JButton();
         cancelButton.setText("Cancel");
-        panel1.add(cancelButton, new GridConstraints(14, 4, 1, 1,
+        panel1.add(cancelButton, new GridConstraints(13, 4, 1, 1,
                 GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         okButton = new JButton();
         okButton.setText("Ok");
-        panel1.add(okButton, new GridConstraints(14, 3, 1, 1,
+        panel1.add(okButton, new GridConstraints(13, 3, 1, 1,
                 GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
                 GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -396,7 +439,7 @@ public class SettingsPanel {
                 GridConstraints.SIZEPOLICY_FIXED, 1, new Dimension(20, -1),
                 new Dimension(20, -1), new Dimension(20, -1), 0, false));
         final Spacer spacer4 = new Spacer();
-        panel1.add(spacer4, new GridConstraints(15, 2, 1, 1,
+        panel1.add(spacer4, new GridConstraints(14, 2, 1, 1,
                 GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1,
                 GridConstraints.SIZEPOLICY_FIXED, new Dimension(-1, 10),
                 new Dimension(-1, 10), new Dimension(-1, 10), 0, false));
@@ -405,6 +448,12 @@ public class SettingsPanel {
                 GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_FIXED, 1, new Dimension(20, -1),
                 new Dimension(20, -1), new Dimension(20, -1), 0, false));
+        downloadCourseExercisesButton = new JButton();
+        downloadCourseExercisesButton.setText("Download course exercises");
+        panel1.add(downloadCourseExercisesButton, new GridConstraints(13, 2, 1, 1,
+                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL,
+                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
+                GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
