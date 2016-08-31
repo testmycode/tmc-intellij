@@ -3,11 +3,12 @@ package fi.helsinki.cs.tmc.intellij.services;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -31,21 +32,28 @@ public class ExerciseDownloadingService {
                                              final CheckForExistingExercises checker,
                                              ObjectFinder objectFinder,
                                              ThreadingService threadingService,
-                                             Project project) throws Exception {
+                                             Project project,
+                                             ProgressWindow window,
+                                             CoreProgressObserver observer) throws Exception {
 
         logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
-        Thread run = createThread(core, settings, checker, objectFinder);
+
+        
+
+        Thread run = createThread(core, settings, checker, objectFinder, observer);
+
         threadingService.runWithNotification(
                 run,
-                "Downloading exercises, this may take several minutes",
-                project);
+                project,
+                window);
     }
 
     @NotNull
     private static Thread createThread(final TmcCore core,
                                        final SettingsTmc settings,
                                        final CheckForExistingExercises checker,
-                                       final ObjectFinder finder) {
+                                       final ObjectFinder finder,
+                                       CoreProgressObserver observer) {
 
         logger.info("Creating a new thread. @ExerciseDownloadingService");
 
@@ -67,7 +75,7 @@ public class ExerciseDownloadingService {
                     }
                     try {
                         List<Exercise> exerciseList = core
-                                .downloadOrUpdateExercises(ProgressObserver.NULL_OBSERVER,
+                                .downloadOrUpdateExercises(observer,
                                 exercises).call();
                         ApplicationManager.getApplication().invokeLater(new Runnable() {
                             @Override

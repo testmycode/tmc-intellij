@@ -1,13 +1,13 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseUploadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
-
+import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
@@ -15,8 +15,8 @@ import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.actionSystem.PlatformDataKeys;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 
 import org.slf4j.Logger;
@@ -44,6 +44,10 @@ public class UploadExerciseAction extends AnAction {
 
         new ButtonInputListener().receiveSubmit();
 
+        ProgressWindow window = ProgressWindowMaker.make(
+                "Uploading exercise, this may take several minutes",
+                project, true, true, true);
+        CoreProgressObserver observer = new CoreProgressObserver(window);
         FileDocumentManager.getInstance().saveAllDocuments();
 
         new ExerciseUploadingService().startUploadExercise(project,
@@ -52,7 +56,9 @@ public class UploadExerciseAction extends AnAction {
                 TmcSettingsManager.get(),
                 new CourseAndExerciseManager(),
                 new ThreadingService(),
-                new TestRunningService());
+                new TestRunningService(),
+                observer,
+                window);
     }
 
 }
