@@ -48,20 +48,7 @@ public class DownloadExerciseAction extends AnAction {
     public void downloadExercises(Project project) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
-            ProgressWindow window = ProgressWindowMaker.make(
-                    "Downloading exercises, this may take several minutes",
-                    project, true, true, false);
-            CoreProgressObserver observer = new CoreProgressObserver(window);
-            new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
-                    TmcSettingsManager.get(),
-                    new CheckForExistingExercises(),
-                    new ObjectFinder(),
-                    new ThreadingService(),
-                    project,
-                    window,
-                    observer);
-
-
+            startDownloadExercise(project);
         } catch (Exception exception) {
             logger.warn("Downloading failed. @DownloadExerciseAction", exception);
             Messages.showMessageDialog(project,
@@ -69,5 +56,20 @@ public class DownloadExerciseAction extends AnAction {
                             + "Are your account details correct?\n"
                             + exception.getMessage(), "Result", Messages.getErrorIcon());
         }
+    }
+
+    private void startDownloadExercise(Project project) throws Exception {
+        ProgressWindow window = ProgressWindowMaker.make(
+                "Downloading exercises, this may take several minutes",
+                project, true, true, false);
+        CoreProgressObserver observer = new CoreProgressObserver(window);
+        new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
+                TmcSettingsManager.get(),
+                new CheckForExistingExercises(),
+                new ObjectFinder(),
+                new ThreadingService(),
+                project,
+                window,
+                observer);
     }
 }

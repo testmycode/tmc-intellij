@@ -99,4 +99,38 @@ public class NextExerciseFetcher {
             }
         }
     }
+
+    public static void openNext(Project project, SettingsTmc settings) {
+        logger.info("Open next project @NextExerciseFetcher.openNext");
+        if (isCourseSelected(settings)
+                && (!isProjectOpen(project)
+                || !hasProjectPath(project)
+                || !isCourseProject(project, settings))) {
+            CourseAndExerciseManager manager = new CourseAndExerciseManager();
+            NextExerciseFetcher.openFirst(manager.getExercises(settings.getCourseName()));
+        } else {
+            String path = project.getBasePath();
+            NextExerciseFetcher fetcher = new NextExerciseFetcher(PathResolver
+                    .getCourseName(path), PathResolver.getExercise(path), project);
+            fetcher.tryToOpenNext();
+        }
+    }
+
+    private static boolean isCourseSelected(SettingsTmc settings) {
+        return settings.getCourse() != null;
+    }
+
+
+    private static boolean isProjectOpen(Project project) {
+        return !(project == null);
+    }
+
+    private static boolean hasProjectPath(Project project) {
+        return project.getBasePath() == null;
+    }
+
+    private static boolean isCourseProject(Project project, SettingsTmc settings) {
+        return PathResolver.getCourseName(project.getBasePath())
+                .equals(settings.getCourseName());
+    }
 }

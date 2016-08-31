@@ -36,6 +36,7 @@ public class StartupEvent implements StartupActivity {
 
     @Override
     public void runActivity(@NotNull Project project) {
+
         logger.info("Opening project {} and running startup actions. @StartupEvent",
                 project);
 
