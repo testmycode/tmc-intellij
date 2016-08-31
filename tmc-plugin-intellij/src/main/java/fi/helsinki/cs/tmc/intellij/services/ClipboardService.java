@@ -17,8 +17,7 @@ public class ClipboardService {
 
     public static void copyToClipBoard(String stringToCopy) {
         logger.info("Copying {} to the clip board. @ClipboardService", stringToCopy);
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Clipboard clipboard = toolkit.getSystemClipboard();
+        Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
         StringSelection selection = new StringSelection(stringToCopy);
         clipboard.setContents(selection, null);
     }
