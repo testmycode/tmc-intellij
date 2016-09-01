@@ -1,9 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.importexercise;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +34,7 @@ public class ExerciseImport {
         File file = new File(path);
         if  (file.isDirectory()
                 && isChild(file, "nbproject")
-                && isChild(file, ".idea")) {
+                && !isChild(file, ".idea")) {
             return true;
         }
         return false;
@@ -53,4 +49,3 @@ public class ExerciseImport {
         return false;
     }
 }
-
