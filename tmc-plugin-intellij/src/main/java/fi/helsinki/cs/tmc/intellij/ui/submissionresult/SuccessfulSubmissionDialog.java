@@ -65,9 +65,11 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
         addYayLabel();
         addVSpace(6);
+
         if (exercise.requiresReview() && !result.getMissingReviewPoints().isEmpty()) {
             addRequiresReviewLabels();
         }
+
         addVSpace(6);
         addPointsLabel(result);
         addVSpace(10);
@@ -110,6 +112,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
                 NextExerciseFetcher fetcher = new NextExerciseFetcher(PathResolver
                         .getCourseName(path),
                         PathResolver.getExercise(path), project);
+
                 fetcher.tryToOpenNext();
                 setVisible(false);
                 dispose();
@@ -147,9 +150,12 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
         for (FeedbackQuestionPanel panel : feedbackQuestionPanels) {
             FeedbackAnswer answer = panel.getAnswer();
-            if (answer != null) {
-                answers.add(answer);
+
+            if (answer == null) {
+                continue;
             }
+            answers.add(answer);
+
         }
         return answers;
     }
@@ -200,6 +206,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
     private String getPointsMsg(SubmissionResult result) {
         logger.info("Getting points message. @SuccessfulSubmissionDialog");
+
         if (result.getPoints().isEmpty()) {
             return "";
         }

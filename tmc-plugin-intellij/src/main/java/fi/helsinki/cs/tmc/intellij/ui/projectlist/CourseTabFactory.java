@@ -87,21 +87,24 @@ public class CourseTabFactory {
         return new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
-                if (mouseEvent.getButton() == 3) {
-                    PopUpMenu menu = new PopUpMenu();
-                    JBMenuItem openInExplorer = new JBMenuItem("Open path");
-                    openInExplorer
-                            .addActionListener(openCourseActionListener(tabbedPanelBase));
-                    JBMenuItem deleteFolder =
-                            new JBMenuItem("Delete course "
-                                    + tabbedPanelBase.getSelectedComponent().getName());
-                    deleteFolder
-                            .addActionListener(deleteCourseActionListener(tabbedPanelBase));
-                    menu.add(openInExplorer);
-                    menu.add(deleteFolder);
-                    menu.show(tabbedPanelBase, mouseEvent.getX(), mouseEvent.getY());
+                if (mouseEvent.getButton() != 3) {
+                    return;
                 }
 
+                PopUpMenu menu = new PopUpMenu();
+                JBMenuItem openInExplorer = new JBMenuItem("Open path");
+
+                openInExplorer.addActionListener(openCourseActionListener(tabbedPanelBase));
+
+                JBMenuItem deleteFolder =
+                        new JBMenuItem("Delete course "
+                                + tabbedPanelBase.getSelectedComponent().getName());
+
+                deleteFolder.addActionListener(deleteCourseActionListener(tabbedPanelBase));
+
+                menu.add(openInExplorer);
+                menu.add(deleteFolder);
+                menu.show(tabbedPanelBase, mouseEvent.getX(), mouseEvent.getY());
             }
 
             @Override
@@ -151,23 +154,27 @@ public class CourseTabFactory {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.info("Trying to delete course folder.");
+
                 if (Messages
                         .showYesNoDialog("Are you sure you wish to permanently delete the course "
                                         + tabbedPanelBase.getSelectedComponent().getName()
                                         + " and all its exercises?",
-                                "Delete course", Messages.getWarningIcon()) == 0) {
-                    try {
-                        FileUtils.deleteDirectory(new File(TmcSettingsManager
-                                .get().getProjectBasePath()
-                                + File.separator
-                                + tabbedPanelBase.getSelectedComponent().getName()));
-                        refreshList();
-                    } catch (IOException e1) {
-                        e1.printStackTrace();
-                        logger.warn("Deleting course folder failed",
-                                e1, e1.getStackTrace());
-                    }
+                                "Delete course", Messages.getWarningIcon()) != 0) {
+                    return;
                 }
+
+                try {
+                    FileUtils.deleteDirectory(new File(TmcSettingsManager
+                            .get().getProjectBasePath()
+                            + File.separator
+                            + tabbedPanelBase.getSelectedComponent().getName()));
+                    new ProjectListWindow().refreshProjectList();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                    logger.warn("Deleting course folder failed",
+                            e1, e1.getStackTrace());
+                }
+
             }
         };
     }
@@ -175,6 +182,7 @@ public class CourseTabFactory {
     private void setScrollBarToBottom(String course,
                                       JTabbedPane tabbedPanelBase,
                                       JBScrollPane panel) {
+
         tabbedPanelBase.addTab(course, panel);
         JScrollBar bar = panel.getVerticalScrollBar();
         AdjustmentListener listener = new AdjustmentListener() {
@@ -182,6 +190,7 @@ public class CourseTabFactory {
                 event.getAdjustable().setValue(event.getAdjustable().getMaximum());
             }
         };
+
         bar.addAdjustmentListener(listener);
         bar.setValueIsAdjusting(true);
         bar.removeAdjustmentListener(listener);
@@ -255,6 +264,7 @@ public class CourseTabFactory {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 logger.info("Right mouse button action performed. @CourseTabFactory");
+
                 try {
                     if (selectedItem.getClass() != Exercise.class) {
                         Desktop.getDesktop().open(new File(TmcSettingsManager
@@ -278,7 +288,6 @@ public class CourseTabFactory {
                             true);
                 }
             }
-
         };
     }
 
@@ -291,48 +300,34 @@ public class CourseTabFactory {
                 logger.info("Trying to delete folder. @CourseTabFactory");
                 if (Messages
                         .showYesNoDialog("Are you sure you wish to permanently delete this folder?",
-                                "Delete exercise", Messages.getWarningIcon()) == 0) {
-                    try {
-                        if (selectedItem.getClass() != Exercise.class) {
-                            FileUtils.deleteDirectory(new File(TmcSettingsManager
-                                    .get().getProjectBasePath()
-                                    + File.separator + list.getParent()
-                                    .getParent().getName() + File.separator
-                                    + list.getSelectedValue()));
-                        } else {
-                            logger.info("Getting TMC project directory "
-                                    + "from settingsTmc. @CourseTabFactory");
-                            FileUtils.deleteDirectory(new File(((Exercise) selectedItem)
-                                    .getExerciseDirectory(TmcSettingsManager
-                                            .get().getTmcProjectDirectory()).toString()));
-                        }
-                        refreshList();
-                    } catch (IOException e1) {
-                        logger.warn("IOException occurred. Something interrupted "
-                                        + "the mouse action. @CourseTabFactory",
-                                e1, e1.getStackTrace());
-                        new ErrorMessageService().showMessage(e1,
-                                "IOException occurred. Something interrupted the mouse action.",
-                                true);
+                                "Delete exercise", Messages.getWarningIcon()) != 0) {
+                    return;
+                }
+
+                try {
+                    if (selectedItem.getClass() != Exercise.class) {
+                        FileUtils.deleteDirectory(new File(TmcSettingsManager
+                                .get().getProjectBasePath()
+                                + File.separator + list.getParent()
+                                .getParent().getName() + File.separator
+                                + list.getSelectedValue()));
+                    } else {
+                        logger.info("Getting TMC project directory "
+                                + "from settingsTmc. @CourseTabFactory");
+                        FileUtils.deleteDirectory(new File(((Exercise) selectedItem)
+                                .getExerciseDirectory(TmcSettingsManager
+                                        .get().getTmcProjectDirectory()).toString()));
                     }
+                    new ProjectListWindow().refreshProjectList();
+                } catch (IOException e1) {
+                    logger.warn("IOException occurred. Something interrupted "
+                                    + "the mouse action. @CourseTabFactory",
+                            e1, e1.getStackTrace());
+                    new ErrorMessageService().showMessage(e1,
+                            "IOException occurred. Something interrupted the mouse action.",
+                            true);
                 }
             }
         };
-    }
-
-    private void refreshList() {
-        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
-            @Override
-            public void run() {
-                new CourseAndExerciseManager().initiateDatabase();
-                ApplicationManager.getApplication().invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        logger.info("Refreshing project list. @ProjectListWindow");
-                        ProjectListManagerHolder.get().refreshAllCourses();
-                    }
-                });
-            }
-        });
     }
 }
