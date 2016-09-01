@@ -50,7 +50,7 @@ public class ExerciseImport {
                 return true;
             }
         }
-        return true;
+        return false;
     }
 }
 
