@@ -50,7 +50,7 @@ public class PersistentTmcSettings implements PersistentStateComponent<Persisten
     }
 
 
-    SettingsTmc settingsTmc;
+    private SettingsTmc settingsTmc;
 
     public SettingsTmc getSettingsTmc() {
         logger.info("Getting SettingsTmc. @PersistentTmcSettings.");

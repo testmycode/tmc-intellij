@@ -111,13 +111,17 @@ public class SettingsPanel {
     public SettingsPanel(final JFrame frame) {
         logger.info("Building SettingsPanel");
         SettingsTmc settingsTmc = TmcSettingsManager.get();
+
         usernameField.setText(settingsTmc.getUsername());
         serverAddressField.setText(settingsTmc.getServerAddress());
         passwordField.setText(settingsTmc.getPassword());
+
         ActionListener browseListener = createActionListener();
         browseButton.addActionListener(browseListener);
+
         ActionListener refreshListener = createActionListenerRefresh();
         refreshButton.addActionListener(refreshListener);
+
         if (TmcSettingsManager.get().isSpyware()) {
             sendSnapshotsOfYourCheckBox.doClick();
         }
