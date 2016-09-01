@@ -138,6 +138,7 @@ public final class TestResultCase extends JPanel {
         logger.info("Creating detail view. @TestResultCase");
         if (detailView == null) {
             logger.info("defailview was null, not adding it to the TestResultCase panel");
+            return;
         }
 
         this.add(detailView, constraints);
