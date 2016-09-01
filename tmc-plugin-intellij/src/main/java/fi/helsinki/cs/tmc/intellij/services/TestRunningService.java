@@ -31,31 +31,67 @@ public class TestRunningService {
         CoreProgressObserver observer = new CoreProgressObserver(window);
 
         if (exercise != null) {
-            threadingService.runWithNotification(new Runnable() {
-                @Override
-                public void run() {
-                    RunResult result = null;
-                    try {
-                        result = TmcCoreHolder.get()
-                                .runTests(observer, exercise).call();
-                        RunResult finalResult = result;
-                        showTestResult(finalResult);
-                        checkIfAllTestsPassed(finalResult, project);
-                    } catch (Exception exception) {
-                        logger.warn("Could not run tests. @TestRunningService", exception);
-                        new ErrorMessageService().showMessage(exception,
-                                "Running tests failed!", true);
-                    }
-                }
-            }, project, window);
-            displayTestWindow(finder);
+            prepareThreadForRunningTests(exercise, project,
+                    threadingService, finder, window, observer);
         } else {
             Exception exception = new Exception();
             logger.warn("Running tests failed, exercise {} was not "
                     + "recognized. @TestRunningService", exercise, exception);
             new ErrorMessageService().showMessage(exception,
-                    "Running tests failed, exercise was not recognized",true);
+                    "Running tests failed, exercise was not recognized", true);
         }
+    }
+
+    private void prepareThreadForRunningTests(final Exercise exercise,
+                                              final Project project,
+                                              ThreadingService threadingService,
+                                              ObjectFinder finder,
+                                              ProgressWindow window,
+                                              final CoreProgressObserver observer) {
+        logger.info("Preparing thread for running tests. @TestRunningService");
+        threadingService.runWithNotification(new Runnable() {
+            @Override 
+            public void run() {
+                RunResult result = null;
+                try {
+                    result = TmcCoreHolder.get()
+                            .runTests(observer, exercise).call();
+                    RunResult finalResult = result;
+                    showTestResult(finalResult);
+                    checkIfAllTestsPassed(finalResult, project);
+                } catch (Exception exception) {
+                    logger.warn("Could not run tests. @TestRunningService", exception);
+                    new ErrorMessageService().showMessage(exception,
+                            "Running tests failed!", true);
+                }
+            }
+        }, project, window);
+        displayTestWindow(finder);
+    }
+
+    private void checkIfAllTestsPassed(RunResult finalResult, Project project) {
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                if (allPassed(finalResult)) {
+                    if (Messages.showYesNoDialog(project,
+                            "Would you like to submit the exercise?",
+                            "All tests passed!", null) == 0) {
+                        new UploadExerciseAction().uploadExercise(project);
+                    }
+                }
+            }
+        });
+    }
+
+    private boolean allPassed(RunResult finalResult) {
+        logger.info("Checking if all tests passed. @TestRunningService");
+        for (TestResult test : finalResult.testResults) {
+            if (!test.isSuccessful()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void displayTestWindow(ObjectFinder finder) {
@@ -69,7 +105,7 @@ public class TestRunningService {
     }
 
     public void showTestResult(final RunResult finalResult) {
-        logger.info("Showing the final test result after updating. @RunTestsAction");
+        logger.info("Showing the final test result after updating. @TestRunningService");
         ApplicationManager.getApplication().invokeLater((new Runnable() {
             @Override
             public void run() {
@@ -78,25 +114,5 @@ public class TestRunningService {
         }));
     }
 
-    private void checkIfAllTestsPassed(RunResult finalResult, Project project) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                boolean allpassed = true;
-                for (TestResult test : finalResult.testResults) {
-                    if (!test.isSuccessful()) {
-                        allpassed = false;
-                    }
-                }
 
-                if (allpassed) {
-                    if (Messages.showYesNoDialog(project,
-                            "Would you like to submit the exercise?",
-                            "All tests passed!", null) == 0) {
-                        new UploadExerciseAction().uploadExercise(project);
-                    }
-                }
-            }
-        });
-    }
 }

@@ -37,29 +37,29 @@ public class CheckForNewExercises {
                 SettingsTmc settings = TmcSettingsManager.get();
                 Course course = new ObjectFinder()
                         .findCourseNoDetails(settings.getCourseName(), core);
-                if (course != null) {
-                    settings.setCourse(course);
-                    CourseAndExerciseManager manager = new CourseAndExerciseManager();
-                    try {
-                        logger.info("Trying to get exercise update data.");
-                        UpdateResult result = core
-                                .getExerciseUpdates(ProgressObserver.NULL_OBSERVER,
-                                        settings.getCourse()).call();
-                        if (!compareExerciseLists(result.getNewExercises(),
-                                manager.getExercises(settings.getCourseName()))) {
-                            ErrorMessageService.TMC_NOTIFICATION
-                                    .createNotification("New exercises!", "New exercises found for "
-                                                    + settings.getCourseName() + ". \n<a href=/>Click here to download them<a>",
-                                            NotificationType.INFORMATION,
-                                            (notification, hyperlinkEvent) ->
-                                                    new DownloadExerciseAction()
-                                                            .downloadExercises(project))
-                                    .notify(project);
-                        }
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                if (course == null) { return; }
+
+                settings.setCourse(course);
+                CourseAndExerciseManager manager = new CourseAndExerciseManager();
+                try {
+                    logger.info("Trying to get exercise update data.");
+                    UpdateResult result = core
+                            .getExerciseUpdates(ProgressObserver.NULL_OBSERVER,
+                                    settings.getCourse()).call();
+                    if (!compareExerciseLists(result.getNewExercises(),
+                            manager.getExercises(settings.getCourseName()))) {
+                        ErrorMessageService.TMC_NOTIFICATION
+                                .createNotification("New exercises!", "New exercises found for "
+                                                + settings.getCourseName() + ". \n<a href=/>Click here to download them<a>",
+                                        NotificationType.INFORMATION,
+                                        (notification, hyperlinkEvent) ->
+                                                new DownloadExerciseAction()
+                                                        .downloadExercises(project))
+                                .notify(project);
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
