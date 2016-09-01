@@ -7,6 +7,8 @@ import com.intellij.openapi.vfs.VirtualFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+
 /*
  * Class handles as main tool for imports
  */
@@ -41,11 +43,23 @@ public class ExerciseImport {
         }
         virtualFile.refresh(false, false);
         if (virtualFile.isDirectory()
-                && virtualFile.findChild("nbproject") != null
-                && virtualFile.findChild(".idea") == null) {
+                && isChild(path, "nbproject")
+                && isChild(path, ".idea")) {
             return true;
         }
         return false;
+    }
+
+    private static boolean isChild(String path, String name) {
+        File file = new File(path);
+        if (file.isDirectory()) {
+            for (String child : file.list()) {
+                if (child.equals(name)) {
+                    return true;
+                }
+            }
+        }
+        return true;
     }
 }
 
