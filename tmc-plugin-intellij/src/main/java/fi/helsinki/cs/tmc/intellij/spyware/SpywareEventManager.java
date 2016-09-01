@@ -58,6 +58,7 @@ public class SpywareEventManager {
                         }
                     } catch (Exception e) {
                     }
+                    System.out.println(log);
                     buffer.receiveEvent(log);
                     logger.info("Event has been added to the buffer.");
                 }

@@ -1,10 +1,9 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
-
 import fi.helsinki.cs.tmc.langs.domain.TestResult;
 
-import com.intellij.ui.components.JBScrollPane;
 import com.intellij.ui.JBProgressBar;
+import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 
 import org.slf4j.Logger;
