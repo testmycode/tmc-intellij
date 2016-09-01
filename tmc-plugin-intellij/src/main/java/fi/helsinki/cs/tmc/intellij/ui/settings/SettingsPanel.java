@@ -165,7 +165,7 @@ public class SettingsPanel {
 
                 Project project = new ObjectFinder().findCurrentProject();
                 DownloadExerciseAction action = new DownloadExerciseAction();
-                action.downloadExercises(project);
+                action.downloadExercises(project, false);
 
                 frame.dispose();
                 frame.setVisible(false);

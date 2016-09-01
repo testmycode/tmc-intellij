@@ -1,18 +1,20 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
+
 import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
-
 import com.intellij.openapi.actionSystem.PlatformDataKeys;
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -21,10 +23,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Defined in plugin.xml on line
- *  &lt;action id="Download Exercises"
- *    class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction"&gt;
+ * &lt;action id="Download Exercises"
+ * class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction"&gt;
  * in group actions
- *
+ * <p>
  * <p>
  * Downloads exercises from the course selected in settings,
  * uses CheckForExistingExercises to check already downloaded ones,
@@ -46,15 +48,7 @@ public class DownloadExerciseAction extends AnAction {
     public void downloadExercises(Project project, boolean downloadAll) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
-            new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
-                    TmcSettingsManager.get(),
-                    new CheckForExistingExercises(),
-                    new ObjectFinder(),
-                    new ThreadingService(),
-                    project,
-                    downloadAll);
-
-
+            startDownloadExercise(project, downloadAll);
         } catch (Exception exception) {
             logger.warn("Downloading failed. @DownloadExerciseAction", exception);
             Messages.showMessageDialog(project,
@@ -62,5 +56,19 @@ public class DownloadExerciseAction extends AnAction {
                             + "Are your account details correct?\n"
                             + exception.getMessage(), "Result", Messages.getErrorIcon());
         }
+    }
+
+    private void startDownloadExercise(Project project, boolean downloadAll) throws Exception {
+        ProgressWindow window = ProgressWindowMaker.make(
+                "Downloading exercises, this may take several minutes",
+                project, true, true, true);
+        new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
+                TmcSettingsManager.get(),
+                new CheckForExistingExercises(),
+                new ObjectFinder(),
+                new ThreadingService(),
+                project,
+                downloadAll,
+                window);
     }
 }

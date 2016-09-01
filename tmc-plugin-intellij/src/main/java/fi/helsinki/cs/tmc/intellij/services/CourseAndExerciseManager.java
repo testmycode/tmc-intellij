@@ -83,7 +83,7 @@ public class CourseAndExerciseManager {
 
         try {
             Map<String, List<Exercise>> database = new HashMap<>();
-            List<Course> courses = (ArrayList<Course>) TmcCoreHolder.get()
+            List<Course> courses = TmcCoreHolder.get()
                     .listCourses(ProgressObserver.NULL_OBSERVER).call();
 
             for (Course course : courses) {
@@ -92,7 +92,7 @@ public class CourseAndExerciseManager {
                     logger.info("Fetching {} from TmcCore. @CourseAndExerciseManager", course);
                     course = TmcCoreHolder.get()
                             .getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
-                    exercises = (ArrayList<Exercise>) new CheckForExistingExercises()
+                    exercises = new CheckForExistingExercises()
                             .getListOfDownloadedExercises(course.getExercises(),
                                     TmcSettingsManager.get());
                     database.put(course.getName(), exercises);
@@ -180,7 +180,7 @@ public class CourseAndExerciseManager {
             return;
         }
 
-        List<Exercise> existing = (ArrayList<Exercise>) checker
+        List<Exercise> existing = checker
                 .getListOfDownloadedExercises(course.getExercises(), settings);
 
         getDatabase().getCourses().put(courseName, existing);

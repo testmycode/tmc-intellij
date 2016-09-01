@@ -23,8 +23,4 @@ public class ProjectListManagerHolder {
             projectListManager = new ProjectListManager();
         }
     }
-
-    public static synchronized void set(ProjectListManager newProjectListManager) {
-        projectListManager = newProjectListManager;
-    }
 }

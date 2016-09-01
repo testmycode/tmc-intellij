@@ -2,14 +2,15 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 
 import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
@@ -30,7 +31,9 @@ public class ExerciseUploadingService {
                                     SettingsTmc settings,
                                     CourseAndExerciseManager courseAndExerciseManager,
                                     ThreadingService threadingService,
-                                    TestRunningService testRunningService) {
+                                    TestRunningService testRunningService,
+                                    CoreProgressObserver observer,
+                                    ProgressWindow window) {
 
         logger.info("Starting to upload an exercise. @ExerciseUploadingService");
 
@@ -45,7 +48,7 @@ public class ExerciseUploadingService {
                 .getExercise(getCourseName(exerciseCourse),
                         getExerciseName(exerciseCourse));
         getResults(project, exercise, core, handler, threadingService, testRunningService,
-                finder);
+                finder,observer, window );
         courseAndExerciseManager.updateSingleCourse(getCourseName(exerciseCourse),
                 checker, finder, settings);
     }
@@ -55,9 +58,13 @@ public class ExerciseUploadingService {
                             final SubmissionResultHandler handler,
                             ThreadingService threadingService,
                             TestRunningService testRunningService,
-                            ObjectFinder finder) {
+                            ObjectFinder finder,
+                            CoreProgressObserver observer,
+                            ProgressWindow window) {
 
         logger.info("Calling for threadingService from getResult. @ExerciseUploadingService.");
+
+
 
         threadingService.runWithNotification(new Runnable() {
             @Override
@@ -65,7 +72,7 @@ public class ExerciseUploadingService {
                 try {
                     logger.info("Getting submission results. @ExerciseUploadingService");
                     final SubmissionResult result = core
-                            .submit(ProgressObserver.NULL_OBSERVER, exercise).call();
+                            .submit(observer, exercise).call();
                     handler.showResultMessage(exercise, result, project);
                     refreshExerciseList();
                     ApplicationManager.getApplication().invokeLater(new Runnable() {
@@ -80,7 +87,7 @@ public class ExerciseUploadingService {
                     exception.printStackTrace();
                 }
             }
-        }, "Uploading exercise, this may take several minutes", project);
+        }, project, window);
         testRunningService.displayTestWindow(finder);
     }
 

@@ -2,9 +2,11 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 
 
+import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
+import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 import org.junit.Rule;
@@ -39,11 +41,15 @@ public class UploadExerciseServiceTest {
         CourseAndExerciseManager mockCourseAndExerciseManager = mock(CourseAndExerciseManager.class);
         when(mockCourseAndExerciseManager.isCourseInDatabase(course.getName())).thenReturn(true);
 
+        ProgressWindow window = mock(ProgressWindow.class);
+        CoreProgressObserver observer = mock(CoreProgressObserver.class);
+
         new ExerciseUploadingService().startUploadExercise(project, mock(TmcCore.class), finder, checker,
                 mock(SubmissionResultHandler.class), settings,
-                mockCourseAndExerciseManager, threadingService, mock(TestRunningService.class));
+                mockCourseAndExerciseManager, threadingService, mock(TestRunningService.class),
+                observer, window);
 
-        verify(threadingService).runWithNotification(any(Runnable.class), anyString(), any(Project.class));
+        verify(threadingService).runWithNotification(any(Runnable.class), any(Project.class), any(ProgressWindow.class));
         verify(mockCourseAndExerciseManager).updateSingleCourse(course.getName(),
                 checker, finder, settings);
     }
