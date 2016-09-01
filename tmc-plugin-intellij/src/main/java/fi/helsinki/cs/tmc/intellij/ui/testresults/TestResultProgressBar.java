@@ -7,9 +7,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-/**
- * Created by melchan on 1.9.2016.
- */
 public class TestResultProgressBar extends JBProgressBar {
     private static final Color PASS_COLOR = new Color(0x00C800);
     private static final Color FAIL_COLOR = new Color(0xE10000);
