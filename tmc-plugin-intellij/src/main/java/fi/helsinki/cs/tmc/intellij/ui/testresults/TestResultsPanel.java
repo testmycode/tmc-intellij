@@ -7,10 +7,10 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import java.awt.Color;
 import java.awt.GridLayout;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import java.util.List;
 
 
