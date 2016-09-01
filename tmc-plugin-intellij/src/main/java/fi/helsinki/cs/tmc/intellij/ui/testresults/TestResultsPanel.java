@@ -1,18 +1,18 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
 import fi.helsinki.cs.tmc.langs.domain.TestResult;
-
 import com.intellij.ui.JBProgressBar;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
-
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.List;
-import javax.swing.*;
+
 
 
 public class TestResultsPanel {

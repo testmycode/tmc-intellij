@@ -13,7 +13,8 @@ public class PropertySetter {
 
     public void setLog4jProperties() {
 
-        File file = new File(PathManager.getPluginsPath() + "/tmc-plugin-intellij/lib/tmc-plugin-intellij.jar");
+        File file = new File(PathManager.getPluginsPath()
+                + "/tmc-plugin-intellij/lib/tmc-plugin-intellij.jar");
 
         if (file.exists()) {
             setPluginLog();
@@ -23,7 +24,8 @@ public class PropertySetter {
     }
 
     private void setPluginLog() {
-        String jarPath = PathManager.getPluginsPath() + "/tmc-plugin-intellij/lib/tmc-plugin-intellij.jar";
+        String jarPath = PathManager.getPluginsPath()
+                + "/tmc-plugin-intellij/lib/tmc-plugin-intellij.jar";
         try {
             JarFile jar = new JarFile(jarPath);
             JarEntry entry = jar.getJarEntry("log4j.properties");
