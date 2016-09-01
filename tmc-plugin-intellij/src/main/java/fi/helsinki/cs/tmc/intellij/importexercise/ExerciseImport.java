@@ -45,11 +45,11 @@ public class ExerciseImport {
     }
 
     private static boolean isChild(File file, String name) {
-            for (String child : file.list()) {
-                if (child.equals(name)) {
-                    return true;
-                }
+        for (String child : file.list()) {
+            if (child.equals(name)) {
+                return true;
             }
+        }
         return true;
     }
 }
