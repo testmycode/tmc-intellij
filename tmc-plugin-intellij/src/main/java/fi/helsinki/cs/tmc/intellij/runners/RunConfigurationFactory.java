@@ -56,7 +56,7 @@ public class RunConfigurationFactory {
         while (true) {
             TreeClassChooserFactory factory = TreeClassChooserFactory
                     .getInstance(project);
-            GlobalSearchScope scope = null;
+            GlobalSearchScope scope;
             scope = GlobalSearchScope.moduleScope(module);
             PsiClass ecClass = JavaPsiFacade.getInstance(project)
                     .findClass("", scope);

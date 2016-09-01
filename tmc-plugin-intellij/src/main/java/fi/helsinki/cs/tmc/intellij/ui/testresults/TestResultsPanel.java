@@ -1,9 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
-import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.langs.domain.TestResult;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBProgressBar;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -25,7 +23,6 @@ public class TestResultsPanel {
     private static final Logger logger = LoggerFactory
             .getLogger(TestResultsPanel.class);
     private JPanel basePanel;
-    private JScrollPane scrollPanel;
     private JPanel newpanel;
 
     public TestResultsPanel() {
@@ -80,8 +77,6 @@ public class TestResultsPanel {
         bar.setStringPainted(true);
         bar.setValue((int) (100 * ((double) success / results.size())));
         basePanel.repaint();
-        Project project = new ObjectFinder()
-                .findCurrentProject();
     }
 
     private Color getColor(boolean successful) {
