@@ -14,7 +14,7 @@ public class ActiveThreadSet {
     private LinkedList<Thread> threads;
 
     public ActiveThreadSet() {
-        this.threads = new LinkedList<Thread>();
+        this.threads = new LinkedList<>();
     }
 
     public void addThread(Thread thread) {
