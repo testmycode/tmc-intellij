@@ -39,11 +39,11 @@ public class DownloadExerciseAction extends AnAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
         new ButtonInputListener().receiveDownloadExercise();
-        downloadExercises(project);
+        downloadExercises(project, false);
     }
 
 
-    public void downloadExercises(Project project) {
+    public void downloadExercises(Project project, boolean downloadAll) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
             new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
@@ -51,7 +51,8 @@ public class DownloadExerciseAction extends AnAction {
                     new CheckForExistingExercises(),
                     new ObjectFinder(),
                     new ThreadingService(),
-                    project);
+                    project,
+                    downloadAll);
 
 
         } catch (Exception exception) {

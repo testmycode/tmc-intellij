@@ -61,7 +61,7 @@ public class NextExerciseFetcher {
                                     + " to match the course we want to download from.");
                             settings.setCourse(PathResolver.getCourse(project.getBasePath()));
                         }
-                        new DownloadExerciseAction().downloadExercises(project);
+                        new DownloadExerciseAction().downloadExercises(project, false);
                     }
                 }
             });

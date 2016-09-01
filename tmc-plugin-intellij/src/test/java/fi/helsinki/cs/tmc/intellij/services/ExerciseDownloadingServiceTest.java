@@ -31,7 +31,7 @@ public class ExerciseDownloadingServiceTest {
         ThreadingService threadingServiceMock = mock(ThreadingService.class);
 
         new ExerciseDownloadingService().startDownloadExercise(core, settings, checker, mock(ObjectFinder.class),
-                threadingServiceMock, project);
+                threadingServiceMock, project, true);
 
         verify(threadingServiceMock).runWithNotification(any(Runnable.class), any(String.class), any(Project.class));
     }

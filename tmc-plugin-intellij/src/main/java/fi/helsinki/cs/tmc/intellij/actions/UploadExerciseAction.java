@@ -37,7 +37,7 @@ public class UploadExerciseAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         logger.info("Performing UploadExerciseAction. @UploadExerciseAction");
-
+        uploadExercise(new ObjectFinder().findCurrentProject());
     }
 
     public void uploadExercise(Project project) {

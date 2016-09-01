@@ -126,4 +126,5 @@ public class ResultPanel {
     public JComponent getRootComponent() {
         return jpanel1;
     }
+    
 }

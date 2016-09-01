@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
 
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 
@@ -223,13 +224,14 @@ public class ErrorMessageService {
         });
     }
 
-    public void downloadErrorMessage() {
+    public void downloadErrorMessage(Course course) {
         //final Project projects = new ObjectFinder().findCurrentProject();
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
                 Messages.showMessageDialog(
-                        "All exercises are up to date.", "Nothing happened",
+                        "All exercises for course " + course.getName() + " are up to date.",
+                        "All exercises are up to date.",
                         Messages.getInformationIcon());
             }
         });
