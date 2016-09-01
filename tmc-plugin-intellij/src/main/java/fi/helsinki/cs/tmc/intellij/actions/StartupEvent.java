@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
@@ -40,12 +41,15 @@ public class StartupEvent implements StartupActivity {
         logger.info("Opening project {} and running startup actions. @StartupEvent",
                 project);
 
+        ExerciseDatabaseManager.get();
+
         ThreadingService threadingService = new ThreadingService();
 
         ProgressWindow progressWindow = ProgressWindowMaker.make(
                 "Running TMC startup actions.", project, false, false, false);
 
         CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
+
 
         threadingService.runWithNotification(
                 new Thread() {

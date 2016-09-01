@@ -40,8 +40,8 @@ public class NextExerciseFetcher {
             ApplicationManager.getApplication().invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new ProjectOpener().openProject(exercise.getExerciseDirectory(TmcSettingsManager
-                            .get().getTmcProjectDirectory()));
+                    new ProjectOpener().openProject(project, exercise.getExerciseDirectory(TmcSettingsManager
+                            .get().getTmcProjectDirectory()).toString());
                 }
             });
         } else {

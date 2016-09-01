@@ -19,6 +19,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
+import static com.puppycrawl.tools.checkstyle.grammars.javadoc.JavadocLexer.exception;
+
 /**
  * Offers method for downloading exercises from selected course.
  */
@@ -80,11 +82,13 @@ public class ExerciseDownloadingService {
                         ApplicationManager.getApplication().invokeLater(new Runnable() {
                             @Override
                             public void run() {
-                                if (0 == Messages
-                                        .showYesNoDialog("Would you like to open the first "
-                                                        + "of the downloaded exercises?",
-                                        "Download complete", null)) {
-                                    NextExerciseFetcher.openFirst(exerciseList);
+                                if (exerciseList.size() > 0) {
+                                    if (0 == Messages
+                                            .showYesNoDialog("Would you like to open the first "
+                                                            + "of the downloaded exercises?",
+                                                    "Download complete", null)) {
+                                        NextExerciseFetcher.openFirst(exerciseList);
+                                    }
                                 }
                             }
                         });
