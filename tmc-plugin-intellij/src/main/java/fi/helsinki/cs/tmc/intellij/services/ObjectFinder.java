@@ -38,7 +38,9 @@ public class ObjectFinder {
         logger.info("Processing findExerciseByName {}. @ObjectFinder", exerciseName);
         List<Exercise> exercises = course.getExercises();
         Exercise exercise = getExercise(exerciseName, exercises);
-        if (exercise != null) return exercise;
+        if (exercise != null) {
+            return exercise;
+        }
         logger.info("Could not find exercise with the name {}. @ObjectFinder",
                 exerciseName);
         return null;
@@ -75,7 +77,9 @@ public class ObjectFinder {
         }
 
         Course course = getCourse(courseName, core, courses);
-        if (course != null) return course;
+        if (course != null) {
+            return course;
+        }
         return null;
     }
 

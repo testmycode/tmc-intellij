@@ -58,26 +58,31 @@ public final class TestResultCase extends JPanel {
 
     private void createDetailedMessage(List<String> detailMessage) {
         logger.info("Creating detailed message. @TestResultCase");
-        if (detailMessage != null && detailMessage.size() > 0) {
-            String detailedMessage = "";
-            for (String line : detailMessage) {
-                detailedMessage += line + "\n";
-            }
-            JButton button = new JButton("Details");
-            this.add(button, constraints);
-            final String finalDetailedMessage = detailedMessage;
-            button.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent actionEvent) {
-                    JTextPane panel = new JTextPane();
-                    panel.setText(finalDetailedMessage);
-                    panel.setEditable(false);
-                    JBPopupFactory.getInstance().createComponentPopupBuilder(panel,
-                            new JLabel("Message")).createPopup().showCenteredInCurrentWindow(
-                            new ObjectFinder().findCurrentProject());
-                }
-            });
+        if (detailMessage == null || detailMessage.size() <= 0) {
+            return;
         }
+
+        String detailedMessage = "";
+        for (String line : detailMessage) {
+            detailedMessage += line + "\n";
+        }
+
+        JButton button = new JButton("Details");
+        this.add(button, constraints);
+        final String finalDetailedMessage = detailedMessage;
+
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JTextPane panel = new JTextPane();
+                panel.setText(finalDetailedMessage);
+                panel.setEditable(false);
+                JBPopupFactory.getInstance().createComponentPopupBuilder(panel,
+                        new JLabel("Message")).createPopup().showCenteredInCurrentWindow(
+                        new ObjectFinder().findCurrentProject());
+            }
+        });
+
     }
 
     private void createBody(final String message, final JPanel detailView) {
@@ -119,20 +124,30 @@ public final class TestResultCase extends JPanel {
 
     private void createMessage(final String message) {
         logger.info("Creating message. @TestResultCase");
-        if (message != null) {
-            this.add(new JLabel(message), constraints);
+        if (message == null) {
+            logger.info("message was null, not adding "
+                    + "JLabel message to to TestRestCase panel");
+            return;
         }
+
+        this.add(new JLabel(message), constraints);
+
     }
 
     private void createDetailView(final JPanel detailView) {
         logger.info("Creating detail view. @TestResultCase");
-        if (detailView != null) {
-            this.add(detailView, constraints);
+        if (detailView == null) {
+            logger.info("defailview was null, not adding it to the TestResultCase panel");
+            return;
         }
+
+        this.add(detailView, constraints);
+
     }
 
     private void createBorder() {
         logger.info("Creating border for TestResultPanel. @TestResultCase");
+
         this.setBorder(BorderFactory.createLineBorder(Color.black));
         final Border innerPadding = BorderFactory.createEmptyBorder(5, 10, 5, 5);
         final Border leftColorBar = BorderFactory.createMatteBorder(0, 6, 0, 0, borderColor);

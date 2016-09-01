@@ -44,10 +44,12 @@ public class SpywareTabListener {
                     public void fileOpened(@NotNull FileEditorManager fileEditorManager,
                                            @NotNull VirtualFile virtualFile) {
                         logger.info("Processing file opened event.");
+
                         String data = JsonMaker.create()
                                 .add("opened_window", virtualFile.getName())
                                 .toString();
                         Exercise exercise = getExercise();
+
                         LoggableEvent event;
                         if (exercise != null) {
                             event = new LoggableEvent(exercise,
@@ -62,12 +64,15 @@ public class SpywareTabListener {
                     @Override
                     public void fileClosed(@NotNull FileEditorManager fileEditorManager,
                                            @NotNull VirtualFile virtualFile) {
+
                         logger.info("Processing fileClosed event.");
                         String data = JsonMaker.create()
                                 .add("closed_window", virtualFile.getName())
                                 .toString();
+
                         Exercise exercise = getExercise();
                         LoggableEvent event;
+
                         if (exercise != null) {
                             event = new LoggableEvent(exercise, "window_closed",
                                     data.getBytes(Charset.forName("UTF-8")));
@@ -81,49 +86,54 @@ public class SpywareTabListener {
                     @Override
                     public void selectionChanged(
                             @NotNull FileEditorManagerEvent fileEditorManagerEvent) {
+
                         logger.info("Processing selectionChanged event.");
                         String data;
-                        if (fileEditorManagerEvent.getNewFile() != null) {
-                            if (fileEditorManagerEvent.getOldFile() != null) {
-                                data = JsonMaker.create()
-                                        .add("new_value",
-                                                fileEditorManagerEvent.getNewFile().getName())
-                                        .add("old_value",
-                                                fileEditorManagerEvent.getOldFile().getName())
-                                        .add("file", new PathResolver()
-                                                .getPathRelativeToProject(fileEditorManagerEvent
-                                                .getNewFile().getPath()))
-                                        .toString();
-                            } else {
-                                data = JsonMaker.create()
-                                        .add("new_value", fileEditorManagerEvent
-                                                .getNewFile().getName())
-                                        .add("file", new PathResolver()
-                                                .getPathRelativeToProject(fileEditorManagerEvent
-                                                        .getNewFile().getPath()))
-                                        .toString();
-                            }
-                            Exercise exercise = getExercise();
-                            LoggableEvent event;
-                            if (exercise != null) {
-                                event = new LoggableEvent(exercise, "window_changed",
-                                        data.getBytes(Charset.forName("UTF-8")));
-                            } else {
-                                event = new LoggableEvent("window_changed",
-                                        data.getBytes(Charset.forName("UTF-8")));
-                            }
-                            addEventToBuffer(event);
+
+                        if (fileEditorManagerEvent.getNewFile() == null) {
+                            return;
                         }
+
+                        if (fileEditorManagerEvent.getOldFile() != null) {
+                            data = JsonMaker.create()
+                                    .add("new_value",
+                                            fileEditorManagerEvent.getNewFile().getName())
+                                    .add("old_value",
+                                            fileEditorManagerEvent.getOldFile().getName())
+                                    .add("file", new PathResolver()
+                                            .getPathRelativeToProject(fileEditorManagerEvent
+                                                    .getNewFile().getPath()))
+                                    .toString();
+                        } else {
+                            data = JsonMaker.create()
+                                    .add("new_value", fileEditorManagerEvent
+                                            .getNewFile().getName())
+                                    .add("file", new PathResolver()
+                                            .getPathRelativeToProject(fileEditorManagerEvent
+                                                    .getNewFile().getPath()))
+                                    .toString();
+                        }
+
+                        Exercise exercise = getExercise();
+                        LoggableEvent event;
+                        if (exercise != null) {
+                            event = new LoggableEvent(exercise, "window_changed",
+                                    data.getBytes(Charset.forName("UTF-8")));
+                        } else {
+                            event = new LoggableEvent("window_changed",
+                                    data.getBytes(Charset.forName("UTF-8")));
+                        }
+                        addEventToBuffer(event);
                     }
                 });
     }
 
     private void addEventToBuffer(LoggableEvent event) {
-        if (TmcSettingsManager.get().isSpyware()
-                && new CourseAndExerciseManager().isCourseInDatabase(PathResolver
-                .getCourseName(basePath))) {
-            SpywareEventManager.add(event);
+        if (!TmcSettingsManager.get().isSpyware() || new CourseAndExerciseManager()
+                .isCourseInDatabase(PathResolver.getCourseName(basePath))) {
+            return;
         }
+        SpywareEventManager.add(event);
     }
 
     public Course getCourse() {

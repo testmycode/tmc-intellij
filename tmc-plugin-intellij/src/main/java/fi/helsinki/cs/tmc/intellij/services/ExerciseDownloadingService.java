@@ -57,7 +57,9 @@ public class ExerciseDownloadingService {
             @Override
             public void run() {
                 try {
-                    if (handleCreatingThread(finder, settings, core, checker, observer)) return;
+                    if (handleCreatingThread(finder, settings, core, checker, observer)) {
+                        return;
+                    }
                 } catch (Exception except) {
                     logger.warn("Failed to download exercises. "
                                     + "Course not selected. @ExerciseDownloadingService",
@@ -98,7 +100,9 @@ public class ExerciseDownloadingService {
         return false;
     }
 
-    private static void openFirstExercise(List<Exercise> exercises, TmcCore core, CoreProgressObserver observer) throws Exception {
+    private static void openFirstExercise(List<Exercise> exercises,
+                                          TmcCore core,
+                                          CoreProgressObserver observer) throws Exception {
         List<Exercise> exerciseList = core
                 .downloadOrUpdateExercises(observer,
                 exercises).call();

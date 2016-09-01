@@ -22,7 +22,6 @@ import java.util.List;
  * That created patch is then analyzed and a json is generated from it that is added
  * to the list of items to be sent to the spyware server.
  */
-
 public class TextInputListener implements DocumentListener {
 
     private static final Logger logger = LoggerFactory.getLogger(TextInputListener.class);
@@ -39,14 +38,15 @@ public class TextInputListener implements DocumentListener {
     @Override
     public void documentChanged(DocumentEvent documentEvent) {
         modified = documentEvent.getDocument().getText();
-        if (isThisCorrectProject()) {
-            if (makeSureChangeIsNotJustWhitespace(documentEvent)) {
-                logger.info("Creating patches for ", documentEvent.getSource());
-                createPatches(PathResolver
-                        .getExercise(new ObjectFinder()
-                                .findCurrentProject().getBasePath()), documentEvent);
-            }
+        if (!isThisCorrectProject() || changeIsNotJustWhitespace(documentEvent)) {
+            logger.info("not creating path for event, as project wasn't "
+                    + "correct one or change was just white space");
+            return;
         }
+
+        logger.info("Creating patches for ", documentEvent.getSource());
+        createPatches(PathResolver.getExercise(new ObjectFinder()
+                        .findCurrentProject().getBasePath()), documentEvent);
     }
 
     private boolean isThisCorrectProject() {
@@ -54,7 +54,7 @@ public class TextInputListener implements DocumentListener {
                 .getCourseName(new ObjectFinder().findCurrentProject().getBasePath()));
     }
 
-    private boolean makeSureChangeIsNotJustWhitespace(DocumentEvent documentEvent) {
+    private boolean changeIsNotJustWhitespace(DocumentEvent documentEvent) {
         return !documentEvent
                 .getNewFragment().toString().trim().isEmpty() || !documentEvent
                 .getOldFragment().toString().trim().isEmpty();
@@ -81,26 +81,29 @@ public class TextInputListener implements DocumentListener {
             return false;
         }
         return (documentEvent.getNewLength() > 2)
-                && ClipboardService.getClipBoard().trim()
-                .equals(documentEvent.getNewFragment()
+                && ClipboardService.getClipBoard().trim().equals(
+                        documentEvent.getNewFragment()
                         .toString().trim());
     }
 
     private String generatePatchDescription(DocumentEvent documentEvent,
                                             List<DiffMatchPatch.Patch> patches) {
+
         logger.info("Creating JSON from patches.");
         String source = documentEvent.getSource().toString();
-        if (documentEvent.getSource().toString().length() > 20) {
-            source = source.substring(20, source.length() - 1);
-            return JsonMaker.create()
-                    .add("file", new PathResolver().getPathRelativeToProject(source))
-                    .add("patches", diff.patch_toText(patches))
-                    .add("full_document",
-                            documentEvent
-                                    .getNewLength() == documentEvent.getDocument().getTextLength())
-                    .toString();
+
+        if (documentEvent.getSource().toString().length() <= 20) {
+            return null;
         }
-        return null;
+
+        source = source.substring(20, source.length() - 1);
+        return JsonMaker.create()
+                .add("file", new PathResolver().getPathRelativeToProject(source))
+                .add("patches", diff.patch_toText(patches))
+                .add("full_document",
+                        documentEvent
+                                .getNewLength() == documentEvent.getDocument().getTextLength())
+                .toString();
     }
 
     private boolean isRemoveEvent(DocumentEvent documentEvent) {
@@ -108,10 +111,13 @@ public class TextInputListener implements DocumentListener {
     }
 
     private void addEventToManager(Exercise exercise, String eventType, String text) {
-        if (text != null) {
-            LoggableEvent event = new LoggableEvent(exercise, eventType, text.getBytes());
-            SpywareEventManager.add(event);
+        if (text == null) {
+            return;
         }
+
+        LoggableEvent event = new LoggableEvent(exercise, eventType, text.getBytes());
+        SpywareEventManager.add(event);
+
 
     }
 

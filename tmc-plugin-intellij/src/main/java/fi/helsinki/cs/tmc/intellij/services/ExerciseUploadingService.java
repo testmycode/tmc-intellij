@@ -79,7 +79,11 @@ public class ExerciseUploadingService {
         testRunningService.displayTestWindow(finder);
     }
 
-    private void getSubmissionResult(TmcCore core, CoreProgressObserver observer, Exercise exercise, SubmissionResultHandler handler, Project project) throws Exception {
+    private void getSubmissionResult(TmcCore core,
+                                     CoreProgressObserver observer,
+                                     Exercise exercise,
+                                     SubmissionResultHandler handler,
+                                     Project project) throws Exception {
         logger.info("Getting submission results. @ExerciseUploadingService");
         final SubmissionResult result = core
                 .submit(observer, exercise).call();
