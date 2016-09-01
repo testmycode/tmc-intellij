@@ -11,7 +11,6 @@ import java.lang.reflect.Method;
 
 public class SpywareRunListener  {
 
-
     private static final Logger logger = LoggerFactory.getLogger(SpywareRunListener.class);
 
     public SpywareRunListener(Project project) {
