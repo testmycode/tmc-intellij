@@ -3,18 +3,17 @@ package fi.helsinki.cs.tmc.intellij.services;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist.DownloadListWindow;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
-import fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist.DownloadListWindow;
 import org.jetbrains.annotations.NotNull;
 
 import org.slf4j.Logger;
@@ -40,8 +39,11 @@ public class ExerciseDownloadingService {
                                              boolean downloadAll,
                                              ProgressWindow window) throws Exception {
 
-        logger.info("Preparing to start checking for available exercises. @ExerciseDownloadingService");
-        Thread run = checkAvailableExercises(core, settings, checker, objectFinder, downloadAll);
+        logger.info(
+                "Preparing to start checking for available exercises."
+                        + "@ExerciseDownloadingService");
+        Thread run = checkAvailableExercises(core, settings, checker,
+                objectFinder, downloadAll);
         threadingService.runWithNotification(
                 run,
                 project,
@@ -49,8 +51,10 @@ public class ExerciseDownloadingService {
     }
 
     public static void startDownloading(List<Exercise> exercises) {
-        logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
-        ProgressWindow window = ProgressWindowMaker.make("Downloading exercises, this may take a while",
+        logger.info(
+                "Preparing to start downloading exercises. @ExerciseDownloadingService");
+        ProgressWindow window = ProgressWindowMaker.make(
+                "Downloading exercises, this may take a while",
                 new ObjectFinder().findCurrentProject(), true, true, false);
         CoreProgressObserver observer = new CoreProgressObserver(window);
         Thread run = downloadSelectedExercises(TmcCoreHolder.get(), exercises, observer);
@@ -69,7 +73,8 @@ public class ExerciseDownloadingService {
                                                   final ObjectFinder finder,
                                                   boolean downloadAll) {
 
-        logger.info("Creating a new thread to check available exercises. @ExerciseDownloadingService");
+        logger.info(
+                "Creating a new thread to check available exercises. @ExerciseDownloadingService");
 
         return new Thread() {
             @Override
