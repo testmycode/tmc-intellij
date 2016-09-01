@@ -35,30 +35,21 @@ public class ExerciseImport {
 
     private static boolean isUnImportedNbProject(String path) {
         logger.info("Check if dir has idea file @ExerciseImport");
-        VirtualFile virtualFile = LocalFileSystem.getInstance()
-                .refreshAndFindFileByPath(path);
-        if (virtualFile == null) {
-            logger.warn("Cannot find virtual file matching this path @ExerciseImport");
-            return false;
-        }
-        virtualFile.refresh(false, false);
-        if (virtualFile.isDirectory()
-                && isChild(path, "nbproject")
-                && isChild(path, ".idea")) {
+        File file = new File(path);
+        if  (file.isDirectory()
+                && isChild(file, "nbproject")
+                && isChild(file, ".idea")) {
             return true;
         }
         return false;
     }
 
-    private static boolean isChild(String path, String name) {
-        File file = new File(path);
-        if (file.isDirectory()) {
+    private static boolean isChild(File file, String name) {
             for (String child : file.list()) {
                 if (child.equals(name)) {
                     return true;
                 }
             }
-        }
         return true;
     }
 }
