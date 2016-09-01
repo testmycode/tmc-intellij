@@ -2,7 +2,10 @@ package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
 import com.intellij.ui.JBProgressBar;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
 /**
  * Created by melchan on 1.9.2016.
@@ -36,53 +39,53 @@ public class TestResultProgressBar extends JBProgressBar {
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics graphic) {
 
-        Color oldColor = g.getColor();
+        Color oldColor = graphic.getColor();
 
         try {
-            int w = getWidth();
-            int h = getHeight() / 2;
-            g.clearRect(0, 0, w, h);
+            int width = getWidth();
+            int height = getHeight() / 2;
+            graphic.clearRect(0, 0, width, height);
 
             if (!isIndeterminate()) {
                 int range = (getMaximum() - getMinimum());
                 int filled;
                 if (range > 0) {
-                    filled = w * getValue() / range;
+                    filled = width * getValue() / range;
                 } else {
-                    filled = w;
+                    filled = width;
                 }
-                int notFilled = w - filled;
+                int notFilled = width - filled;
                 if (validationPass) {
-                    g.setColor(PASS_COLOR);
+                    graphic.setColor(PASS_COLOR);
                 } else {
-                    g.setColor(VALIDATION_COLOR);
+                    graphic.setColor(VALIDATION_COLOR);
                 }
-                g.fillRect(0, 0, filled, h);
-                g.setColor(FAIL_COLOR);
-                g.fillRect(filled, 0, notFilled, h);
+                graphic.fillRect(0, 0, filled, height);
+                graphic.setColor(FAIL_COLOR);
+                graphic.fillRect(filled, 0, notFilled, height);
 
                 if (isStringPainted()) {
-                    g.setColor(Color.BLACK);
+                    graphic.setColor(Color.BLACK);
                     String s = getString();
-                    FontMetrics fm = g.getFontMetrics();
-                    Rectangle textBox = fm.getStringBounds(s, g).getBounds();
+                    FontMetrics fm = graphic.getFontMetrics();
+                    Rectangle textBox = fm.getStringBounds(s, graphic).getBounds();
 
-                    int midX = w / 2;
-                    int midY = h / 2;
+                    int midX = width / 2;
+                    int midY = height / 2;
                     int textX = midX - textBox.width / 2;
                     int textY = midY + textBox.height / 2 - fm.getDescent();
 
-                    g.drawString(s, textX, textY);
+                    graphic.drawString(s, textX, textY);
                 }
             } else {
-                g.setColor(UNSET_COLOR);
-                g.fillRect(0, 0, w, h);
+                graphic.setColor(UNSET_COLOR);
+                graphic.fillRect(0, 0, width, height);
             }
 
         } finally {
-            g.setColor(oldColor);
+            graphic.setColor(oldColor);
         }
     }
 }

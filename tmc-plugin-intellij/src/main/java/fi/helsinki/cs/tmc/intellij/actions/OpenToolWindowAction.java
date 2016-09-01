@@ -54,7 +54,7 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
                     .getToolWindow("TMC Project List");
         }
 
-        if(projectList == null) {
+        if (projectList == null) {
             logger.warn("ToolWindow was null ending openToolWindow @OpenToolwindowAction");
             return;
         }
