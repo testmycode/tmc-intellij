@@ -42,29 +42,31 @@ public class SpywareEventManager {
             new TmcServerCommunicationTaskFactory(), new EventStore());
 
     public static void add(final LoggableEvent log) {
-        if (spywareIsActivated()) {
-            ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        if (TmcSettingsManager.get().getCourse() != null
-                                && TmcSettingsManager.get()
-                                .getCourse().getSpywareUrls().size() == 0) {
-                            logger.info("Trying to get course info.");
-                            TmcCore core = TmcCoreHolder.get();
-                            TmcSettingsManager.get().setCourse(core
-                                    .getCourseDetails(ProgressObserver.NULL_OBSERVER,
-                                            TmcSettingsManager.get().getCourse()).call());
-                        }
-                    } catch (Exception e) {
-                    }
-                    buffer.receiveEvent(log);
-                    logger.info("Event has been added to the buffer.");
-                }
-            });
+        if (!spywareIsActivated()) {
+            return;
         }
-    }
 
+        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (TmcSettingsManager.get().getCourse() != null
+                            && TmcSettingsManager.get()
+                            .getCourse().getSpywareUrls().size() == 0) {
+
+                        logger.info("Trying to get course info.");
+                        TmcCore core = TmcCoreHolder.get();
+                        TmcSettingsManager.get().setCourse(core
+                                .getCourseDetails(ProgressObserver.NULL_OBSERVER,
+                                        TmcSettingsManager.get().getCourse()).call());
+                    }
+                } catch (Exception e) {
+                }
+                buffer.receiveEvent(log);
+                logger.info("Event has been added to the buffer.");
+            }
+        });
+    }
 
     private static boolean spywareIsActivated() {
         return TmcSettingsManager.get().isSpyware();

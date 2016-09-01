@@ -76,15 +76,18 @@ public class ButtonInputListener {
     }
 
     private void sendProjectActionEvent(Exercise ex, String command) {
-        if (ex !=  null) {
-            logger.info("Creating a project action event JSON.");
-            Object data = Collections.singletonMap("command", command);
-            String json = new Gson().toJson(data);
-            byte[] jsonBytes = json.getBytes(Charset.forName("UTF-8"));
-            LoggableEvent event = new LoggableEvent(ex, "project_action", jsonBytes);
-            addEvent(event);
+        if (ex == null) {
+            logger.warn("Exercise was invalid.");
+            return;
         }
-        logger.warn("Exercise was invalid.");
+
+        logger.info("Creating a project action event JSON.");
+        Object data = Collections.singletonMap("command", command);
+        String json = new Gson().toJson(data);
+
+        byte[] jsonBytes = json.getBytes(Charset.forName("UTF-8"));
+        LoggableEvent event = new LoggableEvent(ex, "project_action", jsonBytes);
+        addEvent(event);
     }
 
     private void addEvent(LoggableEvent event) {

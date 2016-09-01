@@ -58,6 +58,7 @@ public class TestResultsPanel {
         bar.setStringPainted(true);
         newpanel.add(bar);
         int success = 0;
+
         for (TestResult result : results) {
             List<String> error;
             if (result.getDetailedMessage().size() > 0) {
@@ -72,6 +73,7 @@ public class TestResultsPanel {
                 success++;
             }
         }
+
         bar.setMinimum(0);
         bar.setMaximum(100);
         bar.setStringPainted(true);

@@ -34,8 +34,8 @@ public class SpywareFileListener implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(SpywareFileListener.class);
     private String projectPath;
-    private ActiveThreadSet snapshotterThreads;
     private boolean closed;
+    private ActiveThreadSet snapshotterThreads;
     private Project project;
     private static VirtualFileListener listener;
 
@@ -46,10 +46,12 @@ public class SpywareFileListener implements Closeable {
     }
 
     public void removeListener() {
-        if (listener != null) {
-            VirtualFileManager.getInstance()
-                    .removeVirtualFileListener(listener);
+        if (listener == null) {
+            return;
         }
+        VirtualFileManager.getInstance()
+                .removeVirtualFileListener(listener);
+
     }
 
     public void createAndAddListener() {
@@ -74,136 +76,125 @@ public class SpywareFileListener implements Closeable {
             public void propertyChanged(
                     @NotNull VirtualFilePropertyEvent virtualFilePropertyEvent) {
                 logger.info("Processing propertyChanged event.");
-                if (isProperfile(virtualFilePropertyEvent.getFile())) {
-                    String path = virtualFilePropertyEvent.getSource()
-                            .toString().substring(7);
-                    if (Files.isDirectory(Paths.get(path))) {
-                        JsonMaker metadata = JsonMaker.create()
-                                .add("cause", "folder_rename")
-                                .add("file", new PathResolver()
-                                        .getPathRelativeToProject(path))
-                                .add("previous_name", virtualFilePropertyEvent
-                                        .getOldValue().toString());
-                        sendMetadata(metadata);
-                    } else {
-                        JsonMaker metadata = JsonMaker.create()
-                                .add("cause", "file_rename")
-                                .add("file", new PathResolver()
-                                        .getPathRelativeToProject(path))
-                                .add("previous_name", virtualFilePropertyEvent
-                                        .getOldValue().toString());
-                        sendMetadata(metadata);
-                    }
+                if (!isProperfile(virtualFilePropertyEvent.getFile())) {
+                    return;
                 }
+
+                String path = virtualFilePropertyEvent.getSource()
+                        .toString().substring(7);
+
+                String folderOrFile = setFolderOrFile(path, "rename");
+
+                JsonMaker metadata = JsonMaker.create()
+                        .add("cause", folderOrFile)
+                        .add("file", new PathResolver()
+                                .getPathRelativeToProject(path))
+                        .add("previous_name", virtualFilePropertyEvent
+                                .getOldValue().toString());
+                sendMetadata(metadata);
             }
 
             @Override
             public void contentsChanged(@NotNull VirtualFileEvent virtualFileEvent) {
                 logger.info("Processing contentsChanged event.");
-                if (isProperfile(virtualFileEvent.getFile())) {
-                    String path = virtualFileEvent.getSource().toString().substring(7);
-                    JsonMaker metadata = JsonMaker.create()
-                            .add("cause", "file_change")
-                            .add("file", new PathResolver()
-                                    .getPathRelativeToProject(path));
-                    sendMetadata(metadata);
+                if (!isProperfile(virtualFileEvent.getFile())) {
+                    return;
                 }
+
+                String path = virtualFileEvent.getSource().toString().substring(7);
+                JsonMaker metadata = JsonMaker.create()
+                        .add("cause", "file_change")
+                        .add("file", new PathResolver()
+                                .getPathRelativeToProject(path));
+                sendMetadata(metadata);
             }
 
             @Override
             public void fileCreated(@NotNull VirtualFileEvent virtualFileEvent) {
                 logger.info("Processing fileCreated event");
-                String path = virtualFileEvent.getSource().toString().substring(7);
-                if (isProperfile(virtualFileEvent.getFile())) {
-                    if (Files.isDirectory(Paths.get(path))) {
-                        JsonMaker metadata = JsonMaker.create()
-                                .add("cause", "folder_create")
-                                .add("file", new PathResolver()
-                                        .getPathRelativeToProject(path));
-                        sendMetadata(metadata);
-                    } else {
-                        JsonMaker metadata = JsonMaker.create()
-                                .add("cause", "file_create")
-                                .add("file", new PathResolver()
-                                        .getPathRelativeToProject(path));
-                        sendMetadata(metadata);
-                    }
-                }
-            }
 
-            @Override
-            public void fileDeleted(@NotNull VirtualFileEvent virtualFileEvent) {
+                if (!isProperfile(virtualFileEvent.getFile())) {
+                    return;
+                }
+
+                String path = virtualFileEvent.getSource().toString().substring(7);
+                prepareMetaData("create", path);
             }
 
             @Override
             public void fileMoved(@NotNull VirtualFileMoveEvent virtualFileMoveEvent) {
                 logger.info("Processing fileMoved event.");
-                if (isProperfile(virtualFileMoveEvent.getFile())) {
-                    String path = virtualFileMoveEvent.getSource().toString().substring(7);
-                    if (Files.isDirectory(Paths.get(path))) {
-                        JsonMaker metadata = JsonMaker.create()
-                                .add("cause", "folder_move")
-                                .add("file", new PathResolver()
-                                        .getPathRelativeToProject(path))
-                                .add("from",
-                                        virtualFileMoveEvent.getOldParent().toString());
-                        sendMetadata(metadata);
-                    } else {
-                        JsonMaker metadata = JsonMaker.create()
-                                .add("cause", "file_move")
-                                .add("file", new PathResolver()
-                                        .getPathRelativeToProject(path))
-                                .add("from",
-                                        virtualFileMoveEvent.getOldParent().toString());
-                        sendMetadata(metadata);
-                    }
+                if (!isProperfile(virtualFileMoveEvent.getFile())) {
+                    return;
                 }
+
+                String path = virtualFileMoveEvent.getSource().toString().substring(7);
+                prepareMetaData("move", path);
+            }
+
+            private void prepareMetaData(String action, String path) {
+                String folderOrFile = setFolderOrFile(path, action);
+
+                JsonMaker metadata = JsonMaker.create()
+                        .add("cause", folderOrFile)
+                        .add("file", new PathResolver()
+                                .getPathRelativeToProject(path));
+                sendMetadata(metadata);
             }
 
             @Override
             public void fileCopied(@NotNull VirtualFileCopyEvent virtualFileCopyEvent) {
                 logger.info("Processing fileCopied event.");
                 String path = virtualFileCopyEvent.getSource().toString().substring(7);
+
+                String folderOrFile = setFolderOrFile(path, "copy");
+
+                JsonMaker metadata = JsonMaker.create()
+                        .add("cause", folderOrFile)
+                        .add("file", new PathResolver().getPathRelativeToProject(path))
+                        .add("from", virtualFileCopyEvent.getOriginalFile().toString());
+                sendMetadata(metadata);
+            }
+
+            private String setFolderOrFile(String path, String action) {
                 if (Files.isDirectory(Paths.get(path))) {
-                    JsonMaker metadata = JsonMaker.create()
-                            .add("cause", "folder_copy")
-                            .add("file", new PathResolver().getPathRelativeToProject(path))
-                            .add("from", virtualFileCopyEvent.getOriginalFile().toString());
-                    sendMetadata(metadata);
-                } else {
-                    JsonMaker metadata = JsonMaker.create()
-                            .add("cause", "file_copy")
-                            .add("file", new PathResolver().getPathRelativeToProject(path))
-                            .add("from", virtualFileCopyEvent.getOriginalFile().toString());
-                    sendMetadata(metadata);
+                    return "folder_" + action;
                 }
+
+                return "file_" + action;
             }
 
             @Override
             public void beforePropertyChange(
                     @NotNull VirtualFilePropertyEvent virtualFilePropertyEvent) {
-
-            }
-
-            @Override
-            public void beforeContentsChange(@NotNull VirtualFileEvent virtualFileEvent) {
-
             }
 
             @Override
             public void beforeFileDeletion(@NotNull VirtualFileEvent virtualFileEvent) {
                 logger.info("Processing fileDeleted event.");
-                if (isProperfile(virtualFileEvent.getFile())) {
-                    String path = virtualFileEvent.getFile().getPath();
-                    JsonMaker metadata = JsonMaker.create()
-                            .add("cause", "file_delete")
-                            .add("file", new PathResolver().getPathRelativeToProject(path));
-                    sendMetadata(metadata);
+                if (!isProperfile(virtualFileEvent.getFile())) {
+                    return;
                 }
+
+                String path = virtualFileEvent.getFile().getPath();
+                JsonMaker metadata = JsonMaker.create()
+                        .add("cause", "file_delete")
+                        .add("file", new PathResolver().getPathRelativeToProject(path));
+                sendMetadata(metadata);
             }
 
             @Override
             public void beforeFileMovement(@NotNull VirtualFileMoveEvent vfme) {
+
+            }
+
+            @Override
+            public void fileDeleted(@NotNull VirtualFileEvent virtualFileEvent) {
+
+            }
+
+            @Override
+            public void beforeContentsChange(@NotNull VirtualFileEvent virtualFileEvent) {
 
             }
         };
@@ -217,14 +208,15 @@ public class SpywareFileListener implements Closeable {
         }
 
         Exercise exercise = getExercise();
-
-        if (exercise != null) {
-            logger.info("Starting zipping thread for exercise: {0}", exercise);
-            SnapshotThread thread = new SnapshotThread(exercise,  projectPath, metadata);
-            snapshotterThreads.addThread(thread);
-            thread.setDaemon(true);
-            thread.start();
+        if (exercise == null) {
+            return;
         }
+
+        logger.info("Starting zipping thread for exercise: {0}", exercise);
+        SnapshotThread thread = new SnapshotThread(exercise,  projectPath, metadata);
+        snapshotterThreads.addThread(thread);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     @Override

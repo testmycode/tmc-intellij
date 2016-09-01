@@ -82,19 +82,16 @@ public class TestRunningService {
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
-                boolean allpassed = true;
                 for (TestResult test : finalResult.testResults) {
                     if (!test.isSuccessful()) {
-                        allpassed = false;
+                        return;
                     }
                 }
 
-                if (allpassed) {
-                    if (Messages.showYesNoDialog(project,
-                            "Would you like to submit the exercise?",
-                            "All tests passed!", null) == 0) {
-                        new UploadExerciseAction().uploadExercise(project);
-                    }
+                if (Messages.showYesNoDialog(project,
+                        "Would you like to submit the exercise?",
+                        "All tests passed!", null) == 0) {
+                    new UploadExerciseAction().uploadExercise(project);
                 }
             }
         });
