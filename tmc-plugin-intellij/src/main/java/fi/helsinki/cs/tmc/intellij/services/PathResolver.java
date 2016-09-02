@@ -7,6 +7,7 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 
 import com.intellij.openapi.project.Project;
 
+import fi.helsinki.cs.tmc.intellij.services.Exercises.CourseAndExerciseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

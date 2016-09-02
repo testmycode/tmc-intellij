@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services;
+package fi.helsinki.cs.tmc.intellij.services.Exercises;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction;
@@ -10,6 +10,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
+import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

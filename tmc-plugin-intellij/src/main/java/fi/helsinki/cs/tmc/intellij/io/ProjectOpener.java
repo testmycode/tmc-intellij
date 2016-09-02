@@ -3,7 +3,7 @@ package fi.helsinki.cs.tmc.intellij.io;
 
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
-import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.Errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 

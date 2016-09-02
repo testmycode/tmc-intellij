@@ -9,7 +9,7 @@ package fi.helsinki.cs.tmc.intellij.importexercise;
 import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
 import static com.intellij.ide.util.projectWizard.importSources.impl.ProjectFromSourcesBuilderImpl.getPackagePrefix;
 
-import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.Errors.ErrorMessageService;
 
 import com.intellij.ide.util.importProject.LibraryDescriptor;
 import com.intellij.ide.util.importProject.ModuleDescriptor;

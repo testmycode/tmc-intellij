@@ -2,7 +2,7 @@ package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
-import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.Errors.ErrorMessageService;
 
 import icons.TmcIcons;
 import org.slf4j.Logger;

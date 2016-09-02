@@ -8,9 +8,9 @@ import fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.Errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
-import fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings;
+import fi.helsinki.cs.tmc.intellij.services.Persistence.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.components.ServiceManager;

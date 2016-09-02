@@ -4,8 +4,8 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 
-import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
-import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
+import fi.helsinki.cs.tmc.intellij.services.Exercises.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.Exercises.ExerciseDownloadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;

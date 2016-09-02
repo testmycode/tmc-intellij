@@ -2,14 +2,11 @@ package fi.helsinki.cs.tmc.intellij.actions;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.intellij.services.NextExerciseFetcher;
-import fi.helsinki.cs.tmc.intellij.services.PathResolver;
+import fi.helsinki.cs.tmc.intellij.services.Exercises.NextExerciseFetcher;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 
-import org.jetbrains.annotations.Contract;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

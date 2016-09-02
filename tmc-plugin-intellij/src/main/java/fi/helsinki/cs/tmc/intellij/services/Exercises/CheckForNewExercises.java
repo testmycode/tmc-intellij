@@ -1,7 +1,6 @@
-package fi.helsinki.cs.tmc.intellij.services;
+package fi.helsinki.cs.tmc.intellij.services.Exercises;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
-import fi.helsinki.cs.tmc.core.commands.GetUpdatableExercises;
 import fi.helsinki.cs.tmc.core.commands.GetUpdatableExercises.UpdateResult;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
@@ -15,6 +14,8 @@ import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 
+import fi.helsinki.cs.tmc.intellij.services.Errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services;
+package fi.helsinki.cs.tmc.intellij.services.Exercises;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
@@ -12,6 +12,9 @@ import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
+import fi.helsinki.cs.tmc.intellij.services.Errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import org.jetbrains.annotations.NotNull;
 
 import org.slf4j.Logger;

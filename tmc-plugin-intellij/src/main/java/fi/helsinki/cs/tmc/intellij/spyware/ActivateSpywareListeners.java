@@ -1,7 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.spyware;
 
 
-import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
+import fi.helsinki.cs.tmc.intellij.services.Exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.spyware.HostInformationGenerator;
 

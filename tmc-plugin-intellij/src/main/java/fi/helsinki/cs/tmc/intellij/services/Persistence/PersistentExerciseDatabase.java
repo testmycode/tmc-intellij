@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services;
+package fi.helsinki.cs.tmc.intellij.services.Persistence;
 
 
 import com.intellij.openapi.components.PersistentStateComponent;
@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
  * Uses the IDE to save settings on disk
  * Defined in plugin.xml on line in extensions group
  * <applicationService serviceImplementation
- *   ="fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase"/>
+ *   ="fi.helsinki.cs.tmc.intellij.services.Persistence.PersistentExerciseDatabase"/>
  */
 @State(
         name = "TmcExerciseDatabase",

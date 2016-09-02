@@ -4,6 +4,7 @@ import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
+import fi.helsinki.cs.tmc.intellij.services.Errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 import fi.helsinki.cs.tmc.langs.domain.RunResult;
 import fi.helsinki.cs.tmc.langs.domain.TestResult;
