@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.spyware;
 
 
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.spyware.HostInformationGenerator;
@@ -25,7 +26,9 @@ public class ActivateSpywareListeners {
 
     public void activateListeners() {
         if (isCourseInDatabase(project)) {
-            new HostInformationGenerator().updateHostInformation(SpywareEventManager.get());
+            if (TmcSettingsManager.get().isSpyware()) {
+                new HostInformationGenerator().updateHostInformation(SpywareEventManager.get());
+            }
             new SpywareRunListener(project);
             new SpywareFileListener(project).createAndAddListener();
             new SpywareTabListener(project);
