@@ -12,7 +12,6 @@ import java.util.jar.JarFile;
 public class PropertySetter {
 
     public void setLog4jProperties() {
-
         File file = new File(PathManager.getPluginsPath()
                 + "/tmc-plugin-intellij/lib/tmc-plugin-intellij.jar");
 
