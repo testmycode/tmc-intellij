@@ -1,11 +1,12 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
+import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.services.CheckForNewExercises;
 import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
+import fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase;
 import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.PropertySetter;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
@@ -41,7 +42,7 @@ public class StartupEvent implements StartupActivity {
         logger.info("Opening project {} and running startup actions. @StartupEvent",
                 project);
 
-        ExerciseDatabaseManager.get();
+        PersistentExerciseDatabase.getInstance();
 
         ThreadingService threadingService = new ThreadingService();
 
@@ -55,27 +56,16 @@ public class StartupEvent implements StartupActivity {
                 new Thread() {
                     @Override
                     public void run() {
-                        observer.progress(0, 0.0, "Initializing loggers");
-                        PropertySetter propSet = new PropertySetter();
-                        propSet.setLog4jProperties();
-                        observer.progress(0, 0.14, "Loading settings");
-                        TmcSettingsManager.setup();
-                        observer.progress(0, 0.28, "Holding core");
-                        TmcCoreHolder.setup();
-                        observer.progress(0, 0.42, "Activating listeners");
-                        new ActivateSpywareListeners(project).activateListeners();
-                        observer.progress(0, 0.56, "Initializing database");
-                        new CourseAndExerciseManager().initiateDatabase();
-                        observer.progress(0, 0.70, "Setting handlers");
-                        final EditorActionManager actionManager = EditorActionManager.getInstance();
-                        final TypedAction typedAction = actionManager.getTypedAction();
-                        TypedActionHandler originalHandler = actionManager
-                                .getTypedAction().getHandler();
-                        typedAction.setupHandler(new ActivateSpywareAction(originalHandler));
-                        observer.progress(0, 0.84, "Checking for new exercises");
-                        if (TmcSettingsManager.get().isCheckForExercises()) {
-                            new CheckForNewExercises().doCheck();
-                        }
+                        setupLoggers(observer);
+                        setupTmcSettings(observer);
+
+                        setupCoreHolder(observer);
+                        setupSpyware(observer, project);
+
+                        setupDatabase(observer);
+                        setupHandlersForSpyware(observer);
+                        checkForNewExercises(observer);
+
                         ApplicationManager.getApplication().invokeLater(new Runnable() {
                             @Override
                             public void run() {
@@ -93,6 +83,48 @@ public class StartupEvent implements StartupActivity {
                 },
                 project,
                 progressWindow);
+    }
+
+    private void setupLoggers(ProgressObserver observer) {
+        observer.progress(0, 0.0, "Initializing loggers");
+        PropertySetter propSet = new PropertySetter();
+        propSet.setLog4jProperties();
+    }
+
+    private void setupTmcSettings(ProgressObserver observer) {
+        observer.progress(0, 0.14, "Loading settings");
+        TmcSettingsManager.setup();
+    }
+
+    private void setupCoreHolder(ProgressObserver observer) {
+        observer.progress(0, 0.28, "Holding core");
+        TmcCoreHolder.setup();
+    }
+
+    private void setupSpyware(ProgressObserver observer, Project project) {
+        observer.progress(0, 0.42, "Activating listeners");
+        new ActivateSpywareListeners(project).activateListeners();
+    }
+
+    private void setupDatabase(ProgressObserver observer) {
+        observer.progress(0, 0.56, "Initializing database");
+        new CourseAndExerciseManager().initiateDatabase();
+    }
+
+    private void setupHandlersForSpyware(ProgressObserver observer) {
+        observer.progress(0, 0.70, "Setting handlers");
+        final EditorActionManager actionManager = EditorActionManager.getInstance();
+        final TypedAction typedAction = actionManager.getTypedAction();
+        TypedActionHandler originalHandler = actionManager
+                .getTypedAction().getHandler();
+        typedAction.setupHandler(new ActivateSpywareAction(originalHandler));
+    }
+
+    private void checkForNewExercises(ProgressObserver observer) {
+        observer.progress(0, 0.84, "Checking for new exercises");
+        if (TmcSettingsManager.get().isCheckForExercises()) {
+            new CheckForNewExercises().doCheck();
+        }
     }
 }
 

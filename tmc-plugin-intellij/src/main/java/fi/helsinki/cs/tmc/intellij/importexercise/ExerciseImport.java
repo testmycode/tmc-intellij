@@ -1,9 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.importexercise;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

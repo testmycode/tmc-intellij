@@ -40,7 +40,8 @@ public class NextExerciseFetcher {
             ApplicationManager.getApplication().invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new ProjectOpener().openProject(project, exercise.getExerciseDirectory(TmcSettingsManager
+                    new ProjectOpener().openProject(project,
+                            exercise.getExerciseDirectory(TmcSettingsManager
                             .get().getTmcProjectDirectory()).toString());
                 }
             });
@@ -103,7 +104,7 @@ public class NextExerciseFetcher {
     public static void openNext(Project project, SettingsTmc settings) {
         logger.info("Open next project @NextExerciseFetcher.openNext");
         if (isCourseSelected(settings)
-                && (!isProjectOpen(project)
+                && (projectIsNotOpen(project)
                 || !hasProjectPath(project)
                 || !isCourseProject(project, settings))) {
             CourseAndExerciseManager manager = new CourseAndExerciseManager();
@@ -121,8 +122,8 @@ public class NextExerciseFetcher {
     }
 
 
-    private static boolean isProjectOpen(Project project) {
-        return !(project == null);
+    private static boolean projectIsNotOpen(Project project) {
+        return project == null;
     }
 
     private static boolean hasProjectPath(Project project) {

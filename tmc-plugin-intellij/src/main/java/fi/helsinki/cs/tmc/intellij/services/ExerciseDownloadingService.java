@@ -19,8 +19,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static com.puppycrawl.tools.checkstyle.grammars.javadoc.JavadocLexer.exception;
-
 /**
  * Offers method for downloading exercises from selected course.
  */
@@ -39,11 +37,7 @@ public class ExerciseDownloadingService {
                                              CoreProgressObserver observer) throws Exception {
 
         logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
-
-        
-
         Thread run = createThread(core, settings, checker, objectFinder, observer);
-
         threadingService.runWithNotification(
                 run,
                 project,
@@ -62,66 +56,87 @@ public class ExerciseDownloadingService {
         return new Thread() {
             @Override
             public void run() {
-                ErrorMessageService errorMessageService = new ErrorMessageService();
                 try {
-                    logger.info("Starting to download exercise. @ExerciseDownloadingService");
-
-                    final Course course = finder.findCourseByName(settings.getCourse().getName(),
-                            core);
-
-                    List<Exercise> exercises = course.getExercises();
-                    exercises = checker.clean(exercises, settings);
-                    if (exercises == null || exercises.size() == 0) {
-                        new ErrorMessageService().downloadErrorMessage();
+                    if (handleCreatingThread(finder, settings, core, checker, observer)) {
                         return;
-                    }
-                    try {
-                        List<Exercise> exerciseList = core
-                                .downloadOrUpdateExercises(observer,
-                                exercises).call();
-                        ApplicationManager.getApplication().invokeLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (exerciseList.size() > 0) {
-                                    if (0 == Messages
-                                            .showYesNoDialog("Would you like to open the first "
-                                                            + "of the downloaded exercises?",
-                                                    "Download complete", null)) {
-                                        NextExerciseFetcher.openFirst(exerciseList);
-                                    }
-                                }
-                            }
-                        });
-                    } catch (Exception exception) {
-                        logger.info("Failed to download exercises. @ExerciseDownloadingService");
-                        new ErrorMessageService().showMessage(exception,
-                                "Failed to download exercises.", true);
                     }
                 } catch (Exception except) {
                     logger.warn("Failed to download exercises. "
                                     + "Course not selected. @ExerciseDownloadingService",
                             except, except.getStackTrace());
-                    errorMessageService.showMessage(except,
+                    new ErrorMessageService().showMessage(except,
                             "You need to select a course to be able to download.", true);
                 }
-
-                ApplicationManager.getApplication().invokeLater(
-                        new Runnable() {
-                            public void run() {
-                                ApplicationManager.getApplication().runWriteAction(
-                                        new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                logger.info("Updating project list. "
-                                                        + "@ExerciseDownloadingService");
-                                                refreshExerciseList();
-                                            }
-                                        }
-                                );
-                            }
-                        });;
+                createThreadForRefreshingExerciseList();
             }
         };
+    }
+
+
+
+    private static boolean handleCreatingThread(ObjectFinder finder,
+                                                SettingsTmc settings,
+                                                TmcCore core,
+                                                CheckForExistingExercises checker,
+                                                CoreProgressObserver observer) {
+        logger.info("Starting to download exercise. @ExerciseDownloadingService");
+
+        final Course course = finder.findCourseByName(settings.getCourse().getName(),
+                core);
+
+        List<Exercise> exercises = course.getExercises();
+        exercises = checker.clean(exercises, settings);
+        if (exercises == null || exercises.size() == 0) {
+            new ErrorMessageService().downloadErrorMessage(course);
+            return true;
+        }
+        try {
+            openFirstExercise(exercises, core, observer);
+        } catch (Exception exception) {
+            logger.info("Failed to download exercises. @ExerciseDownloadingService");
+            new ErrorMessageService().showMessage(exception,
+                    "Failed to download exercises.", true);
+        }
+        return false;
+    }
+
+    private static void openFirstExercise(List<Exercise> exercises,
+                                          TmcCore core,
+                                          CoreProgressObserver observer) throws Exception {
+        List<Exercise> exerciseList = core
+                .downloadOrUpdateExercises(observer,
+                exercises).call();
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                if (0 == Messages
+                        .showYesNoDialog("Would you like to open the first "
+                                        + "of the downloaded exercises?",
+                        "Download complete", null)) {
+                    NextExerciseFetcher.openFirst(exerciseList);
+                }
+            }
+        });
+    }
+
+    private static void createThreadForRefreshingExerciseList() {
+        logger.info("Creating new thread for refreshing exerciseList");
+        ApplicationManager.getApplication().invokeLater(
+                new Runnable() {
+                    public void run() {
+                        ApplicationManager.getApplication().runWriteAction(
+                                new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        logger.info("Updating project list. "
+                                                + "@ExerciseDownloadingService");
+                                        refreshExerciseList();
+                                    }
+                                }
+                        );
+                    }
+                }
+        );
     }
 
     private static void refreshExerciseList() {

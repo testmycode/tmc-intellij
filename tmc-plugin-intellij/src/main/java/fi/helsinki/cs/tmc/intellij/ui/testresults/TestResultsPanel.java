@@ -1,9 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
-import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.langs.domain.TestResult;
 
-import com.intellij.openapi.project.Project;
 import com.intellij.ui.JBProgressBar;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
@@ -15,8 +13,10 @@ import java.awt.Color;
 import java.awt.GridLayout;
 
 import java.util.List;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 
 
 
@@ -25,7 +25,6 @@ public class TestResultsPanel {
     private static final Logger logger = LoggerFactory
             .getLogger(TestResultsPanel.class);
     private JPanel basePanel;
-    private JScrollPane scrollPanel;
     private JPanel newpanel;
 
     public TestResultsPanel() {
@@ -55,12 +54,15 @@ public class TestResultsPanel {
         logger.info("Showing all test results. @TestResultsPanel");
         newpanel.removeAll();
         newpanel.setLayout(new GridLayout(results.size() + 1, 1));
-        JBProgressBar bar = new JBProgressBar();
-        bar.setBorderPainted(true);
-        bar.setForeground(Color.green);
-        bar.setStringPainted(true);
+        JBProgressBar bar = new TestResultProgressBar();
+        //bar.setBorderPainted(false);
+        //bar.setForeground(Color.green);
+        //bar.setStringPainted(true);
+        //bar.setBorder(BorderFactory.createLineBorder(Color.black));
+
         newpanel.add(bar);
         int success = 0;
+
         for (TestResult result : results) {
             List<String> error;
             if (result.getDetailedMessage().size() > 0) {
@@ -75,15 +77,13 @@ public class TestResultsPanel {
                 success++;
             }
         }
+
         bar.setMinimum(0);
         bar.setMaximum(100);
         bar.setBorderPainted(false);
         bar.setStringPainted(true);
         bar.setValue((int) (100 * ((double) success / results.size())));
         basePanel.repaint();
-
-        Project project = new ObjectFinder()
-                .findCurrentProject();
     }
 
     private Color getColor(boolean successful) {

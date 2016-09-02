@@ -64,23 +64,11 @@ public class ExerciseUploadingService {
 
         logger.info("Calling for threadingService from getResult. @ExerciseUploadingService.");
 
-
-
         threadingService.runWithNotification(new Runnable() {
             @Override
             public void run() {
                 try {
-                    logger.info("Getting submission results. @ExerciseUploadingService");
-                    final SubmissionResult result = core
-                            .submit(observer, exercise).call();
-                    handler.showResultMessage(exercise, result, project);
-                    refreshExerciseList();
-                    ApplicationManager.getApplication().invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            TestResultPanelFactory.updateMostRecentResult(result.getTestCases());
-                        }
-                    });
+                    getSubmissionResult(core, observer, exercise, handler, project);
                 } catch (Exception exception) {
                     logger.warn("Could not getExercise submission results. "
                             + "@ExerciseUploadingService", exception, exception.getStackTrace());
@@ -89,6 +77,24 @@ public class ExerciseUploadingService {
             }
         }, project, window);
         testRunningService.displayTestWindow(finder);
+    }
+
+    private void getSubmissionResult(TmcCore core,
+                                     CoreProgressObserver observer,
+                                     Exercise exercise,
+                                     SubmissionResultHandler handler,
+                                     Project project) throws Exception {
+        logger.info("Getting submission results. @ExerciseUploadingService");
+        final SubmissionResult result = core
+                .submit(observer, exercise).call();
+        handler.showResultMessage(exercise, result, project);
+        refreshExerciseList();
+        ApplicationManager.getApplication().invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                TestResultPanelFactory.updateMostRecentResult(result.getTestCases());
+            }
+        });
     }
 
     private String getCourseName(String[] courseAndExercise) {

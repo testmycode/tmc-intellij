@@ -41,6 +41,7 @@ public class ActivateSpywareListeners {
         logger.info("Trying to remove file listeners and close it.");
         SpywareFileListener listener = new SpywareFileListener(project);
         listener.removeListener();
+
         try {
             listener.close();
         } catch (IOException e) {

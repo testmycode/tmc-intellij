@@ -39,7 +39,7 @@ public class RunProjectAction extends AnAction {
         Module module = getModule(project);
         String configurationType = getConfigurationType();
         logger.info("Creating RunProject object.");
-        RunProject runner = new RunProject(runManager, module, configurationType);
+        new RunProject(runManager, module, configurationType);
     }
 
     /**

@@ -5,7 +5,6 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
-import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 
 import com.intellij.ide.DataManager;
@@ -13,13 +12,12 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
-import com.intellij.openapi.ui.Messages;
 
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,15 +37,23 @@ public class ObjectFinder {
     public Exercise findExerciseByName(Course course, String exerciseName) {
         logger.info("Processing findExerciseByName {}. @ObjectFinder", exerciseName);
         List<Exercise> exercises = course.getExercises();
+        Exercise exercise = getExercise(exerciseName, exercises);
+        if (exercise != null) {
+            return exercise;
+        }
+        logger.info("Could not find exercise with the name {}. @ObjectFinder",
+                exerciseName);
+        return null;
+    }
 
+    @Nullable
+    private Exercise getExercise(String exerciseName, List<Exercise> exercises) {
         for (Exercise exercise: exercises) {
             if (exercise.getName().equals(exerciseName)) {
                 logger.info("Found {}. @ObjectFinder", exercise);
                 return exercise;
             }
         }
-        logger.info("Could not find exercise with the name {}. @ObjectFinder",
-                exerciseName);
         return null;
     }
 
@@ -70,10 +76,20 @@ public class ObjectFinder {
             return null;
         }
 
+        Course course = getCourse(courseName, core, courses);
+        if (course != null) {
+            return course;
+        }
+        return null;
+    }
+
+    @Nullable
+    private Course getCourse(String courseName, TmcCore core, List<Course> courses) {
         for (Course course : courses) {
             if (course.getName().equals(courseName)) {
                 try {
-                    logger.info("Trying to get course details from TmcCore. @ObjectFinder");
+                    logger.info("Trying to get course {} details from TmcCore. @ObjectFinder",
+                            course);
                     return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
                 } catch (TmcCoreException exception) {
                     logger.warn("Could not find course {}. @ObjectFinder", courseName,
@@ -97,27 +113,23 @@ public class ObjectFinder {
         return fileNames;
     }
 
+    public List<String> listAllDownloadedExercises(String courseName) {
+        logger.info("Processing listAllDownloadedExercises from course {}. @ObjectFinder",
+                courseName);
+        List<String> fileNames = getListOfDirectoriesInPath(TmcSettingsManager.get()
+                .getProjectBasePath() + File.separator + courseName);
+
+        return fileNames;
+    }
+
     private List<String> getListOfDirectoriesInPath(String folderPath) {
-        logger.info("Processing getListOfDirectoriesInPath. @ObjectFinder");
+        logger.info("Processing addExercisesToList. @ObjectFinder");
         List<String> fileNames = new ArrayList<>();
 
         try (DirectoryStream<Path> directoryStream =
                      Files.newDirectoryStream(Paths.get(folderPath))) {
             logger.info("Getting list of directories in path. @ObjectFinder");
-            for (Path path : directoryStream) {
-                if (!Files.isDirectory(path)) {
-                    continue;
-                }
-                String[] exerciseCourse = PathResolver.getCourseAndExerciseName(path);
-                if (exerciseCourse == null
-                        || getExerciseName(exerciseCourse).charAt(0) == '.') {
-                    logger.info("exerciseCourse variable = null. @ObjectFinder");
-                    continue;
-                }
-                logger.info("Adding exercise to list. @ObjectFinder",
-                        getExerciseName(exerciseCourse));
-                fileNames.add(getExerciseName(exerciseCourse));
-            }
+            addExercisesToList(fileNames, directoryStream);
         } catch (Exception ex)  {
             logger.warn("Could not get list of directories in path. @ObjectFinder",
                     ex, ex.getStackTrace());
@@ -127,18 +139,27 @@ public class ObjectFinder {
         return fileNames;
     }
 
+    private void addExercisesToList(List<String> fileNames,
+                                    DirectoryStream<Path> directoryStream) {
+        for (Path path : directoryStream) {
+            if (!Files.isDirectory(path)) {
+                continue;
+            }
+            String[] exerciseCourse = PathResolver.getCourseAndExerciseName(path);
+            if (exerciseCourse == null
+                    || getExerciseName(exerciseCourse).charAt(0) == '.') {
+                logger.info("exerciseCourse variable = null. @ObjectFinder");
+                continue;
+            }
+            logger.info("Adding exercise to list. @ObjectFinder",
+                    getExerciseName(exerciseCourse));
+            fileNames.add(getExerciseName(exerciseCourse));
+        }
+    }
+
     private String getExerciseName(String[] courseAndExerciseName) {
         logger.info("Trying to getExerciseName. @ObjectFinder");
         return courseAndExerciseName[courseAndExerciseName.length - 1];
-    }
-
-    public List<String> listAllDownloadedExercises(String courseName) {
-        logger.info("Processing listAllDownloadedExercises from course {}. @ObjectFinder",
-                courseName);
-        List<String> fileNames = getListOfDirectoriesInPath(TmcSettingsManager.get()
-                .getProjectBasePath() + File.separator + courseName);
-
-        return fileNames;
     }
 
     public Project findCurrentProject() {
