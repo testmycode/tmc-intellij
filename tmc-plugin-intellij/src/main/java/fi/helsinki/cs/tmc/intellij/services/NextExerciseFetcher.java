@@ -103,7 +103,7 @@ public class NextExerciseFetcher {
     public static void openNext(Project project, SettingsTmc settings) {
         logger.info("Open next project @NextExerciseFetcher.openNext");
         if (isCourseSelected(settings)
-                && (!isProjectOpen(project)
+                && (projectIsNotOpen(project)
                 || !hasProjectPath(project)
                 || !isCourseProject(project, settings))) {
             CourseAndExerciseManager manager = new CourseAndExerciseManager();
@@ -121,8 +121,8 @@ public class NextExerciseFetcher {
     }
 
 
-    private static boolean isProjectOpen(Project project) {
-        return !(project == null);
+    private static boolean projectIsNotOpen(Project project) {
+        return project == null;
     }
 
     private static boolean hasProjectPath(Project project) {

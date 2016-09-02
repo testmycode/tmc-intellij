@@ -1,5 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Component;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -16,8 +19,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * A list of labeled checkboxes.

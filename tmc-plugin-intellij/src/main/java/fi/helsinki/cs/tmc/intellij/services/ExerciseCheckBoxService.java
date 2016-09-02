@@ -2,11 +2,13 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist.CustomCheckBoxList;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JCheckBox;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ExerciseCheckBoxService {
 
@@ -28,7 +30,7 @@ public class ExerciseCheckBoxService {
         return downloadThese;
     }
 
-    public static void toggleAllCheckBoxes(CustomCheckBoxList exerciselist){
+    public static void toggleAllCheckBoxes(CustomCheckBoxList exerciselist) {
         logger.info(
                 "Toggling all exercise check boxes checked or unchecked. @ExerciseCheckBoxService");
         int checked = 0;

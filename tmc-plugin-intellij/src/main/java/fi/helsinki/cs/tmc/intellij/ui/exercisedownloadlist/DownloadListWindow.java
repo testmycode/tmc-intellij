@@ -1,11 +1,14 @@
 package fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 public class DownloadListWindow {
 

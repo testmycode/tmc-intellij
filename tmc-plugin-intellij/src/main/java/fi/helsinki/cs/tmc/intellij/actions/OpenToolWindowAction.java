@@ -42,20 +42,29 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
 
     public void openToolWindow(Project project) {
         logger.info("Opening tool window. @OpenToolWindowAction");
-        try {
-            ToolWindow projectList =  ToolWindowManager.getInstance(project)
+        if (project == null) {
+            logger.warn("project was null ending openToolWindow @OpenToolWindowAction");
+            return;
+        }
+        ToolWindow projectList = null;
+
+        if (ToolWindowManager.getInstance(project)
+                .getToolWindow("Project") != null) {
+            projectList =  ToolWindowManager.getInstance(project)
                     .getToolWindow("TMC Project List");
-            if (projectList.isVisible()) {
-                projectList.hide(null);
-            } else {
-                ToolWindowManager.getInstance(project)
-                        .getToolWindow("TMC Project List").show(null);
-                ToolWindowManager.getInstance(project);
-            }
-        } catch (Exception exception) {
-            logger.warn("Failed to open tool window. @OpenToolWindowAction", exception);
-            ErrorMessageService service = new ErrorMessageService();
-            service.showMessage(exception, "Opening TMC Project List Failed!", false);
+        }
+
+        if (projectList == null) {
+            logger.warn("ToolWindow was null ending openToolWindow @OpenToolwindowAction");
+            return;
+        }
+
+        if (projectList.isVisible()) {
+            projectList.hide(null);
+        } else {
+            ToolWindowManager.getInstance(project)
+                    .getToolWindow("TMC Project List").show(null);
+            ToolWindowManager.getInstance(project);
         }
     }
 

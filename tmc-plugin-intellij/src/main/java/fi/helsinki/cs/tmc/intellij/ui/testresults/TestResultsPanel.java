@@ -13,8 +13,10 @@ import java.awt.Color;
 import java.awt.GridLayout;
 
 import java.util.List;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 
 
 
@@ -52,10 +54,12 @@ public class TestResultsPanel {
         logger.info("Showing all test results. @TestResultsPanel");
         newpanel.removeAll();
         newpanel.setLayout(new GridLayout(results.size() + 1, 1));
-        JBProgressBar bar = new JBProgressBar();
-        bar.setBorderPainted(true);
-        bar.setForeground(Color.green);
-        bar.setStringPainted(true);
+        JBProgressBar bar = new TestResultProgressBar();
+        //bar.setBorderPainted(false);
+        //bar.setForeground(Color.green);
+        //bar.setStringPainted(true);
+        //bar.setBorder(BorderFactory.createLineBorder(Color.black));
+
         newpanel.add(bar);
         int success = 0;
 

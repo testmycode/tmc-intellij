@@ -1,11 +1,16 @@
 package fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseCheckBoxService;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
+
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+import com.intellij.uiDesigner.core.Spacer;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -17,8 +22,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class DownloadListPanel {
     private JButton downloadButton;
