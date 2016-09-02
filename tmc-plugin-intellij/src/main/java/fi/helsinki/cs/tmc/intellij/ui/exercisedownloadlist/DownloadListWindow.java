@@ -1,17 +1,20 @@
 package fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DownloadListWindow {
+
+    private static final Logger logger = LoggerFactory.getLogger(DownloadListWindow.class);
 
     private JFrame frame;
 
     public void showDownloadableExercises(List<Exercise> exercises) {
+        logger.info("Creating window to show downloadable exercises. @DownloadListWindow");
         frame = new JFrame();
         JPanel panel = new DownloadListPanel(exercises, this).getPanel();
         frame.add(panel);
@@ -24,6 +27,7 @@ public class DownloadListWindow {
     }
 
     public void close() {
+        logger.info("Closing downloadable exercises window @DownloadListWindow");
         if (frame != null) {
             frame.setVisible(false);
             frame.dispose();

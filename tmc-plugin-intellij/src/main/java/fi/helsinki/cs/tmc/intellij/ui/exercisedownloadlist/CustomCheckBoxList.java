@@ -16,17 +16,22 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A list of labeled checkboxes.
  * Based on: http://www.devx.com/tips/Tip/5342
  * See also: http://stackoverflow.com/questions/19766/how-do-i-make-a-list-with-checkboxes-in-java-swing
+ * Borrowed from tmc-netbeans plugin
  */
 public class CustomCheckBoxList extends JList implements Iterable<JCheckBox> {
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomCheckBoxList.class);
     private List<ItemListener> itemListeners;
 
     public CustomCheckBoxList() {
+        logger.info("Creating custom checkbox list");
         this.itemListeners = new ArrayList<ItemListener>();
         this.setCellRenderer(new CellRenderer());
         this.addMouseListener(new MouseAdapter() {

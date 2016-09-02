@@ -1,18 +1,15 @@
 package fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist;
 
-import fi.helsinki.cs.tmc.core.domain.Exercise;
-
-import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
-
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-
+import fi.helsinki.cs.tmc.core.domain.Exercise;
+import fi.helsinki.cs.tmc.intellij.services.ExerciseCheckBoxService;
+import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -20,6 +17,8 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DownloadListPanel {
     private JButton downloadButton;
@@ -27,54 +26,40 @@ public class DownloadListPanel {
     private CustomCheckBoxList exerciselist;
     private JPanel mainpanel;
     private JButton selectAllButton;
+    private static final Logger logger = LoggerFactory.getLogger(DownloadListPanel.class);
+
 
     public DownloadListPanel(List<Exercise> exercises, DownloadListWindow window) {
-        downloadButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                List<Exercise> downloadThese = new ArrayList<>();
-                for (JCheckBox box : exerciselist) {
-                    if (box.isSelected()) {
-                        for (Exercise ex : exercises) {
-                            if (box.getText().equals(ex.getName())) {
-                                downloadThese.add(ex);
-                            }
-                        }
-                    }
-                }
-                window.close();
-                ExerciseDownloadingService.startDownloading(downloadThese);
-            }
-        });
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
-                window.close();
-            }
-        });
+        logger.info("Creating downloadable exercises panel. @ DownloadListPanel");
+
         for (Exercise ex : exercises) {
             JCheckBox box = new JCheckBox(ex.getName());
             box.setSelected(true);
             exerciselist.addCheckbox(box);
         }
 
+        downloadButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                List<Exercise> downloadThese =
+                        ExerciseCheckBoxService.filterDownloads(exerciselist, exercises);
+
+                window.close();
+                ExerciseDownloadingService.startDownloading(downloadThese);
+            }
+        });
+
+        cancelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                window.close();
+            }
+        });
+
         selectAllButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent event) {
-                int checked = 0;
-                int all = 0;
-                for (JCheckBox box : exerciselist) {
-                    all++;
-                    if (box.isSelected()) {
-                        checked++;
-                    }
-                    box.setSelected(true);
-                }
-                if (all == checked) {
-                    for (JCheckBox box : exerciselist) {
-                        box.setSelected(false);
-                    }
-                }
+                ExerciseCheckBoxService.toggleAllCheckBoxes(exerciselist);
             }
         });
     }
