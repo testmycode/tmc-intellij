@@ -78,7 +78,7 @@ public class CheckForNewExercises {
                         NotificationType.INFORMATION,
                         (notification, hyperlinkEvent) ->
                                 new DownloadExerciseAction()
-                                        .downloadExercises(project))
+                                        .downloadExercises(project, false))
                 .notify(project);
     }
 
