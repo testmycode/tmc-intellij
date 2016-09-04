@@ -13,7 +13,7 @@ public interface TmcIcons {
     Icon UNKNOWN = IconLoader.getIcon("unknown.png");
     Icon REFRESH = IconLoader.getIcon("refresh.png");
     Icon SUCCESS = IconLoader.getIcon("smiley.png");
-    Icon SIDE_PANEL = IconLoader.getIcon("sidepanel.png");
+    Icon SIDE_PANEL = IconLoader.getIcon("sidepanel_new.png");
 }
 
 

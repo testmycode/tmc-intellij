@@ -75,9 +75,12 @@ public class NextExerciseFetcher {
         CourseAndExerciseManager manager = new CourseAndExerciseManager();
         List<Exercise> exercises = manager.getExercises(course);
         Exercise next = null;
+        System.out.println("EEEEEEEEEEEEE");
         for (Exercise ex : exercises) {
+            System.out.println(ex);
             if (!ex.isCompleted() && ex.getName()
                     .compareTo(exercise.getName()) < 0 && next == null) {
+                System.out.println(ex);
                 next = ex;
             } else if (!ex.isCompleted() && ex.getName()
                     .compareTo(exercise.getName()) > 0) {
@@ -104,10 +107,10 @@ public class NextExerciseFetcher {
 
     public static void openNext(Project project, SettingsTmc settings) {
         logger.info("Open next project @NextExerciseFetcher.openNext");
-        if (isCourseSelected(settings)
-                && (projectIsNotOpen(project)
-                || !hasProjectPath(project)
-                || !isCourseProject(project, settings))) {
+        if ((isCourseSelected(settings)
+                && (projectIsNotOpen(project))
+                && (!hasProjectPath(project)
+                || !isCourseProject(project, settings)))) {
             CourseAndExerciseManager manager = new CourseAndExerciseManager();
             NextExerciseFetcher.openFirst(manager.getExercises(settings.getCourseName()));
         } else {
