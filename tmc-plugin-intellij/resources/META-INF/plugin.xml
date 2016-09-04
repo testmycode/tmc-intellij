@@ -1,7 +1,7 @@
 <idea-plugin version="2">
   <id>fi.helsinki.cs.tmc</id>
   <name>TMC Plugin for Intellij</name>
-  <version>0.0.4-BETA</version>
+  <version>1.0.2</version>
   <vendor email="" url="https://github.com/ohtu-intellij/tmc-intellij">Ohtu IntelliJ team @ Github</vendor>
 
   <description><![CDATA[
@@ -17,8 +17,7 @@
     ]]></description>
 
   <change-notes><![CDATA[
-      - Projets now open completely automatically.<br>
-      - Plenty of bug fixes and minor changes to make the plugin more comfortable to use<em>
+      - Next exercise functionality should be working as intended.<br>
     ]]>
   </change-notes>
 

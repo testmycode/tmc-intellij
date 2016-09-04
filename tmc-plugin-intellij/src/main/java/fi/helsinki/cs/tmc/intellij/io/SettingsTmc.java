@@ -48,7 +48,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.checkForExercises = true;
         logger.info("Setting default folder for TMC project files. @SettingsTmc");
         JFileChooser fileChooser = new JFileChooser();
-        serverAddress = "https://tmc.mooc.fi/staging/org/tmc-intellij/";
+        serverAddress = "https://tmc.mooc.fi/mooc";
         projectBasePath = fileChooser.getFileSystemView().getDefaultDirectory().toString()
                 + File.separator + "IdeaProjects" + File.separator + "TMCProjects";
     }
@@ -149,7 +149,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public String clientVersion() {
-        return "0.6.0";
+        return "1.0.2";
     }
 
     @Override
