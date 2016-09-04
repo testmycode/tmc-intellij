@@ -52,7 +52,6 @@ public class StartupEvent implements StartupActivity {
 
         CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
 
-
         threadingService.runWithNotification(
                 new Thread() {
                     @Override

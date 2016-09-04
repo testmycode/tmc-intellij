@@ -8,11 +8,10 @@
     TMC-IntelliJ is the IntelliJ IDEA plugin for University of Helsinki's TestMyCode framework.
     TestMyCode is used by various online programming courses for exercise testing and submitting.
     <p>
-      Set your TMC settings in the TMC menu and you're ready to go! When you have any exercises downloaded
-      open up the project view from the smiley button at top right.
+      Set your TMC settings in the TMC menu and you're ready to go!
     </p>
     <p>
-      Note that the plugin is still in beta. If you run into any bugs, please submit an issue of it
+      If you run into any bugs, please submit an issue of it
       at the Github repository.
     </p>
     ]]></description>
