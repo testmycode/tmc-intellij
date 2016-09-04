@@ -41,8 +41,9 @@ public class NextExerciseFetcher {
             ApplicationManager.getApplication().invokeLater(new Runnable() {
                 @Override
                 public void run() {
-                    new ProjectOpener().openProject(exercise.getExerciseDirectory(TmcSettingsManager
-                            .get().getTmcProjectDirectory()));
+                    new ProjectOpener().openProject(project,
+                            exercise.getExerciseDirectory(TmcSettingsManager
+                            .get().getTmcProjectDirectory()).toString());
                 }
             });
         } else {
@@ -62,7 +63,7 @@ public class NextExerciseFetcher {
                                     + " to match the course we want to download from.");
                             settings.setCourse(PathResolver.getCourse(project.getBasePath()));
                         }
-                        new DownloadExerciseAction().downloadExercises(project);
+                        new DownloadExerciseAction().downloadExercises(project, false);
                     }
                 }
             });

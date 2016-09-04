@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
@@ -40,6 +41,8 @@ public class StartupEvent implements StartupActivity {
 
         logger.info("Opening project {} and running startup actions. @StartupEvent",
                 project);
+
+        ExerciseDatabaseManager.setup();
 
         ThreadingService threadingService = new ThreadingService();
 

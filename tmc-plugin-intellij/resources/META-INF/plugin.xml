@@ -1,18 +1,17 @@
 <idea-plugin version="2">
   <id>fi.helsinki.cs.tmc</id>
   <name>TMC Plugin for Intellij</name>
-  <version>0.6.0</version>
+  <version>0.0.4-BETA</version>
   <vendor email="" url="https://github.com/ohtu-intellij/tmc-intellij">Ohtu IntelliJ team @ Github</vendor>
 
   <description><![CDATA[
     TMC-IntelliJ is the IntelliJ IDEA plugin for University of Helsinki's TestMyCode framework.
     TestMyCode is used by various online programming courses for exercise testing and submitting.
     <p>
-      Set your TMC settings in the TMC menu and you're ready to go! When you have any exercises downloaded
-      open up the project view from the smiley button at top right.
+      Set your TMC settings in the TMC menu and you're ready to go!
     </p>
     <p>
-      Note that the plugin is still in beta. If you run into any bugs, please submit an issue of it
+      If you run into any bugs, please submit an issue of it
       at the Github repository.
     </p>
     ]]></description>
@@ -51,6 +50,7 @@
   <actions>
     <group id="TMC.Menu" text="TMC" description="TMC Menu">
       <add-to-group group-id="MainMenu" anchor="last"  />
+
       <action id="Settings" class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.TmcSettingsAction" text="Settings" description="TMC Settings" />
       <action id="Upload Exercise" class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.UploadExerciseAction" text="Upload current exercise" description="Upload exercise" />
       <action id="Download Exercises" class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction" text="Download current course's exercises" description="Download exercise" />
@@ -60,6 +60,7 @@
       <action id="Pastebin" class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.SubmitPasteAction" text="Submit code to TMC Pastebin" description="Submit code to TMC Pastebin" />
       <action id="Run Project" class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.RunProjectAction" text="Run Project" description="Run Project" />
       <action id="Run Tests" class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.RunTestsAction" text="Run Tests" description="Run Tests" />
+      <action id="Download ALL Exercises" class="fi.helsinki.cs.tmc.intellij.actions.DownloadAllExercisesAction" text="Download current course's ALL exercises" description="Download all exercise" />
     </group>
 
     <action class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.TmcSettingsAction" text="Get started with TMC" description="Get started with TMC" id="TmcSettingsAction" icon="TmcIcons.RUN_BUTTON" >

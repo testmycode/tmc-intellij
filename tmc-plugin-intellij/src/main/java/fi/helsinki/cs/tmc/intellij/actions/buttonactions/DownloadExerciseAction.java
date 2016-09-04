@@ -2,7 +2,6 @@ package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
-import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
@@ -23,14 +22,13 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Defined in plugin.xml on line
- *  &lt;action id="Download Exercises"
- *    class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction"&gt;
+ * &lt;action id="Download Exercises"
+ * class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction"&gt;
  * in group actions
- *
  * <p>
  * Downloads exercises from the course selected in settings,
  * uses CheckForExistingExercises to check already downloaded ones,
- * updates exercise lists with CourseAndExeriseManager
+ * updates exercise lists with CourseAndExerciseManager
  * </p>
  */
 public class DownloadExerciseAction extends AnAction {
@@ -41,14 +39,14 @@ public class DownloadExerciseAction extends AnAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
         Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
         new ButtonInputListener().receiveDownloadExercise();
-        downloadExercises(project);
+        downloadExercises(project, false);
     }
 
 
-    public void downloadExercises(Project project) {
+    public void downloadExercises(Project project, boolean downloadAll) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
-            startDownloadExercise(project);
+            startDownloadExercise(project, downloadAll);
         } catch (Exception exception) {
             logger.warn("Downloading failed. @DownloadExerciseAction", exception);
             Messages.showMessageDialog(project,
@@ -58,18 +56,17 @@ public class DownloadExerciseAction extends AnAction {
         }
     }
 
-    private void startDownloadExercise(Project project) throws Exception {
+    private void startDownloadExercise(Project project, boolean downloadAll) throws Exception {
         ProgressWindow window = ProgressWindowMaker.make(
                 "Downloading exercises, this may take several minutes",
-                project, true, true, false);
-        CoreProgressObserver observer = new CoreProgressObserver(window);
+                project, true, true, true);
         new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
                 TmcSettingsManager.get(),
                 new CheckForExistingExercises(),
                 new ObjectFinder(),
                 new ThreadingService(),
                 project,
-                window,
-                observer);
+                downloadAll,
+                window);
     }
 }

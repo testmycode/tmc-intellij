@@ -27,8 +27,11 @@ public class ProjectOpener {
     private static final Logger logger = LoggerFactory.getLogger(ProjectOpener.class);
 
     public void openProject(String path) {
+        openProject(new ObjectFinder().findCurrentProject(), path);
+    }
+
+    public void openProject(Project project, String path) {
         logger.info("Opening project from {}. @ProjectOpener", path);
-        Project project = new ObjectFinder().findCurrentProject();
         if (Files.isDirectory(Paths.get(path))) {
             if (project == null
                     || !path.equals(project.getBasePath())) {

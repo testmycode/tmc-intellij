@@ -80,6 +80,7 @@ public class TestResultsPanel {
 
         bar.setMinimum(0);
         bar.setMaximum(100);
+        bar.setBorderPainted(false);
         bar.setStringPainted(true);
         bar.setValue((int) (100 * ((double) success / results.size())));
         basePanel.repaint();

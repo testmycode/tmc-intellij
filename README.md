@@ -6,9 +6,9 @@
 
 TMC-IntelliJ is the IntelliJ IDEA plugin for University of Helsinki's TestMyCode framework. TestMyCode is used by various online programming courses for exercise testing and submitting.
 
-## New:
-An alpha version of the plugin is now available to download through the Jetbrains plugin repository. 
+The plugin is available to be downloaded through the Jetbrains plugin repository.
 - [Instructions here](https://github.com/ohtu-intellij/tmc-intellij/wiki)
+
 
 
 ## If you want to develop the plugin yourself, please refer to the instructions below:
@@ -44,3 +44,24 @@ Now everything should be ready and all the code compilable.
 
 A new window for IntelliJ IDEA will open up and the Plugin will be active in that window so you can test out the TMC functions as you wish.
 
+---
+
+##Credits
+This plugin was developed for RAGE team of the department of Computer Science in University of Helsinki during course Software Production Project, Summer 2016.
+
+#### Original developers
+
+* Samu Kauppinen ([Rubiini](https://github.com/Rubiini))
+* Konsta Kutvonen ([Djiffit](https://github.com/Djiffit))
+* Henri Manninen ([Melchan](https://github.com/Melchan))
+* Miika Leinonen ([Denopia](https://github.com/Denopia))
+* Tuomo Oila ([tuomokar](https://github.com/tuomokar))
+
+#### Instructor
+
+* Esa Harju
+
+#### Clients
+
+* Leo Leppänen ([ljleppan](https://github.com/ljleppan))
+* Jarmo Isotalo ([jamox](https://github.com/jamox))

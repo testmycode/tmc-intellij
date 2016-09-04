@@ -4,11 +4,14 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist.DownloadListWindow;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.util.ProgressWindow;
@@ -20,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,23 +40,80 @@ public class ExerciseDownloadingService {
                                              ObjectFinder objectFinder,
                                              ThreadingService threadingService,
                                              Project project,
-                                             ProgressWindow window,
-                                             CoreProgressObserver observer) throws Exception {
+                                             boolean downloadAll,
+                                             ProgressWindow window) throws Exception {
 
-        logger.info("Preparing to start downloading exercises. @ExerciseDownloadingService");
-        Thread run = createThread(core, settings, checker, objectFinder, observer);
+        logger.info(
+                "Preparing to start checking for available exercises."
+                        + "@ExerciseDownloadingService");
+        Thread run = checkAvailableExercises(core, settings, checker,
+                objectFinder, downloadAll);
         threadingService.runWithNotification(
                 run,
                 project,
                 window);
     }
 
+    public static void startDownloading(List<Exercise> exercises) {
+        logger.info(
+                "Preparing to start downloading exercises. @ExerciseDownloadingService");
+        ProgressWindow window = ProgressWindowMaker.make(
+                "Downloading exercises, this may take a while",
+                new ObjectFinder().findCurrentProject(), true, true, false);
+        CoreProgressObserver observer = new CoreProgressObserver(window);
+        Thread run = downloadSelectedExercises(TmcCoreHolder.get(), exercises, observer);
+        ThreadingService threadingService = new ThreadingService();
+        Project project = new ObjectFinder().findCurrentProject();
+        threadingService.runWithNotification(
+                run,
+                project,
+                window);
+    }
+
+    private static Thread checkAvailableExercises(final TmcCore core,
+                                                  final SettingsTmc settings,
+                                                  final CheckForExistingExercises checker,
+                                                  final ObjectFinder finder,
+                                                  boolean downloadAll) {
+
+        logger.info(
+                "Creating a new thread to check available exercises. @ExerciseDownloadingService");
+
+        return new Thread() {
+            @Override
+            public void run() {
+                try {
+                    logger.info("Starting to check exercises. @ExerciseDownloadingService");
+
+                    final Course course = finder.findCourseByName(settings.getCourse().getName(),
+                            core);
+
+                    List<Exercise> exercises = course.getExercises();
+                    exercises = checker.clean(exercises, settings);
+                    if (!downloadAll) {
+                        exercises = doneFilter(exercises);
+                    }
+                    if (exercises == null || exercises.size() == 0) {
+                        new ErrorMessageService().downloadErrorMessage(course);
+                        return;
+                    }
+                    new DownloadListWindow().showDownloadableExercises(exercises);
+
+                } catch (Exception except) {
+                    logger.warn("Failed to check available exercises. "
+                                    + "Course not selected. @ExerciseDownloadingService",
+                            except, except.getStackTrace());
+                    new ErrorMessageService().showMessage(except,
+                            "You need to select a course to be able to download.", true);
+                }
+            }
+        };
+    }
+
     @NotNull
-    private static Thread createThread(final TmcCore core,
-                                       final SettingsTmc settings,
-                                       final CheckForExistingExercises checker,
-                                       final ObjectFinder finder,
-                                       CoreProgressObserver observer) {
+    private static Thread downloadSelectedExercises(final TmcCore core,
+                                                    final List<Exercise> exercises,
+                                                    CoreProgressObserver observer) {
 
         logger.info("Creating a new thread. @ExerciseDownloadingService");
 
@@ -60,21 +121,30 @@ public class ExerciseDownloadingService {
             @Override
             public void run() {
                 try {
-                    if (handleCreatingThread(finder, settings, core, checker, observer)) {
-                        return;
-                    }
-                } catch (Exception except) {
-                    logger.warn("Failed to download exercises. "
-                                    + "Course not selected. @ExerciseDownloadingService",
-                            except, except.getStackTrace());
-                    new ErrorMessageService().showMessage(except,
-                            "You need to select a course to be able to download.", true);
+                    List<Exercise> exerciseList = core
+                            .downloadOrUpdateExercises(observer,
+                                    exercises).call();
+                    ApplicationManager.getApplication().invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (0 == Messages
+                                    .showYesNoDialog("Would you like to open the first "
+                                                    + "of the downloaded exercises?",
+                                            "Download complete", null)) {
+                                NextExerciseFetcher.openFirst(exerciseList);
+                            }
+                        }
+                    });
+                } catch (Exception exception) {
+                    logger.info("Failed to download exercises. @ExerciseDownloadingService");
+                    new ErrorMessageService().showMessage(exception,
+                            "Failed to download exercises.", true);
                 }
+
                 createThreadForRefreshingExerciseList();
             }
         };
     }
-
 
 
     private static boolean handleCreatingThread(ObjectFinder finder,
@@ -108,14 +178,14 @@ public class ExerciseDownloadingService {
                                           CoreProgressObserver observer) throws Exception {
         List<Exercise> exerciseList = core
                 .downloadOrUpdateExercises(observer,
-                exercises).call();
+                        exercises).call();
         ApplicationManager.getApplication().invokeLater(new Runnable() {
             @Override
             public void run() {
                 if (0 == Messages
                         .showYesNoDialog("Would you like to open the first "
                                         + "of the downloaded exercises?",
-                        "Download complete", null)) {
+                                "Download complete", null)) {
                     NextExerciseFetcher.openFirst(exerciseList);
                 }
             }
@@ -155,5 +225,15 @@ public class ExerciseDownloadingService {
                 });
             }
         });
+    }
+
+    private static List<Exercise> doneFilter(List<Exercise> exercises) {
+        ArrayList<Exercise> filtered = new ArrayList<>();
+        for (Exercise ex : exercises) {
+            if (!ex.isCompleted()) {
+                filtered.add(ex);
+            }
+        }
+        return filtered;
     }
 }

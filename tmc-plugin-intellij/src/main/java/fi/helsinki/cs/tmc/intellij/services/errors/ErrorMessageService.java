@@ -41,6 +41,7 @@ public class ErrorMessageService {
 
     /**
      * Error message, if TMC username or password are not initialized.
+     *
      * @param exception The cause of an error.
      * @return String. Error message that will be shown to the user.
      */
@@ -54,6 +55,7 @@ public class ErrorMessageService {
 
     /**
      * Error message, if TMC server address has not been initialized.
+     *
      * @param exception The cause of an error.
      * @return String. Error message that will be shown to the user.
      */
@@ -74,6 +76,7 @@ public class ErrorMessageService {
 
     /**
      * Error message, if TMC username or password is incorrect.
+     *
      * @param exception The cause of an error.
      * @return String. Error message that will be shown to the user.
      */
@@ -85,6 +88,7 @@ public class ErrorMessageService {
 
     /**
      * Error message, prints out the cause of the current exception.
+     *
      * @param exception The cause of an error.
      * @return String. Error message that will be shown to the user.
      */
@@ -96,6 +100,7 @@ public class ErrorMessageService {
 
     /**
      * Error message, prints out the cause of the current exception.
+     *
      * @param exception The cause of an error.
      * @return String. Error message that will be shown to the user.
      */
@@ -115,7 +120,8 @@ public class ErrorMessageService {
 
     /**
      * Generates a balloon notification or a popup message.
-     * @param str Notification message.
+     *
+     * @param str  Notification message.
      * @param type The type of notification to be shown.
      * @param bool If the error message will be a popup or not.
      */
@@ -142,8 +148,9 @@ public class ErrorMessageService {
 
     /**
      * Selects the error message method to be called.
+     *
      * @param exception The cause of an error.
-     * @param bool If the error message will be a popup or not.
+     * @param bool      If the error message will be a popup or not.
      */
     private void selectMessage(TmcCoreException exception, boolean bool) {
         logger.info("Selecting the error message method to be called. @ErrorMessageService");
@@ -172,8 +179,9 @@ public class ErrorMessageService {
      * Controls which error message will be shown to the user.
      * If the parameter bool is true, the message will be shown as a popup.
      * If not, then it will be shown at the side.
+     *
      * @param exception The cause of an error.
-     * @param bool if the error message will be a pop up or not.
+     * @param bool      if the error message will be a pop up or not.
      */
     public void showMessage(final TmcCoreException exception, final boolean bool) {
         logger.info("Starting to handle TmcCoreException."
@@ -195,7 +203,8 @@ public class ErrorMessageService {
 
     /**
      * Redirecting the error handling to another showMessage method with boolean parameter.
-     * @param exception The cause of an error.
+     *
+     * @param exception    The cause of an error.
      * @param errorMessage Error message.
      */
     public void showMessage(final Exception exception, final String errorMessage) {
@@ -206,7 +215,8 @@ public class ErrorMessageService {
 
     /**
      * Controls which error message will be shown to the user.
-     * @param exception The cause of an error.
+     *
+     * @param exception    The cause of an error.
      * @param errorMessage Error message.
      */
     public void showMessage(final Exception exception,
