@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services.Persistence;
+package fi.helsinki.cs.tmc.intellij.services.persistence;
 
 
 import com.intellij.openapi.components.PersistentStateComponent;

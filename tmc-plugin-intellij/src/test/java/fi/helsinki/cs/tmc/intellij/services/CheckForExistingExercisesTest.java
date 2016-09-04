@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
-import fi.helsinki.cs.tmc.intellij.services.Exercises.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForExistingExercises;
 import org.junit.Before;
 import org.junit.Test;
 

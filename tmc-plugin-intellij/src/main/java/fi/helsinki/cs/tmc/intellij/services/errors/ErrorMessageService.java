@@ -1,9 +1,10 @@
-package fi.helsinki.cs.tmc.intellij.services.Errors;
+package fi.helsinki.cs.tmc.intellij.services.errors;
 
 
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.notification.Notification;
 import com.intellij.notification.NotificationDisplayType;
@@ -17,10 +18,8 @@ import com.intellij.openapi.project.Project;
 
 import com.intellij.openapi.ui.Messages;
 
-import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 
 /**

@@ -1,16 +1,16 @@
-package fi.helsinki.cs.tmc.intellij.services.Exercises;
+package fi.helsinki.cs.tmc.intellij.services.exercises;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
-import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

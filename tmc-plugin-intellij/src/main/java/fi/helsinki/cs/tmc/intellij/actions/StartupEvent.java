@@ -4,11 +4,11 @@ import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
-import fi.helsinki.cs.tmc.intellij.services.Exercises.CheckForNewExercises;
-import fi.helsinki.cs.tmc.intellij.services.Exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
-import fi.helsinki.cs.tmc.intellij.services.Logging.PropertySetter;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForNewExercises;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
+import fi.helsinki.cs.tmc.intellij.services.logging.PropertySetter;
 import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 
 import com.intellij.openapi.application.ApplicationManager;

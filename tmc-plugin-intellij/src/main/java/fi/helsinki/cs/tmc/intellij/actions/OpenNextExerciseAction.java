@@ -2,7 +2,7 @@ package fi.helsinki.cs.tmc.intellij.actions;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-import fi.helsinki.cs.tmc.intellij.services.Exercises.NextExerciseFetcher;
+import fi.helsinki.cs.tmc.intellij.services.exercises.NextExerciseFetcher;
 
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;

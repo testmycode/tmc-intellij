@@ -1,8 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import fi.helsinki.cs.tmc.intellij.services.Exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.spyware.TextInputListener;
 
 import com.intellij.internal.statistic.UsagesCollector;

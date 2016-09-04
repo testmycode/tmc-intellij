@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services.Exercises;
+package fi.helsinki.cs.tmc.intellij.services.exercises;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
@@ -6,15 +6,15 @@ import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
-import fi.helsinki.cs.tmc.intellij.services.Errors.ErrorMessageService;
-import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
-import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import org.jetbrains.annotations.NotNull;
 
 import org.slf4j.Logger;

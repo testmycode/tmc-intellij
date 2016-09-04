@@ -41,8 +41,8 @@
                 factoryClass="fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory">
     </toolWindow>
     <postStartupActivity implementation="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"></postStartupActivity>
-    <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.Persistence.PersistentTmcSettings"/>
-    <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.Persistence.PersistentExerciseDatabase"/>
+    <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings"/>
+    <applicationService serviceImplementation="fi.helsinki.cs.tmc.intellij.services.persistence.PersistentExerciseDatabase"/>
     <!--<applicationConfigurable displayName="TMC Settings" id="TMC Settings" instance="fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanelLauncher"/>-->
   </extensions>
 

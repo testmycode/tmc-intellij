@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNotEquals;
 
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
-import fi.helsinki.cs.tmc.intellij.services.Persistence.PersistentTmcSettings;
+import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services.Exercises;
+package fi.helsinki.cs.tmc.intellij.services.exercises;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;

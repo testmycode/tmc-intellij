@@ -3,13 +3,13 @@ package fi.helsinki.cs.tmc.intellij.actions;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
-import fi.helsinki.cs.tmc.intellij.services.Exercises.CheckForExistingExercises;
-import fi.helsinki.cs.tmc.intellij.services.Exercises.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.intellij.services.Exercises.ExerciseUploadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
+import fi.helsinki.cs.tmc.intellij.services.exercises.ExerciseUploadingService;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 

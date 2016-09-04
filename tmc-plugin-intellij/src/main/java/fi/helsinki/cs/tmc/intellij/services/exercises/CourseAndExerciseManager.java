@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services.Exercises;
+package fi.helsinki.cs.tmc.intellij.services.exercises;
 
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
@@ -8,11 +8,11 @@ import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-
-import fi.helsinki.cs.tmc.intellij.services.Errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
-import fi.helsinki.cs.tmc.intellij.services.Persistence.ExerciseDatabase;
-import fi.helsinki.cs.tmc.intellij.services.Persistence.PersistentExerciseDatabase;
+import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.persistence.ExerciseDatabase;
+import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentExerciseDatabase;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,7 +106,9 @@ public class CourseAndExerciseManager {
         }
     }
 
-    private void fetchCoursesFromTmcCore(Map<String, List<Exercise>> database, List<Course> courses) {
+    private void fetchCoursesFromTmcCore(Map<String, List<Exercise>> database,
+                                         List<Course> courses) {
+
         logger.info("Starting to fetch courses from TmcCore. @CourseAndExerciseManager");
         for (Course course : courses) {
             List<Exercise> exercises;
