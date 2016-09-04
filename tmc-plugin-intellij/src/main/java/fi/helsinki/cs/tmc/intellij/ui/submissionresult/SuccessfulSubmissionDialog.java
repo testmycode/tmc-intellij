@@ -10,12 +10,9 @@ import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
-import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
-import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
-import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
-import fi.helsinki.cs.tmc.intellij.services.NextExerciseFetcher;
-import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
+import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.exercises.NextExerciseFetcher;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanel;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestionPanelFactory;
 
@@ -238,7 +235,6 @@ public class SuccessfulSubmissionDialog extends JDialog {
     private AbstractAction getAbstractAction(String message,
                                              final String solutionUrl,
                                              final Project project) {
-
 
         return new AbstractAction(message) {
             @Override

@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services;
+package fi.helsinki.cs.tmc.intellij.services.logging;
 
 import com.intellij.openapi.application.PathManager;
 import org.apache.log4j.PropertyConfigurator;

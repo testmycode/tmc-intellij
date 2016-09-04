@@ -5,12 +5,11 @@ import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
-import fi.helsinki.cs.tmc.intellij.services.CheckForNewExercises;
-import fi.helsinki.cs.tmc.intellij.services.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase;
 import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
-import fi.helsinki.cs.tmc.intellij.services.PropertySetter;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForNewExercises;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
+import fi.helsinki.cs.tmc.intellij.services.logging.PropertySetter;
 import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 
 import com.intellij.openapi.application.ApplicationManager;
@@ -51,7 +50,6 @@ public class StartupEvent implements StartupActivity {
                 "Running TMC startup actions.", project, false, false, false);
 
         CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
-
 
         threadingService.runWithNotification(
                 new Thread() {

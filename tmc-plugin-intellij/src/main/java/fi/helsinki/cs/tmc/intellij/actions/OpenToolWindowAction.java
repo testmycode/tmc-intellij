@@ -1,8 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
-import fi.helsinki.cs.tmc.intellij.services.ErrorMessageService;
-import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;

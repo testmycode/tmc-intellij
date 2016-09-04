@@ -2,7 +2,7 @@ package fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.services.ExerciseCheckBoxService;
-import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
+import fi.helsinki.cs.tmc.intellij.services.exercises.ExerciseDownloadingService;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;

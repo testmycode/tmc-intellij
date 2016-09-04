@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services;
+package fi.helsinki.cs.tmc.intellij.services.persistence;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 

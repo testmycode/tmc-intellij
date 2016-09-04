@@ -1,8 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.holders;
 
 
-import fi.helsinki.cs.tmc.intellij.services.ExerciseDatabase;
-import fi.helsinki.cs.tmc.intellij.services.PersistentExerciseDatabase;
+import fi.helsinki.cs.tmc.intellij.services.persistence.ExerciseDatabase;
+import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentExerciseDatabase;
 
 import com.intellij.openapi.components.ServiceManager;
 

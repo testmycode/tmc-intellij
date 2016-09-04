@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.services;
+package fi.helsinki.cs.tmc.intellij.services.persistence;
 
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * Uses the IDE to save settings on disk
  * Defined in plugin.xml on line in extensions group
  * <applicationService serviceImplementation
- *   ="fi.helsinki.cs.tmc.intellij.services.PersistentTmcSettings"/>
+ *   ="fi.helsinki.cs.tmc.intellij.services.Persistence.PersistentTmcSettings"/>
  */
 
 @State(

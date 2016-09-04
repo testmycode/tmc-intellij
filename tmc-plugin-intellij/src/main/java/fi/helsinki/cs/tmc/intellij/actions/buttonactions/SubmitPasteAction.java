@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.actions;
+package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.services.PasteService;
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Defined in plugin.xml on line
  *  &lt;action id="Submit to Pastebin"
- *    class="fi.helsinki.cs.tmc.intellij.actions.SubmitPasteAction"&gt;
+ *    class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.SubmitPasteAction"&gt;
  * in group actions
  * <p>
  *     Submit code to TMC Pastebin.

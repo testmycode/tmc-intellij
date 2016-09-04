@@ -1,14 +1,13 @@
-package fi.helsinki.cs.tmc.intellij.actions;
+package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
-import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 
-import fi.helsinki.cs.tmc.intellij.services.CheckForExistingExercises;
-import fi.helsinki.cs.tmc.intellij.services.ExerciseDownloadingService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForExistingExercises;
+import fi.helsinki.cs.tmc.intellij.services.exercises.ExerciseDownloadingService;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
@@ -24,12 +23,12 @@ import org.slf4j.LoggerFactory;
 /**
  * Defined in plugin.xml on line
  * &lt;action id="Download Exercises"
- * class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction"&gt;
+ * class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction"&gt;
  * in group actions
  * <p>
  * Downloads exercises from the course selected in settings,
  * uses CheckForExistingExercises to check already downloaded ones,
- * updates exercise lists with CourseAndExeriseManager
+ * updates exercise lists with CourseAndExerciseManager
  * </p>
  */
 public class DownloadExerciseAction extends AnAction {
