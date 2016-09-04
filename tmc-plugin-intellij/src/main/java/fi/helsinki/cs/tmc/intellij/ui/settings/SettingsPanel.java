@@ -4,7 +4,7 @@ package fi.helsinki.cs.tmc.intellij.ui.settings;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
-import fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction;
+import fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;

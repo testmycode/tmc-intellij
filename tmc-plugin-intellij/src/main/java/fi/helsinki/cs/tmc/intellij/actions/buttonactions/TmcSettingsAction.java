@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.actions;
+package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
 
 import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsWindow;
@@ -12,7 +12,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Opens the settings window. Defined in plugin.xml on line
- * &lt;action id="Settings" class="fi.helsinki.cs.tmc.intellij.actions.TmcSettingsAction"&gt;
+ * &lt;action id="Settings" class="fi.helsinki.cs.tmc.intellij
+ * .actions.buttonactions.TmcSettingsAction"&gt;
  */
 public class TmcSettingsAction extends AnAction {
 

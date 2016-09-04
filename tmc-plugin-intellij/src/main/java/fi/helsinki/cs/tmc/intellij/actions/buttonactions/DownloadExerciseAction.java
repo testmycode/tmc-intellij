@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.actions;
+package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Defined in plugin.xml on line
  *  &lt;action id="Download Exercises"
- *    class="fi.helsinki.cs.tmc.intellij.actions.DownloadExerciseAction"&gt;
+ *    class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction"&gt;
  * in group actions
  *
  * <p>

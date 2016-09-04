@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.actions;
+package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
 import fi.helsinki.cs.tmc.intellij.runners.RunProject;
 

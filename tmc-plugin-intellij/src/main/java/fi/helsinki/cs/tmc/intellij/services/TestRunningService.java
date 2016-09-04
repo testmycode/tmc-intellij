@@ -1,7 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-import fi.helsinki.cs.tmc.intellij.actions.UploadExerciseAction;
+import fi.helsinki.cs.tmc.intellij.actions.buttonactions.UploadExerciseAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
