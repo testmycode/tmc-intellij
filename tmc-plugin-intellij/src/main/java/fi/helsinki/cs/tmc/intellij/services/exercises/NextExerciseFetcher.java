@@ -74,6 +74,7 @@ public class NextExerciseFetcher {
         logger.info("Trying to find next exercise candidate.");
         CourseAndExerciseManager manager = new CourseAndExerciseManager();
         List<Exercise> exercises = manager.getExercises(course);
+
         Exercise next = null;
         for (Exercise ex : exercises) {
             if (!ex.isCompleted() && ex.getName()
@@ -91,7 +92,6 @@ public class NextExerciseFetcher {
     /**
      * Opens first incomplete exercise in list.
      */
-
     public static void openFirst(List<Exercise> exercises) {
         for (Exercise ex: exercises) {
             if (!ex.isCompleted()) {
@@ -104,10 +104,10 @@ public class NextExerciseFetcher {
 
     public static void openNext(Project project, SettingsTmc settings) {
         logger.info("Open next project @NextExerciseFetcher.openNext");
-        if (isCourseSelected(settings)
-                && (projectIsNotOpen(project)
-                || !hasProjectPath(project)
-                || !isCourseProject(project, settings))) {
+        if ((isCourseSelected(settings)
+                && (projectIsNotOpen(project))
+                && (!hasProjectPath(project)
+                || !isCourseProject(project, settings)))) {
             CourseAndExerciseManager manager = new CourseAndExerciseManager();
             NextExerciseFetcher.openFirst(manager.getExercises(settings.getCourseName()));
         } else {
