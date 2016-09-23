@@ -6,21 +6,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Controls the courses. Used by to set and get the course map.
- */
+/** Controls the courses. Used by to set and get the course map. */
 public class ExerciseDatabase implements Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(ExerciseDatabase.class);
     private Map<String, List<Exercise>> courses;
 
     public ExerciseDatabase() {
-        courses =  new HashMap();
+        courses = new HashMap();
     }
 
     public Map<String, List<Exercise>> getCourses() {
@@ -32,5 +29,4 @@ public class ExerciseDatabase implements Serializable {
         logger.info("Set courses. @ExerciseDatabase.");
         this.courses = courses;
     }
-
 }

@@ -22,5 +22,4 @@ public class DownloadAllExercisesAction extends AnAction {
         new ButtonInputListener().receiveDownloadExercise();
         new DownloadExerciseAction().downloadExercises(project, true);
     }
-
 }

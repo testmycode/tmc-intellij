@@ -22,10 +22,9 @@ import java.util.List;
 
 
 /**
- * This class substitutes the normal TypedActionHandler.
- * It attempts to add a listener to the current document when a key is pressed.
+ * This class substitutes the normal TypedActionHandler. It attempts to add a listener to the
+ * current document when a key is pressed.
  */
-
 public class ActivateSpywareAction implements TypedActionHandler {
 
     private TypedActionHandler handler;
@@ -52,7 +51,9 @@ public class ActivateSpywareAction implements TypedActionHandler {
 
     private Boolean isThisCorrectProject() {
         logger.info("Making sure current exercise should be tracked");
-        return new CourseAndExerciseManager().isCourseInDatabase(PathResolver
-                .getCourseName(new ObjectFinder().findCurrentProject().getBasePath()));
+        return new CourseAndExerciseManager()
+                .isCourseInDatabase(
+                        PathResolver.getCourseName(
+                                new ObjectFinder().findCurrentProject().getBasePath()));
     }
 }

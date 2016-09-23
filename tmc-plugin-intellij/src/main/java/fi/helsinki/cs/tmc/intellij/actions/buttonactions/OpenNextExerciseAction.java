@@ -21,9 +21,8 @@ public class OpenNextExerciseAction extends AnAction {
     }
 
     /**
-     * Opens next exercise from the chosen course in settings.
-     * If current project is from that course the next exercise is chosen
-     * using the open exercise.
+     * Opens next exercise from the chosen course in settings. If current project is from that
+     * course the next exercise is chosen using the open exercise.
      */
     public void openExercise(Project project) {
         logger.info("Opening next exercise");

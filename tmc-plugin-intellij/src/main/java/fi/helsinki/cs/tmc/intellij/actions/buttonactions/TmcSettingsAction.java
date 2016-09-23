@@ -9,11 +9,9 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
- * Opens the settings window. Defined in plugin.xml on line
- * &lt;action id="Settings" class="fi.helsinki.cs.tmc.intellij
- * .actions.buttonactions.TmcSettingsAction"&gt;
+ * Opens the settings window. Defined in plugin.xml on line &lt;action id="Settings"
+ * class="fi.helsinki.cs.tmc.intellij .actions.buttonactions.TmcSettingsAction"&gt;
  */
 public class TmcSettingsAction extends AnAction {
 
@@ -28,7 +26,7 @@ public class TmcSettingsAction extends AnAction {
 
     public void showSettings() {
         logger.info("Opening TMC setting window. @TmcSettingsAction");
-        if ( window == null || window.isClosed()) {
+        if (window == null || window.isClosed()) {
             window = new SettingsWindow();
         } else {
             window.show();

@@ -13,7 +13,6 @@ import java.awt.Color;
 import java.awt.GridLayout;
 
 import java.util.List;
-
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -22,8 +21,7 @@ import javax.swing.JScrollPane;
 
 public class TestResultsPanel {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(TestResultsPanel.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestResultsPanel.class);
     private JPanel basePanel;
     private JPanel newpanel;
 
@@ -34,15 +32,28 @@ public class TestResultsPanel {
     private void addTestCases() {
         logger.info("Adding Test cases. @TestResultsPanel");
         basePanel = new JPanel();
-        basePanel.setLayout(new GridLayout(1,1));
+        basePanel.setLayout(new GridLayout(1, 1));
         final JScrollPane scrollPane1 = new JBScrollPane();
-        basePanel.add(scrollPane1, new GridConstraints(0, 0, 1, 1,
-                GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW,
-                GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW,
-                null, null, null, 0, false));
+        basePanel.add(
+                scrollPane1,
+                new GridConstraints(
+                        0,
+                        0,
+                        1,
+                        1,
+                        GridConstraints.ANCHOR_CENTER,
+                        GridConstraints.FILL_BOTH,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK
+                                | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        GridConstraints.SIZEPOLICY_CAN_SHRINK
+                                | GridConstraints.SIZEPOLICY_WANT_GROW,
+                        null,
+                        null,
+                        null,
+                        0,
+                        false));
         newpanel = new JPanel();
-        newpanel.setLayout(new GridLayout(12,1));
+        newpanel.setLayout(new GridLayout(12, 1));
         scrollPane1.setViewportView(newpanel);
     }
 
@@ -70,9 +81,14 @@ public class TestResultsPanel {
             } else {
                 error = result.getException();
             }
-            newpanel.add(new TestResultCase(getColor(result.isSuccessful()),
-                    Color.BLUE, result.getName(), result.getMessage(),
-                    new JPanel(), error));
+            newpanel.add(
+                    new TestResultCase(
+                            getColor(result.isSuccessful()),
+                            Color.BLUE,
+                            result.getName(),
+                            result.getMessage(),
+                            new JPanel(),
+                            error));
             if (result.isSuccessful()) {
                 success++;
             }

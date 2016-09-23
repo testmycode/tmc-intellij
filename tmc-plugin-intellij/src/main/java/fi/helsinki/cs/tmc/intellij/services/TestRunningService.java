@@ -22,67 +22,81 @@ public class TestRunningService {
 
     private static final Logger logger = LoggerFactory.getLogger(TestRunningService.class);
 
-    public void runTests(final Exercise exercise, Project project,
-                         ThreadingService threadingService,
-                         ObjectFinder finder) {
+    public void runTests(
+            final Exercise exercise,
+            Project project,
+            ThreadingService threadingService,
+            ObjectFinder finder) {
         logger.info("Starting to run tests for current project. @TestRunningService");
 
-        ProgressWindow window = ProgressWindowMaker.make("Running tests", project,
-                true, true, true);
+        ProgressWindow window =
+                ProgressWindowMaker.make("Running tests", project, true, true, true);
         CoreProgressObserver observer = new CoreProgressObserver(window);
 
         if (exercise != null) {
-            prepareThreadForRunningTests(exercise, project,
-                    threadingService, finder, window, observer);
+            prepareThreadForRunningTests(
+                    exercise, project, threadingService, finder, window, observer);
         } else {
             Exception exception = new Exception();
-            logger.warn("Running tests failed, exercise {} was not "
-                    + "recognized. @TestRunningService", exercise, exception);
-            new ErrorMessageService().showMessage(exception,
-                    "Running tests failed, exercise was not recognized", true);
+            logger.warn(
+                    "Running tests failed, exercise {} was not "
+                            + "recognized. @TestRunningService",
+                    exercise,
+                    exception);
+            new ErrorMessageService()
+                    .showMessage(
+                            exception, "Running tests failed, exercise was not recognized", true);
         }
     }
 
-    private void prepareThreadForRunningTests(final Exercise exercise,
-                                              final Project project,
-                                              ThreadingService threadingService,
-                                              ObjectFinder finder,
-                                              ProgressWindow window,
-                                              final CoreProgressObserver observer) {
+    private void prepareThreadForRunningTests(
+            final Exercise exercise,
+            final Project project,
+            ThreadingService threadingService,
+            ObjectFinder finder,
+            ProgressWindow window,
+            final CoreProgressObserver observer) {
         logger.info("Preparing thread for running tests. @TestRunningService");
-        threadingService.runWithNotification(new Runnable() {
-            @Override 
-            public void run() {
-                RunResult result = null;
-                try {
-                    result = TmcCoreHolder.get()
-                            .runTests(observer, exercise).call();
-                    RunResult finalResult = result;
-                    showTestResult(finalResult);
-                    checkIfAllTestsPassed(finalResult, project);
-                } catch (Exception exception) {
-                    logger.warn("Could not run tests. @TestRunningService", exception);
-                    new ErrorMessageService().showMessage(exception,
-                            "Running tests failed!", true);
-                }
-            }
-        }, project, window);
+        threadingService.runWithNotification(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        RunResult result = null;
+                        try {
+                            result = TmcCoreHolder.get().runTests(observer, exercise).call();
+                            RunResult finalResult = result;
+                            showTestResult(finalResult);
+                            checkIfAllTestsPassed(finalResult, project);
+                        } catch (Exception exception) {
+                            logger.warn("Could not run tests. @TestRunningService", exception);
+                            new ErrorMessageService()
+                                    .showMessage(exception, "Running tests failed!", true);
+                        }
+                    }
+                },
+                project,
+                window);
         displayTestWindow(finder);
     }
 
     private void checkIfAllTestsPassed(RunResult finalResult, Project project) {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                if (allPassed(finalResult)) {
-                    if (Messages.showYesNoDialog(project,
-                            "Would you like to submit the exercise?",
-                            "All tests passed!", null) == 0) {
-                        new UploadExerciseAction().uploadExercise(project);
-                    }
-                }
-            }
-        });
+        ApplicationManager.getApplication()
+                .invokeLater(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                if (allPassed(finalResult)) {
+                                    if (Messages.showYesNoDialog(
+                                                    project,
+                                                    "Would you like to submit the exercise?",
+                                                    "All tests passed!",
+                                                    null)
+                                            == 0) {
+                                        new UploadExerciseAction().uploadExercise(project);
+                                    }
+                                }
+                            }
+                        });
     }
 
     private boolean allPassed(RunResult finalResult) {
@@ -99,19 +113,20 @@ public class TestRunningService {
         logger.info("Displaying test window. @TestRunningService");
         Project project = finder.findCurrentProject();
 
-        ToolWindowManager.getInstance(project)
-                .getToolWindow("TMC Test Results").show(null);
-        ToolWindowManager.getInstance(project)
-                .getToolWindow("TMC Test Results").activate(null);
+        ToolWindowManager.getInstance(project).getToolWindow("TMC Test Results").show(null);
+        ToolWindowManager.getInstance(project).getToolWindow("TMC Test Results").activate(null);
     }
 
     public void showTestResult(final RunResult finalResult) {
         logger.info("Showing the final test result after updating. @TestRunningService");
-        ApplicationManager.getApplication().invokeLater((new Runnable() {
-            @Override
-            public void run() {
-                TestResultPanelFactory.updateMostRecentResult(finalResult.testResults);
-            }
-        }));
+        ApplicationManager.getApplication()
+                .invokeLater(
+                        (new Runnable() {
+                            @Override
+                            public void run() {
+                                TestResultPanelFactory.updateMostRecentResult(
+                                        finalResult.testResults);
+                            }
+                        }));
     }
 }

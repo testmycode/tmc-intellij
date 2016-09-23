@@ -22,9 +22,8 @@ import javax.swing.border.EmptyBorder;
 
 
 /**
- * A list of labeled checkboxes.
- * Based on: http://www.devx.com/tips/Tip/5342
- * See also: http://stackoverflow.com/questions/19766/how-do-i-make-a-list-with-checkboxes-in-java-swing
+ * A list of labeled checkboxes. Based on: http://www.devx.com/tips/Tip/5342 See also:
+ * http://stackoverflow.com/questions/19766/how-do-i-make-a-list-with-checkboxes-in-java-swing
  * Borrowed from tmc-netbeans plugin
  */
 public class CustomCheckBoxList extends JList implements Iterable<JCheckBox> {
@@ -36,34 +35,37 @@ public class CustomCheckBoxList extends JList implements Iterable<JCheckBox> {
         logger.info("Creating custom checkbox list");
         this.itemListeners = new ArrayList<ItemListener>();
         this.setCellRenderer(new CellRenderer());
-        this.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent event) {
-                int index = locationToIndex(event.getPoint());
-                if (index != -1) {
-                    JCheckBox checkbox = (JCheckBox) getModel().getElementAt(index);
-                    if (CustomCheckBoxList.this.isEnabled() && checkbox.isEnabled()) {
-                        checkbox.setSelected(!checkbox.isSelected());
+        this.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent event) {
+                        int index = locationToIndex(event.getPoint());
+                        if (index != -1) {
+                            JCheckBox checkbox = (JCheckBox) getModel().getElementAt(index);
+                            if (CustomCheckBoxList.this.isEnabled() && checkbox.isEnabled()) {
+                                checkbox.setSelected(!checkbox.isSelected());
+                            }
+                            repaint();
+                        }
                     }
-                    repaint();
-                }
-            }
-        });
+                });
     }
 
-    private ItemListener itemEventForwarder = new ItemListener() {
-        @Override
-        public void itemStateChanged(ItemEvent event) {
-            fireItemEvent(event);
-        }
-    };
+    private ItemListener itemEventForwarder =
+            new ItemListener() {
+                @Override
+                public void itemStateChanged(ItemEvent event) {
+                    fireItemEvent(event);
+                }
+            };
 
-    private PropertyChangeListener checkBoxPropChangeListener = new PropertyChangeListener() {
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            repaint();
-        }
-    };
+    private PropertyChangeListener checkBoxPropChangeListener =
+            new PropertyChangeListener() {
+                @Override
+                public void propertyChange(PropertyChangeEvent evt) {
+                    repaint();
+                }
+            };
 
     public void addItemListener(ItemListener listener) {
         itemListeners.add(listener);
@@ -141,19 +143,18 @@ public class CustomCheckBoxList extends JList implements Iterable<JCheckBox> {
 
     protected class CellRenderer implements ListCellRenderer {
         @Override
-        public Component getListCellRendererComponent(JList list,
-                                                      Object value,
-                                                      int index,
-                                                      boolean isSelected,
-                                                      boolean cellHasFocus) {
+        public Component getListCellRendererComponent(
+                JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JCheckBox checkbox = (JCheckBox) value;
             checkbox.setBackground(isSelected ? getSelectionBackground() : getBackground());
             checkbox.setForeground(isSelected ? getSelectionForeground() : getForeground());
             checkbox.setFont(getFont());
             checkbox.setFocusPainted(false);
             checkbox.setBorderPainted(false);
-            checkbox.setBorder(isSelected ? UIManager.getBorder("List.focusCellHighlightBorder") :
-                    new EmptyBorder(1, 1, 1, 1));
+            checkbox.setBorder(
+                    isSelected
+                            ? UIManager.getBorder("List.focusCellHighlightBorder")
+                            : new EmptyBorder(1, 1, 1, 1));
             return checkbox;
         }
     }

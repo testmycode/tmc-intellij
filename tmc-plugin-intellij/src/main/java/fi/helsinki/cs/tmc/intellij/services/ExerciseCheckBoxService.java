@@ -14,8 +14,8 @@ public class ExerciseCheckBoxService {
 
     private static final Logger logger = LoggerFactory.getLogger(ExerciseCheckBoxService.class);
 
-    public static List<Exercise> filterDownloads(CustomCheckBoxList checkBoxes,
-                                                 List<Exercise> exercises) {
+    public static List<Exercise> filterDownloads(
+            CustomCheckBoxList checkBoxes, List<Exercise> exercises) {
         logger.info("Filtering exercises. @ExerciseCheckBoxService");
         List<Exercise> downloadThese = new ArrayList<>();
         for (JCheckBox box : checkBoxes) {

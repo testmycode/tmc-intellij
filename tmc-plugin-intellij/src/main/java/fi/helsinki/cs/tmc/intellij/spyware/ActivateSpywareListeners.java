@@ -50,7 +50,6 @@ public class ActivateSpywareListeners {
 
     private boolean isCourseInDatabase(Project project) {
         return new CourseAndExerciseManager()
-                .isCourseInDatabase(PathResolver
-                        .getCourseName(project.getBasePath()));
+                .isCourseInDatabase(PathResolver.getCourseName(project.getBasePath()));
     }
 }

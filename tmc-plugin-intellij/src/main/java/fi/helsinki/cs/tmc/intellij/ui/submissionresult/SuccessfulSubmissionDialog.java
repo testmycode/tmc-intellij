@@ -88,33 +88,37 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
     public void addOkListener(final SubmissionResult result, final Project project) {
         logger.info("Adding action listener for ok button. @SuccessfulSubmissionDialog");
-        this.okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ev) {
-                logger.info("Ok button pressed. @SuccessfulSubmissionDialog");
-                sendFeedback(result, project);
-                setVisible(false);
-                dispose();
-            }
-        });
+        this.okButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ev) {
+                        logger.info("Ok button pressed. @SuccessfulSubmissionDialog");
+                        sendFeedback(result, project);
+                        setVisible(false);
+                        dispose();
+                    }
+                });
     }
 
     public void addNextExerciseListener(final SubmissionResult result, final Project project) {
         logger.info("Adding action listener for next exercise button. @SuccessfulSubmissionDialog");
-        this.nextExerciseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ev) {
-                logger.info("Next Exercise button pressed. @SuccessfulSubmissionDialog");
-                String path = project.getBasePath();
-                NextExerciseFetcher fetcher = new NextExerciseFetcher(PathResolver
-                        .getCourseName(path),
-                        PathResolver.getExercise(path), project);
+        this.nextExerciseButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ev) {
+                        logger.info("Next Exercise button pressed. @SuccessfulSubmissionDialog");
+                        String path = project.getBasePath();
+                        NextExerciseFetcher fetcher =
+                                new NextExerciseFetcher(
+                                        PathResolver.getCourseName(path),
+                                        PathResolver.getExercise(path),
+                                        project);
 
-                fetcher.tryToOpenNext();
-                setVisible(false);
-                dispose();
-            }
-        });
+                        fetcher.tryToOpenNext();
+                        setVisible(false);
+                        dispose();
+                    }
+                });
     }
 
     private void sendFeedback(SubmissionResult result, Project project) {
@@ -128,13 +132,19 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
         try {
             logger.info("Trying to send feedback. @SuccessfulSubmissionDialog");
-            TmcCoreHolder.get().sendFeedback(ProgressObserver.NULL_OBSERVER,
-                    getFeedbackAnswers(), new URI(result.getFeedbackAnswerUrl())).call();
+            TmcCoreHolder.get()
+                    .sendFeedback(
+                            ProgressObserver.NULL_OBSERVER,
+                            getFeedbackAnswers(),
+                            new URI(result.getFeedbackAnswerUrl()))
+                    .call();
 
         } catch (Exception ex) {
-            logger.warn("Failed to send feedback. Problems with internet. "
-                    + "@SuccessfulSubmissionDialog",
-                    ex, ex.getStackTrace());
+            logger.warn(
+                    "Failed to send feedback. Problems with internet. "
+                            + "@SuccessfulSubmissionDialog",
+                    ex,
+                    ex.getStackTrace());
             String errorMessage = "Problems with internet.\n" + ex.getMessage();
             Messages.showErrorDialog(project, errorMessage, "Problem with internet");
         }
@@ -152,7 +162,6 @@ public class SuccessfulSubmissionDialog extends JDialog {
                 continue;
             }
             answers.add(answer);
-
         }
         return answers;
     }
@@ -208,13 +217,11 @@ public class SuccessfulSubmissionDialog extends JDialog {
             return "";
         }
 
-        String msg = "Points permanently awarded: "
-                + StringUtils.join(result.getPoints(), ", ") + ".";
+        String msg =
+                "Points permanently awarded: " + StringUtils.join(result.getPoints(), ", ") + ".";
         String str = StringEscapeUtils.escapeHtml4(msg).replace("\n", "<br />\n");
         return "<html>" + str + "</html>";
-
     }
-
 
     private void addModelSolutionButton(SubmissionResult result, final Project project) {
         logger.info("Adding model solution button. @SuccessfulSubmissionDialog");
@@ -223,18 +230,14 @@ public class SuccessfulSubmissionDialog extends JDialog {
         }
 
         final String solutionUrl = result.getSolutionUrl();
-        JButton solutionButton = new JButton(
-                getAbstractAction("View model solution",
-                        solutionUrl,
-                        project));
+        JButton solutionButton =
+                new JButton(getAbstractAction("View model solution", solutionUrl, project));
 
         getContentPane().add(leftAligned(solutionButton));
-
     }
 
-    private AbstractAction getAbstractAction(String message,
-                                             final String solutionUrl,
-                                             final Project project) {
+    private AbstractAction getAbstractAction(
+            String message, final String solutionUrl, final Project project) {
 
         return new AbstractAction(message) {
             @Override
@@ -250,12 +253,13 @@ public class SuccessfulSubmissionDialog extends JDialog {
                 try {
                     desktop.browse(new URI(solutionUrl));
                 } catch (Exception ex) {
-                    logger.warn("Failed to open browser. "
-                            + "Problem with browser. @SuccessfulSubmissionDialog",
-                            ex, ex.getStackTrace());
-                    new ErrorMessageService().showMessage(ex,
-                            "Failed to open browser. Problem with browser.",
-                            true);
+                    logger.warn(
+                            "Failed to open browser. "
+                                    + "Problem with browser. @SuccessfulSubmissionDialog",
+                            ex,
+                            ex.getStackTrace());
+                    new ErrorMessageService()
+                            .showMessage(ex, "Failed to open browser. Problem with browser.", true);
                     String errorMessage = "Failed to open browser.\n" + ex.getMessage();
                     Messages.showErrorDialog(project, errorMessage, "Problem with browser");
                 }
@@ -288,16 +292,18 @@ public class SuccessfulSubmissionDialog extends JDialog {
     }
 
     private void createQuestionPanelAndAddToPanelList(List<FeedbackQuestion> questions) {
-        logger.info("Getting question panel and add questions to the panel. "
-                + "@SuccessfulSubmissionDialog");
+        logger.info(
+                "Getting question panel and add questions to the panel. "
+                        + "@SuccessfulSubmissionDialog");
         for (FeedbackQuestion question : questions) {
             try {
-                FeedbackQuestionPanel panel
-                        = FeedbackQuestionPanelFactory.getPanelForQuestion(question);
+                FeedbackQuestionPanel panel =
+                        FeedbackQuestionPanelFactory.getPanelForQuestion(question);
                 feedbackQuestionPanels.add(panel);
             } catch (IllegalArgumentException e) {
-                logger.warn("Failed to add panel. This should not cause any problems. "
-                        + " @SuccessfulSubmissionDialog");
+                logger.warn(
+                        "Failed to add panel. This should not cause any problems. "
+                                + " @SuccessfulSubmissionDialog");
                 continue;
             }
         }
@@ -306,26 +312,28 @@ public class SuccessfulSubmissionDialog extends JDialog {
     private void addOkButton() {
         logger.info("Adding ok button. @SuccessfulSubmissionDialog");
         okButton = new JButton("OK");
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent action) {
-                setVisible(false);
-                dispose();
-            }
-        });
+        okButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent action) {
+                        setVisible(false);
+                        dispose();
+                    }
+                });
         getContentPane().add(hbox(hglue(), okButton));
     }
 
     private void addNextExerciseButton() {
         logger.info("Adding next exercise button. @SuccessfulSubmissionDialog");
         nextExerciseButton = new JButton("Open Next Exercise");
-        nextExerciseButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent action) {
-                setVisible(false);
-                dispose();
-            }
-        });
+        nextExerciseButton.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent action) {
+                        setVisible(false);
+                        dispose();
+                    }
+                });
         getContentPane().add(hbox(hglue(), nextExerciseButton));
     }
 }

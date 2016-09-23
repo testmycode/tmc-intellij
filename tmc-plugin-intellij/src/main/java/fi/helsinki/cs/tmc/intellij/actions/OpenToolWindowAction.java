@@ -18,16 +18,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Defined in plugin.xml in actions group on line
- *  &lt;action id="Open TMC Exercise List"
- *  class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"&gt;
- *    and in extensions
- *   &lt;toolWindow id="TMC Project List" secondary="false" anchor="right"
+ * Defined in plugin.xml in actions group on line &lt;action id="Open TMC Exercise List"
+ * class="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"&gt; and in extensions
+ * &lt;toolWindow id="TMC Project List" secondary="false" anchor="right"
  * factoryClass="fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction"&gt;
- * <p>
- *   Opens the tool window in the active project window,
- *   generates the content for the window
- * </p>
+ *
+ * <p>Opens the tool window in the active project window, generates the content for the window
  */
 public class OpenToolWindowAction extends AnAction implements ToolWindowFactory {
 
@@ -46,10 +42,8 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
         }
         ToolWindow projectList = null;
 
-        if (ToolWindowManager.getInstance(project)
-                .getToolWindow("Project") != null) {
-            projectList =  ToolWindowManager.getInstance(project)
-                    .getToolWindow("TMC Project List");
+        if (ToolWindowManager.getInstance(project).getToolWindow("Project") != null) {
+            projectList = ToolWindowManager.getInstance(project).getToolWindow("TMC Project List");
         }
 
         if (projectList == null) {
@@ -60,8 +54,7 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
         if (projectList.isVisible()) {
             projectList.hide(null);
         } else {
-            ToolWindowManager.getInstance(project)
-                    .getToolWindow("TMC Project List").show(null);
+            ToolWindowManager.getInstance(project).getToolWindow("TMC Project List").show(null);
             ToolWindowManager.getInstance(project);
         }
     }
@@ -78,7 +71,6 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
 
     public void hideToolWindow(Project project) {
         logger.info("Hiding tool window. @OpenToolWindowAction");
-        ToolWindowManager.getInstance(project)
-                .getToolWindow("TMC Project List").hide(null);
+        ToolWindowManager.getInstance(project).getToolWindow("TMC Project List").hide(null);
     }
 }

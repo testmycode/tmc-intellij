@@ -38,18 +38,17 @@ import javax.swing.JTabbedPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
-/**
- * Creates a tab in project list sidewindow and all components it
- * requires.
- */
+/** Creates a tab in project list sidewindow and all components it requires. */
 public class CourseTabFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(CourseTabFactory.class);
 
-    public void createCourseSpecificTab(ObjectFinder finder,
-                                        ProjectOpener opener, String course,
-                                        JTabbedPane tabbedPanelBase,
-                                        CourseAndExerciseManager courseAndExerciseManager) {
+    public void createCourseSpecificTab(
+            ObjectFinder finder,
+            ProjectOpener opener,
+            String course,
+            JTabbedPane tabbedPanelBase,
+            CourseAndExerciseManager courseAndExerciseManager) {
         logger.info("Creating course specific tab. @CourseTabFactory");
         final JBScrollPane panel = new JBScrollPane();
         final JBList list = new JBList();
@@ -58,8 +57,8 @@ public class CourseTabFactory {
         DefaultListModel defaultListModel = new DefaultListModel();
         panel.setBorder(BorderFactory.createTitledBorder(""));
 
-        ProjectListManagerHolder.get().addExercisesToList(finder, course, defaultListModel,
-                courseAndExerciseManager);
+        ProjectListManagerHolder.get()
+                .addExercisesToList(finder, course, defaultListModel, courseAndExerciseManager);
 
         if (defaultListModel.getSize() <= 0) {
             return;

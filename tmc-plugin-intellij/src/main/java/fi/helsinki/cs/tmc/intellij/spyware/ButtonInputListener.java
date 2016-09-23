@@ -18,10 +18,9 @@ import java.util.Collections;
 
 /**
  * When a button is pressed the responsible action tells this class that an action has happened.
- * This class then creates a LoggableEvent to be sent to the spyware server.
- * There are also checks in place to make sure that the course is a TMC course.
+ * This class then creates a LoggableEvent to be sent to the spyware server. There are also checks
+ * in place to make sure that the course is a TMC course.
  */
-
 public class ButtonInputListener {
 
     private static final Logger logger = LoggerFactory.getLogger(ButtonInputListener.class);
@@ -37,10 +36,11 @@ public class ButtonInputListener {
     @Nullable
     private Exercise getExercise() {
         logger.info("Making sure current exercise should be tracked");
-        if (new CourseAndExerciseManager().isCourseInDatabase(PathResolver
-                .getCourseName(new ObjectFinder().findCurrentProject().getBasePath()))) {
-            return PathResolver.getExercise(new ObjectFinder()
-                    .findCurrentProject().getBasePath());
+        if (new CourseAndExerciseManager()
+                .isCourseInDatabase(
+                        PathResolver.getCourseName(
+                                new ObjectFinder().findCurrentProject().getBasePath()))) {
+            return PathResolver.getExercise(new ObjectFinder().findCurrentProject().getBasePath());
         }
         return null;
     }

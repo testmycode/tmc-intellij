@@ -22,8 +22,7 @@ public class RunProject {
     }
 
     private boolean makeSureConfigurationIsCorrectType(RunManager runManager) {
-        if (runManager.getSelectedConfiguration() == null
-                || factory.checkConfigurationType()) {
+        if (runManager.getSelectedConfiguration() == null || factory.checkConfigurationType()) {
             logger.info("Prompting user to choose main class with Chooser.");
             TreeClassChooser chooser = factory.chooseMainClassForProject();
             if (chooser.getSelected() == null) {
@@ -33,7 +32,6 @@ public class RunProject {
             logger.info("Creating configurations.");
             factory.createConfiguration();
             factory.configApplicationConfiguration(chooser);
-
         }
         return false;
     }

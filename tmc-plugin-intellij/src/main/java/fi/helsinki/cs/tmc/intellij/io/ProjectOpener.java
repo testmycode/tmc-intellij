@@ -19,9 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-/**
- * Opens the project using intellij ProjectManager, when given the path.
- */
+/** Opens the project using intellij ProjectManager, when given the path. */
 public class ProjectOpener {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectOpener.class);
@@ -33,8 +31,7 @@ public class ProjectOpener {
     public void openProject(Project project, String path) {
         logger.info("Opening project from {}. @ProjectOpener", path);
         if (Files.isDirectory(Paths.get(path))) {
-            if (project == null
-                    || !path.equals(project.getBasePath())) {
+            if (project == null || !path.equals(project.getBasePath())) {
                 try {
                     if (project != null) {
                         new ActivateSpywareListeners(project).removeListeners();
@@ -45,24 +42,29 @@ public class ProjectOpener {
                         ProjectManager.getInstance().closeProject(project);
                     }
                 } catch (Exception exception) {
-                    logger.warn("Could not open project from path. @ProjectOpener",
-                            exception, exception.getStackTrace());
-                    new ErrorMessageService().showMessage(exception,
-                            "Could not open project from path. " + path, true);
+                    logger.warn(
+                            "Could not open project from path. @ProjectOpener",
+                            exception,
+                            exception.getStackTrace());
+                    new ErrorMessageService()
+                            .showMessage(
+                                    exception, "Could not open project from path. " + path, true);
                 }
             }
         } else {
             logger.warn("Directory no longer exists. @ProjectOpener");
-            Messages.showErrorDialog(new ObjectFinder()
-                            .findCurrentProject(),
-                    "Directory no longer exists", "File not found");
+            Messages.showErrorDialog(
+                    new ObjectFinder().findCurrentProject(),
+                    "Directory no longer exists",
+                    "File not found");
             ProjectListManagerHolder.get().refreshAllCourses();
         }
     }
 
     public void openProject(Path path) {
-        logger.info("Redirecting openProject with path -> "
-                + "openProject with string. @ProjectOpener");
+        logger.info(
+                "Redirecting openProject with path -> "
+                        + "openProject with string. @ProjectOpener");
         openProject(path.toString());
     }
 }

@@ -7,7 +7,7 @@ import com.intellij.openapi.progress.util.ProgressWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CoreProgressObserver extends ProgressObserver{
+public class CoreProgressObserver extends ProgressObserver {
 
     private final ProgressWindow progressWindow;
     private static final Logger logger = LoggerFactory.getLogger(CoreProgressObserver.class);

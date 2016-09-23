@@ -9,9 +9,12 @@ public class ProgressWindowMaker {
 
     private static final Logger logger = LoggerFactory.getLogger(ProgressWindow.class);
 
-
-    public static ProgressWindow make(String title, Project project,
-                                      boolean cancelable, boolean hidable, boolean indeterminate) {
+    public static ProgressWindow make(
+            String title,
+            Project project,
+            boolean cancelable,
+            boolean hidable,
+            boolean indeterminate) {
         logger.info("Creating progress window. @ProgressWindowMaker");
         ProgressWindow progressWindow = new ProgressWindow(cancelable, hidable, project);
         progressWindow.setIndeterminate(indeterminate);
@@ -21,5 +24,3 @@ public class ProgressWindowMaker {
         return progressWindow;
     }
 }
-
-

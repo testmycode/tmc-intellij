@@ -25,11 +25,10 @@ public class Boxer {
     }
 
     private static void addComponentsToBox(Box box, Component... components) {
-        logger.info("Starting to add components to "
-                + "horizontal glue Box component. @Boxer");
+        logger.info("Starting to add components to " + "horizontal glue Box component. @Boxer");
         for (Component component : components) {
-            logger.info("Adding component " + component
-                    + " to horizontal glue Box component. @Boxer");
+            logger.info(
+                    "Adding component " + component + " to horizontal glue Box component. @Boxer");
             box.add(component);
         }
     }

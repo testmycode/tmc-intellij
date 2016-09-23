@@ -39,98 +39,138 @@ public class SpywareTabListener {
     private void createAndAddListeners(Project project) {
         logger.info("Creating and adding listener to FileEditorManager.");
         FileEditorManager.getInstance(project)
-                .addFileEditorManagerListener(new FileEditorManagerListener() {
-                    @Override
-                    public void fileOpened(@NotNull FileEditorManager fileEditorManager,
-                                           @NotNull VirtualFile virtualFile) {
-                        logger.info("Processing file opened event.");
+                .addFileEditorManagerListener(
+                        new FileEditorManagerListener() {
+                            @Override
+                            public void fileOpened(
+                                    @NotNull FileEditorManager fileEditorManager,
+                                    @NotNull VirtualFile virtualFile) {
+                                logger.info("Processing file opened event.");
 
-                        String data = JsonMaker.create()
-                                .add("opened_window", virtualFile.getName())
-                                .toString();
-                        Exercise exercise = getExercise();
+                                String data =
+                                        JsonMaker.create()
+                                                .add("opened_window", virtualFile.getName())
+                                                .toString();
+                                Exercise exercise = getExercise();
 
-                        LoggableEvent event;
-                        if (exercise != null) {
-                            event = new LoggableEvent(exercise,
-                                    "window_opened", data.getBytes(Charset.forName("UTF-8")));
-                        } else {
-                            event = new LoggableEvent("window_opened",
-                                    data.getBytes(Charset.forName("UTF-8")));
-                        }
-                        addEventToBuffer(event);
-                    }
+                                LoggableEvent event;
+                                if (exercise != null) {
+                                    event =
+                                            new LoggableEvent(
+                                                    exercise,
+                                                    "window_opened",
+                                                    data.getBytes(Charset.forName("UTF-8")));
+                                } else {
+                                    event =
+                                            new LoggableEvent(
+                                                    "window_opened",
+                                                    data.getBytes(Charset.forName("UTF-8")));
+                                }
+                                addEventToBuffer(event);
+                            }
 
-                    @Override
-                    public void fileClosed(@NotNull FileEditorManager fileEditorManager,
-                                           @NotNull VirtualFile virtualFile) {
+                            @Override
+                            public void fileClosed(
+                                    @NotNull FileEditorManager fileEditorManager,
+                                    @NotNull VirtualFile virtualFile) {
 
-                        logger.info("Processing fileClosed event.");
-                        String data = JsonMaker.create()
-                                .add("closed_window", virtualFile.getName())
-                                .toString();
+                                logger.info("Processing fileClosed event.");
+                                String data =
+                                        JsonMaker.create()
+                                                .add("closed_window", virtualFile.getName())
+                                                .toString();
 
-                        Exercise exercise = getExercise();
-                        LoggableEvent event;
+                                Exercise exercise = getExercise();
+                                LoggableEvent event;
 
-                        if (exercise != null) {
-                            event = new LoggableEvent(exercise, "window_closed",
-                                    data.getBytes(Charset.forName("UTF-8")));
-                        } else {
-                            event = new LoggableEvent("window_closed",
-                                    data.getBytes(Charset.forName("UTF-8")));
-                        }
-                        addEventToBuffer(event);
-                    }
+                                if (exercise != null) {
+                                    event =
+                                            new LoggableEvent(
+                                                    exercise,
+                                                    "window_closed",
+                                                    data.getBytes(Charset.forName("UTF-8")));
+                                } else {
+                                    event =
+                                            new LoggableEvent(
+                                                    "window_closed",
+                                                    data.getBytes(Charset.forName("UTF-8")));
+                                }
+                                addEventToBuffer(event);
+                            }
 
-                    @Override
-                    public void selectionChanged(
-                            @NotNull FileEditorManagerEvent fileEditorManagerEvent) {
+                            @Override
+                            public void selectionChanged(
+                                    @NotNull FileEditorManagerEvent fileEditorManagerEvent) {
 
-                        logger.info("Processing selectionChanged event.");
-                        String data;
+                                logger.info("Processing selectionChanged event.");
+                                String data;
 
-                        if (fileEditorManagerEvent.getNewFile() == null) {
-                            return;
-                        }
+                                if (fileEditorManagerEvent.getNewFile() == null) {
+                                    return;
+                                }
 
-                        if (fileEditorManagerEvent.getOldFile() != null) {
-                            data = JsonMaker.create()
-                                    .add("new_value",
-                                            fileEditorManagerEvent.getNewFile().getName())
-                                    .add("old_value",
-                                            fileEditorManagerEvent.getOldFile().getName())
-                                    .add("file", new PathResolver()
-                                            .getPathRelativeToProject(fileEditorManagerEvent
-                                                    .getNewFile().getPath()))
-                                    .toString();
-                        } else {
-                            data = JsonMaker.create()
-                                    .add("new_value", fileEditorManagerEvent
-                                            .getNewFile().getName())
-                                    .add("file", new PathResolver()
-                                            .getPathRelativeToProject(fileEditorManagerEvent
-                                                    .getNewFile().getPath()))
-                                    .toString();
-                        }
+                                if (fileEditorManagerEvent.getOldFile() != null) {
+                                    data =
+                                            JsonMaker.create()
+                                                    .add(
+                                                            "new_value",
+                                                            fileEditorManagerEvent
+                                                                    .getNewFile()
+                                                                    .getName())
+                                                    .add(
+                                                            "old_value",
+                                                            fileEditorManagerEvent
+                                                                    .getOldFile()
+                                                                    .getName())
+                                                    .add(
+                                                            "file",
+                                                            new PathResolver()
+                                                                    .getPathRelativeToProject(
+                                                                            fileEditorManagerEvent
+                                                                                    .getNewFile()
+                                                                                    .getPath()))
+                                                    .toString();
+                                } else {
+                                    data =
+                                            JsonMaker.create()
+                                                    .add(
+                                                            "new_value",
+                                                            fileEditorManagerEvent
+                                                                    .getNewFile()
+                                                                    .getName())
+                                                    .add(
+                                                            "file",
+                                                            new PathResolver()
+                                                                    .getPathRelativeToProject(
+                                                                            fileEditorManagerEvent
+                                                                                    .getNewFile()
+                                                                                    .getPath()))
+                                                    .toString();
+                                }
 
-                        Exercise exercise = getExercise();
-                        LoggableEvent event;
-                        if (exercise != null) {
-                            event = new LoggableEvent(exercise, "window_changed",
-                                    data.getBytes(Charset.forName("UTF-8")));
-                        } else {
-                            event = new LoggableEvent("window_changed",
-                                    data.getBytes(Charset.forName("UTF-8")));
-                        }
-                        addEventToBuffer(event);
-                    }
-                });
+                                Exercise exercise = getExercise();
+                                LoggableEvent event;
+                                if (exercise != null) {
+                                    event =
+                                            new LoggableEvent(
+                                                    exercise,
+                                                    "window_changed",
+                                                    data.getBytes(Charset.forName("UTF-8")));
+                                } else {
+                                    event =
+                                            new LoggableEvent(
+                                                    "window_changed",
+                                                    data.getBytes(Charset.forName("UTF-8")));
+                                }
+                                addEventToBuffer(event);
+                            }
+                        });
     }
 
     private void addEventToBuffer(LoggableEvent event) {
-        if (!TmcSettingsManager.get().isSpyware() || new CourseAndExerciseManager()
-                .isCourseInDatabase(PathResolver.getCourseName(basePath))) {
+        if (!TmcSettingsManager.get().isSpyware()
+                || new CourseAndExerciseManager()
+                        .isCourseInDatabase(PathResolver.getCourseName(basePath))) {
             return;
         }
         SpywareEventManager.add(event);
@@ -138,12 +178,11 @@ public class SpywareTabListener {
 
     public Course getCourse() {
         SettingsTmc settings = TmcSettingsManager.get();
-        if (settings.getCourse().getName().equals(PathResolver
-                .getCourseName(basePath))) {
+        if (settings.getCourse().getName().equals(PathResolver.getCourseName(basePath))) {
             return settings.getCourse();
         }
-        return new ObjectFinder().findCourseByName(PathResolver
-                .getCourseName(basePath), TmcCoreHolder.get());
+        return new ObjectFinder()
+                .findCourseByName(PathResolver.getCourseName(basePath), TmcCoreHolder.get());
     }
 
     public Exercise getExercise() {

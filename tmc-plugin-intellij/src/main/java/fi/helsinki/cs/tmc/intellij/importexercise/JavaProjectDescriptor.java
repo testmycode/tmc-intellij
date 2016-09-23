@@ -19,17 +19,16 @@ import java.util.Set;
 
 
 public class JavaProjectDescriptor {
-    private static final Logger logger =
-            LoggerFactory.getLogger(JavaProjectDescriptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(JavaProjectDescriptor.class);
 
     /**
      * Creates ProjectDescriptor so project can be build from it's info.
+     *
      * @param path project root dir
      * @param ignoredNames ie. compile output path
      * @return ProjectDescriptor
      */
-    public static ProjectDescriptor create(
-            String path, Set<String> ignoredNames) {
+    public static ProjectDescriptor create(String path, Set<String> ignoredNames) {
         logger.info("Starting to create Project Descriptor in JavaProjectDescriptor.");
 
         logger.info("Initializing ProjectDescriptor");
@@ -49,8 +48,7 @@ public class JavaProjectDescriptor {
         rootList.addAll(suggestedRoots);
 
         //Module insight creates module and library descriptors collecting data as long as roots are listed.
-        ModuleInsight insight = new JavaModuleInsight(
-                null, new HashSet<>(), new HashSet<>());
+        ModuleInsight insight = new JavaModuleInsight(null, new HashSet<>(), new HashSet<>());
         List<File> entryPointRoots = new ArrayList<>();
         entryPointRoots.add(contentFile);
 

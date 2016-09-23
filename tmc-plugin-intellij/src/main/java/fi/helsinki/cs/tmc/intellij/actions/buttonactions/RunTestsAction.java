@@ -27,12 +27,15 @@ public class RunTestsAction extends AnAction {
 
         new ButtonInputListener().receiveTestRun();
 
-        new TestRunningService().runTests(
-                new CourseAndExerciseManager().getExercise(getCourseName(courseExercise),
-                        getExerciseName(courseExercise)),
-                anActionEvent.getProject(),
-                new ThreadingService(),
-                new ObjectFinder());
+        new TestRunningService()
+                .runTests(
+                        new CourseAndExerciseManager()
+                                .getExercise(
+                                        getCourseName(courseExercise),
+                                        getExerciseName(courseExercise)),
+                        anActionEvent.getProject(),
+                        new ThreadingService(),
+                        new ObjectFinder());
     }
 
     private String getCourseName(String[] courseExercise) {
@@ -41,6 +44,5 @@ public class RunTestsAction extends AnAction {
 
     private String getExerciseName(String[] courseExercise) {
         return courseExercise[courseExercise.length - 1];
-
     }
 }

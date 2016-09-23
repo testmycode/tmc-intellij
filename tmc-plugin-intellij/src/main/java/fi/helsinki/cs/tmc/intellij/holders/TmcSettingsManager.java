@@ -9,18 +9,14 @@ import com.intellij.openapi.components.ServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Contains the TmcSettings.
- */
+/** Contains the TmcSettings. */
 public final class TmcSettingsManager {
 
     private static final Logger logger = LoggerFactory.getLogger(TmcSettingsManager.class);
     private static final PersistentTmcSettings persistentSettings =
             ServiceManager.getService(PersistentTmcSettings.class);
 
-    private TmcSettingsManager() {
-
-    }
+    private TmcSettingsManager() {}
 
     public static synchronized SettingsTmc get() {
         logger.info("Get SettingsTmc. @TmcSettingsManager.");

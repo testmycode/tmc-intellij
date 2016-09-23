@@ -23,12 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Uploads the currently active project to TMC Server
- * Defined in plugin.xml on the line
- * &lt;action id="Upload Exercise"
- *   class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.UploadExerciseAction"&gt;
- * Uses CourseAndExerciseManager to update the view after upload,
- * SubmissionResultHandler displays the returned results
+ * Uploads the currently active project to TMC Server Defined in plugin.xml on the line &lt;action
+ * id="Upload Exercise"
+ * class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.UploadExerciseAction"&gt; Uses
+ * CourseAndExerciseManager to update the view after upload, SubmissionResultHandler displays the
+ * returned results
  */
 public class UploadExerciseAction extends AnAction {
 
@@ -44,28 +43,34 @@ public class UploadExerciseAction extends AnAction {
 
         new ButtonInputListener().receiveSubmit();
 
-        ProgressWindow window = ProgressWindowMaker.make(
-                "Uploading exercise, this may take several minutes",
-                project, true, true, true);
+        ProgressWindow window =
+                ProgressWindowMaker.make(
+                        "Uploading exercise, this may take several minutes",
+                        project,
+                        true,
+                        true,
+                        true);
         CoreProgressObserver observer = new CoreProgressObserver(window);
         FileDocumentManager.getInstance().saveAllDocuments();
 
         callExerciseUploadService(project, observer, window);
     }
 
-    private void callExerciseUploadService(Project project,
-                                           CoreProgressObserver observer,
-                                           ProgressWindow window) {
+    private void callExerciseUploadService(
+            Project project, CoreProgressObserver observer, ProgressWindow window) {
 
-        new ExerciseUploadingService().startUploadExercise(project,
-                TmcCoreHolder.get(), new ObjectFinder(),
-                new CheckForExistingExercises(), new SubmissionResultHandler(),
-                TmcSettingsManager.get(),
-                new CourseAndExerciseManager(),
-                new ThreadingService(),
-                new TestRunningService(),
-                observer,
-                window);
+        new ExerciseUploadingService()
+                .startUploadExercise(
+                        project,
+                        TmcCoreHolder.get(),
+                        new ObjectFinder(),
+                        new CheckForExistingExercises(),
+                        new SubmissionResultHandler(),
+                        TmcSettingsManager.get(),
+                        new CourseAndExerciseManager(),
+                        new ThreadingService(),
+                        new TestRunningService(),
+                        observer,
+                        window);
     }
-
 }

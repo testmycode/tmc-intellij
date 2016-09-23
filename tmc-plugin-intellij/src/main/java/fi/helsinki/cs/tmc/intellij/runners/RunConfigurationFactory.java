@@ -29,8 +29,7 @@ public class RunConfigurationFactory {
     private Module module;
     private String configurationType;
 
-    public RunConfigurationFactory(RunManager runManager,
-                                   Module module, String configurationType) {
+    public RunConfigurationFactory(RunManager runManager, Module module, String configurationType) {
         this.runManager = runManager;
         this.module = module;
         this.configurationType = configurationType;
@@ -39,35 +38,32 @@ public class RunConfigurationFactory {
 
     public boolean checkConfigurationType() {
         logger.info("Checking configurationType.");
-        return !runManager.getSelectedConfiguration()
-                .getConfiguration().getType()
-                .getDisplayName().equals(configurationType);
+        return !runManager
+                .getSelectedConfiguration()
+                .getConfiguration()
+                .getType()
+                .getDisplayName()
+                .equals(configurationType);
     }
 
-    /**
-     * Ui for the user to pick the Main class.
-     */
-
+    /** Ui for the user to pick the Main class. */
     @NotNull
     public TreeClassChooser chooseMainClassForProject() {
         logger.info("Choosing main class for project.");
         TreeClassChooser chooser;
         Project project = new ObjectFinder().findCurrentProject();
         while (true) {
-            TreeClassChooserFactory factory = TreeClassChooserFactory
-                    .getInstance(project);
+            TreeClassChooserFactory factory = TreeClassChooserFactory.getInstance(project);
             GlobalSearchScope scope;
             scope = GlobalSearchScope.moduleScope(module);
-            PsiClass ecClass = JavaPsiFacade.getInstance(project)
-                    .findClass("", scope);
+            PsiClass ecClass = JavaPsiFacade.getInstance(project).findClass("", scope);
             ClassFilter filter = createClassFilter();
-            chooser = factory
-                    .createInheritanceClassChooser("Choose main class",
-                            scope, ecClass, null, filter);
+            chooser =
+                    factory.createInheritanceClassChooser(
+                            "Choose main class", scope, ecClass, null, filter);
             chooser.showDialog();
             if (chooser.getSelected() == null
-                    || chooser.getSelected().findMethodsByName("main", true)
-                    .length > 0) {
+                    || chooser.getSelected().findMethodsByName("main", true).length > 0) {
                 logger.info("Choosing main class aborted.");
                 break;
             }
@@ -76,10 +72,7 @@ public class RunConfigurationFactory {
         return chooser;
     }
 
-    /**
-     * Filters classes shown to the user.
-     */
-
+    /** Filters classes shown to the user. */
     private ClassFilter createClassFilter() {
         logger.info("Creating classFilter.");
         return new ClassFilter() {
@@ -91,17 +84,16 @@ public class RunConfigurationFactory {
     }
 
     /**
-     * Creates a run configuration, using the given template.
-     * The created configuration is then added to RunManager.
+     * Creates a run configuration, using the given template. The created configuration is then
+     * added to RunManager.
      */
-
     @NotNull
     public void createConfiguration() {
         logger.info("Creating configuration.");
         ConfigurationType type = ConfigurationTypeUtil.findConfigurationType(configurationType);
         RunnerAndConfigurationSettings settings =
-                runManager.createRunConfiguration(module
-                        .getName(), type.getConfigurationFactories()[0]);
+                runManager.createRunConfiguration(
+                        module.getName(), type.getConfigurationFactories()[0]);
         logger.info("Adding configuration to RunManager.");
         runManager.addConfiguration(settings, true);
         logger.info("Setting created configuration to be the selected.");
@@ -109,17 +101,16 @@ public class RunConfigurationFactory {
     }
 
     /**
-     * Modifies the run configuration by adding parameters to it,
-     * such as a Main class which the user selects.
+     * Modifies the run configuration by adding parameters to it, such as a Main class which the
+     * user selects.
      */
-
     @NotNull
     public ApplicationConfiguration configApplicationConfiguration(TreeClassChooser chooser) {
         if (configurationType.equals("Application")) {
             logger.info("Creating ApplicationConfiguration.");
             ApplicationConfiguration appCon =
-                    (ApplicationConfiguration) runManager
-                            .getSelectedConfiguration().getConfiguration();
+                    (ApplicationConfiguration)
+                            runManager.getSelectedConfiguration().getConfiguration();
             logger.info("Setting main class and module to " + configurationType);
             appCon.setMainClass(chooser.getSelected());
             appCon.setModule(module);
@@ -133,8 +124,8 @@ public class RunConfigurationFactory {
         if (configurationType.equals("Application")) {
             logger.info("Creating runner for type " + configurationType);
             ApplicationConfiguration appCon =
-                    (ApplicationConfiguration) runManager
-                            .getSelectedConfiguration().getConfiguration();
+                    (ApplicationConfiguration)
+                            runManager.getSelectedConfiguration().getConfiguration();
             if (checkForMainClass(appCon)) {
                 logger.info("Main class found, starting to execute project.");
                 ProjectExecutor executor = new ProjectExecutor();
@@ -144,13 +135,12 @@ public class RunConfigurationFactory {
     }
 
     /**
-     * Makes sure the configuration has a defined main class.
-     * This method only works for the Application type of configuration,
-     * For other types it may be necessary to create their own.
+     * Makes sure the configuration has a defined main class. This method only works for the
+     * Application type of configuration, For other types it may be necessary to create their own.
+     *
      * @param appCon Current configuration
      * @return Whether the class has a valid main class or not
      */
-
     private boolean checkForMainClass(ApplicationConfiguration appCon) {
         if (appCon.getMainClass() == null) {
             logger.info("No main class was found, prompting user to choose one.");

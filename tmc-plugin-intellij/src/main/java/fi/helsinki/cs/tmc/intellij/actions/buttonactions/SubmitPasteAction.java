@@ -13,13 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Defined in plugin.xml on line
- *  &lt;action id="Submit to Pastebin"
- *    class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.SubmitPasteAction"&gt;
- * in group actions
- * <p>
- *     Submit code to TMC Pastebin.
- * </p>
+ * Defined in plugin.xml on line &lt;action id="Submit to Pastebin"
+ * class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.SubmitPasteAction"&gt; in group actions
+ *
+ * <p>Submit code to TMC Pastebin.
  */
 public class SubmitPasteAction extends AnAction {
 
@@ -35,7 +32,8 @@ public class SubmitPasteAction extends AnAction {
     private void paste(AnActionEvent anActionEvent) {
         new ButtonInputListener().receivePastebin();
         logger.info("Showing paste submit form. @SubmitPasteAction");
-        if (pasteService == null || pasteService.getWindow() == null
+        if (pasteService == null
+                || pasteService.getWindow() == null
                 || pasteService.getWindow().isClosed()) {
             Project project = anActionEvent.getData(PlatformDataKeys.PROJECT);
             pasteService = new PasteService();

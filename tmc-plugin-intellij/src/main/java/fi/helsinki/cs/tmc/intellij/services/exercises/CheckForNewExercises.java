@@ -12,60 +12,56 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 
-import com.intellij.notification.NotificationType;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-/**
- * Checks if there are undone and downloadable exercises.
- */
+/** Checks if there are undone and downloadable exercises. */
 public class CheckForNewExercises {
 
     private static final Logger logger = LoggerFactory.getLogger(CheckForNewExercises.class);
 
-
     public void doCheck() {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                logger.info("Checking for new exercises.");
-                Project project = new ObjectFinder().findCurrentProject();
-                TmcCore core = TmcCoreHolder.get();
-                SettingsTmc settings = TmcSettingsManager.get();
-                Course course = new ObjectFinder()
-                        .findCourseNoDetails(settings.getCourseName(), core);
+        ApplicationManager.getApplication()
+                .invokeLater(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                logger.info("Checking for new exercises.");
+                                Project project = new ObjectFinder().findCurrentProject();
+                                TmcCore core = TmcCoreHolder.get();
+                                SettingsTmc settings = TmcSettingsManager.get();
+                                Course course =
+                                        new ObjectFinder()
+                                                .findCourseNoDetails(
+                                                        settings.getCourseName(), core);
 
-                if (course == null) {
-                    return;
-                }
-                settings.setCourse(course);
-                CourseAndExerciseManager manager = new CourseAndExerciseManager();
-                try {
-                    if (getExerciseUpdateData(project, core, settings, manager)) {
-                        return;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+                                if (course == null) {
+                                    return;
+                                }
+                                settings.setCourse(course);
+                                CourseAndExerciseManager manager = new CourseAndExerciseManager();
+                                try {
+                                    if (getExerciseUpdateData(project, core, settings, manager)) {
+                                        return;
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
     }
 
-    private boolean getExerciseUpdateData(Project project,
-                                          TmcCore core,
-                                          SettingsTmc settings,
-                                          CourseAndExerciseManager manager) throws Exception {
+    private boolean getExerciseUpdateData(
+            Project project, TmcCore core, SettingsTmc settings, CourseAndExerciseManager manager)
+            throws Exception {
         logger.info("Trying to get exercise update data.");
-        UpdateResult result = core
-                .getExerciseUpdates(ProgressObserver.NULL_OBSERVER,
-                        settings.getCourse()).call();
-        if (compareExerciseLists(result.getNewExercises(),
-                manager.getExercises(settings.getCourseName()))) {
+        UpdateResult result =
+                core.getExerciseUpdates(ProgressObserver.NULL_OBSERVER, settings.getCourse())
+                        .call();
+        if (compareExerciseLists(
+                result.getNewExercises(), manager.getExercises(settings.getCourseName()))) {
             return true;
         }
         createNotificationForNewExercises(project, settings);
@@ -74,12 +70,14 @@ public class CheckForNewExercises {
 
     private void createNotificationForNewExercises(Project project, SettingsTmc settings) {
         ErrorMessageService.TMC_NOTIFICATION
-                .createNotification("New exercises!", "New exercises found for "
-                                + settings.getCourseName() + ". \n<a href=/>Click here to download them<a>",
+                .createNotification(
+                        "New exercises!",
+                        "New exercises found for "
+                                + settings.getCourseName()
+                                + ". \n<a href=/>Click here to download them<a>",
                         NotificationType.INFORMATION,
                         (notification, hyperlinkEvent) ->
-                                new DownloadExerciseAction()
-                                        .downloadExercises(project, false))
+                                new DownloadExerciseAction().downloadExercises(project, false))
                 .notify(project);
     }
 
@@ -91,7 +89,6 @@ public class CheckForNewExercises {
             if (!ex.isCompleted()) {
                 return false;
             }
-
         }
         return true;
     }

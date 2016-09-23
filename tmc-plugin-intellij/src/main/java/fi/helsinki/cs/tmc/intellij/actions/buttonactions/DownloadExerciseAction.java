@@ -21,15 +21,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Defined in plugin.xml on line
- * &lt;action id="Download Exercises"
- * class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction"&gt;
- * in group actions
- * <p>
- * Downloads exercises from the course selected in settings,
- * uses CheckForExistingExercises to check already downloaded ones,
- * updates exercise lists with CourseAndExerciseManager
- * </p>
+ * Defined in plugin.xml on line &lt;action id="Download Exercises"
+ * class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction"&gt; in group
+ * actions
+ *
+ * <p>Downloads exercises from the course selected in settings, uses CheckForExistingExercises to
+ * check already downloaded ones, updates exercise lists with CourseAndExerciseManager
  */
 public class DownloadExerciseAction extends AnAction {
 
@@ -42,31 +39,39 @@ public class DownloadExerciseAction extends AnAction {
         downloadExercises(project, false);
     }
 
-
     public void downloadExercises(Project project, boolean downloadAll) {
         logger.info("Performing DownloadExerciseAction. @DownloadExerciseAction");
         try {
             startDownloadExercise(project, downloadAll);
         } catch (Exception exception) {
             logger.warn("Downloading failed. @DownloadExerciseAction", exception);
-            Messages.showMessageDialog(project,
+            Messages.showMessageDialog(
+                    project,
                     "Downloading failed \n"
                             + "Are your account details correct?\n"
-                            + exception.getMessage(), "Result", Messages.getErrorIcon());
+                            + exception.getMessage(),
+                    "Result",
+                    Messages.getErrorIcon());
         }
     }
 
     private void startDownloadExercise(Project project, boolean downloadAll) throws Exception {
-        ProgressWindow window = ProgressWindowMaker.make(
-                "Downloading exercises, this may take several minutes",
-                project, true, true, true);
-        new ExerciseDownloadingService().startDownloadExercise(TmcCoreHolder.get(),
-                TmcSettingsManager.get(),
-                new CheckForExistingExercises(),
-                new ObjectFinder(),
-                new ThreadingService(),
-                project,
-                downloadAll,
-                window);
+        ProgressWindow window =
+                ProgressWindowMaker.make(
+                        "Downloading exercises, this may take several minutes",
+                        project,
+                        true,
+                        true,
+                        true);
+        new ExerciseDownloadingService()
+                .startDownloadExercise(
+                        TmcCoreHolder.get(),
+                        TmcSettingsManager.get(),
+                        new CheckForExistingExercises(),
+                        new ObjectFinder(),
+                        new ThreadingService(),
+                        project,
+                        downloadAll,
+                        window);
     }
 }

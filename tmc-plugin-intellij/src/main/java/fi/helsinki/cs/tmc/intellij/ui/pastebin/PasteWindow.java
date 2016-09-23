@@ -9,9 +9,7 @@ import java.net.URI;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-/**
- * Controls the pastebin.
- */
+/** Controls the pastebin. */
 public class PasteWindow {
 
     private static final Logger logger = LoggerFactory.getLogger(PasteWindow.class);
@@ -62,5 +60,4 @@ public class PasteWindow {
         frame.setVisible(false);
         frame.setVisible(true);
     }
-
 }

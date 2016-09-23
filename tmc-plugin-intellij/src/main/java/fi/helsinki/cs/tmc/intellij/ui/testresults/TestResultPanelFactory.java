@@ -18,8 +18,7 @@ import java.util.List;
 
 public class TestResultPanelFactory implements ToolWindowFactory {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(TestResultPanelFactory.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestResultPanelFactory.class);
     private static List<TestResultsPanel> panels;
 
     public TestResultPanelFactory() {
@@ -28,8 +27,7 @@ public class TestResultPanelFactory implements ToolWindowFactory {
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        logger.info("Creating tool window content for test results. "
-                + "@TestResultPanelFactory");
+        logger.info("Creating tool window content for test results. " + "@TestResultPanelFactory");
 
         TestResultsPanel panel = new TestResultsPanel();
         ContentFactory cf = ContentFactory.SERVICE.getInstance();

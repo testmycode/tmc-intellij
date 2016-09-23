@@ -17,9 +17,7 @@ import java.nio.file.Paths;
 import java.util.Locale;
 import javax.swing.JFileChooser;
 
-/**
- * TMC Settings component from Core, has all the necessary settings.
- */
+/** TMC Settings component from Core, has all the necessary settings. */
 public class SettingsTmc implements TmcSettings, Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsTmc.class);
@@ -39,18 +37,19 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.password = password;
     }
 
-
-    /**
-     * Sets the default folder for TMC project files -> home/IdeaProjects/TMCProjects .
-     */
+    /** Sets the default folder for TMC project files -> home/IdeaProjects/TMCProjects . */
     public SettingsTmc() {
         spyware = false;
         this.checkForExercises = true;
         logger.info("Setting default folder for TMC project files. @SettingsTmc");
         JFileChooser fileChooser = new JFileChooser();
         serverAddress = "https://tmc.mooc.fi/mooc";
-        projectBasePath = fileChooser.getFileSystemView().getDefaultDirectory().toString()
-                + File.separator + "IdeaProjects" + File.separator + "TMCProjects";
+        projectBasePath =
+                fileChooser.getFileSystemView().getDefaultDirectory().toString()
+                        + File.separator
+                        + "IdeaProjects"
+                        + File.separator
+                        + "TMCProjects";
     }
 
     public boolean isCheckForExercises() {
@@ -65,7 +64,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
         logger.info("Setting username -> {}. @SettingsTmc", username);
         this.username = username;
     }
-
 
     public void setSpyware(boolean spyware) {
         this.spyware = spyware;
@@ -127,8 +125,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
     @Override
     public boolean userDataExists() {
         logger.info("Checking if user data exists. @SettingsTmc");
-        return this.username != null && this.password != null
-                && !this.username.isEmpty() && !this.password.isEmpty();
+        return this.username != null
+                && this.password != null
+                && !this.username.isEmpty()
+                && !this.password.isEmpty();
     }
 
     @Override
@@ -185,9 +185,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     @Override
-    public void setConfigRoot(Path path) {
-
-    }
+    public void setConfigRoot(Path path) {}
 
     @Override
     public Path getConfigRoot() {

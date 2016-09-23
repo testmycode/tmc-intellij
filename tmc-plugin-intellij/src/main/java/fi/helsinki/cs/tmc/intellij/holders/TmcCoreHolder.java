@@ -8,9 +8,7 @@ import fi.helsinki.cs.tmc.langs.util.TaskExecutorImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Holds the TMC core so other classes can get it when necessary.
- */
+/** Holds the TMC core so other classes can get it when necessary. */
 public class TmcCoreHolder {
 
     private static final Logger logger = LoggerFactory.getLogger(TmcCoreHolder.class);
@@ -40,8 +38,13 @@ public class TmcCoreHolder {
         logger.info("Get TmcCore for testing. @TmcCoreHolder");
         if (core == null) {
             TaskExecutor tmcLangs = new TaskExecutorImpl();
-            core = new TmcCore(new SettingsTmc("https://tmc.mooc.fi/staging/org/tmc-intellij",
-                    "intellij-student", "intellij-tmc"), tmcLangs);
+            core =
+                    new TmcCore(
+                            new SettingsTmc(
+                                    "https://tmc.mooc.fi/staging/org/tmc-intellij",
+                                    "intellij-student",
+                                    "intellij-tmc"),
+                            tmcLangs);
         }
         return core;
     }

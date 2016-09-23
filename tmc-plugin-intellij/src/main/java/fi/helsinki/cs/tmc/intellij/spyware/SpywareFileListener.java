@@ -49,22 +49,17 @@ public class SpywareFileListener implements Closeable {
         if (listener == null) {
             return;
         }
-        VirtualFileManager.getInstance()
-                .removeVirtualFileListener(listener);
-
+        VirtualFileManager.getInstance().removeVirtualFileListener(listener);
     }
 
     public void createAndAddListener() {
         if (listener == null) {
             listener = getVirtualFileListener();
-            VirtualFileManager.getInstance()
-                    .addVirtualFileListener(listener);
+            VirtualFileManager.getInstance().addVirtualFileListener(listener);
         } else {
-            VirtualFileManager.getInstance()
-                    .removeVirtualFileListener(listener);
+            VirtualFileManager.getInstance().removeVirtualFileListener(listener);
             listener = getVirtualFileListener();
-            VirtualFileManager.getInstance()
-                    .addVirtualFileListener(listener);
+            VirtualFileManager.getInstance().addVirtualFileListener(listener);
         }
         this.projectPath = project.getBasePath();
     }
@@ -80,17 +75,17 @@ public class SpywareFileListener implements Closeable {
                     return;
                 }
 
-                String path = virtualFilePropertyEvent.getSource()
-                        .toString().substring(7);
+                String path = virtualFilePropertyEvent.getSource().toString().substring(7);
 
                 String folderOrFile = setFolderOrFile(path, "rename");
 
-                JsonMaker metadata = JsonMaker.create()
-                        .add("cause", folderOrFile)
-                        .add("file", new PathResolver()
-                                .getPathRelativeToProject(path))
-                        .add("previous_name", virtualFilePropertyEvent
-                                .getOldValue().toString());
+                JsonMaker metadata =
+                        JsonMaker.create()
+                                .add("cause", folderOrFile)
+                                .add("file", new PathResolver().getPathRelativeToProject(path))
+                                .add(
+                                        "previous_name",
+                                        virtualFilePropertyEvent.getOldValue().toString());
                 sendMetadata(metadata);
             }
 
@@ -102,10 +97,10 @@ public class SpywareFileListener implements Closeable {
                 }
 
                 String path = virtualFileEvent.getSource().toString().substring(7);
-                JsonMaker metadata = JsonMaker.create()
-                        .add("cause", "file_change")
-                        .add("file", new PathResolver()
-                                .getPathRelativeToProject(path));
+                JsonMaker metadata =
+                        JsonMaker.create()
+                                .add("cause", "file_change")
+                                .add("file", new PathResolver().getPathRelativeToProject(path));
                 sendMetadata(metadata);
             }
 
@@ -135,10 +130,10 @@ public class SpywareFileListener implements Closeable {
             private void prepareMetaData(String action, String path) {
                 String folderOrFile = setFolderOrFile(path, action);
 
-                JsonMaker metadata = JsonMaker.create()
-                        .add("cause", folderOrFile)
-                        .add("file", new PathResolver()
-                                .getPathRelativeToProject(path));
+                JsonMaker metadata =
+                        JsonMaker.create()
+                                .add("cause", folderOrFile)
+                                .add("file", new PathResolver().getPathRelativeToProject(path));
                 sendMetadata(metadata);
             }
 
@@ -149,10 +144,11 @@ public class SpywareFileListener implements Closeable {
 
                 String folderOrFile = setFolderOrFile(path, "copy");
 
-                JsonMaker metadata = JsonMaker.create()
-                        .add("cause", folderOrFile)
-                        .add("file", new PathResolver().getPathRelativeToProject(path))
-                        .add("from", virtualFileCopyEvent.getOriginalFile().toString());
+                JsonMaker metadata =
+                        JsonMaker.create()
+                                .add("cause", folderOrFile)
+                                .add("file", new PathResolver().getPathRelativeToProject(path))
+                                .add("from", virtualFileCopyEvent.getOriginalFile().toString());
                 sendMetadata(metadata);
             }
 
@@ -166,8 +162,7 @@ public class SpywareFileListener implements Closeable {
 
             @Override
             public void beforePropertyChange(
-                    @NotNull VirtualFilePropertyEvent virtualFilePropertyEvent) {
-            }
+                    @NotNull VirtualFilePropertyEvent virtualFilePropertyEvent) {}
 
             @Override
             public void beforeFileDeletion(@NotNull VirtualFileEvent virtualFileEvent) {
@@ -177,33 +172,28 @@ public class SpywareFileListener implements Closeable {
                 }
 
                 String path = virtualFileEvent.getFile().getPath();
-                JsonMaker metadata = JsonMaker.create()
-                        .add("cause", "file_delete")
-                        .add("file", new PathResolver().getPathRelativeToProject(path));
+                JsonMaker metadata =
+                        JsonMaker.create()
+                                .add("cause", "file_delete")
+                                .add("file", new PathResolver().getPathRelativeToProject(path));
                 sendMetadata(metadata);
             }
 
             @Override
-            public void beforeFileMovement(@NotNull VirtualFileMoveEvent vfme) {
-
-            }
+            public void beforeFileMovement(@NotNull VirtualFileMoveEvent vfme) {}
 
             @Override
-            public void fileDeleted(@NotNull VirtualFileEvent virtualFileEvent) {
-
-            }
+            public void fileDeleted(@NotNull VirtualFileEvent virtualFileEvent) {}
 
             @Override
-            public void beforeContentsChange(@NotNull VirtualFileEvent virtualFileEvent) {
-
-            }
+            public void beforeContentsChange(@NotNull VirtualFileEvent virtualFileEvent) {}
         };
     }
 
     private void sendMetadata(JsonMaker metadata) {
         if (!TmcSettingsManager.get().isSpyware()
-                || !new CourseAndExerciseManager().isCourseInDatabase(PathResolver
-                .getCourseName(projectPath))) {
+                || !new CourseAndExerciseManager()
+                        .isCourseInDatabase(PathResolver.getCourseName(projectPath))) {
             return;
         }
 
@@ -213,7 +203,7 @@ public class SpywareFileListener implements Closeable {
         }
 
         logger.info("Starting zipping thread for exercise: {0}", exercise);
-        SnapshotThread thread = new SnapshotThread(exercise,  projectPath, metadata);
+        SnapshotThread thread = new SnapshotThread(exercise, projectPath, metadata);
         snapshotterThreads.addThread(thread);
         thread.setDaemon(true);
         thread.start();
@@ -221,16 +211,18 @@ public class SpywareFileListener implements Closeable {
 
     @Override
     public void close() throws IOException {
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    closed = true;
-                    snapshotterThreads.joinAll();
-                } catch (InterruptedException ex) {
-                }
-            }
-        });
+        ApplicationManager.getApplication()
+                .invokeLater(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    closed = true;
+                                    snapshotterThreads.joinAll();
+                                } catch (InterruptedException ex) {
+                                }
+                            }
+                        });
     }
 
     public boolean isProperfile(VirtualFile virtualFile) {
@@ -246,13 +238,13 @@ public class SpywareFileListener implements Closeable {
 
     private static class SnapshotThread extends Thread {
         private final Exercise exercise;
-        private final String  projectPathInfo;
+        private final String projectPathInfo;
         private final JsonMaker metadata;
 
-        private SnapshotThread(Exercise exercise, String  projectPathInfo, JsonMaker metadata) {
+        private SnapshotThread(Exercise exercise, String projectPathInfo, JsonMaker metadata) {
             super("Source snapshot");
             this.exercise = exercise;
-            this. projectPathInfo =  projectPathInfo;
+            this.projectPathInfo = projectPathInfo;
             this.metadata = metadata;
         }
 
@@ -261,10 +253,10 @@ public class SpywareFileListener implements Closeable {
             // Note that, being in a thread, this is inherently prone to races that modify the  projectPath.
             // For now we just accept that. Not sure if the FileObject API would allow some sort of
             // global locking of the  projectPath.
-            File  projectPathDir = new File( projectPathInfo);
-            RecursiveZipper
-                    .ZippingDecider zippingDecider = new ZippingDeciderWrapper(projectPathInfo);
-            RecursiveZipper zipper = new RecursiveZipper( projectPathDir, zippingDecider);
+            File projectPathDir = new File(projectPathInfo);
+            RecursiveZipper.ZippingDecider zippingDecider =
+                    new ZippingDeciderWrapper(projectPathInfo);
+            RecursiveZipper zipper = new RecursiveZipper(projectPathDir, zippingDecider);
             try {
                 byte[] data = zipper.zipProjectSources();
                 LoggableEvent event = new LoggableEvent(exercise, "code_snapshot", data, metadata);
@@ -273,7 +265,7 @@ public class SpywareFileListener implements Closeable {
                 // Warning might be also appro1priate, but this often races with  projectPath closing
                 // during integration tests, and there warning would cause a dialog to appear,
                 // failing the test.
-                logger.warn("Error zipping  projectPath sources in: " +  projectPathDir, ex);
+                logger.warn("Error zipping  projectPath sources in: " + projectPathDir, ex);
             }
         }
     }
@@ -282,25 +274,25 @@ public class SpywareFileListener implements Closeable {
         private static final long MAX_FILE_SIZE = 100 * 1024; // 100KB
 
         protected static final String[] BLACKLISTED_FILE_EXTENSIONS = {
-                ".min.js",
-                ".pack.js",
-                ".jar",
-                ".war",
-                ".mp3",
-                ".ogg",
-                ".wav",
-                ".png",
-                ".jpg",
-                ".jpeg",
-                ".ttf",
-                ".eot",
-                ".woff"
+            ".min.js",
+            ".pack.js",
+            ".jar",
+            ".war",
+            ".mp3",
+            ".ogg",
+            ".wav",
+            ".png",
+            ".jpg",
+            ".jpeg",
+            ".ttf",
+            ".eot",
+            ".woff"
         };
 
-        private final String  projectPathInfo;
+        private final String projectPathInfo;
 
         public ZippingDeciderWrapper(String projectPathInfo) {
-            this. projectPathInfo = projectPathInfo;
+            this.projectPathInfo = projectPathInfo;
         }
 
         protected boolean isProbablyBundledBinary(String zipPath) {
@@ -322,7 +314,7 @@ public class SpywareFileListener implements Closeable {
 
         @Override
         public boolean shouldZip(String zipPath) {
-            File file = new File( projectPathInfo, zipPath);
+            File file = new File(projectPathInfo, zipPath);
             if (file.isDirectory()) {
                 if (hasNoSnapshotFile(file)) {
                     return false;
@@ -341,7 +333,6 @@ public class SpywareFileListener implements Closeable {
     }
 
     public Exercise getExercise() {
-        return PathResolver.getExercise( projectPath);
+        return PathResolver.getExercise(projectPath);
     }
-
 }

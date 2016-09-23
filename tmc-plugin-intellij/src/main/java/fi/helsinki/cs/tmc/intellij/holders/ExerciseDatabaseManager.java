@@ -9,18 +9,14 @@ import com.intellij.openapi.components.ServiceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * Contains the ExerciseDatabase.
- */
+/** Contains the ExerciseDatabase. */
 public class ExerciseDatabaseManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ExerciseDatabaseManager.class);
     private static final PersistentExerciseDatabase persistentExerciseDatabase =
             ServiceManager.getService(PersistentExerciseDatabase.class);
 
-    private ExerciseDatabaseManager() {
-
-    }
+    private ExerciseDatabaseManager() {}
 
     public static synchronized ExerciseDatabase get() {
         logger.info("Get ExerciseDatabase. @ExerciseDatabaseManager.");

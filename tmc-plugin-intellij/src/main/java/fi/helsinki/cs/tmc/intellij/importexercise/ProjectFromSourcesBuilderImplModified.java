@@ -41,14 +41,8 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 
-import org.jdom.JDOMException;
-import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
 import java.io.IOException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -58,14 +52,14 @@ import java.util.Map;
 import java.util.Set;
 
 /*
-*  this code is modified form intellij code. url below
-*  original class: ProjectFromSourcesBuilderImpl
-*  https://github.com/JetBrains/intellij-community/blob/1fb6ce35950512b62c1f4a397d907de8b702d762/java/idea-ui/src/com/intellij/ide/util/projectWizard/importSources/impl/ProjectFromSourcesBuilderImpl.java
-*/
+ *  this code is modified form intellij code. url below
+ *  original class: ProjectFromSourcesBuilderImpl
+ *  https://github.com/JetBrains/intellij-community/blob/1fb6ce35950512b62c1f4a397d907de8b702d762/java/idea-ui/src/com/intellij/ide/util/projectWizard/importSources/impl/ProjectFromSourcesBuilderImpl.java
+ */
 
 public class ProjectFromSourcesBuilderImplModified {
-    private static final Logger logger = LoggerFactory
-            .getLogger(ProjectFromSourcesBuilderImplModified.class);
+    private static final Logger logger =
+            LoggerFactory.getLogger(ProjectFromSourcesBuilderImplModified.class);
 
     /*
      * Collects info to build module and libraries and then creates them.
@@ -80,7 +74,6 @@ public class ProjectFromSourcesBuilderImplModified {
         ProjectDescriptor projectDescriptor =
                 JavaProjectDescriptor.create(path, getIgnoredFileNamesSet());
 
-
         ModifiableModelsProvider modelsProvider = new IdeaModifiableModelsProvider();
         final LibraryTable.ModifiableModel projectLibraryTable =
                 modelsProvider.getLibraryTableModifiableModel(project);
@@ -93,19 +86,16 @@ public class ProjectFromSourcesBuilderImplModified {
                 logger.info("Create project-level libraries.");
                 for (LibraryDescriptor lib : projectDescriptor.getLibraries()) {
                     final Collection<File> files = lib.getJars();
-                    final Library projectLib = projectLibraryTable
-                            .createLibrary(lib.getName());
-                    final Library.ModifiableModel libraryModel =
-                            projectLib.getModifiableModel();
+                    final Library projectLib = projectLibraryTable.createLibrary(lib.getName());
+                    final Library.ModifiableModel libraryModel = projectLib.getModifiableModel();
                     for (File file : files) {
-                        libraryModel.addRoot(VfsUtil
-                                .getUrlForLibraryRoot(file), OrderRootType.CLASSES);
+                        libraryModel.addRoot(
+                                VfsUtil.getUrlForLibraryRoot(file), OrderRootType.CLASSES);
                     }
                     logger.info("Saving library {} to library model", lib.getName());
                     libraryModel.commit();
                     projectLibs.put(lib, projectLib);
                 }
-
 
                 projectLibraryTable.commit();
 
@@ -114,8 +104,7 @@ public class ProjectFromSourcesBuilderImplModified {
             }
         } catch (Exception e) {
             LOG.warn(e);
-            new ErrorMessageService().showMessage(e,
-                    "Error adding module to project", true);
+            new ErrorMessageService().showMessage(e, "Error adding module to project", true);
         }
 
         final Map<ModuleDescriptor, Module> descriptorToModuleMap = new HashMap<>();
@@ -136,8 +125,12 @@ public class ProjectFromSourcesBuilderImplModified {
                                                 moduleDescriptor.computeModuleFilePath()));
                         module = moduleLoader.createModule(moduleModel);
                     } else {
-                        module = createModule(projectDescriptor,
-                                moduleDescriptor, projectLibs, moduleModel);
+                        module =
+                                createModule(
+                                        projectDescriptor,
+                                        moduleDescriptor,
+                                        projectLibs,
+                                        moduleModel);
                     }
                     result.add(module);
                     descriptorToModuleMap.put(moduleDescriptor, module);
@@ -150,20 +143,19 @@ public class ProjectFromSourcesBuilderImplModified {
             }
         } catch (Exception e) {
             LOG.warn(e);
-            new ErrorMessageService().showMessage(e,
-                    "Error adding module to project", true);
+            new ErrorMessageService().showMessage(e, "Error adding module to project", true);
         }
         logger.info("ending commit in ProjectFromSourcesBuilderImplModified");
         //return result;
     }
 
-    private static Module createModule(ProjectDescriptor projectDescriptor,
-                                       final ModuleDescriptor descriptor,
-                                       final Map<LibraryDescriptor, Library> projectLibs,
-                                       final ModifiableModuleModel moduleModel)
-            throws InvalidDataException,
-            IOException, ModuleWithNameAlreadyExists,
-            JDOMException, ConfigurationException {
+    private static Module createModule(
+            ProjectDescriptor projectDescriptor,
+            final ModuleDescriptor descriptor,
+            final Map<LibraryDescriptor, Library> projectLibs,
+            final ModifiableModuleModel moduleModel)
+            throws InvalidDataException, IOException, ModuleWithNameAlreadyExists, JDOMException,
+                    ConfigurationException {
 
         logger.info("Starting createModule in ProjectFromSourcesBuilderImplModified");
         final String moduleFilePath = descriptor.computeModuleFilePath();
@@ -180,10 +172,11 @@ public class ProjectFromSourcesBuilderImplModified {
         return module;
     }
 
-    private static void setupRootModel(ProjectDescriptor projectDescriptor,
-                                       final ModuleDescriptor descriptor,
-                                       final ModifiableRootModel rootModel,
-                                       final Map<LibraryDescriptor, Library> projectLibs) {
+    private static void setupRootModel(
+            ProjectDescriptor projectDescriptor,
+            final ModuleDescriptor descriptor,
+            final ModifiableRootModel rootModel,
+            final Map<LibraryDescriptor, Library> projectLibs) {
         final CompilerModuleExtension compilerModuleExtension =
                 rootModel.getModuleExtension(CompilerModuleExtension.class);
         compilerModuleExtension.setExcludeOutput(true);
@@ -195,19 +188,19 @@ public class ProjectFromSourcesBuilderImplModified {
         for (File contentRoot : contentRoots) {
             final LocalFileSystem lfs = LocalFileSystem.getInstance();
             VirtualFile moduleContentRoot =
-                    lfs.refreshAndFindFileByPath(FileUtil.toSystemIndependentName(
-                            contentRoot.getPath()));
+                    lfs.refreshAndFindFileByPath(
+                            FileUtil.toSystemIndependentName(contentRoot.getPath()));
             if (moduleContentRoot != null) {
-                final ContentEntry contentEntry =
-                        rootModel.addContentEntry(moduleContentRoot);
+                final ContentEntry contentEntry = rootModel.addContentEntry(moduleContentRoot);
                 final Collection<DetectedSourceRoot> sourceRoots =
                         descriptor.getSourceRoots(contentRoot);
                 for (DetectedSourceRoot srcRoot : sourceRoots) {
-                    final String srcpath = FileUtil.toSystemIndependentName(
-                            srcRoot.getDirectory().getPath());
+                    final String srcpath =
+                            FileUtil.toSystemIndependentName(srcRoot.getDirectory().getPath());
                     final VirtualFile sourceRoot = lfs.refreshAndFindFileByPath(srcpath);
                     if (sourceRoot != null) {
-                        contentEntry.addSourceFolder(sourceRoot,
+                        contentEntry.addSourceFolder(
+                                sourceRoot,
                                 shouldBeTestRoot(srcRoot.getDirectory()),
                                 getPackagePrefix(srcRoot));
                     }
@@ -218,10 +211,10 @@ public class ProjectFromSourcesBuilderImplModified {
         compilerModuleExtension.inheritCompilerOutputPath(true);
 
         logger.info("Starting to create module level libraries");
-        final LibraryTable moduleLibraryTable =
-                rootModel.getModuleLibraryTable();
-        for (LibraryDescriptor libDescriptor : ModuleInsight.getLibraryDependencies(
-                descriptor, projectDescriptor.getLibraries())) {
+        final LibraryTable moduleLibraryTable = rootModel.getModuleLibraryTable();
+        for (LibraryDescriptor libDescriptor :
+                ModuleInsight.getLibraryDependencies(
+                        descriptor, projectDescriptor.getLibraries())) {
             final Library projectLib = projectLibs.get(libDescriptor);
             if (projectLib != null) {
                 rootModel.addLibraryEntry(projectLib);
@@ -230,10 +223,9 @@ public class ProjectFromSourcesBuilderImplModified {
                 final Collection<File> jars = libDescriptor.getJars();
                 for (File file : jars) {
                     Library library = moduleLibraryTable.createLibrary();
-                    Library.ModifiableModel modifiableModel =
-                            library.getModifiableModel();
-                    modifiableModel.addRoot(VfsUtil.getUrlForLibraryRoot(file),
-                            OrderRootType.CLASSES);
+                    Library.ModifiableModel modifiableModel = library.getModifiableModel();
+                    modifiableModel.addRoot(
+                            VfsUtil.getUrlForLibraryRoot(file), OrderRootType.CLASSES);
                     modifiableModel.commit();
                 }
             }

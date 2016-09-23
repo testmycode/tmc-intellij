@@ -9,8 +9,7 @@ import java.io.File;
  * Class handles as main tool for imports
  */
 public class ExerciseImport {
-    private static final Logger logger = LoggerFactory
-            .getLogger(NewProjectUtilModified.class);
+    private static final Logger logger = LoggerFactory.getLogger(NewProjectUtilModified.class);
     /*
      * Handles Exercise import also possibly decides what to import in future.
      * @param path project root dir
@@ -32,9 +31,7 @@ public class ExerciseImport {
     private static boolean isUnImportedNbProject(String path) {
         logger.info("Check if dir has idea file @ExerciseImport");
         File file = new File(path);
-        if  (file.isDirectory()
-                && isChild(file, "nbproject")
-                && !isChild(file, ".idea")) {
+        if (file.isDirectory() && isChild(file, "nbproject") && !isChild(file, ".idea")) {
             return true;
         }
         return false;

@@ -8,9 +8,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 
-/**
- * Offers method for copying text to clip board.
- */
+/** Offers method for copying text to clip board. */
 public class ClipboardService {
 
     private static final Logger logger = LoggerFactory.getLogger(ClipboardService.class);

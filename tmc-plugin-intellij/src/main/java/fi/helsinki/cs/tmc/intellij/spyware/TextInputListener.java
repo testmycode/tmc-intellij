@@ -18,9 +18,9 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * When a change in the listened document happens this class creates a diff patch.
- * That created patch is then analyzed and a json is generated from it that is added
- * to the list of items to be sent to the spyware server.
+ * When a change in the listened document happens this class creates a diff patch. That created
+ * patch is then analyzed and a json is generated from it that is added to the list of items to be
+ * sent to the spyware server.
  */
 public class TextInputListener implements DocumentListener {
 
@@ -39,25 +39,28 @@ public class TextInputListener implements DocumentListener {
     public void documentChanged(DocumentEvent documentEvent) {
         modified = documentEvent.getDocument().getText();
         if (!isThisCorrectProject() || changeIsNotJustWhitespace(documentEvent)) {
-            logger.info("not creating path for event, as project wasn't "
-                    + "correct one or change was just white space");
+            logger.info(
+                    "not creating path for event, as project wasn't "
+                            + "correct one or change was just white space");
             return;
         }
 
         logger.info("Creating patches for ", documentEvent.getSource());
-        createPatches(PathResolver.getExercise(new ObjectFinder()
-                        .findCurrentProject().getBasePath()), documentEvent);
+        createPatches(
+                PathResolver.getExercise(new ObjectFinder().findCurrentProject().getBasePath()),
+                documentEvent);
     }
 
     private boolean isThisCorrectProject() {
-        return new CourseAndExerciseManager().isCourseInDatabase(PathResolver
-                .getCourseName(new ObjectFinder().findCurrentProject().getBasePath()));
+        return new CourseAndExerciseManager()
+                .isCourseInDatabase(
+                        PathResolver.getCourseName(
+                                new ObjectFinder().findCurrentProject().getBasePath()));
     }
 
     private boolean changeIsNotJustWhitespace(DocumentEvent documentEvent) {
-        return !documentEvent
-                .getNewFragment().toString().trim().isEmpty() || !documentEvent
-                .getOldFragment().toString().trim().isEmpty();
+        return !documentEvent.getNewFragment().toString().trim().isEmpty()
+                || !documentEvent.getOldFragment().toString().trim().isEmpty();
     }
 
     private void createPatches(Exercise exercise, DocumentEvent documentEvent) {
@@ -65,14 +68,14 @@ public class TextInputListener implements DocumentListener {
         patches = diff.patch_make(previous, modified);
 
         if (isRemoveEvent(documentEvent)) {
-            addEventToManager(exercise, "text_remove",
-                    generatePatchDescription(documentEvent, patches));
+            addEventToManager(
+                    exercise, "text_remove", generatePatchDescription(documentEvent, patches));
         } else if (isPasteEvent(documentEvent)) {
-            addEventToManager(exercise, "text_paste",
-                    generatePatchDescription(documentEvent, patches));
+            addEventToManager(
+                    exercise, "text_paste", generatePatchDescription(documentEvent, patches));
         } else {
-            addEventToManager(exercise, "text_insert",
-                    generatePatchDescription(documentEvent, patches));
+            addEventToManager(
+                    exercise, "text_insert", generatePatchDescription(documentEvent, patches));
         }
     }
 
@@ -81,13 +84,13 @@ public class TextInputListener implements DocumentListener {
             return false;
         }
         return (documentEvent.getNewLength() > 2)
-                && ClipboardService.getClipBoard().trim().equals(
-                        documentEvent.getNewFragment()
-                        .toString().trim());
+                && ClipboardService.getClipBoard()
+                        .trim()
+                        .equals(documentEvent.getNewFragment().toString().trim());
     }
 
-    private String generatePatchDescription(DocumentEvent documentEvent,
-                                            List<DiffMatchPatch.Patch> patches) {
+    private String generatePatchDescription(
+            DocumentEvent documentEvent, List<DiffMatchPatch.Patch> patches) {
 
         logger.info("Creating JSON from patches.");
         String source = documentEvent.getSource().toString();
@@ -100,9 +103,9 @@ public class TextInputListener implements DocumentListener {
         return JsonMaker.create()
                 .add("file", new PathResolver().getPathRelativeToProject(source))
                 .add("patches", diff.patch_toText(patches))
-                .add("full_document",
-                        documentEvent
-                                .getNewLength() == documentEvent.getDocument().getTextLength())
+                .add(
+                        "full_document",
+                        documentEvent.getNewLength() == documentEvent.getDocument().getTextLength())
                 .toString();
     }
 
@@ -117,9 +120,5 @@ public class TextInputListener implements DocumentListener {
 
         LoggableEvent event = new LoggableEvent(exercise, eventType, text.getBytes());
         SpywareEventManager.add(event);
-
-
     }
-
-
 }

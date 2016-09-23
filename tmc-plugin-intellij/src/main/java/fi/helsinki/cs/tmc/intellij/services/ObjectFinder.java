@@ -28,10 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Finds various exercises and courses from the disk or by
- * asking the TMCServer.
- */
+/** Finds various exercises and courses from the disk or by asking the TMCServer. */
 public class ObjectFinder {
 
     private static final Logger logger = LoggerFactory.getLogger(ObjectFinder.class);
@@ -43,14 +40,13 @@ public class ObjectFinder {
         if (exercise != null) {
             return exercise;
         }
-        logger.info("Could not find exercise with the name {}. @ObjectFinder",
-                exerciseName);
+        logger.info("Could not find exercise with the name {}. @ObjectFinder", exerciseName);
         return null;
     }
 
     @Nullable
     private Exercise getExercise(String exerciseName, List<Exercise> exercises) {
-        for (Exercise exercise: exercises) {
+        for (Exercise exercise : exercises) {
             if (exercise.getName().equals(exerciseName)) {
                 logger.info("Found {}. @ObjectFinder", exercise);
                 return exercise;
@@ -65,14 +61,13 @@ public class ObjectFinder {
         try {
             courses = core.listCourses(ProgressObserver.NULL_OBSERVER).call();
         } catch (TmcCoreException e) {
-            logger.warn("Could not find course {}. @ObjectFinder", courseName,
-                    e, e.getStackTrace());
+            logger.warn(
+                    "Could not find course {}. @ObjectFinder", courseName, e, e.getStackTrace());
             new ErrorMessageService().showMessage(e, false);
         } catch (Exception e) {
-            logger.warn("Could not find course {}. @ObjectFinder", courseName,
-                    e, e.getStackTrace());
-            new ErrorMessageService().showMessage(e,
-                    "Could not find course. " + courseName, true);
+            logger.warn(
+                    "Could not find course {}. @ObjectFinder", courseName, e, e.getStackTrace());
+            new ErrorMessageService().showMessage(e, "Could not find course. " + courseName, true);
         }
         if (courses == null) {
             return null;
@@ -90,16 +85,22 @@ public class ObjectFinder {
         for (Course course : courses) {
             if (course.getName().equals(courseName)) {
                 try {
-                    logger.info("Trying to get course {} details from TmcCore. @ObjectFinder",
-                            course);
+                    logger.info(
+                            "Trying to get course {} details from TmcCore. @ObjectFinder", course);
                     return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
                 } catch (TmcCoreException exception) {
-                    logger.warn("Could not find course {}. @ObjectFinder", courseName,
-                            exception, exception.getStackTrace());
+                    logger.warn(
+                            "Could not find course {}. @ObjectFinder",
+                            courseName,
+                            exception,
+                            exception.getStackTrace());
                     new ErrorMessageService().showMessage(exception, false);
                 } catch (Exception e) {
-                    logger.warn("Could not find course {}. @ObjectFinder", courseName,
-                            e, e.getStackTrace());
+                    logger.warn(
+                            "Could not find course {}. @ObjectFinder",
+                            courseName,
+                            e,
+                            e.getStackTrace());
                     new ErrorMessageService().showMessage(e, "Could not find course.", true);
                 }
             }
@@ -109,17 +110,20 @@ public class ObjectFinder {
 
     public List<String> listAllDownloadedCourses() {
         logger.info("Processing listAllDownloadedCourses. @ObjectFinder");
-        List<String> fileNames = getListOfDirectoriesInPath(
-                TmcSettingsManager.get().getProjectBasePath());
+        List<String> fileNames =
+                getListOfDirectoriesInPath(TmcSettingsManager.get().getProjectBasePath());
 
         return fileNames;
     }
 
     public List<String> listAllDownloadedExercises(String courseName) {
-        logger.info("Processing listAllDownloadedExercises from course {}. @ObjectFinder",
-                courseName);
-        List<String> fileNames = getListOfDirectoriesInPath(TmcSettingsManager.get()
-                .getProjectBasePath() + File.separator + courseName);
+        logger.info(
+                "Processing listAllDownloadedExercises from course {}. @ObjectFinder", courseName);
+        List<String> fileNames =
+                getListOfDirectoriesInPath(
+                        TmcSettingsManager.get().getProjectBasePath()
+                                + File.separator
+                                + courseName);
 
         return fileNames;
     }
@@ -129,32 +133,31 @@ public class ObjectFinder {
         List<String> fileNames = new ArrayList<>();
 
         try (DirectoryStream<Path> directoryStream =
-                     Files.newDirectoryStream(Paths.get(folderPath))) {
+                Files.newDirectoryStream(Paths.get(folderPath))) {
             logger.info("Getting list of directories in path. @ObjectFinder");
             addExercisesToList(fileNames, directoryStream);
-        } catch (Exception ex)  {
-            logger.warn("Could not get list of directories in path. @ObjectFinder",
-                    ex, ex.getStackTrace());
+        } catch (Exception ex) {
+            logger.warn(
+                    "Could not get list of directories in path. @ObjectFinder",
+                    ex,
+                    ex.getStackTrace());
             ex.printStackTrace();
         }
         Collections.sort(fileNames);
         return fileNames;
     }
 
-    private void addExercisesToList(List<String> fileNames,
-                                    DirectoryStream<Path> directoryStream) {
+    private void addExercisesToList(List<String> fileNames, DirectoryStream<Path> directoryStream) {
         for (Path path : directoryStream) {
             if (!Files.isDirectory(path)) {
                 continue;
             }
             String[] exerciseCourse = PathResolver.getCourseAndExerciseName(path);
-            if (exerciseCourse == null
-                    || getExerciseName(exerciseCourse).charAt(0) == '.') {
+            if (exerciseCourse == null || getExerciseName(exerciseCourse).charAt(0) == '.') {
                 logger.info("exerciseCourse variable = null. @ObjectFinder");
                 continue;
             }
-            logger.info("Adding exercise to list. @ObjectFinder",
-                    getExerciseName(exerciseCourse));
+            logger.info("Adding exercise to list. @ObjectFinder", getExerciseName(exerciseCourse));
             fileNames.add(getExerciseName(exerciseCourse));
         }
     }
@@ -180,7 +183,7 @@ public class ObjectFinder {
     public Course findCourseNoDetails(String courseName, TmcCore core) {
         try {
             List<Course> list = core.listCourses(ProgressObserver.NULL_OBSERVER).call();
-            for (Course cor: list) {
+            for (Course cor : list) {
                 if (cor.getName().equals(courseName)) {
                     return cor;
                 }

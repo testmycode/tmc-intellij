@@ -11,16 +11,17 @@ public class ThreadingService {
 
     private static final Logger logger = LoggerFactory.getLogger(ThreadingService.class);
 
-    public void runWithNotification(final Runnable run, Project project,
-                                    ProgressWindow progressWindow) {
+    public void runWithNotification(
+            final Runnable run, Project project, ProgressWindow progressWindow) {
         logger.info("Processing runWithNotification. @ThreadingService");
 
-        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
-            @Override
-            public void run() {
-                ProgressManager.getInstance().runProcess(run, progressWindow);
-            }
-        });
+        ApplicationManager.getApplication()
+                .executeOnPooledThread(
+                        new Runnable() {
+                            @Override
+                            public void run() {
+                                ProgressManager.getInstance().runProcess(run, progressWindow);
+                            }
+                        });
     }
-
 }

@@ -67,8 +67,7 @@ public class TestResultProgressBar extends JBProgressBar {
                     graphic.setColor(Color.BLACK);
                     String string = getString();
                     FontMetrics fm = graphic.getFontMetrics();
-                    Rectangle textBox = fm.getStringBounds(string,
-                            graphic).getBounds();
+                    Rectangle textBox = fm.getStringBounds(string, graphic).getBounds();
 
                     int midX = width / 2;
                     int midY = height / 2;

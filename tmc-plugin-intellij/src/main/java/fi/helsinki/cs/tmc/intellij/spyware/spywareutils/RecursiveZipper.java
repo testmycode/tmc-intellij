@@ -18,32 +18,30 @@ public class RecursiveZipper {
 
     public static interface ZippingDecider {
         /**
-         * Tells whether the given file or directory should be zipped.
-         * Zip paths are separated by slashes and don't have a starting slash.
-         * Directory paths always end in a slash.
+         * Tells whether the given file or directory should be zipped. Zip paths are separated by
+         * slashes and don't have a starting slash. Directory paths always end in a slash.
          */
         public boolean shouldZip(String zipPath);
     }
 
-    public static final ZippingDecider ZIP_ALL_THE_THINGS = new ZippingDecider() {
-        @Override
-        public boolean shouldZip(String zipPath) {
-            return true;
-        }
-    };
+    public static final ZippingDecider ZIP_ALL_THE_THINGS =
+            new ZippingDecider() {
+                @Override
+                public boolean shouldZip(String zipPath) {
+                    return true;
+                }
+            };
 
     public RecursiveZipper(File rootDir, ZippingDecider zippingDecider) {
         this.rootDir = rootDir;
         this.zippingDecider = zippingDecider;
     }
 
-    /**
-     * Zip up a project directory, only including stuff decided by the {@link ZippingDecider}.
-     */
+    /** Zip up a project directory, only including stuff decided by the {@link ZippingDecider}. */
     public byte[] zipProjectSources() throws IOException {
         if (!rootDir.exists() || !rootDir.isDirectory()) {
-            throw new FileNotFoundException("Root directory "
-                    + rootDir + " not found for zipping!");
+            throw new FileNotFoundException(
+                    "Root directory " + rootDir + " not found for zipping!");
         }
 
         ByteArrayOutputStream zipBuffer = new ByteArrayOutputStream();
@@ -67,12 +65,9 @@ public class RecursiveZipper {
         zos.closeEntry();
     }
 
-    /**
-     * Zips a directory recursively.
-     */
-    private void zipRecursively(File dir,
-                                ZipOutputStream zos,
-                                String parentZipPath) throws IOException {
+    /** Zips a directory recursively. */
+    private void zipRecursively(File dir, ZipOutputStream zos, String parentZipPath)
+            throws IOException {
         String thisDirZipPath;
         if (parentZipPath.isEmpty()) {
             thisDirZipPath = dir.getName();

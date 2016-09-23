@@ -24,18 +24,18 @@ import javax.tools.FileObject;
 
 public final class TestResultCase extends JPanel {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(TestResultCase.class);
+    private static final Logger logger = LoggerFactory.getLogger(TestResultCase.class);
     private final GridBagConstraints constraints = new GridBagConstraints();
     private Color titleColor;
     private Color borderColor;
 
-    public TestResultCase(final Color borderColor,
-                          final Color titleColor,
-                          final String title,
-                          final String message,
-                          final JPanel detailView,
-                          final List<String> detailMessage) {
+    public TestResultCase(
+            final Color borderColor,
+            final Color titleColor,
+            final String title,
+            final String message,
+            final JPanel detailView,
+            final List<String> detailMessage) {
 
         logger.info("Creating items for TestResultsPanel. @TestResultCase");
         createStyle(borderColor, titleColor);
@@ -44,11 +44,12 @@ public final class TestResultCase extends JPanel {
         createDetailedMessage(detailMessage);
     }
 
-    public TestResultCase(final Color borderColor,
-                      final Color titleColor,
-                      final String title,
-                      final String message,
-                      final JPanel detailView) {
+    public TestResultCase(
+            final Color borderColor,
+            final Color titleColor,
+            final String title,
+            final String message,
+            final JPanel detailView) {
 
         logger.info("Creating items for TestResultsPanel. @TestResultCase");
         createStyle(borderColor, titleColor);
@@ -71,18 +72,20 @@ public final class TestResultCase extends JPanel {
         this.add(button, constraints);
         final String finalDetailedMessage = detailedMessage;
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JTextPane panel = new JTextPane();
-                panel.setText(finalDetailedMessage);
-                panel.setEditable(false);
-                JBPopupFactory.getInstance().createComponentPopupBuilder(panel,
-                        new JLabel("Message")).createPopup().showCenteredInCurrentWindow(
-                        new ObjectFinder().findCurrentProject());
-            }
-        });
-
+        button.addActionListener(
+                new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        JTextPane panel = new JTextPane();
+                        panel.setText(finalDetailedMessage);
+                        panel.setEditable(false);
+                        JBPopupFactory.getInstance()
+                                .createComponentPopupBuilder(panel, new JLabel("Message"))
+                                .createPopup()
+                                .showCenteredInCurrentWindow(
+                                        new ObjectFinder().findCurrentProject());
+                    }
+                });
     }
 
     private void createBody(final String message, final JPanel detailView) {
@@ -125,13 +128,12 @@ public final class TestResultCase extends JPanel {
     private void createMessage(final String message) {
         logger.info("Creating message. @TestResultCase");
         if (message == null) {
-            logger.info("message was null, not adding "
-                    + "JLabel message to to TestRestCase panel");
+            logger.info(
+                    "message was null, not adding " + "JLabel message to to TestRestCase panel");
             return;
         }
 
         this.add(new JLabel(message), constraints);
-
     }
 
     private void createDetailView(final JPanel detailView) {
@@ -142,7 +144,6 @@ public final class TestResultCase extends JPanel {
         }
 
         this.add(detailView, constraints);
-
     }
 
     private void createBorder() {

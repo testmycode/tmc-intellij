@@ -10,12 +10,9 @@ import org.slf4j.LoggerFactory;
 
 public class SubmissionResultHandler {
 
-    private static final Logger logger = LoggerFactory
-            .getLogger(SubmissionResultHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(SubmissionResultHandler.class);
 
-    public void showResultMessage(Exercise exercise,
-                                         SubmissionResult result,
-                                         Project project) {
+    public void showResultMessage(Exercise exercise, SubmissionResult result, Project project) {
         logger.info("Showing submission result message. @SubmissionResultHandler");
 
         if (result.isAllTestsPassed()) {

@@ -26,15 +26,14 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 
- /*
+/*
  * this code is modified form intellij code. url below
  * original class: NewProjectUtil
  * https://github.com/JetBrains/intellij-community/blob/9132043620dd78fbff9e77e78d00efb8972613bc/java/idea-ui/src/com/intellij/ide/impl/NewProjectUtil.java
  */
 
 public class NewProjectUtilModified {
-    private static final Logger logger = LoggerFactory
-            .getLogger(NewProjectUtilModified.class);
+    private static final Logger logger = LoggerFactory.getLogger(NewProjectUtilModified.class);
 
     /*
      * Handles importing exercises to intellij only using file root as source of info.
@@ -52,43 +51,66 @@ public class NewProjectUtilModified {
         try {
             logger.info("Creates .idea");
             File projectDir = new File(projectFilePath).getParentFile();
-            LOG.assertTrue(projectDir != null, "Cannot create project in '"
-                    + projectFilePath + "': no parent file exists");
+            LOG.assertTrue(
+                    projectDir != null,
+                    "Cannot create project in '" + projectFilePath + "': no parent file exists");
             FileUtil.ensureExists(projectDir);
 
             final File ideaDir = new File(projectFilePath, Project.DIRECTORY_STORE_FOLDER);
             FileUtil.ensureExists(ideaDir);
 
-            newProject = ProjectManagerImpl.getInstanceEx()
-                    .newProject(path.toString(), path.toString(), true, false);
+            newProject =
+                    ProjectManagerImpl.getInstanceEx()
+                            .newProject(path.toString(), path.toString(), true, false);
 
             logger.info("Setting JDK");
-            final Sdk jdk = ProjectJdkTable.getInstance()
-                    .findMostRecentSdkOfType(JavaSdk.getInstance());
+            final Sdk jdk =
+                    ProjectJdkTable.getInstance().findMostRecentSdkOfType(JavaSdk.getInstance());
             if (jdk != null) {
-                CommandProcessor.getInstance().executeCommand(newProject, ()
-                        -> ApplicationManager.getApplication().runWriteAction(()
-                                -> applyJdkToProject(newProject, jdk)), null, null);
+                CommandProcessor.getInstance()
+                        .executeCommand(
+                                newProject,
+                                () ->
+                                        ApplicationManager.getApplication()
+                                                .runWriteAction(
+                                                        () -> applyJdkToProject(newProject, jdk)),
+                                null,
+                                null);
             }
 
-
             logger.info("Sets compile output path");
-            final String compileOutput = StringUtil.endsWithChar(path, '/')
-                    ? path + "out" : path + "/out";;
-            CommandProcessor.getInstance().executeCommand(newProject, () ->
-                    ApplicationManager.getApplication().runWriteAction(() -> {
-                        String canonicalPath = compileOutput;
-                        try {
-                            canonicalPath = FileUtil.resolveShortWindowsName(compileOutput);
-                        } catch (IOException e) {
-                            //file doesn't exist
-                            logger.warn("File doesn't exist.", e);
-                        }
+            final String compileOutput =
+                    StringUtil.endsWithChar(path, '/') ? path + "out" : path + "/out";
+            ;
+            CommandProcessor.getInstance()
+                    .executeCommand(
+                            newProject,
+                            () ->
+                                    ApplicationManager.getApplication()
+                                            .runWriteAction(
+                                                    () -> {
+                                                        String canonicalPath = compileOutput;
+                                                        try {
+                                                            canonicalPath =
+                                                                    FileUtil
+                                                                          .resolveShortWindowsName(
+                                                                                    compileOutput);
+                                                        } catch (IOException e) {
+                                                            //file doesn't exist
+                                                            logger.warn("File doesn't exist.", e);
+                                                        }
 
-                        canonicalPath = FileUtil.toSystemIndependentName(canonicalPath);
-                        CompilerProjectExtension.getInstance(newProject)
-                                .setCompilerOutputUrl(VfsUtilCore.pathToUrl(canonicalPath));
-                    }), null, null);
+                                                        canonicalPath =
+                                                                FileUtil.toSystemIndependentName(
+                                                                        canonicalPath);
+                                                        CompilerProjectExtension.getInstance(
+                                                                        newProject)
+                                                                .setCompilerOutputUrl(
+                                                                        VfsUtilCore.pathToUrl(
+                                                                                canonicalPath));
+                                                    }),
+                            null,
+                            null);
             logger.info("Saving project created this far");
 
             // Saving changes seems to write things up.
@@ -96,9 +118,7 @@ public class NewProjectUtilModified {
                 newProject.save();
             }
 
-            ProjectFromSourcesBuilderImplModified
-                    .commit(newProject, path);
-
+            ProjectFromSourcesBuilderImplModified.commit(newProject, path);
 
             logger.info("saving project after builder commit");
             // without save method nothing happens

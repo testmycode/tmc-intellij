@@ -21,14 +21,13 @@ public class PathResolver {
     private static final Logger logger = LoggerFactory.getLogger(PathResolver.class);
 
     public static String[] getCourseAndExerciseName(Project project) {
-        logger.info("Processing getCourseAndExerciseName"
-                + " with Project parameter. @PathResolver");
+        logger.info(
+                "Processing getCourseAndExerciseName" + " with Project parameter. @PathResolver");
         return getCourseAndExerciseName(project.getBasePath());
     }
 
     public static String[] getCourseAndExerciseName(Path path) {
-        logger.info("Processing getCourseAndExerciseName"
-                + " with Path parameter. @PathResolver");
+        logger.info("Processing getCourseAndExerciseName" + " with Path parameter. @PathResolver");
         return getCourseAndExerciseName(path.toString());
     }
 
@@ -38,8 +37,8 @@ public class PathResolver {
      * array and the exercise in the last one.
      */
     public static String[] getCourseAndExerciseName(String path) {
-        logger.info("Processing getCourseAndExerciseName "
-                + "with String parameter. @PathResolver");
+        logger.info(
+                "Processing getCourseAndExerciseName " + "with String parameter. @PathResolver");
         if (path == null) {
             return null;
         }
@@ -49,7 +48,6 @@ public class PathResolver {
         }
         return path.split("\\\\");
     }
-
 
     public static Exercise getExercise(String path) {
         if (path == null) {
@@ -76,7 +74,6 @@ public class PathResolver {
         return split[split.length - 2];
     }
 
-
     private static boolean osIsUnixBased(String path) {
         return path.contains("/");
     }
@@ -94,8 +91,8 @@ public class PathResolver {
         if (project == null) {
             return null;
         }
-        String[] paths = path.split(getExerciseName(new ObjectFinder()
-                .findCurrentProject().getBasePath()));
+        String[] paths =
+                path.split(getExerciseName(new ObjectFinder().findCurrentProject().getBasePath()));
         return paths[paths.length - 1];
     }
 }

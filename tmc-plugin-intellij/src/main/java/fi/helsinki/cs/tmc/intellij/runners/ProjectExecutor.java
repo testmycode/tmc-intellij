@@ -25,8 +25,7 @@ public class ProjectExecutor {
         logger.info("ProjectExecutor initialized.");
     }
 
-    public void executeConfiguration(Project project,
-                                          ModuleBasedConfiguration appCon) {
+    public void executeConfiguration(Project project, ModuleBasedConfiguration appCon) {
         if (checkAtLeastOneProjectIsOpen()) {
             logger.warn("No open projects found, can't execute the project.");
             return;
@@ -39,8 +38,8 @@ public class ProjectExecutor {
         ProgramRunner runner = getRunner(executor, selectedConfiguration);
         logger.info("Creating ExecutionEnvironment.");
         ExecutionEnvironment environment =
-                new ExecutionEnvironment(new DefaultRunExecutor(),
-                        runner, selectedConfiguration, project);
+                new ExecutionEnvironment(
+                        new DefaultRunExecutor(), runner, selectedConfiguration, project);
         try {
             logger.info("Executing project.");
             runner.execute(environment);
@@ -53,16 +52,17 @@ public class ProjectExecutor {
     private RunnerAndConfigurationSettingsImpl getApplicationRunnerAndConfigurationSettings(
             RunManager runManager, ModuleBasedConfiguration appCon) {
         logger.info("Getting RunnerAndConfigurationSettings implementation.");
-        return new RunnerAndConfigurationSettingsImpl((RunManagerImpl) runManager,
-                appCon, runManager.getSelectedConfiguration().isTemplate());
+        return new RunnerAndConfigurationSettingsImpl(
+                (RunManagerImpl) runManager,
+                appCon,
+                runManager.getSelectedConfiguration().isTemplate());
     }
 
-    private ProgramRunner getRunner(Executor executor,
-                                    RunnerAndConfigurationSettingsImpl selectedConfiguration) {
+    private ProgramRunner getRunner(
+            Executor executor, RunnerAndConfigurationSettingsImpl selectedConfiguration) {
         logger.info("Getting ProgramRunner.");
         return RunnerRegistry.getInstance()
-                .getRunner(executor.getId(), selectedConfiguration
-                        .getConfiguration());
+                .getRunner(executor.getId(), selectedConfiguration.getConfiguration());
     }
 
     private boolean checkAtLeastOneProjectIsOpen() {
