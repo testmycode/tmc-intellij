@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/ohtu-intellij/tmc-intellij.svg?branch=master)](https://travis-ci.org/ohtu-intellij/tmc-intellij)
+[![Build Status](https://travis-ci.org/testmycode/tmc-intellij.svg?branch=master)](https://travis-ci.org/testmycode/tmc-intellij)
 
-[![Coverage Status](https://coveralls.io/repos/github/ohtu-intellij/tmc-intellij/badge.svg?branch=master)](https://coveralls.io/github/ohtu-intellij/tmc-intellij?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/testmycode/tmc-intellij/badge.svg?branch=master)](https://coveralls.io/github/testmycode/tmc-intellij?branch=master)
 
 # TMC plugin for IntelliJ IDEA
 
