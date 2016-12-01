@@ -13,6 +13,10 @@ import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist.DownloadListWindow;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.progress.util.ProgressWindow;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
