@@ -3,11 +3,13 @@ package fi.helsinki.cs.tmc.intellij.ui.testresults;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 
 import com.intellij.openapi.ui.popup.JBPopupFactory;
+import com.intellij.ui.JBColor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -20,7 +22,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextPane;
 import javax.swing.border.Border;
-import javax.tools.FileObject;
 
 public final class TestResultCase extends JPanel {
 
@@ -83,7 +84,7 @@ public final class TestResultCase extends JPanel {
         logger.info("Creating style. @TestResultCase");
         this.borderColor = borderColor;
         this.titleColor = titleColor;
-
+        this.setBackground(JBColor.background().brighter());
         this.setLayout(new GridBagLayout());
 
         createConstraints();
@@ -102,11 +103,10 @@ public final class TestResultCase extends JPanel {
     private void createTitle(final String title) {
         logger.info("Creating title. @TestResultCase");
         final JLabel titleLabel = new JLabel(title);
-        this.add(titleLabel, constraints);
-    }
-
-    private void createTitle(final FileObject fileObject) {
-        final JLabel titleLabel = new JLabel(fileObject.getName());
+        titleLabel.setForeground(this.titleColor);
+        Font font = titleLabel.getFont();
+        Font biggerFont = font.deriveFont((float)(font.getSize() + 4));
+        titleLabel.setFont(biggerFont);
         this.add(titleLabel, constraints);
     }
 

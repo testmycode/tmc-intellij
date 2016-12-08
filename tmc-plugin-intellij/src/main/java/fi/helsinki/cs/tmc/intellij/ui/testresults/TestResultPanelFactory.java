@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
+import fi.helsinki.cs.tmc.langs.abstraction.ValidationResult;
 import fi.helsinki.cs.tmc.langs.domain.TestResult;
 
 import com.intellij.openapi.project.Project;
@@ -31,17 +32,17 @@ public class TestResultPanelFactory implements ToolWindowFactory {
 
         TestResultsPanel panel = new TestResultsPanel();
         ContentFactory cf = ContentFactory.SERVICE.getInstance();
-        Content content = cf.createContent(panel.getBasePanel(), "", true);
+        Content content = cf.createContent(panel, "", true);
         toolWindow.getContentManager().addContent(content);
 
         panels.add(panel);
     }
 
-    public static void updateMostRecentResult(List<TestResult> result) {
+    public static void updateMostRecentResult(List<TestResult> tests, ValidationResult validation) {
         logger.info("Updating the most recent test result. @TestResultPanelFactory.");
         for (TestResultsPanel panel : panels) {
-            panel.showTest(result);
-            panel.getBasePanel().repaint();
+            panel.showResults(tests, validation);
+            panel.repaint();
         }
     }
 }

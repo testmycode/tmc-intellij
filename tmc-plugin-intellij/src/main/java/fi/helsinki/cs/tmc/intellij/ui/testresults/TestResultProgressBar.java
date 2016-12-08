@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
 import com.intellij.ui.JBProgressBar;
+import junit.framework.Test;
 
 import java.awt.Color;
 import java.awt.FontMetrics;
@@ -8,11 +9,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 
 public class TestResultProgressBar extends JBProgressBar {
-    private static final Color PASS_COLOR = new Color(0x00C800);
-    private static final Color FAIL_COLOR = new Color(0xE10000);
-    private static final Color VALIDATION_COLOR = new Color(0xFFD000);
-    private static final Color UNSET_COLOR = new Color(0xEEEEEE);
-
     private boolean validationPass;
 
     public TestResultProgressBar() {
@@ -22,7 +18,6 @@ public class TestResultProgressBar extends JBProgressBar {
     }
 
     public void validationPass(final boolean validationPassed) {
-
         validationPass = validationPassed;
     }
 
@@ -42,7 +37,7 @@ public class TestResultProgressBar extends JBProgressBar {
 
         try {
             int width = getWidth();
-            int height = getHeight() / 2;
+            int height = getHeight();
             graphic.clearRect(0, 0, width, height);
 
             if (!isIndeterminate()) {
@@ -55,12 +50,12 @@ public class TestResultProgressBar extends JBProgressBar {
                 }
                 int notFilled = width - filled;
                 if (validationPass) {
-                    graphic.setColor(PASS_COLOR);
+                    graphic.setColor(TestResultColors.TEST_BORDER_SUCCESS);
                 } else {
-                    graphic.setColor(VALIDATION_COLOR);
+                    graphic.setColor(TestResultColors.TEST_BORDER_VALIDATION);
                 }
                 graphic.fillRect(0, 0, filled, height);
-                graphic.setColor(FAIL_COLOR);
+                graphic.setColor(TestResultColors.TEST_BORDER_FAIL);
                 graphic.fillRect(filled, 0, notFilled, height);
 
                 if (isStringPainted()) {
@@ -77,7 +72,8 @@ public class TestResultProgressBar extends JBProgressBar {
                     graphic.drawString(string, textX, textY);
                 }
             } else {
-                graphic.setColor(UNSET_COLOR);
+                // Is the bar ever used indeterminate?
+                graphic.setColor(Color.WHITE);
                 graphic.fillRect(0, 0, width, height);
             }
 

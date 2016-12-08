@@ -30,7 +30,9 @@ public class FailedSubmissionDialog {
                                 Messages.showErrorDialog(failMessage, "Some tests failed!");
                             }
                         });
-        TestResultPanelFactory.updateMostRecentResult(result.getTestCases());
+        TestResultPanelFactory.updateMostRecentResult(
+                result.getTestCases(),
+                result.getValidationResult());
     }
 
     private String parsePoints(SubmissionResult result) {
