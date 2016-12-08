@@ -34,27 +34,13 @@ public final class TestResultCase extends JPanel {
             final Color titleColor,
             final String title,
             final String message,
-            final JPanel detailView,
             final List<String> detailMessage) {
 
         logger.info("Creating items for TestResultsPanel. @TestResultCase");
         createStyle(borderColor, titleColor);
         createTitle(title);
-        createBody(message, detailView);
+        createBody(message);
         createDetailedMessage(detailMessage);
-    }
-
-    public TestResultCase(
-            final Color borderColor,
-            final Color titleColor,
-            final String title,
-            final String message,
-            final JPanel detailView) {
-
-        logger.info("Creating items for TestResultsPanel. @TestResultCase");
-        createStyle(borderColor, titleColor);
-        createTitle(title);
-        createBody(message, detailView);
     }
 
     private void createDetailedMessage(List<String> detailMessage) {
@@ -88,10 +74,9 @@ public final class TestResultCase extends JPanel {
                 });
     }
 
-    private void createBody(final String message, final JPanel detailView) {
+    private void createBody(final String message) {
         logger.info("Creating body. @TestResultCase");
         createMessage(message);
-        createDetailView(detailView);
     }
 
     private void createStyle(final Color borderColor, final Color titleColor) {
@@ -134,16 +119,6 @@ public final class TestResultCase extends JPanel {
         }
 
         this.add(new JLabel(message), constraints);
-    }
-
-    private void createDetailView(final JPanel detailView) {
-        logger.info("Creating detail view. @TestResultCase");
-        if (detailView == null) {
-            logger.info("defailview was null, not adding it to the TestResultCase panel");
-            return;
-        }
-
-        this.add(detailView, constraints);
     }
 
     private void createBorder() {

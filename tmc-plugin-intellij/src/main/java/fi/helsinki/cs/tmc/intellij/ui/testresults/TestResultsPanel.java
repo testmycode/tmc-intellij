@@ -87,7 +87,6 @@ public class TestResultsPanel {
                             Color.BLUE,
                             result.getName(),
                             result.getMessage(),
-                            new JPanel(),
                             error));
             if (result.isSuccessful()) {
                 success++;
