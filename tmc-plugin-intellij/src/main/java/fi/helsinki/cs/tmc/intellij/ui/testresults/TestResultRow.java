@@ -59,7 +59,7 @@ public class TestResultRow extends JPanel {
         return new TestResultRow(
                 TestResultColors.TEST_BORDER_SUCCESS,
                 TestResultColors.TEST_TITLE_SUCCESS,
-                title,
+                "PASS: " + title,
                 message,
                 details);
     }
@@ -72,7 +72,7 @@ public class TestResultRow extends JPanel {
         return new TestResultRow(
                 TestResultColors.TEST_BORDER_FAIL,
                 TestResultColors.TEST_TITLE_FAIL,
-                title,
+                "FAIL: " + title,
                 message,
                 details);
     }
