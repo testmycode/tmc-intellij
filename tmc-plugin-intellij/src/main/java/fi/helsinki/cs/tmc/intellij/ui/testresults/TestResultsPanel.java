@@ -155,16 +155,11 @@ public class TestResultsPanel extends JPanel {
     }
 
     private void createValidationRows(ValidationResult validationResult) {
-        Map<File, List<ValidationError>> failedFiles = validationResult.getValidationErrors();
-
-        for (Map.Entry<File, List<ValidationError>> failedFile : failedFiles.entrySet()) {
-            String filename = failedFile.getKey().toString();
-            List<ValidationError> errors = failedFile.getValue();
-            createValidationRowForEachError(filename, errors);
-        }
+        validationResult.getValidationErrors().entrySet().stream()
+                        .forEach(e -> createValidationRowForEachError(e.getKey(), e.getValue()));
     }
 
-    private void createValidationRowForEachError(String filename, List<ValidationError> errors) {
+    private void createValidationRowForEachError(File file, List<ValidationError> errors) {
 
         for (ValidationError error : errors) {
             String message = String.format(
@@ -173,24 +168,18 @@ public class TestResultsPanel extends JPanel {
                     error.getMessage());
 
             TestResultRow row =
-                    TestResultRow.createValidationRow(filename, message, error.getSourceName());
+                    TestResultRow.createValidationRow(
+                        file.getPath(),
+                        message,
+                        error.getSourceName());
             resultsList.add(row, resultsListConstraints);
         }
     }
 
     private double testPassRatio(List<TestResult> tests) {
-        int total = tests.size();
-        int passed = 0;
-
-        for (TestResult test : tests) {
-            if (test.isSuccessful()) {
-                passed++;
-            }
+        if (tests.size() == 0) {
+            return 1;
         }
-
-        if (total == 0) {
-            return 0;
-        }
-        return passed / (double) total;
+        return tests.stream().filter(TestResult::isSuccessful).count() / (double) tests.size();
     }
 }
