@@ -1,7 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
 import com.intellij.ui.JBProgressBar;
-import junit.framework.Test;
 
 import java.awt.Color;
 import java.awt.FontMetrics;

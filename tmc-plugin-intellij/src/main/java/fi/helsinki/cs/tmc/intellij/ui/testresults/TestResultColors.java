@@ -13,4 +13,5 @@ public class TestResultColors {
     public static final JBColor TEST_TITLE_SUCCESS = new JBColor(0x4D914C, 0x6FD06D);
     public static final JBColor TEST_TITLE_FAIL = new JBColor(0xA50000, 0Xff6c5c);
     public static final JBColor TEST_TITLE_VALIDATION = new JBColor(0xB59403, 0xFFD000);
+
 }

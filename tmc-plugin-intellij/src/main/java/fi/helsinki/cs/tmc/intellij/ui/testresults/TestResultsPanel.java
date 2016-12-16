@@ -10,11 +10,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.Box;
@@ -124,22 +122,35 @@ public class TestResultsPanel extends JPanel {
 
     private void createTestRows(List<TestResult> testResults) {
         for (TestResult result : testResults) {
-            List<String> error;
-            if (result.getDetailedMessage().size() > 0) {
-                error = result.getDetailedMessage();
-            } else {
-                error = result.getException();
-            }
-
-            TestResultCase row =
-                    new TestResultCase(
-                        getColor(result.isSuccessful()),
-                        getTitleColor(result.isSuccessful()),
-                        result.getName(),
-                        result.getMessage(),
-                        error);
-
+            String details = getDetails(result);
+            TestResultRow row = createTestRow(result, details);
             resultsList.add(row, resultsListConstraints);
+        }
+    }
+
+    private String getDetails(TestResult result) {
+        List<String> detailsRows = getDetailsOrMessageRows(result);
+        if (detailsRows == null) {
+            return null;
+        }
+        return String.join("\n", detailsRows);
+    }
+
+    private List<String> getDetailsOrMessageRows(TestResult res) {
+        return res.getDetailedMessage().size() > 0 ? res.getDetailedMessage() : res.getException();
+    }
+
+    private TestResultRow createTestRow(TestResult result, String details) {
+        if (result.isSuccessful()) {
+            return TestResultRow.createSuccessfulTestRow(
+                    result.getName(),
+                    result.getMessage(),
+                    details);
+        } else {
+            return TestResultRow.createFailedTestRow(
+                    result.getName(),
+                    result.getMessage(),
+                    details);
         }
     }
 
@@ -161,15 +172,8 @@ public class TestResultsPanel extends JPanel {
                     error.getLine(),
                     error.getMessage());
 
-            ArrayList<String> details = new ArrayList<>();
-            details.add(error.getSourceName()); // e.g. checkstyle check's technical name
-
-            TestResultCase row = new TestResultCase(
-                    TestResultColors.TEST_BORDER_VALIDATION,
-                    TestResultColors.TEST_TITLE_VALIDATION,
-                    filename,
-                    message,
-                    details);
+            TestResultRow row =
+                    TestResultRow.createValidationRow(filename, message, error.getSourceName());
             resultsList.add(row, resultsListConstraints);
         }
     }
@@ -188,17 +192,5 @@ public class TestResultsPanel extends JPanel {
             return 0;
         }
         return passed / (double) total;
-    }
-
-    private Color getColor(boolean success) {
-        return success
-            ? TestResultColors.TEST_BORDER_SUCCESS
-            : TestResultColors.TEST_BORDER_FAIL;
-    }
-
-    private Color getTitleColor(boolean success) {
-        return success
-            ? TestResultColors.TEST_TITLE_SUCCESS
-            : TestResultColors.TEST_TITLE_FAIL;
     }
 }
