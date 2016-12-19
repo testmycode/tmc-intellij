@@ -125,7 +125,7 @@ public class TestRunningService {
                             @Override
                             public void run() {
                                 TestResultPanelFactory.updateMostRecentResult(
-                                        finalResult.testResults);
+                                        finalResult.testResults, null);
                             }
                         }));
     }

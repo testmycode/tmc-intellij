@@ -110,13 +110,14 @@ public class ExerciseUploadingService {
         final SubmissionResult result = core.submit(observer, exercise).call();
         handler.showResultMessage(exercise, result, project);
         refreshExerciseList();
+
         ApplicationManager.getApplication()
                 .invokeLater(
                         new Runnable() {
                             @Override
                             public void run() {
                                 TestResultPanelFactory.updateMostRecentResult(
-                                        result.getTestCases());
+                                        result.getTestCases(), result.getValidationResult());
                             }
                         });
     }
