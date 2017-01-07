@@ -42,6 +42,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:core:0.9.3-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:core:0.9.4-SNAPSHOT" level="project" />
   </component>
 </module>
