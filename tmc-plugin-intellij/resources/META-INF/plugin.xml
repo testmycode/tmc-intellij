@@ -1,8 +1,8 @@
 <idea-plugin version="2">
   <id>fi.helsinki.cs.tmc</id>
   <name>TMC Plugin for Intellij</name>
-  <version>1.0.2</version>
-  <vendor email="" url="https://github.com/ohtu-intellij/tmc-intellij">Ohtu IntelliJ team @ Github</vendor>
+  <version>1.0.4</version>
+  <vendor email="" url="https://github.com/testmycode/tmc-intellij"> TMC IntelliJ team @ Github</vendor>
 
   <description><![CDATA[
     TMC-IntelliJ is the IntelliJ IDEA plugin for University of Helsinki's TestMyCode framework.

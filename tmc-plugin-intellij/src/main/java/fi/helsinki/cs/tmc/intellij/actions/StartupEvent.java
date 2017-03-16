@@ -94,6 +94,7 @@ public class StartupEvent implements StartupActivity {
     private void setupTmcSettings(ProgressObserver observer) {
         observer.progress(0, 0.14, "Loading settings");
         TmcSettingsManager.setup();
+        TmcSettingsManager.get().hostProgramName();
     }
 
     private void setupCoreHolder(ProgressObserver observer) {

@@ -11,7 +11,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/out" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="IntelliJ IDEA Community Edition IC-163.7743.44" jdkType="IDEA JDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>
@@ -42,6 +42,6 @@
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:core:0.9.4-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:core:0.9.11-SNAPSHOT" level="project" />
   </component>
 </module>

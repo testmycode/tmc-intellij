@@ -61,6 +61,7 @@ public class SettingsPanel {
     private JFormattedTextField projectPathField;
     private JCheckBox checkForNewOrCheckBox;
     private JCheckBox checkThatAllActiveCheckBox;
+    private JCheckBox sendDiagnosticsCheckBox;
     private JCheckBox sendSnapshotsOfYourCheckBox;
     private JComboBox<String> selectErrorLanguageField;
     private JButton browseButton;
@@ -96,6 +97,10 @@ public class SettingsPanel {
         return checkThatAllActiveCheckBox;
     }
 
+    public JCheckBox getSendDiagnosticsCheckBox() {
+        return sendDiagnosticsCheckBox;
+    }
+
     public JCheckBox getSendSnapshotsOfYourCheckBox() {
         return sendSnapshotsOfYourCheckBox;
     }
@@ -127,6 +132,9 @@ public class SettingsPanel {
         }
         if (TmcSettingsManager.get().isCheckForExercises()) {
             checkForNewOrCheckBox.doClick();
+        }
+        if (TmcSettingsManager.get().getSendDiagnostics()) {
+            sendDiagnosticsCheckBox.doClick();
         }
         List<Course> courses = new ArrayList<>();
 
@@ -198,6 +206,7 @@ public class SettingsPanel {
         settingsTmc.setCheckForExercises(checkForNewOrCheckBox.isSelected());
         settingsTmc.setProjectBasePath(projectPathField.getText());
         settingsTmc.setSpyware(sendSnapshotsOfYourCheckBox.isSelected());
+        settingsTmc.setSendDiagnostics(sendDiagnosticsCheckBox.isSelected());
         saveSettings.setSettingsTmc(settingsTmc);
     }
 

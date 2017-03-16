@@ -5,6 +5,8 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 
 import com.google.common.base.Optional;
 
+import com.intellij.openapi.application.ApplicationInfo;
+
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
 import org.slf4j.Logger;
@@ -28,9 +30,11 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private String projectBasePath;
     private boolean checkForExercises;
     private boolean spyware;
+    private boolean sendDiagnostics;
 
     public SettingsTmc(String serverAddress, String username, String password) {
         this.spyware = false;
+        this.sendDiagnostics = true;
         this.checkForExercises = true;
         this.serverAddress = serverAddress;
         this.username = username;
@@ -40,6 +44,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
     /** Sets the default folder for TMC project files -> home/IdeaProjects/TMCProjects . */
     public SettingsTmc() {
         spyware = false;
+        this.sendDiagnostics = true;
         this.checkForExercises = true;
         logger.info("Setting default folder for TMC project files. @SettingsTmc");
         JFileChooser fileChooser = new JFileChooser();
@@ -191,5 +196,33 @@ public class SettingsTmc implements TmcSettings, Serializable {
     public Path getConfigRoot() {
         JFileChooser fileChooser = new JFileChooser();
         return Paths.get(fileChooser.getFileSystemView().getDefaultDirectory().toString());
+    }
+
+    @Override
+    public boolean getSendDiagnostics() {
+        return this.sendDiagnostics;
+    }
+
+    public void setSendDiagnostics(boolean value) {
+        this.sendDiagnostics = value;
+    }
+
+    @Override
+    public String hostProgramName() {
+        ApplicationInfo instance = ApplicationInfo.getInstance();
+        String build = instance.getBuild().asString();
+        String majorVersion = instance.getMajorVersion();
+        String microVersion = instance.getMicroVersion();
+        String minorVersion = instance.getMinorVersion();
+        String patchVersion = instance.getPatchVersion();
+        String strictVersion = instance.getStrictVersion();
+        String versionName = instance.getVersionName();
+        String fullVersion = instance.getFullVersion();
+        return fullVersion;
+    }
+
+    @Override
+    public String hostProgramVersion() {
+        return "";
     }
 }

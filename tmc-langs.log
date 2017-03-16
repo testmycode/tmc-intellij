@@ -1,0 +1,213 @@
+2017-03-16 14:05:55 [main] INFO  TmcCoreHolder:38 - Get TmcCore for testing. @TmcCoreHolder
+2017-03-16 14:05:55 [main] INFO  TmcCoreHolder:29 - Setup TmcCore. @TmcCoreHolder.
+2017-03-16 14:05:55 [main] INFO  TmcCoreHolder:20 - Get TmcCore. @TmcCoreHolder.
+2017-03-16 14:05:55 [main] INFO  TmcCoreHolder:38 - Get TmcCore for testing. @TmcCoreHolder
+2017-03-16 14:05:55 [main] INFO  TmcCoreHolder:29 - Setup TmcCore. @TmcCoreHolder.
+2017-03-16 14:05:55 [main] INFO  TmcCoreHolder:20 - Get TmcCore. @TmcCoreHolder.
+2017-03-16 14:05:55 [main] INFO  TmcCoreHolder:38 - Get TmcCore for testing. @TmcCoreHolder
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:69 - Setting username -> koira. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:132 - Checking if user data exists. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:104 - Setting project base path -> koira. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:95 - Getting project base path <- koira/TMCProjects. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:69 - Setting username -> koira/TMCProjects. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:126 - Getting username <- koira/TMCProjects. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:69 - Setting username -> koira. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:78 - Setting password. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:132 - Checking if user data exists. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:69 - Setting username -> koira. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:126 - Getting username <- koira. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:90 - Setting server address -> koira. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:114 - Getting server address <- koira. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:188 - Setting course. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:182 - Getting course. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:78 - Setting password. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:120 - Getting user password. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:104 - Setting project base path -> koira/TMCProjects. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  CheckForExistingExercises:25 - Parsing already existing exercises. @CheckForExistingExercises
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  CheckForExistingExercises:18 - Checking for existing exercises. @CheckForExistingExercises
+2017-03-16 14:05:55 [main] INFO  CheckForExistingExercises:25 - Parsing already existing exercises. @CheckForExistingExercises
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  SettingsTmc:104 - Setting project base path -> /koira/TMCProjects. @SettingsTmc
+2017-03-16 14:05:55 [main] INFO  CheckForExistingExercises:18 - Checking for existing exercises. @CheckForExistingExercises
+2017-03-16 14:05:55 [main] INFO  CheckForExistingExercises:25 - Parsing already existing exercises. @CheckForExistingExercises
+2017-03-16 14:05:55 [main] INFO  ObjectFinder:59 - Processing findCourseByName Namibian Saha. @ObjectFinder
+2017-03-16 14:05:55 [main] INFO  ObjectFinder:88 - Trying to get course Namibian Saha details from TmcCore. @ObjectFinder
+2017-03-16 14:05:55 [main] INFO  ObjectFinder:37 - Processing findExerciseByName teht. @ObjectFinder
+2017-03-16 14:05:55 [main] INFO  ObjectFinder:51 - Found teht. @ObjectFinder
+2017-03-16 14:05:55 [main] INFO  ObjectFinder:37 - Processing findExerciseByName teht. @ObjectFinder
+2017-03-16 14:05:55 [main] INFO  ObjectFinder:43 - Could not find exercise with the name teht. @ObjectFinder
+2017-03-16 14:05:55 [main] INFO  ObjectFinder:59 - Processing findCourseByName Namibian Saha. @ObjectFinder
+2017-03-16 14:05:55 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:05:55 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:05:55 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:05:55 [main] INFO  PersistentTmcSettings:36 - Processing getState. @PersistentTmcSettings.
+2017-03-16 14:05:55 [main] INFO  PersistentTmcSettings:61 - Setting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:05:55 [main] INFO  PersistentTmcSettings:56 - Getting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:05:55 [main] INFO  PersistentTmcSettings:56 - Getting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:05:55 [main] INFO  PersistentTmcSettings:61 - Setting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:05:55 [main] INFO  PersistentTmcSettings:56 - Getting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:05:56 [main] INFO  CheckForExistingExercises:42 - Starting to upload an exercise. @ExerciseUploadingService
+2017-03-16 14:05:56 [main] INFO  PathResolver:24 - Processing getCourseAndExerciseName with Project parameter. @PathResolver
+2017-03-16 14:05:56 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:05:56 [main] INFO  CheckForExistingExercises:126 - Getting course name. @ExerciseUploadingService.
+2017-03-16 14:05:56 [main] INFO  CheckForExistingExercises:126 - Getting course name. @ExerciseUploadingService.
+2017-03-16 14:05:56 [main] INFO  CheckForExistingExercises:131 - Getting exercise name. @ExerciseUploadingService.
+2017-03-16 14:05:56 [main] INFO  CheckForExistingExercises:79 - Calling for threadingService from getResult. @ExerciseUploadingService.
+2017-03-16 14:05:56 [main] INFO  CheckForExistingExercises:126 - Getting course name. @ExerciseUploadingService.
+2017-03-16 14:13:59 [main] INFO  TmcCoreHolder:38 - Get TmcCore for testing. @TmcCoreHolder
+2017-03-16 14:13:59 [main] INFO  TmcCoreHolder:29 - Setup TmcCore. @TmcCoreHolder.
+2017-03-16 14:13:59 [main] INFO  TmcCoreHolder:20 - Get TmcCore. @TmcCoreHolder.
+2017-03-16 14:13:59 [main] INFO  TmcCoreHolder:38 - Get TmcCore for testing. @TmcCoreHolder
+2017-03-16 14:13:59 [main] INFO  TmcCoreHolder:29 - Setup TmcCore. @TmcCoreHolder.
+2017-03-16 14:13:59 [main] INFO  TmcCoreHolder:20 - Get TmcCore. @TmcCoreHolder.
+2017-03-16 14:13:59 [main] INFO  TmcCoreHolder:38 - Get TmcCore for testing. @TmcCoreHolder
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:69 - Setting username -> koira. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:132 - Checking if user data exists. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:104 - Setting project base path -> koira. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:95 - Getting project base path <- koira/TMCProjects. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:69 - Setting username -> koira/TMCProjects. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:126 - Getting username <- koira/TMCProjects. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:69 - Setting username -> koira. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:78 - Setting password. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:132 - Checking if user data exists. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:69 - Setting username -> koira. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:126 - Getting username <- koira. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:90 - Setting server address -> koira. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:114 - Getting server address <- koira. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:188 - Setting course. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:182 - Getting course. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:78 - Setting password. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:120 - Getting user password. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:104 - Setting project base path -> koira/TMCProjects. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:13:59 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:25 - Parsing already existing exercises. @CheckForExistingExercises
+2017-03-16 14:14:00 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:18 - Checking for existing exercises. @CheckForExistingExercises
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:25 - Parsing already existing exercises. @CheckForExistingExercises
+2017-03-16 14:14:00 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:14:00 [main] INFO  SettingsTmc:104 - Setting project base path -> /koira/TMCProjects. @SettingsTmc
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:18 - Checking for existing exercises. @CheckForExistingExercises
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:25 - Parsing already existing exercises. @CheckForExistingExercises
+2017-03-16 14:14:00 [main] INFO  ObjectFinder:59 - Processing findCourseByName Namibian Saha. @ObjectFinder
+2017-03-16 14:14:00 [main] INFO  ObjectFinder:88 - Trying to get course Namibian Saha details from TmcCore. @ObjectFinder
+2017-03-16 14:14:00 [main] INFO  ObjectFinder:37 - Processing findExerciseByName teht. @ObjectFinder
+2017-03-16 14:14:00 [main] INFO  ObjectFinder:51 - Found teht. @ObjectFinder
+2017-03-16 14:14:00 [main] INFO  ObjectFinder:37 - Processing findExerciseByName teht. @ObjectFinder
+2017-03-16 14:14:00 [main] INFO  ObjectFinder:43 - Could not find exercise with the name teht. @ObjectFinder
+2017-03-16 14:14:00 [main] INFO  ObjectFinder:59 - Processing findCourseByName Namibian Saha. @ObjectFinder
+2017-03-16 14:14:00 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:14:00 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:14:00 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:14:00 [main] INFO  PersistentTmcSettings:36 - Processing getState. @PersistentTmcSettings.
+2017-03-16 14:14:00 [main] INFO  PersistentTmcSettings:61 - Setting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:14:00 [main] INFO  PersistentTmcSettings:56 - Getting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:14:00 [main] INFO  PersistentTmcSettings:56 - Getting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:14:00 [main] INFO  PersistentTmcSettings:61 - Setting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:14:00 [main] INFO  PersistentTmcSettings:56 - Getting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:42 - Starting to upload an exercise. @ExerciseUploadingService
+2017-03-16 14:14:00 [main] INFO  PathResolver:24 - Processing getCourseAndExerciseName with Project parameter. @PathResolver
+2017-03-16 14:14:00 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:126 - Getting course name. @ExerciseUploadingService.
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:126 - Getting course name. @ExerciseUploadingService.
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:131 - Getting exercise name. @ExerciseUploadingService.
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:79 - Calling for threadingService from getResult. @ExerciseUploadingService.
+2017-03-16 14:14:00 [main] INFO  CheckForExistingExercises:126 - Getting course name. @ExerciseUploadingService.
+2017-03-16 14:48:51 [main] INFO  TmcCoreHolder:38 - Get TmcCore for testing. @TmcCoreHolder
+2017-03-16 14:48:51 [main] INFO  TmcCoreHolder:29 - Setup TmcCore. @TmcCoreHolder.
+2017-03-16 14:48:51 [main] INFO  TmcCoreHolder:20 - Get TmcCore. @TmcCoreHolder.
+2017-03-16 14:48:51 [main] INFO  TmcCoreHolder:38 - Get TmcCore for testing. @TmcCoreHolder
+2017-03-16 14:48:51 [main] INFO  TmcCoreHolder:29 - Setup TmcCore. @TmcCoreHolder.
+2017-03-16 14:48:51 [main] INFO  TmcCoreHolder:20 - Get TmcCore. @TmcCoreHolder.
+2017-03-16 14:48:51 [main] INFO  TmcCoreHolder:38 - Get TmcCore for testing. @TmcCoreHolder
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:69 - Setting username -> koira. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:132 - Checking if user data exists. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:104 - Setting project base path -> koira. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:95 - Getting project base path <- koira/TMCProjects. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:69 - Setting username -> koira/TMCProjects. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:126 - Getting username <- koira/TMCProjects. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:69 - Setting username -> koira. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:78 - Setting password. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:132 - Checking if user data exists. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:69 - Setting username -> koira. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:126 - Getting username <- koira. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:90 - Setting server address -> koira. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:114 - Getting server address <- koira. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:188 - Setting course. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:182 - Getting course. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:78 - Setting password. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:120 - Getting user password. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:104 - Setting project base path -> koira/TMCProjects. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:25 - Parsing already existing exercises. @CheckForExistingExercises
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:18 - Checking for existing exercises. @CheckForExistingExercises
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:25 - Parsing already existing exercises. @CheckForExistingExercises
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:49 - Setting default folder for TMC project files. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  SettingsTmc:104 - Setting project base path -> /koira/TMCProjects. @SettingsTmc
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:18 - Checking for existing exercises. @CheckForExistingExercises
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:25 - Parsing already existing exercises. @CheckForExistingExercises
+2017-03-16 14:48:51 [main] INFO  ObjectFinder:59 - Processing findCourseByName Namibian Saha. @ObjectFinder
+2017-03-16 14:48:51 [main] INFO  ObjectFinder:88 - Trying to get course Namibian Saha details from TmcCore. @ObjectFinder
+2017-03-16 14:48:51 [main] INFO  ObjectFinder:37 - Processing findExerciseByName teht. @ObjectFinder
+2017-03-16 14:48:51 [main] INFO  ObjectFinder:51 - Found teht. @ObjectFinder
+2017-03-16 14:48:51 [main] INFO  ObjectFinder:37 - Processing findExerciseByName teht. @ObjectFinder
+2017-03-16 14:48:51 [main] INFO  ObjectFinder:43 - Could not find exercise with the name teht. @ObjectFinder
+2017-03-16 14:48:51 [main] INFO  ObjectFinder:59 - Processing findCourseByName Namibian Saha. @ObjectFinder
+2017-03-16 14:48:51 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:48:51 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:48:51 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:48:51 [main] INFO  PersistentTmcSettings:36 - Processing getState. @PersistentTmcSettings.
+2017-03-16 14:48:51 [main] INFO  PersistentTmcSettings:61 - Setting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:48:51 [main] INFO  PersistentTmcSettings:56 - Getting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:48:51 [main] INFO  PersistentTmcSettings:56 - Getting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:48:51 [main] INFO  PersistentTmcSettings:61 - Setting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:48:51 [main] INFO  PersistentTmcSettings:56 - Getting SettingsTmc. @PersistentTmcSettings.
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:42 - Starting to upload an exercise. @ExerciseUploadingService
+2017-03-16 14:48:51 [main] INFO  PathResolver:24 - Processing getCourseAndExerciseName with Project parameter. @PathResolver
+2017-03-16 14:48:51 [main] INFO  PathResolver:40 - Processing getCourseAndExerciseName with String parameter. @PathResolver
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:126 - Getting course name. @ExerciseUploadingService.
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:126 - Getting course name. @ExerciseUploadingService.
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:131 - Getting exercise name. @ExerciseUploadingService.
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:79 - Calling for threadingService from getResult. @ExerciseUploadingService.
+2017-03-16 14:48:51 [main] INFO  CheckForExistingExercises:126 - Getting course name. @ExerciseUploadingService.
