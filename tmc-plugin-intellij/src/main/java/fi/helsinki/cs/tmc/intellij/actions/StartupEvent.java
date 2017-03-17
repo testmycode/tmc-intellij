@@ -61,6 +61,13 @@ public class StartupEvent implements StartupActivity {
 
                         setupDatabase(observer);
                         setupHandlersForSpyware(observer);
+
+                        if (TmcSettingsManager.get().getFirstRun()) {
+                            TmcSettingsManager.get().setFirstRun(false);
+                        } else {
+                            sendDiagnostics(observer);
+                        }
+
                         checkForNewExercises(observer);
 
                         ApplicationManager.getApplication()
@@ -94,7 +101,6 @@ public class StartupEvent implements StartupActivity {
     private void setupTmcSettings(ProgressObserver observer) {
         observer.progress(0, 0.14, "Loading settings");
         TmcSettingsManager.setup();
-        TmcSettingsManager.get().hostProgramName();
     }
 
     private void setupCoreHolder(ProgressObserver observer) {
@@ -124,6 +130,15 @@ public class StartupEvent implements StartupActivity {
         observer.progress(0, 0.84, "Checking for new exercises");
         if (TmcSettingsManager.get().isCheckForExercises()) {
             new CheckForNewExercises().doCheck();
+        }
+    }
+
+    private void sendDiagnostics(ProgressObserver observer) {
+        if (TmcSettingsManager.get().getSendDiagnostics()) {
+        try {
+            TmcCoreHolder.get().sendDiagnostics(observer).call();
+        } catch (Exception e) {
+        }
         }
     }
 }

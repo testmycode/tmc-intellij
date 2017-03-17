@@ -31,6 +31,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private boolean checkForExercises;
     private boolean spyware;
     private boolean sendDiagnostics;
+    private boolean firstRun;
 
     public SettingsTmc(String serverAddress, String username, String password) {
         this.spyware = false;
@@ -209,20 +210,19 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public String hostProgramName() {
-        ApplicationInfo instance = ApplicationInfo.getInstance();
-        String build = instance.getBuild().asString();
-        String majorVersion = instance.getMajorVersion();
-        String microVersion = instance.getMicroVersion();
-        String minorVersion = instance.getMinorVersion();
-        String patchVersion = instance.getPatchVersion();
-        String strictVersion = instance.getStrictVersion();
-        String versionName = instance.getVersionName();
-        String fullVersion = instance.getFullVersion();
-        return fullVersion;
+        return ApplicationInfo.getInstance().getVersionName();
     }
 
     @Override
     public String hostProgramVersion() {
-        return "";
+        return ApplicationInfo.getInstance().getFullVersion();
+    }
+
+    public void setFirstRun(boolean value) {
+        this.firstRun = value;
+    }
+
+    public boolean getFirstRun() {
+        return this.firstRun;
     }
 }
