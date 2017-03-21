@@ -102,6 +102,7 @@ public class SettingsPanel {
     }
 
     public JPanel getPanel() {
+        doClicks();
         return this.panel1;
     }
 
@@ -119,15 +120,8 @@ public class SettingsPanel {
         ActionListener refreshListener = createActionListenerRefresh();
         refreshButton.addActionListener(refreshListener);
 
-        if (!TmcSettingsManager.get().isSpyware()) {
-            sendSnapshotsOfYourCheckBox.doClick();
-        }
-        if (TmcSettingsManager.get().isCheckForExercises()) {
-            checkForNewOrCheckBox.doClick();
-        }
-        if (!TmcSettingsManager.get().getSendDiagnostics()) {
-            sendDiagnosticsCheckBox.doClick();
-        }
+        doClicks();
+
         List<Course> courses = new ArrayList<>();
 
         try {
@@ -157,6 +151,18 @@ public class SettingsPanel {
 
         ActionListener downloadListener = createActionListenerDownload(frame);
         downloadCourseExercisesButton.addActionListener(downloadListener);
+    }
+
+    public void doClicks() {
+        if (TmcSettingsManager.get().isSpyware() != sendSnapshotsOfYourCheckBox.isSelected()) {
+            sendSnapshotsOfYourCheckBox.doClick();
+        }
+        if (TmcSettingsManager.get().isCheckForExercises() != checkForNewOrCheckBox.isSelected()) {
+            checkForNewOrCheckBox.doClick();
+        }
+        if (TmcSettingsManager.get().getSendDiagnostics() != sendDiagnosticsCheckBox.isSelected()) {
+            sendDiagnosticsCheckBox.doClick();
+        }
     }
 
     private ActionListener createActionListenerDownload(final JFrame frame) {

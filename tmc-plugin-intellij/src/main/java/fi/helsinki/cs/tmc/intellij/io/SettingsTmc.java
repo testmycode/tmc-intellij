@@ -34,19 +34,21 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private boolean firstRun;
 
     public SettingsTmc(String serverAddress, String username, String password) {
-        this.spyware = false;
+        this.spyware = true;
         this.sendDiagnostics = true;
-        this.checkForExercises = true;
+        this.checkForExercises = false;
         this.serverAddress = serverAddress;
         this.username = username;
         this.password = password;
+        this.firstRun = true;
     }
 
     /** Sets the default folder for TMC project files -> home/IdeaProjects/TMCProjects . */
     public SettingsTmc() {
-        spyware = false;
+        spyware = true;
         this.sendDiagnostics = true;
-        this.checkForExercises = true;
+        this.checkForExercises = false;
+        this.firstRun = true;
         logger.info("Setting default folder for TMC project files. @SettingsTmc");
         JFileChooser fileChooser = new JFileChooser();
         serverAddress = "https://tmc.mooc.fi/mooc";

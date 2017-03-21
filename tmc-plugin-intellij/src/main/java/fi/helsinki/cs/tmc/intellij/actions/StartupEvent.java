@@ -135,10 +135,10 @@ public class StartupEvent implements StartupActivity {
 
     private void sendDiagnostics(ProgressObserver observer) {
         if (TmcSettingsManager.get().getSendDiagnostics()) {
-        try {
-            TmcCoreHolder.get().sendDiagnostics(observer).call();
-        } catch (Exception e) {
-        }
+            try {
+                TmcCoreHolder.get().sendDiagnostics(observer).call();
+            } catch (Exception e) {
+            }
         }
     }
 }
