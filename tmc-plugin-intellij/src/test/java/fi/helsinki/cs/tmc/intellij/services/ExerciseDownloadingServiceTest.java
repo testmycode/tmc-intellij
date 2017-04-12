@@ -1,17 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
-import com.intellij.openapi.progress.util.ProgressWindow;
-import com.intellij.openapi.project.Project;
-import fi.helsinki.cs.tmc.core.TmcCore;
-import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
-import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForExistingExercises;
-import fi.helsinki.cs.tmc.intellij.services.exercises.ExerciseDownloadingService;
 import org.junit.Test;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Matchers.any;
 
 public class ExerciseDownloadingServiceTest {
 

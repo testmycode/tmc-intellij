@@ -48,7 +48,7 @@ public class NextExerciseFetcher {
                 if (Messages.showYesNoDialog("All local exercises for " + course
                                 + " seem to be done! Would you"
                                 + " like to try to download the next batch?",
-                        "Great work!", null) == 0) {
+                        "Great Work!", null) == 0) {
                     logger.info("Decided to attempt to download more exercises.");
                     if (!settings.getCourseName()
                             .equals(PathResolver.getCourseName(project.getBasePath()))) {

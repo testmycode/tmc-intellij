@@ -45,7 +45,6 @@ public class CheckForNewExercises {
                             CourseAndExerciseManager manager = new CourseAndExerciseManager();
                             try {
                                 if (getExerciseUpdateData(project, core, settings, manager)) {
-                                    return;
                                 }
                             } catch (Exception e) {
                                 e.printStackTrace();

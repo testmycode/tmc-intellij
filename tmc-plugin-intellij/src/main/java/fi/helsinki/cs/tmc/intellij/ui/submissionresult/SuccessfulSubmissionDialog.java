@@ -29,7 +29,6 @@ import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -140,7 +139,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
                     ex,
                     ex.getStackTrace());
             String errorMessage = "Problems with internet.\n" + ex.getMessage();
-            Messages.showErrorDialog(project, errorMessage, "Problem with internet");
+            Messages.showErrorDialog(project, errorMessage, "Problem with Internet");
         }
     }
 
@@ -240,7 +239,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
                 if (desktop == null || !desktop.isSupported(Desktop.Action.BROWSE)) {
                     String errorMessage = "Your OS doesn't support java.awt.Desktop.browser";
-                    Messages.showErrorDialog(project, errorMessage, "Os problem");
+                    Messages.showErrorDialog(project, errorMessage, "Os Problem");
                     return;
                 }
 
@@ -255,7 +254,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
                     new ErrorMessageService()
                             .showMessage(ex, "Failed to open browser. Problem with browser.", true);
                     String errorMessage = "Failed to open browser.\n" + ex.getMessage();
-                    Messages.showErrorDialog(project, errorMessage, "Problem with browser");
+                    Messages.showErrorDialog(project, errorMessage, "Problem with Browser");
                 }
             }
         };
@@ -298,7 +297,6 @@ public class SuccessfulSubmissionDialog extends JDialog {
                 logger.warn(
                         "Failed to add panel. This should not cause any problems. "
                                 + " @SuccessfulSubmissionDialog");
-                continue;
             }
         }
     }

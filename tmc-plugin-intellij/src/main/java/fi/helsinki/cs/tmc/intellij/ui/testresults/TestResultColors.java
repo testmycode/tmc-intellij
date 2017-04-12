@@ -2,8 +2,6 @@ package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
 import com.intellij.ui.JBColor;
 
-import java.awt.Color;
-
 public class TestResultColors {
     // new JBColor(light color, dark color);
     public static final JBColor TEST_BORDER_SUCCESS = new JBColor(0x6FD06D, 0x6FD06D);

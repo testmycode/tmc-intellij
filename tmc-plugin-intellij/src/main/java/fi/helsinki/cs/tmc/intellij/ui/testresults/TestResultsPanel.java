@@ -14,7 +14,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;

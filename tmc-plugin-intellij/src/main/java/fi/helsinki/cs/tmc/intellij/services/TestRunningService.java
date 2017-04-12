@@ -84,7 +84,7 @@ public class TestRunningService {
                                 if (Messages.showYesNoDialog(
                                                 project,
                                                 "Would you like to submit the exercise?",
-                                                "All tests passed!",
+                                        "All Tests Passed!",
                                                 null)
                                         == 0) {
                                     new UploadExerciseAction().uploadExercise(project);

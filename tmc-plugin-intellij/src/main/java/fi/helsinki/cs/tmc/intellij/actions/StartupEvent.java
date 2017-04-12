@@ -1,8 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import com.intellij.notification.Notification;
-import com.intellij.notification.Notifications;
-import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;

@@ -3,11 +3,8 @@ package fi.helsinki.cs.tmc.intellij.spyware;
 import com.intellij.execution.ui.RunContentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.messages.MessageBusConnection;
-import com.intellij.util.messages.MessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Method;
 
 public class SpywareRunListener  {
 

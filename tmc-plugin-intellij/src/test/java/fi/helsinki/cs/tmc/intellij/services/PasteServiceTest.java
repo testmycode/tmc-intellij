@@ -10,10 +10,8 @@ import fi.helsinki.cs.tmc.intellij.ui.projectlist.ProjectListManager;
 import org.junit.Test;
 
 import java.net.URI;
-import java.util.concurrent.Callable;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class PasteServiceTest {

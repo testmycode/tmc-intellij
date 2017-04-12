@@ -56,7 +56,7 @@ public class ProjectOpener {
             Messages.showErrorDialog(
                     new ObjectFinder().findCurrentProject(),
                     "Directory no longer exists",
-                    "File not found");
+                    "File not Found");
             ProjectListManagerHolder.get().refreshAllCourses();
         }
     }

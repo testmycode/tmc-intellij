@@ -24,7 +24,7 @@ public class FailedSubmissionDialog {
                         + points;
         ApplicationManager.getApplication()
                 .invokeLater(
-                        () -> Messages.showErrorDialog(failMessage, "Some tests failed!"));
+                        () -> Messages.showErrorDialog(failMessage, "Some Tests Failed!"));
         TestResultPanelFactory.updateMostRecentResult(
                 result.getTestCases(),
                 result.getValidationResult());

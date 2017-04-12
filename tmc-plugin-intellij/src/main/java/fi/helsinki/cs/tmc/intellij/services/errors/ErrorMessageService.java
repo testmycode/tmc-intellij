@@ -245,7 +245,7 @@ public class ErrorMessageService {
                                 "All exercises for "
                                         + course.toString()
                                         + " are up to date.",
-                                "All exercises are up to date.",
+                                "All Exercises Are up to Date.",
                                 Messages.getInformationIcon()));
     }
 

@@ -13,7 +13,6 @@ import javax.swing.JFileChooser;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
 
 
 public class SettingsTmcTest {

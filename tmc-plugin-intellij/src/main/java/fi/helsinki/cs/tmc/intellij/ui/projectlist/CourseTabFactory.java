@@ -22,9 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.Desktop;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -152,7 +150,7 @@ public class CourseTabFactory {
                     .showYesNoDialog("Are you sure you wish to permanently delete the course "
                                     + tabbedPanelBase.getSelectedComponent().getName()
                                     + " and all its exercises?",
-                            "Delete course", Messages.getWarningIcon()) != 0) {
+                            "Delete Course", Messages.getWarningIcon()) != 0) {
                 return;
             }
 
@@ -283,7 +281,7 @@ public class CourseTabFactory {
             logger.info("Trying to delete folder. @CourseTabFactory");
             if (Messages
                     .showYesNoDialog("Are you sure you wish to permanently delete this folder?",
-                            "Delete exercise", Messages.getWarningIcon()) != 0) {
+                            "Delete Exercise", Messages.getWarningIcon()) != 0) {
                 return;
             }
 

@@ -128,7 +128,7 @@ public class ExerciseDownloadingService {
                                                 == Messages.showYesNoDialog(
                                                         "Would you like to open the first "
                                                          + "of the downloaded exercises?",
-                                                        "Download complete",
+                                                "Download Complete",
                                                         null)) {
                                             NextExerciseFetcher.openFirst(exerciseList);
                                         }
@@ -180,7 +180,7 @@ public class ExerciseDownloadingService {
                                     == Messages.showYesNoDialog(
                                             "Would you like to open the first "
                                                     + "of the downloaded exercises?",
-                                            "Download complete",
+                                    "Download Complete",
                                             null)) {
                                 NextExerciseFetcher.openFirst(exerciseList);
                             }
