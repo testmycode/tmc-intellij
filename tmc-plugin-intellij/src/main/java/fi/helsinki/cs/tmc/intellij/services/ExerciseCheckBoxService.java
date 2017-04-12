@@ -17,7 +17,9 @@ public class ExerciseCheckBoxService {
     public static List<Exercise> filterDownloads(
             CustomCheckBoxList checkBoxes, List<Exercise> exercises) {
         logger.info("Filtering exercises. @ExerciseCheckBoxService");
+
         List<Exercise> downloadThese = new ArrayList<>();
+        
         for (JCheckBox box : checkBoxes) {
             if (box.isSelected()) {
                 for (Exercise ex : exercises) {

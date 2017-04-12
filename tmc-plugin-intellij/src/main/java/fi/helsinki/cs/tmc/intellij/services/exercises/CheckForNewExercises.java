@@ -58,7 +58,7 @@ public class CheckForNewExercises {
         UpdateResult result =
                 core.getExerciseUpdates(ProgressObserver.NULL_OBSERVER, settings.getCourse())
                         .call();
-        if (compareExerciseLists(
+        if (newExercisesAreAvailable(
                 result.getNewExercises(), manager.getExercises(settings.getCourseName()))) {
             return true;
         }
@@ -79,24 +79,13 @@ public class CheckForNewExercises {
                 .notify(project);
     }
 
-    private boolean compareExerciseLists(List<Exercise> newExercises, List<Exercise> exercises) {
-        for (Exercise ex : newExercises) {
-            if (findMatchingExercise(ex, exercises)) {
-                continue;
-            }
-            if (!ex.isCompleted()) {
-                return false;
-            }
-        }
-        return true;
+    private boolean newExercisesAreAvailable(List<Exercise> newExercises, List<Exercise> exercises) {
+        return newExercises.stream()
+                .filter(ex -> !exerciseIsOnList(ex, exercises))
+                .allMatch(Exercise::isCompleted);
     }
 
-    private boolean findMatchingExercise(Exercise ex, List<Exercise> exercises) {
-        for (Exercise exer : exercises) {
-            if (exer.getName().equals(ex.getName())) {
-                return true;
-            }
-        }
-        return false;
+    private boolean exerciseIsOnList(Exercise ex, List<Exercise> exercises) {
+        return exercises.stream().anyMatch(e -> e.getName().equals(ex.getName()));
     }
 }

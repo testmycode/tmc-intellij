@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /** Gets the list of exercises stored on drive. */
 public class CheckForExistingExercises {
@@ -23,13 +24,8 @@ public class CheckForExistingExercises {
     public List<Exercise> getListOfDownloadedExercises(
             List<Exercise> exercises, SettingsTmc settingsTmc) {
         logger.info("Parsing already existing exercises. @CheckForExistingExercises");
-        List<Exercise> existing = new ArrayList<>();
-
-        for (Exercise exercise : exercises) {
-            if (exercise.isDownloaded(settingsTmc.getTmcProjectDirectory())) {
-                existing.add(exercise);
-            }
-        }
-        return existing;
+        return exercises.stream()
+                .filter(e -> e.isDownloaded(settingsTmc.getTmcProjectDirectory()))
+                .collect(Collectors.toList());
     }
 }

@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /** Offers method for downloading exercises from selected course. */
 public class ExerciseDownloadingService {
@@ -85,7 +86,7 @@ public class ExerciseDownloadingService {
                     List<Exercise> exercises = course.getExercises();
                     exercises = checker.clean(exercises, settings);
                     if (!downloadAll) {
-                        exercises = doneFilter(exercises);
+                        exercises = notCompletedExercises(exercises);
                     }
                     if (exercises == null || exercises.size() == 0) {
                         new ErrorMessageService().downloadErrorMessage(course);
@@ -213,13 +214,9 @@ public class ExerciseDownloadingService {
                         });
     }
 
-    private static List<Exercise> doneFilter(List<Exercise> exercises) {
-        ArrayList<Exercise> filtered = new ArrayList<>();
-        for (Exercise ex : exercises) {
-            if (!ex.isCompleted()) {
-                filtered.add(ex);
-            }
-        }
-        return filtered;
+    private static List<Exercise> notCompletedExercises(List<Exercise> exercises) {
+        return exercises.stream()
+                .filter(e -> !e.isCompleted())
+                .collect(Collectors.toList());
     }
 }

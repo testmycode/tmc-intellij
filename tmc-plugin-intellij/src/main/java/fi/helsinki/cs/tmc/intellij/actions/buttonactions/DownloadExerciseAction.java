@@ -63,7 +63,7 @@ public class DownloadExerciseAction extends AnAction {
                         true,
                         true,
                         true);
-        new ExerciseDownloadingService()
+        ExerciseDownloadingService
                 .startDownloadExercise(
                         TmcCoreHolder.get(),
                         TmcSettingsManager.get(),

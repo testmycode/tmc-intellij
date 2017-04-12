@@ -95,12 +95,7 @@ public class TestRunningService {
 
     private boolean allPassed(RunResult finalResult) {
         logger.info("Checking if all tests passed. @TestRunningService");
-        for (TestResult test : finalResult.testResults) {
-            if (!test.isSuccessful()) {
-                return false;
-            }
-        }
-        return true;
+        return finalResult.testResults.stream().allMatch(TestResult::isSuccessful);
     }
 
     public void displayTestWindow(ObjectFinder finder) {

@@ -26,7 +26,7 @@ public class ProjectExecutor {
     }
 
     public void executeConfiguration(Project project, ModuleBasedConfiguration appCon) {
-        if (checkAtLeastOneProjectIsOpen()) {
+        if (noProjectsAreOpen()) {
             logger.warn("No open projects found, can't execute the project.");
             return;
         }
@@ -65,13 +65,10 @@ public class ProjectExecutor {
                 .getRunner(executor.getId(), selectedConfiguration.getConfiguration());
     }
 
-    private boolean checkAtLeastOneProjectIsOpen() {
+    private boolean noProjectsAreOpen() {
         logger.info("Checking that at least one project is open.");
         ProjectManager projectManager = ProjectManager.getInstance();
         Project[] openProjects = projectManager.getOpenProjects();
-        if (openProjects.length == 0) {
-            return true;
-        }
-        return false;
+        return openProjects.length == 0;
     }
 }
