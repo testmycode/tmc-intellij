@@ -66,35 +66,32 @@ public class PasteService {
         logger.info("Uploading to tmc pastebin. @PasteService");
         ApplicationManager.getApplication()
                 .executeOnPooledThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    URI uri =
-                                            core.pasteWithComment(
-                                                            ProgressObserver.NULL_OBSERVER,
-                                                            exercise,
-                                                            message)
-                                                    .call();
-                                    window.showResult(uri);
-                                    updateProjectView(courseAndExerciseManager, projectListManager);
-                                } catch (TmcCoreException exception) {
-                                    logger.info(
-                                            "Uploading to pastebin failed. @PasteService",
-                                            exception,
-                                            exception.getStackTrace());
-                                    handleException(exception);
-                                } catch (Exception exception) {
-                                    logger.info(
-                                            "Uploading to pastebin failed. @PasteService",
-                                            exception,
-                                            exception.getStackTrace());
-                                    new ErrorMessageService()
-                                            .showMessage(
-                                                    exception,
-                                                    "Error while uploading to TMC Pastebin.",
-                                                    true);
-                                }
+                        () -> {
+                            try {
+                                URI uri =
+                                        core.pasteWithComment(
+                                                        ProgressObserver.NULL_OBSERVER,
+                                                        exercise,
+                                                        message)
+                                                .call();
+                                window.showResult(uri);
+                                updateProjectView(courseAndExerciseManager, projectListManager);
+                            } catch (TmcCoreException exception) {
+                                logger.info(
+                                        "Uploading to pastebin failed. @PasteService",
+                                        exception,
+                                        exception.getStackTrace());
+                                handleException(exception);
+                            } catch (Exception exception) {
+                                logger.info(
+                                        "Uploading to pastebin failed. @PasteService",
+                                        exception,
+                                        exception.getStackTrace());
+                                new ErrorMessageService()
+                                        .showMessage(
+                                                exception,
+                                                "Error while uploading to TMC Pastebin.",
+                                                true);
                             }
                         });
     }

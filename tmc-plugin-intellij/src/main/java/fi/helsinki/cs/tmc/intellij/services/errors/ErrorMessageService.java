@@ -196,13 +196,10 @@ public class ErrorMessageService {
             logger.info("Executing on pooled thread. @ErrorMessageService");
             ApplicationManager.getApplication()
                     .invokeLater(
-                            new Runnable() {
-                                @Override
-                                public void run() {
-                                    logger.info(
-                                            "Redirecting to selectMessage . @ErrorMessageService");
-                                    selectMessage(exception, bool);
-                                }
+                            () -> {
+                                logger.info(
+                                        "Redirecting to selectMessage . @ErrorMessageService");
+                                selectMessage(exception, bool);
                             });
         }
     }
@@ -231,15 +228,12 @@ public class ErrorMessageService {
         logger.info("Starting to handle Exception " + " {} . @ErrorMessageService", exception);
         ApplicationManager.getApplication()
                 .invokeLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                initializeNotification(
-                                        errorCode(exception, errorMessage),
-                                        NotificationType.ERROR,
-                                        bool);
-                                exception.printStackTrace();
-                            }
+                        () -> {
+                            initializeNotification(
+                                    errorCode(exception, errorMessage),
+                                    NotificationType.ERROR,
+                                    bool);
+                            exception.printStackTrace();
                         });
     }
 
@@ -247,17 +241,12 @@ public class ErrorMessageService {
         //final Project projects = new ObjectFinder().findCurrentProject();
         ApplicationManager.getApplication()
                 .invokeLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                Messages.showMessageDialog(
-                                        "All exercises for "
-                                                + course.toString()
-                                                + " are up to date.",
-                                        "All exercises are up to date.",
-                                        Messages.getInformationIcon());
-                            }
-                        });
+                        () -> Messages.showMessageDialog(
+                                "All exercises for "
+                                        + course.toString()
+                                        + " are up to date.",
+                                "All exercises are up to date.",
+                                Messages.getInformationIcon()));
     }
 
     public void showInfoNotification(final String message) {

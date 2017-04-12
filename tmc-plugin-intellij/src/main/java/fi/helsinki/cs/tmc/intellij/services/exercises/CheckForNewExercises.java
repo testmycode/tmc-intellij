@@ -28,30 +28,27 @@ public class CheckForNewExercises {
     public void doCheck() {
         ApplicationManager.getApplication()
                 .invokeLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                logger.info("Checking for new exercises.");
-                                Project project = new ObjectFinder().findCurrentProject();
-                                TmcCore core = TmcCoreHolder.get();
-                                SettingsTmc settings = TmcSettingsManager.get();
-                                Course course =
-                                        new ObjectFinder()
-                                                .findCourseNoDetails(
-                                                        settings.getCourseName(), core);
+                        () -> {
+                            logger.info("Checking for new exercises.");
+                            Project project = new ObjectFinder().findCurrentProject();
+                            TmcCore core = TmcCoreHolder.get();
+                            SettingsTmc settings = TmcSettingsManager.get();
+                            Course course =
+                                    new ObjectFinder()
+                                            .findCourseNoDetails(
+                                                    settings.getCourseName(), core);
 
-                                if (course == null) {
+                            if (course == null) {
+                                return;
+                            }
+                            settings.setCourse(course);
+                            CourseAndExerciseManager manager = new CourseAndExerciseManager();
+                            try {
+                                if (getExerciseUpdateData(project, core, settings, manager)) {
                                     return;
                                 }
-                                settings.setCourse(course);
-                                CourseAndExerciseManager manager = new CourseAndExerciseManager();
-                                try {
-                                    if (getExerciseUpdateData(project, core, settings, manager)) {
-                                        return;
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
                         });
     }

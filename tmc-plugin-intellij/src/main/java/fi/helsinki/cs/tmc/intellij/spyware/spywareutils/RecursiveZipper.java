@@ -25,12 +25,7 @@ public class RecursiveZipper {
     }
 
     public static final ZippingDecider ZIP_ALL_THE_THINGS =
-            new ZippingDecider() {
-                @Override
-                public boolean shouldZip(String zipPath) {
-                    return true;
-                }
-            };
+            zipPath -> true;
 
     public RecursiveZipper(File rootDir, ZippingDecider zippingDecider) {
         this.rootDir = rootDir;

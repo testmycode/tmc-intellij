@@ -116,20 +116,17 @@ public class ProjectListWindow {
     private void addFunctionalityToOpenButton() {
         logger.info("Adding functionality to open project button. @ProjectListWindow");
 
-        openButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                JBList list = (JBList) tabbedPanelBase
-                        .getSelectedComponent().getComponentAt(10, 10)
-                        .getComponentAt(10, 10);
+        openButton.addActionListener(actionEvent -> {
+            JBList list = (JBList) tabbedPanelBase
+                    .getSelectedComponent().getComponentAt(10, 10)
+                    .getComponentAt(10, 10);
 
-                ProjectOpener opener = new ProjectOpener();
-                String courseName = (list.getName());
+            ProjectOpener opener = new ProjectOpener();
+            String courseName = (list.getName());
 
-                opener.openProject(TmcSettingsManager.get().getProjectBasePath()
-                        + File.separator + courseName + File.separator
-                        + list.getSelectedValue());
-            }
+            opener.openProject(TmcSettingsManager.get().getProjectBasePath()
+                    + File.separator + courseName + File.separator
+                    + list.getSelectedValue());
         });
     }
 
@@ -144,20 +141,17 @@ public class ProjectListWindow {
         ProgressWindow window = ProgressWindowMaker.make("Refreshing project list",
                 new ObjectFinder().findCurrentProject(), false, true, true);
 
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                ThreadingService threadingService = new ThreadingService();
-                threadingService.runWithNotification(
-                        new Thread() {
-                            @Override
-                            public void run() {
-                                refreshProjectList();
-                            }
-                        },
-                        new ObjectFinder().findCurrentProject(),
-                        window);
-            }
+        refreshButton.addActionListener(actionEvent -> {
+            ThreadingService threadingService = new ThreadingService();
+            threadingService.runWithNotification(
+                    new Thread() {
+                        @Override
+                        public void run() {
+                            refreshProjectList();
+                        }
+                    },
+                    new ObjectFinder().findCurrentProject(),
+                    window);
         });
 
         return refreshButton;
@@ -167,30 +161,21 @@ public class ProjectListWindow {
         logger.info("Adding functionality to hide project button. "
                 + "@ProjectListWindow");
 
-        hideButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                DataContext dataContext =
-                        DataManager.getInstance().getDataContextFromFocus().getResult();
-                Project project = DataKeys.PROJECT.getData(dataContext);
-                new OpenToolWindowAction().hideToolWindow(project);
-            }
+        hideButton.addActionListener(actionEvent -> {
+            DataContext dataContext =
+                    DataManager.getInstance().getDataContextFromFocus().getResult();
+            Project project = DataKeys.PROJECT.getData(dataContext);
+            new OpenToolWindowAction().hideToolWindow(project);
         });
     }
 
     public void refreshProjectList() {
-        ApplicationManager.getApplication().executeOnPooledThread(new Runnable() {
-            @Override
-            public void run() {
-                new CourseAndExerciseManager().initiateDatabase();
-                ApplicationManager.getApplication().invokeLater(new Runnable() {
-                    @Override
-                    public void run() {
-                        logger.info("Refreshing project list. @ProjectListWindow");
-                        ProjectListManagerHolder.get().refreshAllCourses();
-                    }
-                });
-            }
+        ApplicationManager.getApplication().executeOnPooledThread(() -> {
+            new CourseAndExerciseManager().initiateDatabase();
+            ApplicationManager.getApplication().invokeLater(() -> {
+                logger.info("Refreshing project list. @ProjectListWindow");
+                ProjectListManagerHolder.get().refreshAllCourses();
+            });
         });
     }
 

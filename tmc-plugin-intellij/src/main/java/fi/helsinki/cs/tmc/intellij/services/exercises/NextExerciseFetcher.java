@@ -38,33 +38,25 @@ public class NextExerciseFetcher {
         this.exercise = findNext();
         if (exercise != null) {
             logger.info("Exercise was found successfully. Opening found exercise.");
-            ApplicationManager.getApplication().invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    new ProjectOpener().openProject(project,
-                            exercise.getExerciseDirectory(TmcSettingsManager
-                            .get().getTmcProjectDirectory()).toString());
-                }
-            });
+            ApplicationManager.getApplication().invokeLater(() -> new ProjectOpener().openProject(project,
+                    exercise.getExerciseDirectory(TmcSettingsManager
+                    .get().getTmcProjectDirectory()).toString()));
         } else {
             logger.info("No next exercise candidate was found, prompting user to download more.");
-            ApplicationManager.getApplication().invokeLater(new Runnable() {
-                @Override
-                public void run() {
-                    SettingsTmc settings = TmcSettingsManager.get();
-                    if (Messages.showYesNoDialog("All local exercises for " + course
-                                    + " seem to be done! Would you"
-                                    + " like to try to download the next batch?",
-                            "Great work!", null) == 0) {
-                        logger.info("Decided to attempt to download more exercises.");
-                        if (!settings.getCourseName()
-                                .equals(PathResolver.getCourseName(project.getBasePath()))) {
-                            logger.info("Setting current course"
-                                    + " to match the course we want to download from.");
-                            settings.setCourse(PathResolver.getCourse(project.getBasePath()));
-                        }
-                        new DownloadExerciseAction().downloadExercises(project, false);
+            ApplicationManager.getApplication().invokeLater(() -> {
+                SettingsTmc settings = TmcSettingsManager.get();
+                if (Messages.showYesNoDialog("All local exercises for " + course
+                                + " seem to be done! Would you"
+                                + " like to try to download the next batch?",
+                        "Great work!", null) == 0) {
+                    logger.info("Decided to attempt to download more exercises.");
+                    if (!settings.getCourseName()
+                            .equals(PathResolver.getCourseName(project.getBasePath()))) {
+                        logger.info("Setting current course"
+                                + " to match the course we want to download from.");
+                        settings.setCourse(PathResolver.getCourse(project.getBasePath()));
                     }
+                    new DownloadExerciseAction().downloadExercises(project, false);
                 }
             });
         }

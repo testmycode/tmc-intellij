@@ -166,20 +166,17 @@ public class SettingsPanel {
     }
 
     private ActionListener createActionListenerDownload(final JFrame frame) {
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                logger.info("Download button pressed. @SettingsPanel");
+        return actionEvent -> {
+            logger.info("Download button pressed. @SettingsPanel");
 
-                saveInformation();
+            saveInformation();
 
-                Project project = new ObjectFinder().findCurrentProject();
-                DownloadExerciseAction action = new DownloadExerciseAction();
-                action.downloadExercises(project, false);
+            Project project = new ObjectFinder().findCurrentProject();
+            DownloadExerciseAction action = new DownloadExerciseAction();
+            action.downloadExercises(project, false);
 
-                frame.dispose();
-                frame.setVisible(false);
-            }
+            frame.dispose();
+            frame.setVisible(false);
         };
     }
 
@@ -216,59 +213,50 @@ public class SettingsPanel {
 
     private ActionListener createActionListenerOk(final JFrame frame) {
         logger.info("Create action listener for SettingsPanel ok button. @SettingsPanel");
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                new ButtonInputListener().receiveSettings();
-                logger.info("Ok button pressed. @SettingsPanel");
-                saveInformation();
-                frame.dispose();
-                frame.setVisible(false);
-            }
+        return actionEvent -> {
+            new ButtonInputListener().receiveSettings();
+            logger.info("Ok button pressed. @SettingsPanel");
+            saveInformation();
+            frame.dispose();
+            frame.setVisible(false);
         };
     }
 
     private ActionListener createActionListenerCancel(final JFrame frame) {
         logger.info("Create action listener for SettingsPanel cancel button. @SettingsPanel");
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                logger.info("Cancel button pressed. @SettingsPanel");
-                frame.dispose();
-                frame.setVisible(false);
-            }
+        return actionEvent -> {
+            logger.info("Cancel button pressed. @SettingsPanel");
+            frame.dispose();
+            frame.setVisible(false);
         };
     }
 
     private ActionListener createActionListenerRefresh() {
         logger.info("Create action listener for SettingsPanel refresh button. @SettingsPanel");
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                logger.info("Refresh button pressed. @SettingsPanel");
-                List<Course> courses = new ArrayList<>();
-                listOfAvailableCourses.removeAllItems();
-                saveInformation();
-                try {
-                    logger.info("Getting list of courses from TmcCore. @SettingsPanel");
-                    courses = (ArrayList<Course>)
-                            TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
-                } catch (Exception exception) {
-                    logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
-                            exception, exception.getStackTrace());
-                    ErrorMessageService error = new ErrorMessageService();
-                    error.showMessage((TmcCoreException) exception, true);
-                }
+        return actionEvent -> {
+            logger.info("Refresh button pressed. @SettingsPanel");
+            List<Course> courses = new ArrayList<>();
+            listOfAvailableCourses.removeAllItems();
+            saveInformation();
+            try {
+                logger.info("Getting list of courses from TmcCore. @SettingsPanel");
+                courses = (ArrayList<Course>)
+                        TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
+            } catch (Exception exception) {
+                logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
+                        exception, exception.getStackTrace());
+                ErrorMessageService error = new ErrorMessageService();
+                error.showMessage((TmcCoreException) exception, true);
+            }
 
-                addCourSesToListOfAvailable(courses);
-                if ((TmcSettingsManager.get().getCourse()) != null) {
-                    listOfAvailableCourses.setSelectedItem(TmcSettingsManager.get().getCourse());
-                } else {
-                    listOfAvailableCourses.setSelectedItem(getFirstFromAvailableCourses());
-                }
-                if (listOfAvailableCourses.getItemCount() == 0) {
-                    listOfAvailableCourses.addItem(TmcSettingsManager.get().getCourse());
-                }
+            addCourSesToListOfAvailable(courses);
+            if ((TmcSettingsManager.get().getCourse()) != null) {
+                listOfAvailableCourses.setSelectedItem(TmcSettingsManager.get().getCourse());
+            } else {
+                listOfAvailableCourses.setSelectedItem(getFirstFromAvailableCourses());
+            }
+            if (listOfAvailableCourses.getItemCount() == 0) {
+                listOfAvailableCourses.addItem(TmcSettingsManager.get().getCourse());
             }
         };
     }
@@ -287,20 +275,17 @@ public class SettingsPanel {
     @NotNull
     private ActionListener createActionListener() {
         logger.info("Creating action listener for browsing. @SettingsPanel");
-        return new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                logger.info("Browsing action performed. @SettingsPanel", actionEvent);
-                JFileChooser fileChooser = new JFileChooser();
-                fileChooser.setDialogTitle("Select path for projects");
-                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-                fileChooser.showOpenDialog(panel1);
+        return actionEvent -> {
+            logger.info("Browsing action performed. @SettingsPanel", actionEvent);
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setDialogTitle("Select path for projects");
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            fileChooser.showOpenDialog(panel1);
 
-                if (fileChooser.getSelectedFile() == null) {
-                    return;
-                }
-                projectPathField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+            if (fileChooser.getSelectedFile() == null) {
+                return;
             }
+            projectPathField.setText(fileChooser.getSelectedFile().getAbsolutePath());
         };
     }
 

@@ -17,11 +17,6 @@ public class ThreadingService {
 
         ApplicationManager.getApplication()
                 .executeOnPooledThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                ProgressManager.getInstance().runProcess(run, progressWindow);
-                            }
-                        });
+                        () -> ProgressManager.getInstance().runProcess(run, progressWindow));
     }
 }

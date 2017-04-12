@@ -21,17 +21,14 @@ public class SpywareRunListener  {
         logger.info("Connecting to message bus.");
         MessageBusConnection bus = project.getMessageBus().connect();
         bus.setDefaultHandler(
-                new MessageHandler() {
-                    @Override
-                    public void handle(Method method, Object... objects) {
-                        logger.info("Method call observed in message bus.");
-                        for (Object object : objects) {
-                            if (method.toString().toLowerCase().contains("contentselected")) {
-                                if (object.toString().toLowerCase().contains("debug")) {
-                                    new ButtonInputListener().receiveDebugRunAction();
-                                } else if (object.toString().contains("DefaultRunExecutor")) {
-                                    new ButtonInputListener().receiveRunAction();
-                                }
+                (method, objects) -> {
+                    logger.info("Method call observed in message bus.");
+                    for (Object object : objects) {
+                        if (method.toString().toLowerCase().contains("contentselected")) {
+                            if (object.toString().toLowerCase().contains("debug")) {
+                                new ButtonInputListener().receiveDebugRunAction();
+                            } else if (object.toString().contains("DefaultRunExecutor")) {
+                                new ButtonInputListener().receiveRunAction();
                             }
                         }
                     }

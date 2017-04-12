@@ -213,14 +213,11 @@ public class SpywareFileListener implements Closeable {
     public void close() throws IOException {
         ApplicationManager.getApplication()
                 .invokeLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    closed = true;
-                                    snapshotterThreads.joinAll();
-                                } catch (InterruptedException ex) {
-                                }
+                        () -> {
+                            try {
+                                closed = true;
+                                snapshotterThreads.joinAll();
+                            } catch (InterruptedException ex) {
                             }
                         });
     }

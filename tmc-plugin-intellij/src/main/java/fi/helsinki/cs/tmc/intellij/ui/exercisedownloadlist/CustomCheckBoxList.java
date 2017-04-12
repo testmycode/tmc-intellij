@@ -33,7 +33,7 @@ public class CustomCheckBoxList extends JList implements Iterable<JCheckBox> {
 
     public CustomCheckBoxList() {
         logger.info("Creating custom checkbox list");
-        this.itemListeners = new ArrayList<ItemListener>();
+        this.itemListeners = new ArrayList<>();
         this.setCellRenderer(new CellRenderer());
         this.addMouseListener(
                 new MouseAdapter() {
@@ -52,20 +52,10 @@ public class CustomCheckBoxList extends JList implements Iterable<JCheckBox> {
     }
 
     private ItemListener itemEventForwarder =
-            new ItemListener() {
-                @Override
-                public void itemStateChanged(ItemEvent event) {
-                    fireItemEvent(event);
-                }
-            };
+            this::fireItemEvent;
 
     private PropertyChangeListener checkBoxPropChangeListener =
-            new PropertyChangeListener() {
-                @Override
-                public void propertyChange(PropertyChangeEvent evt) {
-                    repaint();
-                }
-            };
+            evt -> repaint();
 
     public void addItemListener(ItemListener listener) {
         itemListeners.add(listener);

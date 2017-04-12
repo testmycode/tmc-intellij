@@ -57,20 +57,10 @@ public class ObjectFinderTest {
         TmcCore core = mock(TmcCore.class);
         courses.add(toFind);
         when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
-                new Callable<List<Course>>() {
-                    @Override
-                    public List<Course> call() throws Exception {
-                        return courses;
-                    }
-                }
+                () -> courses
         );
         when(core.getCourseDetails(ProgressObserver.NULL_OBSERVER, toFind)).thenReturn(
-                new Callable<Course>() {
-                    @Override
-                    public Course call() throws Exception {
-                        return toFind;
-                    }
-                }
+                () -> toFind
         );
         assertEquals(toFind, finder.findCourseByName("Namibian Saha", core));
     }
@@ -84,12 +74,7 @@ public class ObjectFinderTest {
         courses.add(toFind);
         TmcCore core = mock(TmcCore.class);
         when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
-                new Callable<List<Course>>() {
-                    @Override
-                    public List<Course> call() throws Exception {
-                        return courses;
-                    }
-                }
+                () -> courses
         );
         assertEquals(null, finder.findCourseByName("Namibian Saha", core));
     }

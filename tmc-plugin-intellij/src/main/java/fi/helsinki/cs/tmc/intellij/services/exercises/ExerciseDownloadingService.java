@@ -123,17 +123,14 @@ public class ExerciseDownloadingService {
                             core.downloadOrUpdateExercises(observer, exercises).call();
                     ApplicationManager.getApplication()
                             .invokeLater(
-                                    new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (0
-                                                    == Messages.showYesNoDialog(
-                                                            "Would you like to open the first "
-                                                             + "of the downloaded exercises?",
-                                                            "Download complete",
-                                                            null)) {
-                                                NextExerciseFetcher.openFirst(exerciseList);
-                                            }
+                                    () -> {
+                                        if (0
+                                                == Messages.showYesNoDialog(
+                                                        "Would you like to open the first "
+                                                         + "of the downloaded exercises?",
+                                                        "Download complete",
+                                                        null)) {
+                                            NextExerciseFetcher.openFirst(exerciseList);
                                         }
                                     });
                 } catch (Exception exception) {
@@ -178,17 +175,14 @@ public class ExerciseDownloadingService {
         List<Exercise> exerciseList = core.downloadOrUpdateExercises(observer, exercises).call();
         ApplicationManager.getApplication()
                 .invokeLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                if (0
-                                        == Messages.showYesNoDialog(
-                                                "Would you like to open the first "
-                                                        + "of the downloaded exercises?",
-                                                "Download complete",
-                                                null)) {
-                                    NextExerciseFetcher.openFirst(exerciseList);
-                                }
+                        () -> {
+                            if (0
+                                    == Messages.showYesNoDialog(
+                                            "Would you like to open the first "
+                                                    + "of the downloaded exercises?",
+                                            "Download complete",
+                                            null)) {
+                                NextExerciseFetcher.openFirst(exerciseList);
                             }
                         });
     }
@@ -197,40 +191,25 @@ public class ExerciseDownloadingService {
         logger.info("Creating new thread for refreshing exerciseList");
         ApplicationManager.getApplication()
                 .invokeLater(
-                        new Runnable() {
-                            public void run() {
-                                ApplicationManager.getApplication()
-                                        .runWriteAction(
-                                                new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        logger.info(
-                                                                "Updating project list. "
-                                                                + "@ExerciseDownloadingService");
-                                                        refreshExerciseList();
-                                                    }
-                                                });
-                            }
-                        });
+                        () -> ApplicationManager.getApplication()
+                                .runWriteAction(
+                                        () -> {
+                                            logger.info(
+                                                    "Updating project list. "
+                                                    + "@ExerciseDownloadingService");
+                                            refreshExerciseList();
+                                        }));
     }
 
     private static void refreshExerciseList() {
         ApplicationManager.getApplication()
                 .executeOnPooledThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                new CourseAndExerciseManager().initiateDatabase();
-                                ApplicationManager.getApplication()
-                                        .invokeLater(
-                                                new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        ProjectListManagerHolder.get()
-                                                                .refreshAllCourses();
-                                                    }
-                                                });
-                            }
+                        () -> {
+                            new CourseAndExerciseManager().initiateDatabase();
+                            ApplicationManager.getApplication()
+                                    .invokeLater(
+                                            () -> ProjectListManagerHolder.get()
+                                                    .refreshAllCourses());
                         });
     }
 

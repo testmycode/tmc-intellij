@@ -30,22 +30,12 @@ public class SubmitPanel {
     public SubmitPanel(final PasteService pasteService) {
         setupUi();
         sendButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        pasteService.uploadToTmcPastebin(
-                                submitMessageTextArea.getText(),
-                                new CourseAndExerciseManager(),
-                                ProjectListManagerHolder.get());
-                    }
-                });
+                event -> pasteService.uploadToTmcPastebin(
+                        submitMessageTextArea.getText(),
+                        new CourseAndExerciseManager(),
+                        ProjectListManagerHolder.get()));
         cancelButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        pasteService.getWindow().close();
-                    }
-                });
+                event -> pasteService.getWindow().close());
         jlabel2.setText("Creating pastebin item for exercise " + pasteService.getExerciseName());
     }
 

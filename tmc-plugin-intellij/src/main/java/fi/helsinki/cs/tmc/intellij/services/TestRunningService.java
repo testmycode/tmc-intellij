@@ -58,20 +58,17 @@ public class TestRunningService {
             final CoreProgressObserver observer) {
         logger.info("Preparing thread for running tests. @TestRunningService");
         threadingService.runWithNotification(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        RunResult result = null;
-                        try {
-                            result = TmcCoreHolder.get().runTests(observer, exercise).call();
-                            RunResult finalResult = result;
-                            showTestResult(finalResult);
-                            checkIfAllTestsPassed(finalResult, project);
-                        } catch (Exception exception) {
-                            logger.warn("Could not run tests. @TestRunningService", exception);
-                            new ErrorMessageService()
-                                    .showMessage(exception, "Running tests failed!", true);
-                        }
+                () -> {
+                    RunResult result = null;
+                    try {
+                        result = TmcCoreHolder.get().runTests(observer, exercise).call();
+                        RunResult finalResult = result;
+                        showTestResult(finalResult);
+                        checkIfAllTestsPassed(finalResult, project);
+                    } catch (Exception exception) {
+                        logger.warn("Could not run tests. @TestRunningService", exception);
+                        new ErrorMessageService()
+                                .showMessage(exception, "Running tests failed!", true);
                     }
                 },
                 project,
@@ -82,18 +79,15 @@ public class TestRunningService {
     private void checkIfAllTestsPassed(RunResult finalResult, Project project) {
         ApplicationManager.getApplication()
                 .invokeLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                if (allPassed(finalResult)) {
-                                    if (Messages.showYesNoDialog(
-                                                    project,
-                                                    "Would you like to submit the exercise?",
-                                                    "All tests passed!",
-                                                    null)
-                                            == 0) {
-                                        new UploadExerciseAction().uploadExercise(project);
-                                    }
+                        () -> {
+                            if (allPassed(finalResult)) {
+                                if (Messages.showYesNoDialog(
+                                                project,
+                                                "Would you like to submit the exercise?",
+                                                "All tests passed!",
+                                                null)
+                                        == 0) {
+                                    new UploadExerciseAction().uploadExercise(project);
                                 }
                             }
                         });
@@ -121,12 +115,7 @@ public class TestRunningService {
         logger.info("Showing the final test result after updating. @TestRunningService");
         ApplicationManager.getApplication()
                 .invokeLater(
-                        (new Runnable() {
-                            @Override
-                            public void run() {
-                                TestResultPanelFactory.updateMostRecentResult(
-                                        finalResult.testResults, null);
-                            }
-                        }));
+                        (() -> TestResultPanelFactory.updateMostRecentResult(
+                                finalResult.testResults, null)));
     }
 }

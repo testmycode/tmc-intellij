@@ -41,32 +41,19 @@ public class DownloadListPanel {
         }
 
         downloadButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        List<Exercise> downloadThese =
-                                ExerciseCheckBoxService.filterDownloads(exerciselist, exercises);
+                event -> {
+                    List<Exercise> downloadThese =
+                            ExerciseCheckBoxService.filterDownloads(exerciselist, exercises);
 
-                        window.close();
-                        ExerciseDownloadingService.startDownloading(downloadThese);
-                    }
+                    window.close();
+                    ExerciseDownloadingService.startDownloading(downloadThese);
                 });
 
         cancelButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        window.close();
-                    }
-                });
+                event -> window.close());
 
         selectAllButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        ExerciseCheckBoxService.toggleAllCheckBoxes(exerciselist);
-                    }
-                });
+                event -> ExerciseCheckBoxService.toggleAllCheckBoxes(exerciselist));
     }
 
     public JPanel getPanel() {

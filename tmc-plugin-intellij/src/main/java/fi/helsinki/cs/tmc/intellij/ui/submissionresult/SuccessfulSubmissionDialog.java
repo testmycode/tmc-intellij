@@ -89,35 +89,29 @@ public class SuccessfulSubmissionDialog extends JDialog {
     public void addOkListener(final SubmissionResult result, final Project project) {
         logger.info("Adding action listener for ok button. @SuccessfulSubmissionDialog");
         this.okButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent ev) {
-                        logger.info("Ok button pressed. @SuccessfulSubmissionDialog");
-                        sendFeedback(result, project);
-                        setVisible(false);
-                        dispose();
-                    }
+                ev -> {
+                    logger.info("Ok button pressed. @SuccessfulSubmissionDialog");
+                    sendFeedback(result, project);
+                    setVisible(false);
+                    dispose();
                 });
     }
 
     public void addNextExerciseListener(final SubmissionResult result, final Project project) {
         logger.info("Adding action listener for next exercise button. @SuccessfulSubmissionDialog");
         this.nextExerciseButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent ev) {
-                        logger.info("Next Exercise button pressed. @SuccessfulSubmissionDialog");
-                        String path = project.getBasePath();
-                        NextExerciseFetcher fetcher =
-                                new NextExerciseFetcher(
-                                        PathResolver.getCourseName(path),
-                                        PathResolver.getExercise(path),
-                                        project);
+                ev -> {
+                    logger.info("Next Exercise button pressed. @SuccessfulSubmissionDialog");
+                    String path = project.getBasePath();
+                    NextExerciseFetcher fetcher =
+                            new NextExerciseFetcher(
+                                    PathResolver.getCourseName(path),
+                                    PathResolver.getExercise(path),
+                                    project);
 
-                        fetcher.tryToOpenNext();
-                        setVisible(false);
-                        dispose();
-                    }
+                    fetcher.tryToOpenNext();
+                    setVisible(false);
+                    dispose();
                 });
     }
 
@@ -313,12 +307,9 @@ public class SuccessfulSubmissionDialog extends JDialog {
         logger.info("Adding ok button. @SuccessfulSubmissionDialog");
         okButton = new JButton("OK");
         okButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent action) {
-                        setVisible(false);
-                        dispose();
-                    }
+                action -> {
+                    setVisible(false);
+                    dispose();
                 });
         getContentPane().add(hbox(hglue(), okButton));
     }
@@ -327,12 +318,9 @@ public class SuccessfulSubmissionDialog extends JDialog {
         logger.info("Adding next exercise button. @SuccessfulSubmissionDialog");
         nextExerciseButton = new JButton("Open Next Exercise");
         nextExerciseButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent action) {
-                        setVisible(false);
-                        dispose();
-                    }
+                action -> {
+                    setVisible(false);
+                    dispose();
                 });
         getContentPane().add(hbox(hglue(), nextExerciseButton));
     }

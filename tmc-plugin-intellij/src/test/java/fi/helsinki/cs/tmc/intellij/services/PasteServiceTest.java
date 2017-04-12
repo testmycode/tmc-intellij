@@ -35,12 +35,7 @@ public class PasteServiceTest {
         service.setCore(core);
         service.setExercise(exercise);
 
-        when(core.pasteWithComment(ProgressObserver.NULL_OBSERVER, exercise, message)).thenReturn(new Callable<URI>() {
-            @Override
-            public URI call() throws Exception {
-                return uri;
-            }
-        });
+        when(core.pasteWithComment(ProgressObserver.NULL_OBSERVER, exercise, message)).thenReturn(() -> uri);
 
         ProjectListManager projectListManager = mock(ProjectListManager.class);
         CourseAndExerciseManager courseAndExerciseManager = mock(CourseAndExerciseManager.class);

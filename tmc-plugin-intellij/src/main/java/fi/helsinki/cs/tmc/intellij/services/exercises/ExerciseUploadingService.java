@@ -79,19 +79,16 @@ public class ExerciseUploadingService {
         logger.info("Calling for threadingService from getResult. @ExerciseUploadingService.");
 
         threadingService.runWithNotification(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            getSubmissionResult(core, observer, exercise, handler, project);
-                        } catch (Exception exception) {
-                            logger.warn(
-                                    "Could not getExercise submission results. "
-                                            + "@ExerciseUploadingService",
-                                    exception,
-                                    exception.getStackTrace());
-                            exception.printStackTrace();
-                        }
+                () -> {
+                    try {
+                        getSubmissionResult(core, observer, exercise, handler, project);
+                    } catch (Exception exception) {
+                        logger.warn(
+                                "Could not getExercise submission results. "
+                                        + "@ExerciseUploadingService",
+                                exception,
+                                exception.getStackTrace());
+                        exception.printStackTrace();
                     }
                 },
                 project,
@@ -113,13 +110,8 @@ public class ExerciseUploadingService {
 
         ApplicationManager.getApplication()
                 .invokeLater(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                TestResultPanelFactory.updateMostRecentResult(
-                                        result.getTestCases(), result.getValidationResult());
-                            }
-                        });
+                        () -> TestResultPanelFactory.updateMostRecentResult(
+                                result.getTestCases(), result.getValidationResult()));
     }
 
     private String getCourseName(String[] courseAndExercise) {
@@ -135,20 +127,12 @@ public class ExerciseUploadingService {
     private static void refreshExerciseList() {
         ApplicationManager.getApplication()
                 .executeOnPooledThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                new CourseAndExerciseManager().initiateDatabase();
-                                ApplicationManager.getApplication()
-                                        .invokeLater(
-                                                new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        ProjectListManagerHolder.get()
-                                                                .refreshAllCourses();
-                                                    }
-                                                });
-                            }
+                        () -> {
+                            new CourseAndExerciseManager().initiateDatabase();
+                            ApplicationManager.getApplication()
+                                    .invokeLater(
+                                            () -> ProjectListManagerHolder.get()
+                                                    .refreshAllCourses());
                         });
     }
 }

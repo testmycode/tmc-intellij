@@ -47,33 +47,30 @@ public class SpywareEventManager {
 
         ApplicationManager.getApplication()
                 .executeOnPooledThread(
-                        new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    if (TmcSettingsManager.get().getCourse() != null
-                                            && TmcSettingsManager.get()
-                                                            .getCourse()
-                                                            .getSpywareUrls()
-                                                            .size()
-                                                    == 0) {
+                        () -> {
+                            try {
+                                if (TmcSettingsManager.get().getCourse() != null
+                                        && TmcSettingsManager.get()
+                                                        .getCourse()
+                                                        .getSpywareUrls()
+                                                        .size()
+                                                == 0) {
 
-                                        logger.info("Trying to get course info.");
-                                        TmcCore core = TmcCoreHolder.get();
-                                        TmcSettingsManager.get()
-                                                .setCourse(
-                                                        core.getCourseDetails(
-                                                                        ProgressObserver
-                                                                                .NULL_OBSERVER,
-                                                                        TmcSettingsManager.get()
-                                                                                .getCourse())
-                                                                .call());
-                                    }
-                                } catch (Exception e) {
+                                    logger.info("Trying to get course info.");
+                                    TmcCore core = TmcCoreHolder.get();
+                                    TmcSettingsManager.get()
+                                            .setCourse(
+                                                    core.getCourseDetails(
+                                                                    ProgressObserver
+                                                                            .NULL_OBSERVER,
+                                                                    TmcSettingsManager.get()
+                                                                            .getCourse())
+                                                            .call());
                                 }
-                                buffer.receiveEvent(log);
-                                logger.info("Event has been added to the buffer.");
+                            } catch (Exception e) {
                             }
+                            buffer.receiveEvent(log);
+                            logger.info("Event has been added to the buffer.");
                         });
     }
 

@@ -75,12 +75,7 @@ public class RunConfigurationFactory {
     /** Filters classes shown to the user. */
     private ClassFilter createClassFilter() {
         logger.info("Creating classFilter.");
-        return new ClassFilter() {
-            @Override
-            public boolean isAccepted(PsiClass psiClass) {
-                return psiClass.findMethodsByName("main", true).length > 0;
-            }
-        };
+        return psiClass -> psiClass.findMethodsByName("main", true).length > 0;
     }
 
     /**

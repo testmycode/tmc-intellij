@@ -34,20 +34,15 @@ public class ProjectListManager {
 
     public void addList(JBList list) {
         logger.info("Processing addList. @ProjectListManager");
-        if (currentListElements.get(list.getName()) == null) {
-            currentListElements.put(list.getName(), new ArrayList<JBList>());
-        }
+        currentListElements.computeIfAbsent(list.getName(), k -> new ArrayList<>());
         currentListElements.get(list.getName()).add(list);
     }
 
     public void refreshAllCourses() {
         logger.info("Refreshing all courses. @ProjectListManager");
-        ApplicationManager.getApplication().invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                for (ProjectListWindow window : projectListWindows) {
-                    window.addCourseTabsAndExercises();
-                }
+        ApplicationManager.getApplication().invokeLater(() -> {
+            for (ProjectListWindow window : projectListWindows) {
+                window.addCourseTabsAndExercises();
             }
         });
     }

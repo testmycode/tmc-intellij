@@ -29,30 +29,17 @@ public class ResultPanel {
 
     public ResultPanel(final URI uri, final PasteWindow pasteWindow) {
         okButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        pasteWindow.close();
-                    }
-                });
+                event -> pasteWindow.close());
         viewPasteButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        try {
-                            Desktop.getDesktop().browse(uri);
-                        } catch (IOException e1) {
-                            e1.printStackTrace();
-                        }
+                event -> {
+                    try {
+                        Desktop.getDesktop().browse(uri);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
                     }
                 });
         copyToClipboardButton.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent event) {
-                        ClipboardService.copyToClipBoard(textField1.getText());
-                    }
-                });
+                event -> ClipboardService.copyToClipBoard(textField1.getText()));
         textField1.setText(uri.toString());
     }
 

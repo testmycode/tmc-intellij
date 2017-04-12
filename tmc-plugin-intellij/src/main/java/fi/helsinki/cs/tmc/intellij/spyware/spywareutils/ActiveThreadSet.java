@@ -32,13 +32,7 @@ public class ActiveThreadSet {
     }
 
     private void cleanUp() {
-        Iterator<Thread> iterator = threads.iterator();
-        while (iterator.hasNext()) {
-            Thread thread = iterator.next();
-            if (thread.getState() == Thread.State.TERMINATED) {
-                iterator.remove();
-            }
-        }
+        threads.removeIf(thread -> thread.getState() == Thread.State.TERMINATED);
     }
 
     private Thread cleanUpToFirstUnterminated() {
