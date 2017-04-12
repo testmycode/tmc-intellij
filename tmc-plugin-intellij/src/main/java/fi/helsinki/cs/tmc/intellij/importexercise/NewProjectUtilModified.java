@@ -5,7 +5,6 @@
 
 package fi.helsinki.cs.tmc.intellij.importexercise;
 
-import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
 import static com.intellij.ide.impl.NewProjectUtil.applyJdkToProject;
 
 import com.intellij.ide.impl.ProjectUtil;
@@ -51,9 +50,9 @@ public class NewProjectUtilModified {
         try {
             logger.info("Creates .idea");
             File projectDir = new File(projectFilePath).getParentFile();
-            LOG.assertTrue(
-                    projectDir != null,
-                    "Cannot create project in '" + projectFilePath + "': no parent file exists");
+            if (projectDir == null) {
+                logger.warn("Cannot create project in '" + projectFilePath + "': no parent file exists");
+            }
             FileUtil.ensureExists(projectDir);
 
             final File ideaDir = new File(projectFilePath, Project.DIRECTORY_STORE_FOLDER);

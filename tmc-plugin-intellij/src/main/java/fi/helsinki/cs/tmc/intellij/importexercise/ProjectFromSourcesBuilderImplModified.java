@@ -6,7 +6,6 @@
 
 package fi.helsinki.cs.tmc.intellij.importexercise;
 
-import static com.intellij.diff.tools.simple.ThreesideTextDiffViewerEx.LOG;
 import static com.intellij.ide.util.projectWizard.importSources.impl.ProjectFromSourcesBuilderImpl.getPackagePrefix;
 
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
@@ -107,7 +106,7 @@ public class ProjectFromSourcesBuilderImplModified {
                 token.finish();
             }
         } catch (Exception e) {
-            LOG.warn(e);
+            logger.warn(e.getMessage());
             new ErrorMessageService().showMessage(e, "Error adding module to project", true);
         }
 
@@ -146,7 +145,7 @@ public class ProjectFromSourcesBuilderImplModified {
                 token.finish();
             }
         } catch (Exception e) {
-            LOG.warn(e);
+            logger.warn(e.getMessage());
             new ErrorMessageService().showMessage(e, "Error adding module to project", true);
         }
         logger.info("ending commit in ProjectFromSourcesBuilderImplModified");
