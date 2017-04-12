@@ -49,8 +49,8 @@ public class StartupEvent implements StartupActivity {
                         "Running TMC startup actions.", project, false, false, false);
 
         CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
-        new ErrorMessageService().showInfoNotification("The Test My Code Plugin for Intellij is in BETA and" +
-                " may not work properly. Use at your own risk. ");
+        new ErrorMessageService().showInfoNotification("The Test My Code Plugin for Intellij is in BETA and"
+                + " may not work properly. Use at your own risk. ");
 
 
         threadingService.runWithNotification(

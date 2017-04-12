@@ -44,8 +44,7 @@ public class CheckForNewExercises {
                             settings.setCourse(course);
                             CourseAndExerciseManager manager = new CourseAndExerciseManager();
                             try {
-                                if (getExerciseUpdateData(project, core, settings, manager)) {
-                                }
+                                getExerciseUpdateData(project, core, settings, manager);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }

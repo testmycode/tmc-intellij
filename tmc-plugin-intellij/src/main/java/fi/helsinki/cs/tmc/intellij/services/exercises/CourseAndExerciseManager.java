@@ -12,10 +12,15 @@ import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.persistence.ExerciseDatabase;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentExerciseDatabase;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Holds a database of courses in memory, allowing quick fetching of course when necessary without
