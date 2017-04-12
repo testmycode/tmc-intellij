@@ -1,5 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import com.intellij.notification.Notification;
+import com.intellij.notification.Notifications;
+import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
@@ -7,6 +10,7 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForNewExercises;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.logging.PropertySetter;
@@ -48,6 +52,9 @@ public class StartupEvent implements StartupActivity {
                         "Running TMC startup actions.", project, false, false, false);
 
         CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
+        new ErrorMessageService().showInfoNotification("The Test My Code Plugin for Intellij is in BETA and" +
+                " may not work properly. Use at your own risk. ");
+
 
         threadingService.runWithNotification(
                 new Thread() {

@@ -259,4 +259,8 @@ public class ErrorMessageService {
                             }
                         });
     }
+
+    public void showInfoNotification(final String message) {
+        initializeNotification(message, NotificationType.INFORMATION, false);
+    }
 }
