@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module type="PLUGIN_MODULE" version="4">
   <component name="DevKit.ModuleBuildProperties" url="file://$MODULE_DIR$/resources/META-INF/plugin.xml" />
-  <component name="NewModuleRootManager" inherit-compiler-output="false">
+  <component name="NewModuleRootManager">
     <output url="file://$MODULE_DIR$/../out" />
     <output-test url="file://$MODULE_DIR$/../out/test" />
     <exclude-output />
-    <orderEntry type="jdk" jdkName="IntelliJ IDEA Community Edition IC-163.7743.44" jdkType="IDEA JDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>
@@ -32,11 +32,9 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES>
-          <root url="jar://$USER_HOME$/Downloads/lib/core-0.5.2-SNAPSHOT.jar!/" />
         </SOURCES>
       </library>
     </orderEntry>
-    <orderEntry type="library" exported="" name="Maven: fi.helsinki.cs.tmc:core:0.9.11-SNAPSHOT" level="project" />
     <orderEntry type="module" module-name="tmc-intellij" exported="" />
   </component>
 </module>

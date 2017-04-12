@@ -50,7 +50,12 @@
         <dependency>
             <groupId>fi.helsinki.cs.tmc</groupId>
             <artifactId>core</artifactId>
-            <version>0.9.11-SNAPSHOT</version>
+            <version>0.9.12-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>fi.helsinki.cs.tmc</groupId>
+            <artifactId>tmc-checkstyle-runner</artifactId>
+            <version>3.0.3-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>

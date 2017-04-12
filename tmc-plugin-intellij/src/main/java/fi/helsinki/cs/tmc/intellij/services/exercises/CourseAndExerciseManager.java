@@ -12,14 +12,10 @@ import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.persistence.ExerciseDatabase;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentExerciseDatabase;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Holds a database of courses in memory, allowing quick fetching of course when necessary without
@@ -92,8 +88,13 @@ public class CourseAndExerciseManager {
             Map<String, List<Exercise>> database = new HashMap<>();
             List<Course> courses =
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
+            Optional<Course> currentCourse = courses.stream().filter(o -> o.equals(TmcSettingsManager.get().getCourse())).findFirst();
+            if (!currentCourse.isPresent()) {
+                logger.info("Did not find the selected course from the server");
+                return;
+            }
 
-            fetchCoursesFromTmcCore(database, courses);
+            fetchCourseFromTmcCore(database, currentCourse.get());
 
             getDatabase().setCourses(database);
         } catch (TmcCoreException exception) {
@@ -115,31 +116,25 @@ public class CourseAndExerciseManager {
         }
     }
 
-    private void fetchCoursesFromTmcCore(
-            Map<String, List<Exercise>> database, List<Course> courses) {
-
-        logger.info("Starting to fetch courses from TmcCore. @CourseAndExerciseManager");
-        for (Course course : courses) {
-            List<Exercise> exercises;
-            try {
-                logger.info("Fetching {} from TmcCore. @CourseAndExerciseManager", course);
-                course =
-                        TmcCoreHolder.get()
-                                .getCourseDetails(ProgressObserver.NULL_OBSERVER, course)
-                                .call();
-                exercises =
-                        new CheckForExistingExercises()
-                                .getListOfDownloadedExercises(
-                                        course.getExercises(), TmcSettingsManager.get());
-                database.put(course.getName(), exercises);
-            } catch (Exception exception) {
-                logger.warn(
-                        "Failed to initiate database. @CourseAndExerciseManager",
-                        exception,
-                        exception.getStackTrace());
-                new ErrorMessageService()
-                        .showMessage(exception, "Failed to initiate database", true);
-            }
+    private void fetchCourseFromTmcCore(Map<String, List<Exercise>> database, Course course) {
+        try {
+            logger.info("Fetching {} from TmcCore. @CourseAndExerciseManager", course);
+            course =
+                    TmcCoreHolder.get()
+                            .getCourseDetails(ProgressObserver.NULL_OBSERVER, course)
+                            .call();
+            List<Exercise> exercises =
+                    new CheckForExistingExercises()
+                            .getListOfDownloadedExercises(
+                                    course.getExercises(), TmcSettingsManager.get());
+            database.put(course.getName(), exercises);
+        } catch (Exception exception) {
+            logger.warn(
+                    "Failed to initiate database. @CourseAndExerciseManager",
+                    exception,
+                    exception.getStackTrace());
+            new ErrorMessageService()
+                    .showMessage(exception, "Failed to initiate database", true);
         }
     }
 
