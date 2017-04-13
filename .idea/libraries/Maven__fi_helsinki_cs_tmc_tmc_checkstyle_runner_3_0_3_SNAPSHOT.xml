@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: fi.helsinki.cs.tmc:tmc-checkstyle-runner:3.0.3-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-checkstyle-runner/3.0.3-SNAPSHOT/tmc-checkstyle-runner-3.0.3-20170213.095103-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-checkstyle-runner/3.0.3-SNAPSHOT/tmc-checkstyle-runner-3.0.3-20170213.095103-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-checkstyle-runner/3.0.3-SNAPSHOT/tmc-checkstyle-runner-3.0.3-20170213.095103-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

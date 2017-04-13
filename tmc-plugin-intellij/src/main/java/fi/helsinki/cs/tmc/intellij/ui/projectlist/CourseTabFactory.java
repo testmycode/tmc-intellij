@@ -207,9 +207,10 @@ public class CourseTabFactory {
                             .getExerciseDirectory(TmcSettingsManager.get()
                                     .getTmcProjectDirectory()));
                 } else {
+                    String courseName = list.getParent().getParent().getName();
                     opener.openProject(TmcSettingsManager.get().getProjectBasePath()
-                            + File.separator + list.getParent().getParent().getName()
-                            + File.separator + selectedItem);
+                            + File.separator + courseName
+                            + File.separator + selectedItem, courseName);
                 }
 
             }

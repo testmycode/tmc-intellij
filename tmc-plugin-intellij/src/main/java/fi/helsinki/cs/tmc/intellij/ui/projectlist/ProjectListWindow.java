@@ -1,7 +1,10 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
+import fi.helsinki.cs.tmc.core.TmcCore;
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
@@ -76,7 +79,8 @@ public class ProjectListWindow {
 
         addFunctionalityToHideButton();
         JButton refreshButton = addFunctionalityToRefreshButton();
-        toolbar.add(refreshButton);
+        // TODO: refresh button not working
+        // toolbar.add(refreshButton);
         addFunctionalityToOpenButton();
         setActiveTabToSelectedCourse();
     }
@@ -124,7 +128,7 @@ public class ProjectListWindow {
 
             opener.openProject(TmcSettingsManager.get().getProjectBasePath()
                     + File.separator + courseName + File.separator
-                    + list.getSelectedValue());
+                    + list.getSelectedValue(), courseName);
         });
     }
 

@@ -1,7 +1,9 @@
-
 package fi.helsinki.cs.tmc.intellij.io;
 
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
@@ -23,6 +25,12 @@ import java.nio.file.Paths;
 public class ProjectOpener {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectOpener.class);
+
+    public void openProject(String path, String courseName) {
+        Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
+        TmcSettingsManager.get().setCourse(course);
+        openProject(path);
+    }
 
     public void openProject(String path) {
         openProject(new ObjectFinder().findCurrentProject(), path);
