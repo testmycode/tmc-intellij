@@ -27,7 +27,7 @@ public class SettingsWindow {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        frame.setResizable(false);
+        frame.setResizable(true);
         frame.setSize(new Dimension(800, 500));
         frame.setAlwaysOnTop(true);
     }
