@@ -11,6 +11,7 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.picocontainer:picocontainer:2.15" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.11" level="project" />
@@ -56,7 +57,6 @@
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-java:0.7.7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-make:0.7.7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-python3:0.7.7-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.3.2" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-notests:0.7.7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.github.stefanbirkner:system-rules:1.12.1" level="project" />
     <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.5" level="project" />
