@@ -50,6 +50,27 @@ public class ErrorMessageService {
         });
     }
 
+    public void showPopupWithDetails(String message,
+                                     String title,
+                                     String details,
+                                     NotificationType notificationType) {
+        Project currentProject = new ObjectFinder().findCurrentProject();
+        Icon icon = iconForNotificationType(notificationType);
+
+        ApplicationManager.getApplication().invokeLater(() -> {
+            Messages.showDialog(
+                    currentProject,
+                    message,
+                    title,
+                    details,
+                    new String[] { Messages.OK_BUTTON },
+                    0,
+                    0,
+                    icon
+            );
+        });
+    }
+
     /**
      * Shows a human readable error message to the user as a popup or a notification balloon.
      *
