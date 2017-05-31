@@ -1,9 +1,9 @@
 package fi.helsinki.cs.tmc.intellij.services.errors;
 
-import com.intellij.notification.NotificationType;
-import fi.helsinki.cs.tmc.core.exceptions.FailedHttpResponseException;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+
+import com.intellij.notification.NotificationType;
 
 class PresentableErrorMessage {
     private String message;

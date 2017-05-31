@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
-import com.intellij.notification.NotificationType;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.actions.buttonactions.UploadExerciseAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
@@ -11,6 +10,7 @@ import fi.helsinki.cs.tmc.langs.domain.RunResult;
 import fi.helsinki.cs.tmc.langs.domain.SpecialLogs;
 import fi.helsinki.cs.tmc.langs.domain.TestResult;
 
+import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;

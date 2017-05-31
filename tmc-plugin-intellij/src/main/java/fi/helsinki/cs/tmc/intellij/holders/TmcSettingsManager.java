@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.holders;
 
-
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 
