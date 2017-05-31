@@ -36,11 +36,11 @@ public class ErrorMessageService {
 
     private static final Logger logger = LoggerFactory.getLogger(ErrorMessageService.class);
 
-    public void showInfoNotification(String message) {
+    public void showInfoBalloon(String message) {
         showBalloonNotification(message, NotificationType.INFORMATION);
     }
 
-    public void downloadErrorMessage(Course course) {
+    public void showExercisesAreUpToDate(Course course) {
         ApplicationManager.getApplication().invokeLater(() -> {
             Messages.showMessageDialog(
                     "All exercises for " + course.toString() + " are up to date.",
@@ -56,7 +56,7 @@ public class ErrorMessageService {
      * @param coreException The cause of the error.
      * @param showAsPopup if the error message will be a pop up or not.
      */
-    public void showMessage(TmcCoreException coreException, boolean showAsPopup) {
+    public void showHumanReadableErrorMessage(TmcCoreException coreException, boolean showAsPopup) {
         logger.info("Showing human readable TmcCoreException. {} @ErrorMessageService", coreException);
         PresentableErrorMessage content = PresentableErrorMessage.forTmcException(coreException);
         showNotification(content.getMessage(), content.getMessageType(), showAsPopup);
@@ -69,9 +69,9 @@ public class ErrorMessageService {
      * @param errorDescription Additional description of the error.
      * @param showAsPopup if the error message will be a pop up or not.
      */
-    public void showMessage(Exception exception,
-                            String errorDescription,
-                            boolean showAsPopup) {
+    public void showErrorMessage(Exception exception,
+                                 String errorDescription,
+                                 boolean showAsPopup) {
         logger.info("Showing Exception. {} @ErrorMessageService", exception);
         String message = exception + ". \n" + errorDescription;
         showNotification(message, NotificationType.ERROR, showAsPopup);

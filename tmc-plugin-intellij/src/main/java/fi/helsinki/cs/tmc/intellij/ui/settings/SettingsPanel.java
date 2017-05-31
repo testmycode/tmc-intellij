@@ -245,7 +245,7 @@ public class SettingsPanel {
                 logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
                         exception, exception.getStackTrace());
                 ErrorMessageService error = new ErrorMessageService();
-                error.showMessage((TmcCoreException) exception, true);
+                error.showHumanReadableErrorMessage((TmcCoreException) exception, true);
             }
 
             addCourSesToListOfAvailable(courses);

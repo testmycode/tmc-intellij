@@ -88,7 +88,7 @@ public class PasteService {
                                         exception,
                                         exception.getStackTrace());
                                 new ErrorMessageService()
-                                        .showMessage(
+                                        .showErrorMessage(
                                                 exception,
                                                 "Error while uploading to TMC Pastebin.",
                                                 true);
@@ -101,7 +101,7 @@ public class PasteService {
         logger.info("Handling the exception from uploading failure. @PasteService");
         closeWindowIfExists();
 
-        new ErrorMessageService().showMessage(exception, false);
+        new ErrorMessageService().showHumanReadableErrorMessage(exception, false);
         exception.printStackTrace();
     }
 

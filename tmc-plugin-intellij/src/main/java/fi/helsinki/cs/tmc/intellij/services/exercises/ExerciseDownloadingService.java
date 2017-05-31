@@ -21,7 +21,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -89,7 +88,7 @@ public class ExerciseDownloadingService {
                         exercises = notCompletedExercises(exercises);
                     }
                     if (exercises == null || exercises.size() == 0) {
-                        new ErrorMessageService().downloadErrorMessage(course);
+                        new ErrorMessageService().showExercisesAreUpToDate(course);
                         return;
                     }
                     new DownloadListWindow().showDownloadableExercises(exercises);
@@ -101,7 +100,7 @@ public class ExerciseDownloadingService {
                             except,
                             except.getStackTrace());
                     new ErrorMessageService()
-                            .showMessage(
+                            .showErrorMessage(
                                     except,
                                     "You need to select a course to be able to download.",
                                     true);
@@ -137,7 +136,7 @@ public class ExerciseDownloadingService {
                 } catch (Exception exception) {
                     logger.info("Failed to download exercises. @ExerciseDownloadingService");
                     new ErrorMessageService()
-                            .showMessage(exception, "Failed to download exercises.", true);
+                            .showErrorMessage(exception, "Failed to download exercises.", true);
                 }
 
                 createThreadForRefreshingExerciseList();
@@ -158,14 +157,14 @@ public class ExerciseDownloadingService {
         List<Exercise> exercises = course.getExercises();
         exercises = checker.clean(exercises, settings);
         if (exercises == null || exercises.size() == 0) {
-            new ErrorMessageService().downloadErrorMessage(course);
+            new ErrorMessageService().showExercisesAreUpToDate(course);
             return true;
         }
         try {
             openFirstExercise(exercises, core, observer);
         } catch (Exception exception) {
             logger.info("Failed to download exercises. @ExerciseDownloadingService");
-            new ErrorMessageService().showMessage(exception, "Failed to download exercises.", true);
+            new ErrorMessageService().showErrorMessage(exception, "Failed to download exercises.", true);
         }
         return false;
     }
