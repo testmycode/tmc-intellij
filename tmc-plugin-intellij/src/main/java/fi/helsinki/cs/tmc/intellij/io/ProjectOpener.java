@@ -55,7 +55,7 @@ public class ProjectOpener {
                             exception,
                             exception.getStackTrace());
                     new ErrorMessageService()
-                            .showMessage(
+                            .showErrorMessage(
                                     exception, "Could not open project from path. " + path, true);
                 }
             }

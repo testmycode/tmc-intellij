@@ -107,7 +107,7 @@ public class ProjectFromSourcesBuilderImplModified {
             }
         } catch (Exception e) {
             logger.warn(e.getMessage());
-            new ErrorMessageService().showMessage(e, "Error adding module to project", true);
+            new ErrorMessageService().showErrorMessage(e, "Error adding module to project", true);
         }
 
         final Map<ModuleDescriptor, Module> descriptorToModuleMap = new HashMap<>();
@@ -146,7 +146,7 @@ public class ProjectFromSourcesBuilderImplModified {
             }
         } catch (Exception e) {
             logger.warn(e.getMessage());
-            new ErrorMessageService().showMessage(e, "Error adding module to project", true);
+            new ErrorMessageService().showErrorMessage(e, "Error adding module to project", true);
         }
         logger.info("ending commit in ProjectFromSourcesBuilderImplModified");
         //return result;

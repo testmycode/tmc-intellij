@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.ui.settings;
 
-
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
@@ -245,7 +244,7 @@ public class SettingsPanel {
                 logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
                         exception, exception.getStackTrace());
                 ErrorMessageService error = new ErrorMessageService();
-                error.showMessage((TmcCoreException) exception, true);
+                error.showHumanReadableErrorMessage((TmcCoreException) exception, true);
             }
 
             addCourSesToListOfAvailable(courses);

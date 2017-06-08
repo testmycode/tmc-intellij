@@ -1,8 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
-
 import fi.helsinki.cs.tmc.core.domain.Exercise;
-
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
@@ -268,7 +266,7 @@ public class CourseTabFactory {
                 logger.warn("IOException occurred. Something interrupted "
                                 + "the mouse action. @CourseTabFactory",
                         e1, e1.getStackTrace());
-                new ErrorMessageService().showMessage(e1,
+                new ErrorMessageService().showErrorMessage(e1,
                         "IOException occurred. Something interrupted the mouse action.",
                         true);
             }
@@ -305,7 +303,7 @@ public class CourseTabFactory {
                 logger.warn("IOException occurred. Something interrupted "
                                 + "the mouse action. @CourseTabFactory",
                         e1, e1.getStackTrace());
-                new ErrorMessageService().showMessage(e1,
+                new ErrorMessageService().showErrorMessage(e1,
                         "IOException occurred. Something interrupted the mouse action.",
                         true);
             }

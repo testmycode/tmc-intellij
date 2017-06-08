@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
-
 import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;

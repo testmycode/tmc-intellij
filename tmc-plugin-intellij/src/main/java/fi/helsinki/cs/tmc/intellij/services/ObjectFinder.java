@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
-
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
@@ -63,11 +62,11 @@ public class ObjectFinder {
         } catch (TmcCoreException e) {
             logger.warn(
                     "Could not find course {}. @ObjectFinder", courseName, e, e.getStackTrace());
-            new ErrorMessageService().showMessage(e, false);
+            new ErrorMessageService().showHumanReadableErrorMessage(e, false);
         } catch (Exception e) {
             logger.warn(
                     "Could not find course {}. @ObjectFinder", courseName, e, e.getStackTrace());
-            new ErrorMessageService().showMessage(e, "Could not find course. " + courseName, true);
+            new ErrorMessageService().showErrorMessage(e, "Could not find course. " + courseName, true);
         }
         if (courses == null) {
             return null;
@@ -94,14 +93,14 @@ public class ObjectFinder {
                             courseName,
                             exception,
                             exception.getStackTrace());
-                    new ErrorMessageService().showMessage(exception, false);
+                    new ErrorMessageService().showHumanReadableErrorMessage(exception, false);
                 } catch (Exception e) {
                     logger.warn(
                             "Could not find course {}. @ObjectFinder",
                             courseName,
                             e,
                             e.getStackTrace());
-                    new ErrorMessageService().showMessage(e, "Could not find course.", true);
+                    new ErrorMessageService().showErrorMessage(e, "Could not find course.", true);
                 }
             }
         }

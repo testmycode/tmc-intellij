@@ -74,7 +74,7 @@ public class CourseAndExerciseManager {
                     exception,
                     exception.getStackTrace());
             ErrorMessageService error = new ErrorMessageService();
-            error.showMessage(exception, "Could not find the course.", false);
+            error.showErrorMessage(exception, "Could not find the course.", false);
         }
         return null;
     }
@@ -108,7 +108,7 @@ public class CourseAndExerciseManager {
                     exception,
                     exception.getStackTrace());
             ErrorMessageService error = new ErrorMessageService();
-            error.showMessage(exception, false);
+            error.showHumanReadableErrorMessage(exception, false);
             refreshCoursesOffline();
         } catch (Exception exception) {
             logger.warn(
@@ -116,7 +116,7 @@ public class CourseAndExerciseManager {
                     exception,
                     exception.getStackTrace());
             ErrorMessageService error = new ErrorMessageService();
-            error.showMessage(exception, "Failed to fetch courses from tmc core.", false);
+            error.showErrorMessage(exception, "Failed to fetch courses from tmc core.", false);
             refreshCoursesOffline();
         }
     }
@@ -139,7 +139,7 @@ public class CourseAndExerciseManager {
                     exception,
                     exception.getStackTrace());
             new ErrorMessageService()
-                    .showMessage(exception, "Failed to initiate database", true);
+                    .showErrorMessage(exception, "Failed to initiate database", true);
         }
     }
 
