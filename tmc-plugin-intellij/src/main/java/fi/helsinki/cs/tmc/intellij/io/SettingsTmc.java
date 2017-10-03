@@ -7,6 +7,7 @@ import com.google.common.base.Optional;
 
 import com.intellij.openapi.application.ApplicationInfo;
 
+import fi.helsinki.cs.tmc.core.domain.OauthCredentials;
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
 import org.slf4j.Logger;
@@ -119,9 +120,14 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     @Override
-    public String getPassword() {
+    public Optional<String> getPassword() {
         logger.info("Getting user password. @SettingsTmc");
-        return password;
+        return Optional.fromNullable(password);
+    }
+
+    @Override
+    public void setPassword(Optional<String> optional) {
+
     }
 
     @Override
@@ -143,11 +149,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
     public Optional<Course> getCurrentCourse() {
         Optional<Course> crs = Optional.of(course);
         return crs;
-    }
-
-    @Override
-    public String apiVersion() {
-        return "7";
     }
 
     @Override
@@ -204,6 +205,36 @@ public class SettingsTmc implements TmcSettings, Serializable {
     @Override
     public boolean getSendDiagnostics() {
         return this.sendDiagnostics;
+    }
+
+    @Override
+    public OauthCredentials getOauthCredentials() {
+        return null;
+    }
+
+    @Override
+    public void setOauthCredentials(OauthCredentials oauthCredentials) {
+
+    }
+
+    @Override
+    public void setToken(Optional<String> optional) {
+
+    }
+
+    @Override
+    public Optional<String> getToken() {
+        return null;
+    }
+
+    @Override
+    public String getOrganization() {
+        return null;
+    }
+
+    @Override
+    public void setOrganization(String s) {
+
     }
 
     public void setSendDiagnostics(boolean value) {

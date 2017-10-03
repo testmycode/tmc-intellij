@@ -34,7 +34,7 @@ public class SettingsTmcTest {
     @Test
     public void setPasswordWorksCorrectly() throws Exception {
         settingstmc.setPassword("koira");
-        String user = settingstmc.getPassword();
+        String user = settingstmc.getPassword().get();
         assertEquals("koira", user);
     }
 
@@ -68,11 +68,6 @@ public class SettingsTmcTest {
         settingstmc.setUsername("koira");
         Boolean bool = settingstmc.userDataExists();
         assertFalse(bool);
-    }
-
-    @Test
-    public void apiVersionWorksCorrectly() throws Exception {
-        assertEquals("7", settingstmc.apiVersion());
     }
 
     @Test

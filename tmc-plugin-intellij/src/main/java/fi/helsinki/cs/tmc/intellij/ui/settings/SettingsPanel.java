@@ -110,7 +110,9 @@ public class SettingsPanel {
 
         usernameField.setText(settingsTmc.getUsername());
         serverAddressField.setText(settingsTmc.getServerAddress());
-        passwordField.setText(settingsTmc.getPassword());
+        if (settingsTmc.getPassword().isPresent()) {
+            passwordField.setText(settingsTmc.getPassword().get());
+        }
 
         ActionListener browseListener = createActionListener();
         browseButton.addActionListener(browseListener);
