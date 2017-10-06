@@ -26,7 +26,7 @@ public class TextInputListener implements DocumentListener {
 
     private static final Logger logger = LoggerFactory.getLogger(TextInputListener.class);
 
-    private DiffMatchPatch diff = new DiffMatchPatch();
+    private final DiffMatchPatch diff = new DiffMatchPatch();
     private String previous;
     private String modified;
 

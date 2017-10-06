@@ -27,9 +27,9 @@ import java.util.List;
  */
 public class ActivateSpywareAction implements TypedActionHandler {
 
-    private TypedActionHandler handler;
+    private final TypedActionHandler handler;
 
-    private static List<Document> listenedDocuments = new ArrayList<>();
+    private static final List<Document> listenedDocuments = new ArrayList<>();
 
     private static final Logger logger = LoggerFactory.getLogger(ActivateSpywareAction.class);
 

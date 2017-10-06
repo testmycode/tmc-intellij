@@ -14,7 +14,7 @@ public class SettingsWindow {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsWindow.class);
 
-    private JFrame frame;
+    private final JFrame frame;
 
     public SettingsWindow() {
         logger.info("Building SettingsWindow. @SettingsWindow");

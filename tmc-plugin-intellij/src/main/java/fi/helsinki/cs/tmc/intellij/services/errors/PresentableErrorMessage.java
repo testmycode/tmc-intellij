@@ -6,8 +6,8 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import com.intellij.notification.NotificationType;
 
 class PresentableErrorMessage {
-    private String message;
-    private NotificationType messageType;
+    private final String message;
+    private final NotificationType messageType;
 
     private PresentableErrorMessage(String message, NotificationType messageType) {
         this.message = message;

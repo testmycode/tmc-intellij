@@ -19,8 +19,8 @@ import java.util.List;
 public class NextExerciseFetcher {
 
     private static final Logger logger = LoggerFactory.getLogger(NextExerciseFetcher.class);
-    private String course;
-    private Project project;
+    private final String course;
+    private final Project project;
     private Exercise exercise;
 
     public NextExerciseFetcher(String course, Exercise exercise, Project project) {

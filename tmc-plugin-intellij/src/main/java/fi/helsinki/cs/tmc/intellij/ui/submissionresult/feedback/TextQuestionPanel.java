@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public class TextQuestionPanel extends FeedbackQuestionPanel {
 
     private static final Logger logger = LoggerFactory.getLogger(TextQuestionPanel.class);
-    private FeedbackQuestion question;
+    private final FeedbackQuestion question;
 
     public TextQuestionPanel(FeedbackQuestion question) {
         logger.info(

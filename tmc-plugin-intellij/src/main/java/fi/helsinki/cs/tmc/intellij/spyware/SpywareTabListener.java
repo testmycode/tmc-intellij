@@ -27,8 +27,8 @@ public class SpywareTabListener {
 
     private static final Logger logger = LoggerFactory.getLogger(SpywareTabListener.class);
 
-    private Project project;
-    private String basePath;
+    private final Project project;
+    private final String basePath;
 
     public SpywareTabListener(Project project) {
         this.project = project;

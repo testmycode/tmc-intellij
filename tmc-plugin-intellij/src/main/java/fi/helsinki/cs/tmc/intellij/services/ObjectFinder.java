@@ -109,22 +109,16 @@ public class ObjectFinder {
 
     public List<String> listAllDownloadedCourses() {
         logger.info("Processing listAllDownloadedCourses. @ObjectFinder");
-        List<String> fileNames =
-                getListOfDirectoriesInPath(TmcSettingsManager.get().getProjectBasePath());
-
-        return fileNames;
+        return getListOfDirectoriesInPath(TmcSettingsManager.get().getProjectBasePath());
     }
 
     public List<String> listAllDownloadedExercises(String courseName) {
         logger.info(
                 "Processing listAllDownloadedExercises from course {}. @ObjectFinder", courseName);
-        List<String> fileNames =
-                getListOfDirectoriesInPath(
-                        TmcSettingsManager.get().getProjectBasePath()
-                                + File.separator
-                                + courseName);
-
-        return fileNames;
+        return getListOfDirectoriesInPath(
+                TmcSettingsManager.get().getProjectBasePath()
+                        + File.separator
+                        + courseName);
     }
 
     private List<String> getListOfDirectoriesInPath(String folderPath) {
@@ -173,10 +167,7 @@ public class ObjectFinder {
             Project[] projects = ProjectManager.getInstance().getOpenProjects();
             return projects[projects.length - 1];
         }
-
-        Project project = DataKeys.PROJECT.getData(dataContext);
-
-        return project;
+        return DataKeys.PROJECT.getData(dataContext);
     }
 
     public Course findCourseNoDetails(String courseName, TmcCore core) {

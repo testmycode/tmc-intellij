@@ -2,12 +2,12 @@ package fi.helsinki.cs.tmc.intellij.io;
 
 import fi.helsinki.cs.tmc.core.configuration.TmcSettings;
 import fi.helsinki.cs.tmc.core.domain.Course;
+import fi.helsinki.cs.tmc.core.domain.OauthCredentials;
 
 import com.google.common.base.Optional;
 
 import com.intellij.openapi.application.ApplicationInfo;
 
-import fi.helsinki.cs.tmc.core.domain.OauthCredentials;
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
 import org.slf4j.Logger;
@@ -147,8 +147,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Optional<Course> getCurrentCourse() {
-        Optional<Course> crs = Optional.of(course);
-        return crs;
+        return Optional.of(course);
     }
 
     @Override

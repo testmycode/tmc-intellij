@@ -13,28 +13,7 @@ import org.mockito.MockitoAnnotations;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 */
-import org.junit.Test;
 
 public class TmcSettingsManagerTest {
-    @Test
-    public void get() throws Exception {
-
-    }
-
-    @Test
-    public void setupWorks() throws Exception {
-//        PersistentTmcSettings settingsP = mock(PersistentTmcSettings.class);
-//        when(settingsP.getSettingsTmc()).thenReturn(new SettingsTmc("", "", ""));
-////        TmcSettingsManager.setup();
-//        ServiceManager manager = mock(ServiceManager.class);
-//        when(ServiceManager.getService(PersistentTmcSettings.class)).thenReturn(settingsP);
-//        MockitoAnnotations.initMocks(this);
-//        TmcSettingsManager.get();
-    }
-
-    @Test
-    public void set() throws Exception {
-
-    }
 
 }

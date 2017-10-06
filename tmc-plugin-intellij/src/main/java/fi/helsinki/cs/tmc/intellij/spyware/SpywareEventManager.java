@@ -23,7 +23,7 @@ public class SpywareEventManager {
 
     private static final Logger logger = LoggerFactory.getLogger(SpywareEventManager.class);
 
-    private static SpywareSettings spywareSettings =
+    private static final SpywareSettings spywareSettings =
             new SpywareSettings() {
                 @Override
                 public boolean isSpywareEnabled() {
@@ -36,7 +36,7 @@ public class SpywareEventManager {
                 }
             };
 
-    private static EventSendBuffer buffer =
+    private static final EventSendBuffer buffer =
             new EventSendBuffer(
                     spywareSettings, new TmcServerCommunicationTaskFactory(), new EventStore());
 

@@ -1,4 +1,4 @@
-<idea-plugin version="2">
+<idea-plugin>
   <id>fi.helsinki.cs.tmc</id>
   <name>TMC Plugin for Intellij</name>
   <version>1.0.8</version>

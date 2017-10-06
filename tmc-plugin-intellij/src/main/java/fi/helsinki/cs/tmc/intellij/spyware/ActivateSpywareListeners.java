@@ -16,7 +16,7 @@ public class ActivateSpywareListeners {
 
     private static final Logger logger = LoggerFactory.getLogger(TextInputListener.class);
 
-    private Project project;
+    private final Project project;
 
     public ActivateSpywareListeners(Project project) {
         logger.info("Activating spyware listeners.");

@@ -41,13 +41,11 @@ public class ErrorMessageService {
     }
 
     public void showExercisesAreUpToDate(Course course) {
-        ApplicationManager.getApplication().invokeLater(() -> {
-            Messages.showMessageDialog(
-                    "All exercises for " + course.toString() + " are up to date.",
-                    "All Exercises Are up to Date.",
-                    Messages.getInformationIcon()
-            );
-        });
+        ApplicationManager.getApplication().invokeLater(() -> Messages.showMessageDialog(
+                "All exercises for " + course.toString() + " are up to date.",
+                "All Exercises Are up to Date.",
+                Messages.getInformationIcon()
+        ));
     }
 
     public void showPopupWithDetails(String message,
@@ -57,18 +55,16 @@ public class ErrorMessageService {
         Project currentProject = new ObjectFinder().findCurrentProject();
         Icon icon = iconForNotificationType(notificationType);
 
-        ApplicationManager.getApplication().invokeLater(() -> {
-            Messages.showDialog(
-                    currentProject,
-                    message,
-                    title,
-                    details,
-                    new String[] { Messages.OK_BUTTON },
-                    0,
-                    0,
-                    icon
-            );
-        });
+        ApplicationManager.getApplication().invokeLater(() -> Messages.showDialog(
+                currentProject,
+                message,
+                title,
+                details,
+                new String[] { Messages.OK_BUTTON },
+                0,
+                0,
+                icon
+        ));
     }
 
     /**
@@ -110,18 +106,14 @@ public class ErrorMessageService {
         Notification notification = TMC_NOTIFICATION.createNotification(message, type);
         Project currentProject = new ObjectFinder().findCurrentProject();
 
-        ApplicationManager.getApplication().invokeLater(() -> {
-            Notifications.Bus.notify(notification, currentProject);
-        });
+        ApplicationManager.getApplication().invokeLater(() -> Notifications.Bus.notify(notification, currentProject));
     }
 
     private void showPopup(String message, NotificationType notificationType) {
         Project currentProject = new ObjectFinder().findCurrentProject();
         Icon icon = iconForNotificationType(notificationType);
 
-        ApplicationManager.getApplication().invokeLater(() -> {
-            Messages.showMessageDialog(currentProject, message, "", icon);
-        });
+        ApplicationManager.getApplication().invokeLater(() -> Messages.showMessageDialog(currentProject, message, "", icon));
     }
 
     private Icon iconForNotificationType(NotificationType type) {

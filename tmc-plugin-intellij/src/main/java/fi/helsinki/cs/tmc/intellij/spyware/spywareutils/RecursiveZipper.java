@@ -13,15 +13,15 @@ import java.util.zip.ZipOutputStream;
 
 
 public class RecursiveZipper {
-    private File rootDir;
-    private ZippingDecider zippingDecider;
+    private final File rootDir;
+    private final ZippingDecider zippingDecider;
 
-    public static interface ZippingDecider {
+    public interface ZippingDecider {
         /**
          * Tells whether the given file or directory should be zipped. Zip paths are separated by
          * slashes and don't have a starting slash. Directory paths always end in a slash.
          */
-        public boolean shouldZip(String zipPath);
+        boolean shouldZip(String zipPath);
     }
 
     public static final ZippingDecider ZIP_ALL_THE_THINGS =
@@ -40,12 +40,9 @@ public class RecursiveZipper {
         }
 
         ByteArrayOutputStream zipBuffer = new ByteArrayOutputStream();
-        ZipOutputStream zos = new ZipOutputStream(zipBuffer);
 
-        try {
+        try (ZipOutputStream zos = new ZipOutputStream(zipBuffer)) {
             zipRecursively(rootDir, zos, "");
-        } finally {
-            zos.close();
         }
 
         return zipBuffer.toByteArray();

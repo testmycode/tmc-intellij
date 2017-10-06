@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.exercisedownloadlist;
 
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +29,7 @@ import javax.swing.border.EmptyBorder;
 public class CustomCheckBoxList extends JList implements Iterable<JCheckBox> {
 
     private static final Logger logger = LoggerFactory.getLogger(CustomCheckBoxList.class);
-    private List<ItemListener> itemListeners;
+    private final List<ItemListener> itemListeners;
 
     public CustomCheckBoxList() {
         logger.info("Creating custom checkbox list");
@@ -50,10 +51,10 @@ public class CustomCheckBoxList extends JList implements Iterable<JCheckBox> {
                 });
     }
 
-    private ItemListener itemEventForwarder =
+    private final ItemListener itemEventForwarder =
             this::fireItemEvent;
 
-    private PropertyChangeListener checkBoxPropChangeListener =
+    private final PropertyChangeListener checkBoxPropChangeListener =
             evt -> repaint();
 
     public void addItemListener(ItemListener listener) {
@@ -75,6 +76,7 @@ public class CustomCheckBoxList extends JList implements Iterable<JCheckBox> {
         return (JCheckBox) getModel().getElementAt(element);
     }
 
+    @NotNull
     @Override
     public Iterator<JCheckBox> iterator() {
         return new Iterator<JCheckBox>() {

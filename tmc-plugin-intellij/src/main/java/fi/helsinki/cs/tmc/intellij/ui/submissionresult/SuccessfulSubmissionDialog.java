@@ -18,6 +18,7 @@ import fi.helsinki.cs.tmc.intellij.ui.submissionresult.feedback.FeedbackQuestion
 
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
+import com.intellij.ui.JBColor;
 
 import icons.TmcIcons;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -25,6 +26,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
 import java.awt.Font;
@@ -175,7 +177,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
         font = font.deriveFont(Font.BOLD, font.getSize2D() * 1.2f);
         yayLabel.setFont(font);
 
-        yayLabel.setForeground(new java.awt.Color(0, 153, 51));
+        yayLabel.setForeground(new JBColor(new Color(0, 153, 51), new Color()));
         yayLabel.setIcon(TmcIcons.SUCCESS);
         //URL imageUrl = new URL("/fi/helsinki/cs/tmc/intellij/smile.gif");
         //ImageIcon icon = new ImageIcon(getClass().getResource("/smiley.gif"));

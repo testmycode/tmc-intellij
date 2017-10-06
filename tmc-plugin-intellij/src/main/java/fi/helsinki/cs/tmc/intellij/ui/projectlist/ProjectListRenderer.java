@@ -22,14 +22,14 @@ public class ProjectListRenderer extends DefaultListCellRenderer {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectListRenderer.class);
 
-    private Font font;
+    private final Font font;
 
     public ProjectListRenderer() {
         logger.info("Choosing font based on operating system. @ProjectListRenderer");
         if (osIsUnixBased()) {
-            font = new Font("ubuntu", Font.TRUETYPE_FONT, 13);
+            font = new Font("ubuntu", Font.PLAIN, 13);
         } else {
-            font = new Font("Arial", Font.TRUETYPE_FONT, 12);
+            font = new Font("Arial", Font.PLAIN, 12);
         }
     }
 

@@ -37,8 +37,7 @@ public class ExerciseDownloadingService {
             ThreadingService threadingService,
             Project project,
             boolean downloadAll,
-            ProgressWindow window)
-            throws Exception {
+            ProgressWindow window) {
 
         logger.info(
                 "Preparing to start checking for available exercises."
@@ -73,40 +72,37 @@ public class ExerciseDownloadingService {
         logger.info(
                 "Creating a new thread to check available exercises. @ExerciseDownloadingService");
 
-        return new Thread() {
-            @Override
-            public void run() {
-                try {
-                    logger.info("Starting to check exercises. @ExerciseDownloadingService");
+        return new Thread(() -> {
+            try {
+                logger.info("Starting to check exercises. @ExerciseDownloadingService");
 
-                    final Course course =
-                            finder.findCourseByName(settings.getCourse().getName(), core);
+                final Course course =
+                        finder.findCourseByName(settings.getCourse().getName(), core);
 
-                    List<Exercise> exercises = course.getExercises();
-                    exercises = checker.clean(exercises, settings);
-                    if (!downloadAll) {
-                        exercises = notCompletedExercises(exercises);
-                    }
-                    if (exercises == null || exercises.size() == 0) {
-                        new ErrorMessageService().showExercisesAreUpToDate(course);
-                        return;
-                    }
-                    new DownloadListWindow().showDownloadableExercises(exercises);
-
-                } catch (Exception except) {
-                    logger.warn(
-                            "Failed to check available exercises. "
-                                    + "Course not selected. @ExerciseDownloadingService",
-                            except,
-                            except.getStackTrace());
-                    new ErrorMessageService()
-                            .showErrorMessage(
-                                    except,
-                                    "You need to select a course to be able to download.",
-                                    true);
+                List<Exercise> exercises = course.getExercises();
+                exercises = checker.clean(exercises, settings);
+                if (!downloadAll) {
+                    exercises = notCompletedExercises(exercises);
                 }
+                if (exercises == null || exercises.size() == 0) {
+                    new ErrorMessageService().showExercisesAreUpToDate(course);
+                    return;
+                }
+                new DownloadListWindow().showDownloadableExercises(exercises);
+
+            } catch (Exception except) {
+                logger.warn(
+                        "Failed to check available exercises. "
+                                + "Course not selected. @ExerciseDownloadingService",
+                        except,
+                        except.getStackTrace());
+                new ErrorMessageService()
+                        .showErrorMessage(
+                                except,
+                                "You need to select a course to be able to download.",
+                                true);
             }
-        };
+        });
     }
 
     @NotNull
@@ -115,33 +111,30 @@ public class ExerciseDownloadingService {
 
         logger.info("Creating a new thread. @ExerciseDownloadingService");
 
-        return new Thread() {
-            @Override
-            public void run() {
-                try {
-                    List<Exercise> exerciseList =
-                            core.downloadOrUpdateExercises(observer, exercises).call();
-                    ApplicationManager.getApplication()
-                            .invokeLater(
-                                    () -> {
-                                        if (0
-                                                == Messages.showYesNoDialog(
-                                                        "Would you like to open the first "
-                                                         + "of the downloaded exercises?",
-                                                "Download Complete",
-                                                        null)) {
-                                            NextExerciseFetcher.openFirst(exerciseList);
-                                        }
-                                    });
-                } catch (Exception exception) {
-                    logger.info("Failed to download exercises. @ExerciseDownloadingService");
-                    new ErrorMessageService()
-                            .showErrorMessage(exception, "Failed to download exercises.", true);
-                }
-
-                createThreadForRefreshingExerciseList();
+        return new Thread(() -> {
+            try {
+                List<Exercise> exerciseList =
+                        core.downloadOrUpdateExercises(observer, exercises).call();
+                ApplicationManager.getApplication()
+                        .invokeLater(
+                                () -> {
+                                    if (0
+                                            == Messages.showYesNoDialog(
+                                                    "Would you like to open the first "
+                                                     + "of the downloaded exercises?",
+                                            "Download Complete",
+                                                    null)) {
+                                        NextExerciseFetcher.openFirst(exerciseList);
+                                    }
+                                });
+            } catch (Exception exception) {
+                logger.info("Failed to download exercises. @ExerciseDownloadingService");
+                new ErrorMessageService()
+                        .showErrorMessage(exception, "Failed to download exercises.", true);
             }
-        };
+
+            createThreadForRefreshingExerciseList();
+        });
     }
 
     private static boolean handleCreatingThread(

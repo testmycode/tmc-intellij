@@ -10,7 +10,7 @@ import java.util.LinkedList;
  * then T2 will <em>not</em> be in the thread set.
  */
 public class ActiveThreadSet {
-    private LinkedList<Thread> threads;
+    private final LinkedList<Thread> threads;
 
     public ActiveThreadSet() {
         this.threads = new LinkedList<>();

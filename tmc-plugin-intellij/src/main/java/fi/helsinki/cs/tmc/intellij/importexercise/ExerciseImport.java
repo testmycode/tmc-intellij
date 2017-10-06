@@ -31,10 +31,7 @@ public class ExerciseImport {
     private static boolean isUnImportedNbProject(String path) {
         logger.info("Check if dir has idea file @ExerciseImport");
         File file = new File(path);
-        if (file.isDirectory() && isChild(file, "nbproject") && !isChild(file, ".idea")) {
-            return true;
-        }
-        return false;
+        return file.isDirectory() && isChild(file, "nbproject") && !isChild(file, ".idea");
     }
 
     private static boolean isChild(File file, String name) {

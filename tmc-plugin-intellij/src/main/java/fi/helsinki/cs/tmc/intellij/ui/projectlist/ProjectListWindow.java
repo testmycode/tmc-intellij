@@ -1,10 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
-import fi.helsinki.cs.tmc.core.TmcCore;
-import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
-import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
@@ -146,12 +143,7 @@ public class ProjectListWindow {
         refreshButton.addActionListener(actionEvent -> {
             ThreadingService threadingService = new ThreadingService();
             threadingService.runWithNotification(
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            refreshProjectList();
-                        }
-                    },
+                    new Thread(() -> refreshProjectList()),
                     new ObjectFinder().findCurrentProject(),
                     window);
         });

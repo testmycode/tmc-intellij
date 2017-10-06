@@ -54,41 +54,38 @@ public class StartupEvent implements StartupActivity {
 
 
         threadingService.runWithNotification(
-                new Thread() {
-                    @Override
-                    public void run() {
-                        setupLoggers(observer);
-                        setupTmcSettings(observer);
+                new Thread(() -> {
+                    setupLoggers(observer);
+                    setupTmcSettings(observer);
 
-                        setupCoreHolder(observer);
-                        setupSpyware(observer, project);
+                    setupCoreHolder(observer);
+                    setupSpyware(observer, project);
 
-                        setupDatabase(observer);
-                        setupHandlersForSpyware(observer);
+                    setupDatabase(observer);
+                    setupHandlersForSpyware(observer);
 
-                        if (TmcSettingsManager.get().getFirstRun()) {
-                            TmcSettingsManager.get().setFirstRun(false);
-                        } else {
-                            sendDiagnostics(observer);
-                        }
-
-                        checkForNewExercises(observer);
-
-                        ApplicationManager.getApplication()
-                                .invokeLater(
-                                        () -> {
-                                            while (project.isDisposed()) {}
-
-                                            if (ToolWindowManager.getInstance(project)
-                                                            .getToolWindow("Project")
-                                                    != null) {
-                                                ToolWindowManager.getInstance(project)
-                                                        .getToolWindow("Project")
-                                                        .activate(null);
-                                            }
-                                        });
+                    if (TmcSettingsManager.get().getFirstRun()) {
+                        TmcSettingsManager.get().setFirstRun(false);
+                    } else {
+                        sendDiagnostics(observer);
                     }
-                },
+
+                    checkForNewExercises(observer);
+
+                    ApplicationManager.getApplication()
+                            .invokeLater(
+                                    () -> {
+                                        while (project.isDisposed()) {}
+
+                                        if (ToolWindowManager.getInstance(project)
+                                                        .getToolWindow("Project")
+                                                != null) {
+                                            ToolWindowManager.getInstance(project)
+                                                    .getToolWindow("Project")
+                                                    .activate(null);
+                                        }
+                                    });
+                }),
                 project,
                 progressWindow);
     }
