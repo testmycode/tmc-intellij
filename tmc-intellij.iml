@@ -10,7 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="IntelliJ IDEA Community Edition IC-171.4073.35" jdkType="IDEA JDK" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.picocontainer:picocontainer:2.15" level="project" />
