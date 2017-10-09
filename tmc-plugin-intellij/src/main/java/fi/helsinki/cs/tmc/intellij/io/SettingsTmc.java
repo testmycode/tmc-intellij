@@ -8,6 +8,7 @@ import com.google.common.base.Optional;
 
 import com.intellij.openapi.application.ApplicationInfo;
 
+import fi.helsinki.cs.tmc.core.domain.Organization;
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner;
 
 import org.slf4j.Logger;
@@ -71,6 +72,9 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     public void setUsername(String username) {
         logger.info("Setting username -> {}. @SettingsTmc", username);
+        if (username.trim().equals("")) {
+            this.username = null;
+        }
         this.username = username;
     }
 
@@ -80,6 +84,9 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     public void setPassword(String password) {
         logger.info("Setting password. @SettingsTmc");
+        if (password.trim().equals("")) {
+            this.password = null;
+        }
         this.password = password;
     }
 
@@ -127,13 +134,14 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public void setPassword(Optional<String> optional) {
-
+        // why are you empty?
+        // pls implement
     }
 
     @Override
-    public String getUsername() {
+    public Optional<String> getUsername() {
         logger.info("Getting username <- {}. @SettingsTmc", username);
-        return username;
+        return Optional.fromNullable(username);
     }
 
     @Override
@@ -178,6 +186,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public SystemDefaultRoutePlanner proxy() {
+        // implement?
         return null;
     }
 
@@ -207,33 +216,34 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     @Override
-    public OauthCredentials getOauthCredentials() {
+    public Optional<OauthCredentials> getOauthCredentials() {
+        // implement
         return null;
     }
 
-    @Override
-    public void setOauthCredentials(OauthCredentials oauthCredentials) {
-
+    public void setOauthCredentials(Optional<OauthCredentials> oauthCredentials) {
+        // implement
     }
 
     @Override
     public void setToken(Optional<String> optional) {
-
+        // implement
     }
 
     @Override
     public Optional<String> getToken() {
+        // implement
         return null;
     }
 
     @Override
-    public String getOrganization() {
+    public Optional<Organization> getOrganization() {
+        // implement
         return null;
     }
 
-    @Override
-    public void setOrganization(String s) {
-
+    public void setOrganization(Organization org) {
+        // implement
     }
 
     public void setSendDiagnostics(boolean value) {

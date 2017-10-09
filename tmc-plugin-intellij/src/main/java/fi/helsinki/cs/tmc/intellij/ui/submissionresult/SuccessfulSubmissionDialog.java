@@ -177,7 +177,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
         font = font.deriveFont(Font.BOLD, font.getSize2D() * 1.2f);
         yayLabel.setFont(font);
 
-        yayLabel.setForeground(new JBColor(new Color(0, 153, 51), new Color()));
+        yayLabel.setForeground(new JBColor(new Color(0, 153, 51), new Color(0, 153, 51)));
         yayLabel.setIcon(TmcIcons.SUCCESS);
         //URL imageUrl = new URL("/fi/helsinki/cs/tmc/intellij/smile.gif");
         //ImageIcon icon = new ImageIcon(getClass().getResource("/smiley.gif"));

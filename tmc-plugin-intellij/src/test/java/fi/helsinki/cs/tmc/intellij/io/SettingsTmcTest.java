@@ -27,7 +27,7 @@ public class SettingsTmcTest {
     @Test
     public void setUsernameWorksCorrectly() throws Exception {
         settingstmc.setUsername("koira");
-        String user = settingstmc.getUsername();
+        String user = settingstmc.getUsername().get();
         assertEquals("koira", user);
     }
 
@@ -51,7 +51,7 @@ public class SettingsTmcTest {
         String user = settingstmc.getProjectBasePath();
         assertEquals("koira" + File.separator + "TMCProjects", user);
         settingstmc.setUsername("koira" + File.separator + "TMCProjects");
-        user = settingstmc.getUsername();
+        user = settingstmc.getUsername().get();
         assertEquals("koira" + File.separator + "TMCProjects", user);
     }
 

@@ -108,7 +108,9 @@ public class SettingsPanel {
         logger.info("Building SettingsPanel");
         SettingsTmc settingsTmc = TmcSettingsManager.get();
 
-        usernameField.setText(settingsTmc.getUsername());
+        if (settingsTmc.getUsername().isPresent()) {
+            usernameField.setText(settingsTmc.getUsername().get());
+        }
         serverAddressField.setText(settingsTmc.getServerAddress());
         if (settingsTmc.getPassword().isPresent()) {
             passwordField.setText(settingsTmc.getPassword().get());
