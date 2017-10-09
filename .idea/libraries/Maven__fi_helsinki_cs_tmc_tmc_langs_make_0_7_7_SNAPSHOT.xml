@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: fi.helsinki.cs.tmc:tmc-langs-make:0.7.7-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-make/0.7.7-SNAPSHOT/tmc-langs-make-0.7.7-20170926.080238-7.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-make/0.7.7-SNAPSHOT/tmc-langs-make-0.7.7-20171006.193638-10.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-make/0.7.7-SNAPSHOT/tmc-langs-make-0.7.7-20170926.080238-7-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-make/0.7.7-SNAPSHOT/tmc-langs-make-0.7.7-20171006.193638-10-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-make/0.7.7-SNAPSHOT/tmc-langs-make-0.7.7-20170926.080238-7-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-make/0.7.7-SNAPSHOT/tmc-langs-make-0.7.7-20171006.193638-10-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

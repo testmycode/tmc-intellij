@@ -33,7 +33,13 @@ class PresentableErrorMessage {
         String shownMessage;
         NotificationType type = NotificationType.WARNING;
 
-        if (causeMessage.contains("Download failed") || causeMessage.contains("404") || causeMessage.contains("500")) {
+        if (causeMessage == null) {
+            // TODO: show better error message
+            shownMessage = "NOOOOOO";
+            System.out.println(cause);
+        } else if (causeMessage.contains("Download failed")
+                || causeMessage.contains("404")
+                || causeMessage.contains("500")) {
             shownMessage = notifyAboutCourseServerAddressAndInternet();
         } else if (!TmcSettingsManager.get().userDataExists()) {
             shownMessage = notifyAboutUsernamePasswordAndServerAddress(causeMessage);
@@ -66,7 +72,8 @@ class PresentableErrorMessage {
     }
 
     private static String notifyAboutEmptyServerAddress(String causeMessage) {
-        return causeMessage + ".\nYou need to set up TMC server address "
+        return causeMessage
+                + ".\nYou need to set up TMC server address "
                 + "to be able to download and submit exercises.";
     }
 

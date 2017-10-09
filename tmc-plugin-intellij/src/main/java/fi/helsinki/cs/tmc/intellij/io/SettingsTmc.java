@@ -30,8 +30,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private String serverAddress;
     private Course course;
     private String projectBasePath;
+    private Organization organization;
     private boolean checkForExercises;
     private boolean spyware;
+
     private boolean sendDiagnostics;
     private boolean firstRun;
 
@@ -239,11 +241,13 @@ public class SettingsTmc implements TmcSettings, Serializable {
     @Override
     public Optional<Organization> getOrganization() {
         // implement
-        return null;
+        return Optional.fromNullable(this.organization);
     }
 
-    public void setOrganization(Organization org) {
-        // implement
+    @Override
+    public void setOrganization(Optional<Organization> org) {
+        //implement
+        this.organization = org.get();
     }
 
     public void setSendDiagnostics(boolean value) {

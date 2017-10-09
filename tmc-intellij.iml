@@ -66,7 +66,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: org.apache.maven.shared:maven-invoker:2.2" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-make:0.7.7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-python3:0.7.7-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-notests:0.7.7-SNAPSHOT" level="project" />
