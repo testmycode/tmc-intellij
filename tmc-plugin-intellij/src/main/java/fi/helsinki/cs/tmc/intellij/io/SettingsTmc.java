@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.io;
 
+import com.intellij.util.xmlb.annotations.Property;
 import fi.helsinki.cs.tmc.core.configuration.TmcSettings;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.OauthCredentials;
@@ -135,9 +136,14 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     @Override
-    public void setPassword(Optional<String> optional) {
-        // why are you empty?
-        // pls implement
+    public void setPassword(Optional<String> password) {
+        // TODO: implement
+
+        logger.info("Setting password. @SettingsTmc");
+        if (password.get().trim().equals("") || !password.isPresent()) {
+            this.password = null;
+        }
+        this.password = password.get();
     }
 
     @Override
@@ -219,35 +225,44 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Optional<OauthCredentials> getOauthCredentials() {
-        // implement
-        return null;
+        // TODO: implement
+        return Optional.fromNullable(
+                new OauthCredentials(
+                        "oauth_application_id",
+                        "oauth_secret")); // what are application id and secret??
+        //        return null;
     }
 
     public void setOauthCredentials(Optional<OauthCredentials> oauthCredentials) {
-        // implement
+        // TODO: implement
     }
 
     @Override
     public void setToken(Optional<String> optional) {
-        // implement
+        // TODO: implement
     }
 
     @Override
     public Optional<String> getToken() {
-        // implement
+        // TODO: implement
         return null;
     }
 
     @Override
     public Optional<Organization> getOrganization() {
-        // implement
-        return Optional.fromNullable(this.organization);
+        // TODO: implement
+        //        return Optional.fromNullable(this.organization);
+        Organization org = new Organization("Default", "lolled", "default", "lolled", false);
+        System.out.println("getting organization, organization is: " + org.getName());
+        return Optional.fromNullable(org);
     }
 
     @Override
     public void setOrganization(Optional<Organization> org) {
-        //implement
-        this.organization = org.get();
+        // TODO: implement
+        if (org.isPresent()) {
+            this.organization = org.get();
+        }
     }
 
     public void setSendDiagnostics(boolean value) {

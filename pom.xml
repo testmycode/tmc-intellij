@@ -126,6 +126,9 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <compilerArgument>-Xlint:unchecked</compilerArgument>
+                    <compilerArguments>
+                        <extdirs>${project.build.directory}/dependency/intellij-idea/lib/</extdirs>
+                    </compilerArguments>
                 </configuration>
             </plugin>
             <plugin>
