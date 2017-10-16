@@ -29,6 +29,7 @@ public class PersistentTmcSettings implements PersistentStateComponent<Persisten
 
 
     private static final Logger logger = LoggerFactory.getLogger(PersistentTmcSettings.class);
+    private SettingsTmc settingsTmc;
 
     @Nullable
     @Override
@@ -48,9 +49,6 @@ public class PersistentTmcSettings implements PersistentStateComponent<Persisten
         logger.info("Processing getInstance. @PersistentTmcSettings");
         return ServiceManager.getService(PersistentTmcSettings.class);
     }
-
-
-    private SettingsTmc settingsTmc;
 
     public SettingsTmc getSettingsTmc() {
         logger.info("Getting SettingsTmc. @PersistentTmcSettings.");

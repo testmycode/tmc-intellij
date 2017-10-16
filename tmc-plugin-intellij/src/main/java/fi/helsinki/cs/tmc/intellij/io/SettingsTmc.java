@@ -1,6 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.io;
 
-import com.intellij.util.xmlb.annotations.Property;
+import com.intellij.util.xmlb.annotations.Transient;
 import fi.helsinki.cs.tmc.core.configuration.TmcSettings;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.OauthCredentials;
@@ -32,6 +32,8 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private Course course;
     private String projectBasePath;
     private Organization organization;
+    private String token;
+    private OauthCredentials oauthCredentials;
     private boolean checkForExercises;
     private boolean spyware;
 
@@ -39,6 +41,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private boolean firstRun;
 
     public SettingsTmc(String serverAddress, String username, String password) {
+        // TODO: do we have an initial value for organization, token, etc.?
         this.spyware = true;
         this.sendDiagnostics = true;
         this.checkForExercises = false;
@@ -129,6 +132,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
         return serverAddress;
     }
 
+    @Transient
     @Override
     public Optional<String> getPassword() {
         logger.info("Getting user password. @SettingsTmc");
@@ -146,6 +150,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.password = password.get();
     }
 
+    @Transient
     @Override
     public Optional<String> getUsername() {
         logger.info("Getting username <- {}. @SettingsTmc", username);
@@ -161,9 +166,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
                 && !this.password.isEmpty();
     }
 
+    @Transient
     @Override
     public Optional<Course> getCurrentCourse() {
-        return Optional.of(course);
+        return Optional.fromNullable(course);
     }
 
     @Override
@@ -223,6 +229,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
         return this.sendDiagnostics;
     }
 
+    @Transient
     @Override
     public Optional<OauthCredentials> getOauthCredentials() {
         // TODO: implement
@@ -235,19 +242,23 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     public void setOauthCredentials(Optional<OauthCredentials> oauthCredentials) {
         // TODO: implement
+        this.oauthCredentials = oauthCredentials.orNull();
     }
 
     @Override
-    public void setToken(Optional<String> optional) {
+    public void setToken(Optional<String> token) {
         // TODO: implement
+        this.token = token.orNull();
     }
 
+    @Transient
     @Override
     public Optional<String> getToken() {
         // TODO: implement
-        return null;
+        return Optional.fromNullable(token);
     }
 
+    @Transient
     @Override
     public Optional<Organization> getOrganization() {
         // TODO: implement
@@ -262,7 +273,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
         // TODO: implement
         if (org.isPresent()) {
             this.organization = org.get();
+        } else {
+            this.organization = null;
         }
+
     }
 
     public void setSendDiagnostics(boolean value) {

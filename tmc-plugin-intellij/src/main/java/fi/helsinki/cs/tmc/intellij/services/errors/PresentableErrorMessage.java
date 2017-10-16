@@ -26,9 +26,10 @@ class PresentableErrorMessage {
      * Generates a human readable error message for a {@link TmcCoreException} and decides the
      * error's severity.
      */
+    
     static PresentableErrorMessage forTmcException(TmcCoreException exception) {
         Throwable cause = exception.getCause();
-        String causeMessage = cause.getMessage();
+        String causeMessage = exception.getMessage();
 
         String shownMessage;
         NotificationType type = NotificationType.WARNING;
@@ -36,7 +37,7 @@ class PresentableErrorMessage {
         if (causeMessage == null) {
             // TODO: show better error message
             shownMessage = "NOOOOOO";
-            System.out.println(cause);
+            System.out.println("NOOOOO");
         } else if (causeMessage.contains("Download failed")
                 || causeMessage.contains("404")
                 || causeMessage.contains("500")) {
@@ -52,9 +53,10 @@ class PresentableErrorMessage {
         } else if (TmcSettingsManager.get().getServerAddress().isEmpty()) {
             shownMessage = notifyAboutEmptyServerAddress(causeMessage);
         } else {
-            shownMessage = exception.getCause().getMessage();
+            shownMessage = exception.getMessage();
             type = NotificationType.ERROR;
         }
+        System.out.println("error: " + shownMessage);
 
         return new PresentableErrorMessage(shownMessage, type);
     }
