@@ -1,11 +1,12 @@
 package fi.helsinki.cs.tmc.intellij.io;
 
-import com.intellij.util.xmlb.annotations.Transient;
 import fi.helsinki.cs.tmc.core.configuration.TmcSettings;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.OauthCredentials;
 
 import com.google.common.base.Optional;
+
+import com.intellij.util.xmlb.annotations.Property;
 
 import com.intellij.openapi.application.ApplicationInfo;
 
@@ -26,17 +27,16 @@ import javax.swing.JFileChooser;
 public class SettingsTmc implements TmcSettings, Serializable {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsTmc.class);
-    private String username;
-    private String password;
+    @Property private String username;
+    @Property private String password;
+    @Property private Course course;
+    @Property private Organization organization;
+    @Property private String token;
+    @Property private OauthCredentials oauthCredentials;
     private String serverAddress;
-    private Course course;
     private String projectBasePath;
-    private Organization organization;
-    private String token;
-    private OauthCredentials oauthCredentials;
     private boolean checkForExercises;
     private boolean spyware;
-
     private boolean sendDiagnostics;
     private boolean firstRun;
 
@@ -48,6 +48,9 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.serverAddress = serverAddress;
         this.username = username;
         this.password = password;
+        this.organization = new Organization("Default", "lolled", "default", "lolled", false);
+        this.oauthCredentials = new OauthCredentials("oauth_application_id", "oauth_secret");
+        this.token = "kissa";
         this.firstRun = true;
     }
 
@@ -132,7 +135,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
         return serverAddress;
     }
 
-    @Transient
     @Override
     public Optional<String> getPassword() {
         logger.info("Getting user password. @SettingsTmc");
@@ -141,8 +143,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public void setPassword(Optional<String> password) {
-        // TODO: implement
-
         logger.info("Setting password. @SettingsTmc");
         if (password.get().trim().equals("") || !password.isPresent()) {
             this.password = null;
@@ -150,7 +150,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.password = password.get();
     }
 
-    @Transient
     @Override
     public Optional<String> getUsername() {
         logger.info("Getting username <- {}. @SettingsTmc", username);
@@ -166,7 +165,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
                 && !this.password.isEmpty();
     }
 
-    @Transient
     @Override
     public Optional<Course> getCurrentCourse() {
         return Optional.fromNullable(course);
@@ -229,15 +227,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
         return this.sendDiagnostics;
     }
 
-    @Transient
     @Override
     public Optional<OauthCredentials> getOauthCredentials() {
         // TODO: implement
-        return Optional.fromNullable(
-                new OauthCredentials(
-                        "oauth_application_id",
-                        "oauth_secret")); // what are application id and secret??
-        //        return null;
+        return Optional.fromNullable(this.oauthCredentials);
     }
 
     public void setOauthCredentials(Optional<OauthCredentials> oauthCredentials) {
@@ -251,32 +244,24 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.token = token.orNull();
     }
 
-    @Transient
     @Override
     public Optional<String> getToken() {
         // TODO: implement
         return Optional.fromNullable(token);
     }
 
-    @Transient
     @Override
     public Optional<Organization> getOrganization() {
-        // TODO: implement
-        //        return Optional.fromNullable(this.organization);
-        Organization org = new Organization("Default", "lolled", "default", "lolled", false);
-        System.out.println("getting organization, organization is: " + org.getName());
-        return Optional.fromNullable(org);
+        return Optional.fromNullable(this.organization);
     }
 
     @Override
     public void setOrganization(Optional<Organization> org) {
-        // TODO: implement
         if (org.isPresent()) {
             this.organization = org.get();
         } else {
             this.organization = null;
         }
-
     }
 
     public void setSendDiagnostics(boolean value) {
