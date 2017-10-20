@@ -144,10 +144,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
     @Override
     public void setPassword(Optional<String> password) {
         logger.info("Setting password. @SettingsTmc");
-        if (password.get().trim().equals("") || !password.isPresent()) {
+        if (password.isPresent() && password.get().trim().equals("")) {
             this.password = null;
         }
-        this.password = password.get();
+        this.password = password.orNull();
     }
 
     @Override

@@ -26,19 +26,19 @@ class PresentableErrorMessage {
      * Generates a human readable error message for a {@link TmcCoreException} and decides the
      * error's severity.
      */
-    
     static PresentableErrorMessage forTmcException(TmcCoreException exception) {
-        Throwable cause = exception.getCause();
-        String causeMessage = exception.getMessage();
+        String causeMessage;
+
+        if (exception.getCause() != null) {
+            causeMessage = exception.getCause().getMessage();
+        } else {
+            causeMessage = exception.getMessage();
+        }
 
         String shownMessage;
         NotificationType type = NotificationType.WARNING;
 
-        if (causeMessage == null) {
-            // TODO: show better error message
-            shownMessage = "NOOOOOO";
-            System.out.println("NOOOOO");
-        } else if (causeMessage.contains("Download failed")
+        if (causeMessage.contains("Download failed")
                 || causeMessage.contains("404")
                 || causeMessage.contains("500")) {
             shownMessage = notifyAboutCourseServerAddressAndInternet();
@@ -47,13 +47,15 @@ class PresentableErrorMessage {
         } else if (causeMessage.contains("401")) {
             shownMessage = notifyAboutIncorrectUsernameOrPassword(causeMessage);
             type = NotificationType.ERROR;
+        } else if (causeMessage.contains("Organization not selected")) {
+            shownMessage = causeMessage;
         } else if (exception.getMessage().contains("Failed to fetch courses from the server")
                 || exception.getMessage().contains("Failed to compress project")) {
             shownMessage = notifyAboutFailedSubmissionAttempt();
         } else if (TmcSettingsManager.get().getServerAddress().isEmpty()) {
             shownMessage = notifyAboutEmptyServerAddress(causeMessage);
         } else {
-            shownMessage = exception.getMessage();
+            shownMessage = causeMessage;
             type = NotificationType.ERROR;
         }
         System.out.println("error: " + shownMessage);
