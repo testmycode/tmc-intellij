@@ -1,10 +1,12 @@
 package fi.helsinki.cs.tmc.intellij.ui.settings;
 
+import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction;
+import fi.helsinki.cs.tmc.intellij.actions.buttonactions.LoginAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
@@ -192,6 +194,9 @@ public class SettingsPanel {
         settingsTmc.setUsername(usernameField.getText());
         settingsTmc.setPassword(passwordField.getText());
         settingsTmc.setServerAddress(serverAddressField.getText());
+
+        settingsTmc.setOrganization(Optional.of(new Organization("default", "default", "default", "default", false)));
+
         if (listOfAvailableCourses.getSelectedItem() != null) {
             Course course = (Course) listOfAvailableCourses.getSelectedItem();
             settingsTmc.setCourse(new ObjectFinder()
@@ -220,6 +225,11 @@ public class SettingsPanel {
             new ButtonInputListener().receiveSettings();
             logger.info("Ok button pressed. @SettingsPanel");
             saveInformation();
+
+            // handle login here for nowgit
+            LoginAction loginAction = new LoginAction();
+            loginAction.authenticate();
+
             frame.dispose();
             frame.setVisible(false);
         };
