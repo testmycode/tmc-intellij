@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
@@ -22,6 +23,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.startup.StartupActivity;
 import com.intellij.openapi.wm.ToolWindowManager;
 
+import fi.helsinki.cs.tmc.intellij.ui.login.LoginDialog;
 import org.jetbrains.annotations.NotNull;
 
 import org.slf4j.Logger;
@@ -49,43 +51,48 @@ public class StartupEvent implements StartupActivity {
                         "Running TMC startup actions.", project, false, false, false);
 
         CoreProgressObserver observer = new CoreProgressObserver(progressWindow);
-        new ErrorMessageService().showInfoBalloon("The Test My Code Plugin for Intellij is in BETA and"
-                + " may not work properly. Use at your own risk. ");
-
+        new ErrorMessageService()
+                .showInfoBalloon(
+                        "The Test My Code Plugin for Intellij is in BETA and"
+                                + " may not work properly. Use at your own risk. ");
 
         threadingService.runWithNotification(
-                new Thread(() -> {
-                    setupLoggers(observer);
-                    setupTmcSettings(observer);
+                new Thread(
+                        () -> {
+                            setupLoggers(observer);
+                            setupTmcSettings(observer);
 
-                    setupCoreHolder(observer);
-                    setupSpyware(observer, project);
+                            setupCoreHolder(observer);
+                            setupSpyware(observer, project);
 
-                    setupDatabase(observer);
-                    setupHandlersForSpyware(observer);
+                            setupDatabase(observer);
+                            setupHandlersForSpyware(observer);
 
-                    if (TmcSettingsManager.get().getFirstRun()) {
-                        TmcSettingsManager.get().setFirstRun(false);
-                    } else {
-                        sendDiagnostics(observer);
-                    }
+                            if (TmcSettingsManager.get().getFirstRun()) {
+                                TmcSettingsManager.get().setFirstRun(false);
+                            } else {
+                                sendDiagnostics(observer);
+                            }
 
-                    checkForNewExercises(observer);
+                            checkForNewExercises(observer);
 
-                    ApplicationManager.getApplication()
-                            .invokeLater(
-                                    () -> {
-                                        while (project.isDisposed()) {}
+                            // TODO: implement a login manager that handles showing login window
+                            showLoginWindow();
 
-                                        if (ToolWindowManager.getInstance(project)
-                                                        .getToolWindow("Project")
-                                                != null) {
-                                            ToolWindowManager.getInstance(project)
-                                                    .getToolWindow("Project")
-                                                    .activate(null);
-                                        }
-                                    });
-                }),
+                            ApplicationManager.getApplication()
+                                    .invokeLater(
+                                            () -> {
+                                                while (project.isDisposed()) {}
+
+                                                if (ToolWindowManager.getInstance(project)
+                                                                .getToolWindow("Project")
+                                                        != null) {
+                                                    ToolWindowManager.getInstance(project)
+                                                            .getToolWindow("Project")
+                                                            .activate(null);
+                                                }
+                                            });
+                        }),
                 project,
                 progressWindow);
     }
@@ -137,6 +144,15 @@ public class StartupEvent implements StartupActivity {
                 TmcCoreHolder.get().sendDiagnostics(observer).call();
             } catch (Exception e) {
             }
+        }
+    }
+
+    private void showLoginWindow() {
+        SettingsTmc settingsTmc = TmcSettingsManager.get();
+        if (!settingsTmc.getUsername().isPresent()
+                || !settingsTmc.getPassword().isPresent()
+                || settingsTmc.getServerAddress().isEmpty()) {
+            LoginDialog.display();
         }
     }
 }
