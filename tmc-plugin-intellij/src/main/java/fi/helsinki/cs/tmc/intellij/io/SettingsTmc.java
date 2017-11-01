@@ -229,24 +229,20 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Optional<OauthCredentials> getOauthCredentials() {
-        // TODO: implement
         return Optional.fromNullable(this.oauthCredentials);
     }
 
     public void setOauthCredentials(Optional<OauthCredentials> oauthCredentials) {
-        // TODO: implement
         this.oauthCredentials = oauthCredentials.orNull();
     }
 
     @Override
     public void setToken(Optional<String> token) {
-        // TODO: implement
         this.token = token.orNull();
     }
 
     @Override
     public Optional<String> getToken() {
-        // TODO: implement
         return Optional.fromNullable(token);
     }
 

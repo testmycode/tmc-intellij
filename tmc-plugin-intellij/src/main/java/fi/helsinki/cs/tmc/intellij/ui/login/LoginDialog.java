@@ -16,7 +16,8 @@ public class LoginDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JTextField serverAddressField;
+    private JLabel serverAddress;
+    private JButton changeServerAddressButton;
     private SettingsTmc settingsTmc;
 
     public LoginDialog() {
@@ -26,7 +27,7 @@ public class LoginDialog extends JDialog {
 
         settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
                 .getSettingsTmc();
-        serverAddressField.setText(settingsTmc.getServerAddress());
+        serverAddress.setText(settingsTmc.getServerAddress());
 
         this.setTitle("LOGIN PLS");
         this.pack();
@@ -42,6 +43,8 @@ public class LoginDialog extends JDialog {
                 onCancel();
             }
         });
+
+        changeServerAddressButton.addActionListener(createActionListenerChangeServerAddress());
 
         // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -71,7 +74,7 @@ public class LoginDialog extends JDialog {
 
         settingsTmc.setUsername(usernameField.getText());
         settingsTmc.setPassword(passwordField.getText());
-        settingsTmc.setServerAddress(serverAddressField.getText());
+        settingsTmc.setServerAddress(serverAddress.getText());
 
         saveSettings.setSettingsTmc(settingsTmc);
 
@@ -85,6 +88,17 @@ public class LoginDialog extends JDialog {
     private void onCancel() {
         // add your code here if necessary
         dispose();
+    }
+
+    private ActionListener createActionListenerChangeServerAddress() {
+        return actionEvent -> {
+            String newAddress = JOptionPane.showInputDialog(this, "Server address plz", this.serverAddress.getText());
+
+            if (newAddress != null && !newAddress.trim().isEmpty()) {
+                this.serverAddress.setText(newAddress.trim());
+                settingsTmc.setServerAddress(newAddress);
+            }
+        };
     }
 
     public static void main(String[] args) {

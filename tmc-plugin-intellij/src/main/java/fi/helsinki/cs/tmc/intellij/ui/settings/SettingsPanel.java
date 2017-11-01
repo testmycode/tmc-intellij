@@ -29,16 +29,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 /**
  * Swing component displayed in settings window.
@@ -47,9 +38,6 @@ public class SettingsPanel {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsPanel.class);
     private JPanel panel1;
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JTextField serverAddressField;
     private JComboBox<Course> listOfAvailableCourses;
     private JButton refreshButton;
     private JFormattedTextField projectPathField;
@@ -63,18 +51,9 @@ public class SettingsPanel {
     private JButton cancelButton;
     private JButton downloadCourseExercisesButton;
     private JButton logoutButton;
-
-    public JTextField getUsernameField() {
-        return usernameField;
-    }
-
-    public JPasswordField getPasswordField() {
-        return passwordField;
-    }
-
-    public JTextField getServerAddressField() {
-        return serverAddressField;
-    }
+    private JLabel loggedUser;
+    private JLabel currentOrganization;
+    private JButton changeButton;
 
     public JComboBox<Course> getListOfAvailableCourses() {
         return listOfAvailableCourses;
@@ -113,12 +92,10 @@ public class SettingsPanel {
         logger.info("Building SettingsPanel");
         SettingsTmc settingsTmc = TmcSettingsManager.get();
 
-        if (settingsTmc.getUsername().isPresent()) {
-            usernameField.setText(settingsTmc.getUsername().get());
-        }
-        serverAddressField.setText(settingsTmc.getServerAddress());
-        if (settingsTmc.getPassword().isPresent()) {
-            passwordField.setText(settingsTmc.getPassword().get());
+        loggedUser.setText("Logged in as " + settingsTmc.getUsername().get());
+
+        if(settingsTmc.getOrganization().isPresent()) {
+            currentOrganization.setText(settingsTmc.getOrganization().get().getName());
         }
 
         ActionListener browseListener = createActionListener();
@@ -158,6 +135,7 @@ public class SettingsPanel {
 
         ActionListener downloadListener = createActionListenerDownload(frame);
         downloadCourseExercisesButton.addActionListener(downloadListener);
+
         ActionListener logoutListener = createActionListenerLogout(frame);
         logoutButton.addActionListener(logoutListener);
     }
@@ -209,9 +187,6 @@ public class SettingsPanel {
                 ServiceManager.getService(PersistentTmcSettings.class);
         SettingsTmc settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
                 .getSettingsTmc();
-        settingsTmc.setUsername(usernameField.getText());
-        settingsTmc.setPassword(passwordField.getText());
-        settingsTmc.setServerAddress(serverAddressField.getText());
 
         settingsTmc.setOrganization(Optional.of(new Organization("default", "default", "default", "default", false)));
 
