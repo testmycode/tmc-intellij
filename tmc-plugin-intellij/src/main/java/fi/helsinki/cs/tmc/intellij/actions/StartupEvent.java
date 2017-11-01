@@ -149,10 +149,9 @@ public class StartupEvent implements StartupActivity {
 
     private void showLoginWindow() {
         SettingsTmc settingsTmc = TmcSettingsManager.get();
-        if (!settingsTmc.getUsername().isPresent()
-                || !settingsTmc.getPassword().isPresent()
-                || settingsTmc.getServerAddress().isEmpty()) {
+//        if (!settingsTmc.getToken().isPresent()
+//                || settingsTmc.getServerAddress().isEmpty()) {
             LoginDialog.display();
-        }
+//        }
     }
 }

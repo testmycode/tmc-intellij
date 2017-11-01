@@ -6,12 +6,12 @@ import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction;
-import fi.helsinki.cs.tmc.intellij.actions.buttonactions.LoginAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
@@ -61,6 +61,7 @@ public class SettingsPanel {
     private JButton okButton;
     private JButton cancelButton;
     private JButton downloadCourseExercisesButton;
+    private JButton logoutButton;
 
     public JTextField getUsernameField() {
         return usernameField;
@@ -156,6 +157,8 @@ public class SettingsPanel {
 
         ActionListener downloadListener = createActionListenerDownload(frame);
         downloadCourseExercisesButton.addActionListener(downloadListener);
+        ActionListener logoutListener = createActionListenerLogout(frame);
+        logoutButton.addActionListener(logoutListener);
     }
 
     public void doClicks() {
@@ -168,6 +171,18 @@ public class SettingsPanel {
         if (TmcSettingsManager.get().getSendDiagnostics() != sendDiagnosticsCheckBox.isSelected()) {
             sendDiagnosticsCheckBox.doClick();
         }
+    }
+
+    private ActionListener createActionListenerLogout(final JFrame frame) {
+        return actionEvent -> {
+            logger.info("Logout button pressed. @SettingsPanel");
+
+            LoginManager loginManager = new LoginManager();
+            loginManager.logout();
+
+            frame.dispose();
+            frame.setVisible(false);
+        };
     }
 
     private ActionListener createActionListenerDownload(final JFrame frame) {
@@ -225,10 +240,6 @@ public class SettingsPanel {
             new ButtonInputListener().receiveSettings();
             logger.info("Ok button pressed. @SettingsPanel");
             saveInformation();
-
-            // handle login here for nowgit
-            LoginAction loginAction = new LoginAction();
-            loginAction.authenticate();
 
             frame.dispose();
             frame.setVisible(false);

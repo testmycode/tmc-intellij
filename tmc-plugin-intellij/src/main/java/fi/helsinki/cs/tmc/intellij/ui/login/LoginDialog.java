@@ -1,7 +1,14 @@
 package fi.helsinki.cs.tmc.intellij.ui.login;
 
+import com.intellij.openapi.components.ServiceManager;
+import fi.helsinki.cs.tmc.core.exceptions.AuthenticationFailedException;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
+import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 public class LoginDialog extends JDialog {
     private JPanel contentPane;
@@ -10,14 +17,18 @@ public class LoginDialog extends JDialog {
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JTextField serverAddressField;
+    private SettingsTmc settingsTmc;
 
     public LoginDialog() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-//        this.getContentPane().setSize(1000, 1000);
-//        this.setSize(1000, 1000);
+        settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
+                .getSettingsTmc();
+        serverAddressField.setText(settingsTmc.getServerAddress());
+
+        this.setTitle("LOGIN PLS");
         this.pack();
 
         buttonOK.addActionListener(new ActionListener() {
@@ -55,7 +66,18 @@ public class LoginDialog extends JDialog {
     }
 
     private void onOK() {
-        // add your code here
+        final PersistentTmcSettings saveSettings =
+                ServiceManager.getService(PersistentTmcSettings.class);
+
+        settingsTmc.setUsername(usernameField.getText());
+        settingsTmc.setPassword(passwordField.getText());
+        settingsTmc.setServerAddress(serverAddressField.getText());
+
+        saveSettings.setSettingsTmc(settingsTmc);
+
+        LoginManager loginManager = new LoginManager();
+        loginManager.login();
+
         dispose();
     }
 
