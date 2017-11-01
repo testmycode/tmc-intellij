@@ -76,9 +76,10 @@ public class LoginDialog extends JDialog {
         saveSettings.setSettingsTmc(settingsTmc);
 
         LoginManager loginManager = new LoginManager();
-        loginManager.login();
 
-        dispose();
+        if (loginManager.login()) {
+            dispose();
+        }
     }
 
     private void onCancel() {

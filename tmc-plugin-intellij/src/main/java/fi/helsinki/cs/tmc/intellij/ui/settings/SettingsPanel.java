@@ -18,6 +18,7 @@ import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 
+import fi.helsinki.cs.tmc.intellij.ui.login.LoginDialog;
 import org.jetbrains.annotations.NotNull;
 
 import org.slf4j.Logger;
@@ -182,6 +183,8 @@ public class SettingsPanel {
 
             frame.dispose();
             frame.setVisible(false);
+
+            LoginDialog.display();
         };
     }
 
