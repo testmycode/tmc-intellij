@@ -130,19 +130,21 @@ public class OrganizationListWindow extends JPanel {
             frame.setVisible(false);
             frame.dispose();
             try {
+
+
                 // TODO: save selected organization to tmc settings
-                //                SettingsPanel panel;
-                //                if (PreferencesUIFactory.getInstance().getCurrentUI() == null) {
-                //                    panel =
-                //                            (PreferencesPanel)
-                //
-                // PreferencesUIFactory.getInstance().createCurrentPreferencesUI();
-                //                } else {
-                //                    panel = (PreferencesPanel)
-                // PreferencesUIFactory.getInstance().getCurrentUI();
-                //                }
-                //                panel.setOrganization(organization);
-                //                CourseListWindow.display(panel);
+//                                SettingsPanel panel;
+//                                if (PreferencesUIFactory.getInstance().getCurrentUI() == null) {
+//                                    panel =
+//                                            (PreferencesPanel)
+//
+//                 PreferencesUIFactory.getInstance().createCurrentPreferencesUI();
+//                                } else {
+//                                    panel = (PreferencesPanel)
+//                 PreferencesUIFactory.getInstance().getCurrentUI();
+//                                }
+//                                panel.setOrganization(organization.getOrganization());
+//                                CourseListWindow.display(panel);
             } catch (Exception ex) {
                 //                Exceptions.printStackTrace(ex);
             }

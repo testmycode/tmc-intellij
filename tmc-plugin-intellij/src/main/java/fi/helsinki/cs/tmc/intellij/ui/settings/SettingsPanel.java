@@ -19,6 +19,7 @@ import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 
 import fi.helsinki.cs.tmc.intellij.ui.login.LoginDialog;
+import fi.helsinki.cs.tmc.intellij.ui.organizationselection.OrganizationListWindow;
 import org.jetbrains.annotations.NotNull;
 
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public class SettingsPanel {
     private JButton logoutButton;
     private JLabel loggedUser;
     private JLabel currentOrganization;
-    private JButton changeButton;
+    private JButton changeOrganizationButton;
 
     public JComboBox<Course> getListOfAvailableCourses() {
         return listOfAvailableCourses;
@@ -94,7 +95,7 @@ public class SettingsPanel {
 
         loggedUser.setText("Logged in as " + settingsTmc.getUsername().get());
 
-        if(settingsTmc.getOrganization().isPresent()) {
+        if (settingsTmc.getOrganization().isPresent()) {
             currentOrganization.setText(settingsTmc.getOrganization().get().getName());
         }
 
@@ -103,6 +104,8 @@ public class SettingsPanel {
 
         ActionListener refreshListener = createActionListenerRefresh();
         refreshButton.addActionListener(refreshListener);
+
+        changeOrganizationButton.addActionListener(createActionListenerChangeOrganization());
 
         doClicks();
 
@@ -210,6 +213,16 @@ public class SettingsPanel {
             } catch (Exception e) {
             }
         }
+    }
+
+    private ActionListener createActionListenerChangeOrganization() {
+        return actionEvent -> {
+            try {
+                OrganizationListWindow.display();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
     }
 
     private ActionListener createActionListenerOk(final JFrame frame) {
