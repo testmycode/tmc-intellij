@@ -75,7 +75,6 @@ public class OrganizationCard extends JPanel {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    // // TODO: ?? is the above comment needed
     private void initComponents() {
 
         logo = new JLabel();

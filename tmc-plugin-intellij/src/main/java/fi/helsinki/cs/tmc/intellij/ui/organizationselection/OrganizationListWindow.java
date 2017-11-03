@@ -7,6 +7,8 @@ import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
+import groovy.json.internal.Exceptions;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -69,6 +71,7 @@ public class OrganizationListWindow extends JPanel {
         frame.setContentPane(organizationListWindow);
         frame.pack();
         frame.setLocationRelativeTo(null);
+        frame.setAlwaysOnTop(true);
         frame.setVisible(true);
         button.setMinimumSize(new Dimension(organizationListWindow.getWidth(), button.getHeight()));
         button.setMaximumSize(new Dimension(organizationListWindow.getWidth(), button.getHeight()));
@@ -144,9 +147,9 @@ public class OrganizationListWindow extends JPanel {
 //                 PreferencesUIFactory.getInstance().getCurrentUI();
 //                                }
 //                                panel.setOrganization(organization.getOrganization());
-//                                CourseListWindow.display(panel);
+                                CourseListWindow.display();
             } catch (Exception ex) {
-                //                Exceptions.printStackTrace(ex);
+                                ex.printStackTrace();
             }
         }
     }

@@ -76,7 +76,6 @@ public class StartupEvent implements StartupActivity {
 
                             checkForNewExercises(observer);
 
-                            // TODO: implement a login manager that handles showing login window
                             showLoginWindow();
 
                             ApplicationManager.getApplication()
@@ -149,8 +148,7 @@ public class StartupEvent implements StartupActivity {
 
     private void showLoginWindow() {
         SettingsTmc settingsTmc = TmcSettingsManager.get();
-        if (!settingsTmc.getToken().isPresent()
-                || settingsTmc.getServerAddress().isEmpty()) {
+        if (!settingsTmc.getToken().isPresent() || settingsTmc.getServerAddress().isEmpty()) {
             LoginDialog.display();
         }
     }

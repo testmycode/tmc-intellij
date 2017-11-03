@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
 import fi.helsinki.cs.tmc.intellij.ui.login.LoginDialog;
 import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsWindow;
 
