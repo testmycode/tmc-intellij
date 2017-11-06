@@ -22,6 +22,11 @@ public class CourseCard extends javax.swing.JPanel {
 
         this.titleLabel.setText(course.getTitle());
         String information = course.getDescription();
+
+        if (information == null) {
+            information = " ";
+        }
+
         if (information.length() > 100) {
             information = information.substring(0, 99) + "...";
         }

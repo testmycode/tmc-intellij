@@ -1,12 +1,15 @@
 package fi.helsinki.cs.tmc.intellij.ui.courseselection;
 
 import com.google.common.base.Optional;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -133,11 +136,31 @@ public class CourseListWindow extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            // TODO: save selected course to tmc settings!
-            //            prefPanel.setSelectedCourse(courses.getSelectedValue().getCourse());
-            //            frame.setVisible(false);
-            //            frame.dispose();
-            //            new ShowSettingsAction().run();
+            final CourseCard course = courses.getSelectedValue();
+            setColors(course, Color.blue, Color.black);
+            frame.setVisible(false);
+            frame.dispose();
+            try {
+                final PersistentTmcSettings saveSettings =
+                        ServiceManager.getService(PersistentTmcSettings.class);
+                SettingsTmc settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
+                        .getSettingsTmc();
+
+                settingsTmc.setCourse(course.getCourse());
+                saveSettings.setSettingsTmc(settingsTmc);
+
+                // TODO: update changed course to SettingsPanel field currentCourse (see OrganizationListWindow)
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void setColors(CourseCard course, Color background, Color foreground) {
+        course.setBackground(background);
+        for (Component c : course.getComponents()) {
+            c.setForeground(foreground);
         }
     }
 }

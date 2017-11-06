@@ -1,14 +1,17 @@
 package fi.helsinki.cs.tmc.intellij.ui.organizationselection;
 
 import com.google.common.base.Optional;
+import com.intellij.openapi.components.ServiceManager;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
-import groovy.json.internal.Exceptions;
+import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -133,9 +136,15 @@ public class OrganizationListWindow extends JPanel {
             frame.setVisible(false);
             frame.dispose();
             try {
+                final PersistentTmcSettings saveSettings =
+                        ServiceManager.getService(PersistentTmcSettings.class);
+                SettingsTmc settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
+                        .getSettingsTmc();
 
+                settingsTmc.setOrganization(Optional.of(organization.getOrganization()));
+                saveSettings.setSettingsTmc(settingsTmc);
 
-                // TODO: save selected organization to tmc settings
+                // TODO: update changed organization to SettingsPanel field currentOrganization
 //                                SettingsPanel panel;
 //                                if (PreferencesUIFactory.getInstance().getCurrentUI() == null) {
 //                                    panel =
@@ -147,6 +156,7 @@ public class OrganizationListWindow extends JPanel {
 //                 PreferencesUIFactory.getInstance().getCurrentUI();
 //                                }
 //                                panel.setOrganization(organization.getOrganization());
+
                                 CourseListWindow.display();
             } catch (Exception ex) {
                                 ex.printStackTrace();
