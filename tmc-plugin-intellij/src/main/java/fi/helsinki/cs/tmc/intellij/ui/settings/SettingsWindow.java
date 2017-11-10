@@ -7,9 +7,7 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-/**
- * Creates and controls the settings window.
- */
+/** Creates and controls the settings window. */
 public class SettingsWindow {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsWindow.class);
@@ -20,6 +18,7 @@ public class SettingsWindow {
         logger.info("Building SettingsWindow. @SettingsWindow");
         frame = new JFrame();
         JPanel panel = new SettingsPanel(frame).getPanel();
+        //        JPanel panel = SettingsPanel.getInstance().getPanel();
 
         frame.add(panel);
         frame.setTitle("TMC Settings");

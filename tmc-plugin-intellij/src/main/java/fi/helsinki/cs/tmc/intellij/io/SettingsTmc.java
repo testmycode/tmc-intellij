@@ -181,11 +181,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     @Override
-    public String getFormattedUserData() {
-        return null;
-    }
-
-    @Override
     public Path getTmcProjectDirectory() {
         return Paths.get(projectBasePath);
     }
@@ -212,9 +207,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
         logger.info("Setting course. @SettingsTmc");
         this.course = course;
     }
-
-    @Override
-    public void setConfigRoot(Path path) {}
 
     @Override
     public Path getConfigRoot() {
@@ -253,11 +245,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public void setOrganization(Optional<Organization> org) {
-        if (org.isPresent()) {
-            this.organization = org.get();
-        } else {
-            this.organization = null;
-        }
+        this.organization = org.orNull();
     }
 
     public void setSendDiagnostics(boolean value) {

@@ -10,6 +10,7 @@ import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
+import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -143,13 +144,17 @@ public class CourseListWindow extends JPanel {
             try {
                 final PersistentTmcSettings saveSettings =
                         ServiceManager.getService(PersistentTmcSettings.class);
-                SettingsTmc settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
-                        .getSettingsTmc();
+                SettingsTmc settingsTmc =
+                        ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
 
                 settingsTmc.setCourse(course.getCourse());
                 saveSettings.setSettingsTmc(settingsTmc);
 
-                // TODO: update changed course to SettingsPanel field currentCourse (see OrganizationListWindow)
+                //                SettingsPanel settingsPanel = SettingsPanel.getInstance();
+                //                settingsPanel.setCurrentCourse();
+
+                // TODO: update changed course to SettingsPanel field currentCourse (see
+                // OrganizationListWindow)
 
             } catch (Exception ex) {
                 ex.printStackTrace();

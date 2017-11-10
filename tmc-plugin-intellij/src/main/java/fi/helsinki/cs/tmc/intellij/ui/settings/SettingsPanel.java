@@ -25,9 +25,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-/**
- * Swing component displayed in settings window.
- */
+/** Swing component displayed in settings window. */
 public class SettingsPanel {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsPanel.class);
@@ -48,29 +46,31 @@ public class SettingsPanel {
     private JButton changeOrganizationButton;
     private JLabel currentCourse;
     private JButton changeCourseButton;
+    private static SettingsPanel instance;
+    private JFrame frame;
 
-    public JFormattedTextField getProjectPathField() {
-        return projectPathField;
+    public void setCurrentOrganization() {
+        final PersistentTmcSettings persistentSettings =
+                ServiceManager.getService(PersistentTmcSettings.class);
+        SettingsTmc settings = persistentSettings.getSettingsTmc();
+
+        if (settings.getOrganization().get().getName() != null) {
+            currentOrganization.setText(settings.getOrganization().get().getName());
+        } else {
+            currentOrganization.setText("No organization selected");
+        }
     }
 
-    public JCheckBox getCheckForNewOrCheckBox() {
-        return checkForNewOrCheckBox;
-    }
+    public void setCurrentCourse() {
+        final PersistentTmcSettings persistentSettings =
+                ServiceManager.getService(PersistentTmcSettings.class);
+        SettingsTmc settings = persistentSettings.getSettingsTmc();
 
-    public JCheckBox getCheckThatAllActiveCheckBox() {
-        return checkThatAllActiveCheckBox;
-    }
-
-    public JCheckBox getSendDiagnosticsCheckBox() {
-        return sendDiagnosticsCheckBox;
-    }
-
-    public JCheckBox getSendSnapshotsOfYourCheckBox() {
-        return sendSnapshotsOfYourCheckBox;
-    }
-
-    public JComboBox<String> getselectErrorLanguageField() {
-        return selectErrorLanguageField;
+        if (settings.getCourse().getName() != null) {
+            currentCourse.setText(settings.getCourseName());
+        } else {
+            currentCourse.setText("No course selected");
+        }
     }
 
     public JPanel getPanel() {
@@ -78,21 +78,26 @@ public class SettingsPanel {
         return this.panel1;
     }
 
+    //    public static SettingsPanel getInstance() {
+    //        if (instance == null) {
+    //            instance = new SettingsPanel(new JFrame());
+    //        }
+    //        return instance;
+    //    }
+
     public SettingsPanel(final JFrame frame) {
+        this.frame = frame;
+
         logger.info("Building SettingsPanel");
         SettingsTmc settingsTmc = TmcSettingsManager.get();
 
         loggedUser.setText("Logged in as " + settingsTmc.getUsername().get());
 
-        if (settingsTmc.getOrganization().isPresent()) {
-            currentOrganization.setText(settingsTmc.getOrganization().get().getName());
-        }
+        setCurrentOrganization();
 
-        if (settingsTmc.getCourse().getName() != null) {
-            currentCourse.setText(settingsTmc.getCourseName());
-        }
+        setCurrentCourse();
 
-        ActionListener browseListener = createActionListener();
+        ActionListener browseListener = createActionListenerBrowse();
         browseButton.addActionListener(browseListener);
 
         changeOrganizationButton.addActionListener(createActionListenerChangeOrganization());
@@ -104,15 +109,13 @@ public class SettingsPanel {
         projectPathField.setText(settingsTmc.getProjectBasePath());
         selectErrorLanguageField.addItem("English");
 
-        ActionListener okListener = createActionListenerOk(frame);
+        ActionListener okListener = createActionListenerOk();
         okButton.addActionListener(okListener);
-        ActionListener cancelListener = createActionListenerCancel(frame);
+        ActionListener cancelListener = createActionListenerCancel();
         cancelButton.addActionListener(cancelListener);
-
-        ActionListener downloadListener = createActionListenerDownload(frame);
+        ActionListener downloadListener = createActionListenerDownload();
         downloadCourseExercisesButton.addActionListener(downloadListener);
-
-        ActionListener logoutListener = createActionListenerLogout(frame);
+        ActionListener logoutListener = createActionListenerLogout();
         logoutButton.addActionListener(logoutListener);
     }
 
@@ -128,21 +131,21 @@ public class SettingsPanel {
         }
     }
 
-    private ActionListener createActionListenerLogout(final JFrame frame) {
+    private ActionListener createActionListenerLogout() {
         return actionEvent -> {
             logger.info("Logout button pressed. @SettingsPanel");
 
             LoginManager loginManager = new LoginManager();
             loginManager.logout();
 
-            frame.dispose();
-            frame.setVisible(false);
+            this.frame.dispose();
+            this.frame.setVisible(false);
 
             LoginDialog.display();
         };
     }
 
-    private ActionListener createActionListenerDownload(final JFrame frame) {
+    private ActionListener createActionListenerDownload() {
         return actionEvent -> {
             logger.info("Download button pressed. @SettingsPanel");
 
@@ -152,23 +155,23 @@ public class SettingsPanel {
             DownloadExerciseAction action = new DownloadExerciseAction();
             action.downloadExercises(project, false);
 
-            frame.dispose();
-            frame.setVisible(false);
+            this.frame.dispose();
+            this.frame.setVisible(false);
         };
     }
 
     public void saveInformation() {
         logger.info("Saving settings information. @SettingsPanel");
-        final PersistentTmcSettings saveSettings =
+        final PersistentTmcSettings persistentSettings =
                 ServiceManager.getService(PersistentTmcSettings.class);
-        SettingsTmc settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
-                .getSettingsTmc();
+        SettingsTmc settingsTmc =
+                ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
 
         settingsTmc.setCheckForExercises(checkForNewOrCheckBox.isSelected());
         settingsTmc.setProjectBasePath(projectPathField.getText());
         settingsTmc.setSpyware(sendSnapshotsOfYourCheckBox.isSelected());
         settingsTmc.setSendDiagnostics(sendDiagnosticsCheckBox.isSelected());
-        saveSettings.setSettingsTmc(settingsTmc);
+        persistentSettings.setSettingsTmc(settingsTmc);
         if (sendDiagnosticsCheckBox.isSelected()) {
             try {
                 TmcCoreHolder.get().sendDiagnostics(ProgressObserver.NULL_OBSERVER).call();
@@ -197,29 +200,31 @@ public class SettingsPanel {
         };
     }
 
-    private ActionListener createActionListenerOk(final JFrame frame) {
+    private ActionListener createActionListenerOk() {
         logger.info("Create action listener for SettingsPanel ok button. @SettingsPanel");
         return actionEvent -> {
             new ButtonInputListener().receiveSettings();
             logger.info("Ok button pressed. @SettingsPanel");
             saveInformation();
 
-            frame.dispose();
-            frame.setVisible(false);
+            this.frame.dispose();
+            this.frame.setVisible(false);
+            //            instance = null;
         };
     }
 
-    private ActionListener createActionListenerCancel(final JFrame frame) {
+    private ActionListener createActionListenerCancel() {
         logger.info("Create action listener for SettingsPanel cancel button. @SettingsPanel");
         return actionEvent -> {
             logger.info("Cancel button pressed. @SettingsPanel");
-            frame.dispose();
-            frame.setVisible(false);
+            this.frame.dispose();
+            this.frame.setVisible(false);
+            //            instance = null;
         };
     }
 
     @NotNull
-    private ActionListener createActionListener() {
+    private ActionListener createActionListenerBrowse() {
         logger.info("Creating action listener for browsing. @SettingsPanel");
         return actionEvent -> {
             logger.info("Browsing action performed. @SettingsPanel", actionEvent);

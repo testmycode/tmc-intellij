@@ -74,12 +74,6 @@ public class SettingsTmcTest {
     public void clientNameWorksCorrectly() throws Exception {
         assertEquals("idea_plugin", settingstmc.clientName());
     }
-
-    @Test
-    public void getFormattedUserDataWorksCorrectly() throws Exception {
-        assertEquals(null, settingstmc.getFormattedUserData());
-    }
-
     @Test
     public void getTmcProjectDirectoryWorksCorrectly() throws Exception {
         Path path = Paths.get("koira" + File.separator + "TMCProjects");

@@ -17,6 +17,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.EventHandler;
 import java.util.List;
 
 public class OrganizationListWindow extends JPanel {
@@ -136,30 +137,37 @@ public class OrganizationListWindow extends JPanel {
             frame.setVisible(false);
             frame.dispose();
             try {
-                final PersistentTmcSettings saveSettings =
+                final PersistentTmcSettings persistentSettings =
                         ServiceManager.getService(PersistentTmcSettings.class);
-                SettingsTmc settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
-                        .getSettingsTmc();
+                SettingsTmc settingsTmc =
+                        ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
 
                 settingsTmc.setOrganization(Optional.of(organization.getOrganization()));
-                saveSettings.setSettingsTmc(settingsTmc);
+                persistentSettings.setSettingsTmc(settingsTmc);
+
+                //                SettingsPanel settingsPanel = SettingsPanel.getInstance();
+                //                settingsPanel.setCurrentOrganization();
 
                 // TODO: update changed organization to SettingsPanel field currentOrganization
-//                                SettingsPanel panel;
-//                                if (PreferencesUIFactory.getInstance().getCurrentUI() == null) {
-//                                    panel =
-//                                            (PreferencesPanel)
-//
-//                 PreferencesUIFactory.getInstance().createCurrentPreferencesUI();
-//                                } else {
-//                                    panel = (PreferencesPanel)
-//                 PreferencesUIFactory.getInstance().getCurrentUI();
-//                                }
-//                                panel.setOrganization(organization.getOrganization());
 
-                                CourseListWindow.display();
+                //                                SettingsPanel panel;
+                //                                if
+                // (PreferencesUIFactory.getInstance().getCurrentUI() == null) {
+                //                                    panel =
+                //                                            (PreferencesPanel)
+                //
+                //                 PreferencesUIFactory.getInstance().createCurrentPreferencesUI();
+                //                                } else {
+                //                                    panel = (PreferencesPanel)
+                //                 PreferencesUIFactory.getInstance().getCurrentUI();
+                //                                }
+                //
+                // panel.setOrganization(organization.getOrganization());
+
+                //                                CourseListWindow.display(); // TODO: perhaps do
+                // not show courselistwindow automatically every time?
             } catch (Exception ex) {
-                                ex.printStackTrace();
+                ex.printStackTrace();
             }
         }
     }
