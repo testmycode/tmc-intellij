@@ -17,7 +17,6 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.EventHandler;
 import java.util.List;
 
 public class OrganizationListWindow extends JPanel {
@@ -145,27 +144,10 @@ public class OrganizationListWindow extends JPanel {
                 settingsTmc.setOrganization(Optional.of(organization.getOrganization()));
                 persistentSettings.setSettingsTmc(settingsTmc);
 
-                //                SettingsPanel settingsPanel = SettingsPanel.getInstance();
-                //                settingsPanel.setCurrentOrganization();
-
-                // TODO: update changed organization to SettingsPanel field currentOrganization
-
-                //                                SettingsPanel panel;
-                //                                if
-                // (PreferencesUIFactory.getInstance().getCurrentUI() == null) {
-                //                                    panel =
-                //                                            (PreferencesPanel)
-                //
-                //                 PreferencesUIFactory.getInstance().createCurrentPreferencesUI();
-                //                                } else {
-                //                                    panel = (PreferencesPanel)
-                //                 PreferencesUIFactory.getInstance().getCurrentUI();
-                //                                }
-                //
-                // panel.setOrganization(organization.getOrganization());
-
-                //                                CourseListWindow.display(); // TODO: perhaps do
-                // not show courselistwindow automatically every time?
+                if (SettingsPanel.getInstance() != null) {
+                    SettingsPanel.getInstance().setCurrentOrganization();
+                }
+                CourseListWindow.display(); // show courselistwindow after selecting an organization
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

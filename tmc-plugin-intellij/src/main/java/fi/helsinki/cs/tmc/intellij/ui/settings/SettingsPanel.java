@@ -78,15 +78,13 @@ public class SettingsPanel {
         return this.panel1;
     }
 
-    //    public static SettingsPanel getInstance() {
-    //        if (instance == null) {
-    //            instance = new SettingsPanel(new JFrame());
-    //        }
-    //        return instance;
-    //    }
+    public static SettingsPanel getInstance() {
+        return instance;
+    }
 
     public SettingsPanel(final JFrame frame) {
         this.frame = frame;
+        this.instance = this;
 
         logger.info("Building SettingsPanel");
         SettingsTmc settingsTmc = TmcSettingsManager.get();
@@ -140,6 +138,7 @@ public class SettingsPanel {
 
             this.frame.dispose();
             this.frame.setVisible(false);
+            this.instance = null;
 
             LoginDialog.display();
         };
@@ -157,6 +156,7 @@ public class SettingsPanel {
 
             this.frame.dispose();
             this.frame.setVisible(false);
+            this.instance = null;
         };
     }
 
@@ -209,7 +209,7 @@ public class SettingsPanel {
 
             this.frame.dispose();
             this.frame.setVisible(false);
-            //            instance = null;
+            this.instance = null;
         };
     }
 
@@ -219,7 +219,7 @@ public class SettingsPanel {
             logger.info("Cancel button pressed. @SettingsPanel");
             this.frame.dispose();
             this.frame.setVisible(false);
-            //            instance = null;
+            this.instance = null;
         };
     }
 

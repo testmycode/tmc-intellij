@@ -150,11 +150,10 @@ public class CourseListWindow extends JPanel {
                 settingsTmc.setCourse(course.getCourse());
                 saveSettings.setSettingsTmc(settingsTmc);
 
-                //                SettingsPanel settingsPanel = SettingsPanel.getInstance();
-                //                settingsPanel.setCurrentCourse();
+                if (SettingsPanel.getInstance() != null) {
+                    SettingsPanel.getInstance().setCurrentCourse();
+                }
 
-                // TODO: update changed course to SettingsPanel field currentCourse (see
-                // OrganizationListWindow)
 
             } catch (Exception ex) {
                 ex.printStackTrace();
