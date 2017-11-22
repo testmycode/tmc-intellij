@@ -27,7 +27,7 @@ public class LoginDialog extends JDialog {
         settingsTmc = ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
         serverAddress.setText(settingsTmc.getServerAddress());
 
-        this.setTitle("LOGIN PLS");
+        this.setTitle("TMC Login");
         this.pack();
 
         buttonOK.addActionListener(
@@ -101,7 +101,7 @@ public class LoginDialog extends JDialog {
         return actionEvent -> {
             String newAddress =
                     JOptionPane.showInputDialog(
-                            this, "Server address plz", this.serverAddress.getText());
+                            this, "Server address", this.serverAddress.getText());
 
             if (newAddress != null && !newAddress.trim().isEmpty()) {
                 this.serverAddress.setText(newAddress.trim());
