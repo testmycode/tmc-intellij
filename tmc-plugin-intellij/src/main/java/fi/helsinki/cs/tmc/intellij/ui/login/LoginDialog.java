@@ -77,14 +77,13 @@ public class LoginDialog extends JDialog {
                 ServiceManager.getService(PersistentTmcSettings.class);
 
         settingsTmc.setUsername(usernameField.getText());
-        settingsTmc.setPassword(passwordField.getText());
         settingsTmc.setServerAddress(serverAddress.getText());
 
         saveSettings.setSettingsTmc(settingsTmc);
 
         LoginManager loginManager = new LoginManager();
 
-        if (loginManager.login()) {
+        if (loginManager.login(passwordField.getText())) {
             dispose();
             try {
                 OrganizationListWindow.display();

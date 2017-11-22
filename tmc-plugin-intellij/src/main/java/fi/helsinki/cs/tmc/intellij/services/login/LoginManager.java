@@ -19,13 +19,11 @@ public class LoginManager {
     private IOException connectionException;
     private AuthenticationFailedException authenticationException;
 
-    public boolean login() {
-        final SettingsTmc settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
-                .getSettingsTmc();
+    public boolean login(String password) {
         ErrorMessageService errorMessageService = new ErrorMessageService();
 
         try {
-            TmcCoreHolder.get().authenticate(ProgressObserver.NULL_OBSERVER, settingsTmc.getPassword().get()).call();
+            TmcCoreHolder.get().authenticate(ProgressObserver.NULL_OBSERVER, password).call();
             return true;
         } catch (Exception e) {
             if (e instanceof IOException) {
