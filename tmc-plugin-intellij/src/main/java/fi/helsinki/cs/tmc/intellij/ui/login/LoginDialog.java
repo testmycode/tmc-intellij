@@ -5,6 +5,8 @@ import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.ui.organizationselection.OrganizationListWindow;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -18,6 +20,8 @@ public class LoginDialog extends JDialog {
     private JLabel serverAddress;
     private JButton changeServerAddressButton;
     private SettingsTmc settingsTmc;
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
 
     public LoginDialog() {
         setContentPane(contentPane);
@@ -67,6 +71,8 @@ public class LoginDialog extends JDialog {
     }
 
     public static void display() {
+        logger.info("Showing Login window. @LoginDialog");
+
         LoginDialog dialog = new LoginDialog();
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);

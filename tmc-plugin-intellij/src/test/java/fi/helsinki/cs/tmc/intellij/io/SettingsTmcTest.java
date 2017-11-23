@@ -4,8 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.domain.Course;
 
+import fi.helsinki.cs.tmc.core.domain.OauthCredentials;
+import fi.helsinki.cs.tmc.core.domain.Organization;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -56,7 +59,7 @@ public class SettingsTmcTest {
     }
 
     @Test
-    public void userDataExistsReturnsTrue() throws Exception {
+    public void userDataExistsReturnsTrueWhenUsernameAndPasswordExist() throws Exception {
         settingstmc.setUsername("koira");
         settingstmc.setPassword("kissa");
         Boolean bool = settingstmc.userDataExists();
@@ -64,10 +67,29 @@ public class SettingsTmcTest {
     }
 
     @Test
-    public void userDataExistsReturnsFalse() throws Exception {
+    public void userDataExistsReturnsFalseWhenPassWordDoesNotExist() throws Exception {
         settingstmc.setUsername("koira");
         Boolean bool = settingstmc.userDataExists();
         assertFalse(bool);
+    }
+
+    @Test
+    public void setOrganizationWorksCorrectly() {
+        settingstmc.setOrganization(Optional.of(new Organization("Default", "default", "default", "default", false)));
+        assertEquals("Default", settingstmc.getOrganization().get().getName());
+        assertEquals("default", settingstmc.getOrganization().get().getInformation());
+    }
+
+    @Test
+    public void setOauthCredentialsWorksCorrectly() {
+        settingstmc.setOauthCredentials(Optional.of(new OauthCredentials("kissa", "koira")));
+        assertEquals("kissa", settingstmc.getOauthCredentials().get().getOauthApplicationId());
+    }
+
+    @Test
+    public void setTokenWorksCorrectly() {
+        settingstmc.setToken(Optional.of("kissa"));
+        assertEquals("kissa", settingstmc.getToken().get());
     }
 
     @Test

@@ -9,6 +9,8 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,10 +21,15 @@ public class LoginManager {
     private IOException connectionException;
     private AuthenticationFailedException authenticationException;
 
+    private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
+
+
     public boolean login(String password) {
         ErrorMessageService errorMessageService = new ErrorMessageService();
 
         try {
+            logger.info("Authenticating user. @LoginManager");
+
             TmcCoreHolder.get().authenticate(ProgressObserver.NULL_OBSERVER, password).call();
             return true;
         } catch (Exception e) {
@@ -59,6 +66,8 @@ public class LoginManager {
     }
 
     public void logout() {
+        logger.info("Logging out user. @LoginManager");
+
         final PersistentTmcSettings saveSettings =
                 ServiceManager.getService(PersistentTmcSettings.class);
         final SettingsTmc settings = ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
@@ -67,8 +76,6 @@ public class LoginManager {
         settings.setOauthCredentials(Optional.absent());
         settings.setUsername("");
         settings.setPassword(Optional.absent());
-//        settings.setOrganization(Optional.absent());
-//        settings.setCourse(null);
 
         saveSettings.setSettingsTmc(settings);
     }

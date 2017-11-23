@@ -9,8 +9,11 @@ import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,6 +26,8 @@ public class CourseListWindow extends JPanel {
     private static JFrame frame;
     private final JBList<CourseCard> courses;
     private static JButton button;
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
 
     public CourseListWindow(List<Course> courses) {
         CourseCard[] courseCards = new CourseCard[courses.size()];
@@ -59,22 +64,29 @@ public class CourseListWindow extends JPanel {
     }
 
     public static void display() throws Exception {
+        logger.info("Showing Course list window. @CourseListWindow");
+
         if (frame == null) {
             frame = new JFrame("Select a course");
         }
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         List<Course> courses =
                 TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
+
         final CourseListWindow courseListWindow = new CourseListWindow(courses);
         frame.setContentPane(courseListWindow);
+
         if (hasCourses(courses)) {
             frame.pack();
             frame.setLocationRelativeTo(null);
             frame.setAlwaysOnTop(true);
             frame.setVisible(true);
         }
+
         button.setMinimumSize(new Dimension(courseListWindow.getWidth(), button.getHeight()));
         button.setMaximumSize(new Dimension(courseListWindow.getWidth(), button.getHeight()));
+
         courseListWindow.addComponentListener(
                 new ComponentListener() {
                     @Override
@@ -105,6 +117,7 @@ public class CourseListWindow extends JPanel {
 
     private static boolean hasCourses(List<Course> courses) {
         if (courses.isEmpty()) {
+            // TODO: Handle organizations with no courses
             //            JOptionPane.showMessageDialog(panel, "Organization has no courses!",
             // "Error", JOptionPane.ERROR_MESSAGE);
             frame.setVisible(false);
@@ -133,14 +146,19 @@ public class CourseListWindow extends JPanel {
 
     class SelectCourseListener implements ActionListener {
 
+        private final Logger logger = LoggerFactory.getLogger(LoginManager.class);
+
         public SelectCourseListener(CourseListWindow window) {}
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            logger.info("Action SelectCourse performed. @SelectCourseListener");
+
             final CourseCard course = courses.getSelectedValue();
             setColors(course, Color.blue, Color.black);
             frame.setVisible(false);
             frame.dispose();
+
             try {
                 final PersistentTmcSettings saveSettings =
                         ServiceManager.getService(PersistentTmcSettings.class);
@@ -150,10 +168,9 @@ public class CourseListWindow extends JPanel {
                 settingsTmc.setCourse(course.getCourse());
                 saveSettings.setSettingsTmc(settingsTmc);
 
-                if (SettingsPanel.getInstance() != null) {
+                if (SettingsPanel.getInstance() != null) { // Update SettingsPanel if it's visible
                     SettingsPanel.getInstance().setCurrentCourse();
                 }
-
 
             } catch (Exception ex) {
                 ex.printStackTrace();

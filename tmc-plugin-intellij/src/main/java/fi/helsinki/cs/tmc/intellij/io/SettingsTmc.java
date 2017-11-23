@@ -100,6 +100,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     public String getCourseName() {
+        logger.info("Getting course name <- {}. @SettingsTmc", course.getName());
         if (course != null) {
             return course.getName();
         }
@@ -167,6 +168,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Optional<Course> getCurrentCourse() {
+        logger.info("Getting current course <- {}. @SettingsTmc", course);
         return Optional.fromNullable(course);
     }
 
@@ -198,13 +200,13 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     public Course getCourse() {
-        logger.info("Getting course. @SettingsTmc");
+        logger.info("Getting course <- {}. @SettingsTmc", course);
         return course;
     }
 
     @Override
     public void setCourse(Course course) {
-        logger.info("Setting course. @SettingsTmc");
+        logger.info("Setting course -> {}. @SettingsTmc", course);
         this.course = course;
     }
 
@@ -221,30 +223,38 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Optional<OauthCredentials> getOauthCredentials() {
+        logger.info("Getting oauthCredentials. @SettingsTmc");
         return Optional.fromNullable(this.oauthCredentials);
     }
 
     public void setOauthCredentials(Optional<OauthCredentials> oauthCredentials) {
+        logger.info("Setting oauthCredentials. @SettingsTmc");
         this.oauthCredentials = oauthCredentials.orNull();
     }
 
     @Override
     public void setToken(Optional<String> token) {
+        logger.info("Setting token. @SettingsTmc");
         this.token = token.orNull();
     }
 
     @Override
     public Optional<String> getToken() {
+        logger.info("Getting token. @SettingsTmc");
         return Optional.fromNullable(token);
     }
 
     @Override
     public Optional<Organization> getOrganization() {
+        logger.info("Getting organization <- {}", organization.getName());
         return Optional.fromNullable(this.organization);
     }
 
     @Override
     public void setOrganization(Optional<Organization> org) {
+        if (org.isPresent()) {
+            logger.info("Setting organization -> {}", org.get().getName());
+        }
         this.organization = org.orNull();
     }
 

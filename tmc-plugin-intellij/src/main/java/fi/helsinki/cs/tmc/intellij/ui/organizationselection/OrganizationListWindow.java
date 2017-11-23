@@ -9,9 +9,12 @@ import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
+import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
 import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -24,6 +27,9 @@ public class OrganizationListWindow extends JPanel {
     private static JFrame frame;
     private final JList<OrganizationCard> organizations;
     private static JButton button;
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
+
 
     public OrganizationListWindow(List<Organization> organizations) {
         OrganizationCard[] organizationCards = new OrganizationCard[organizations.size()];
@@ -63,14 +69,19 @@ public class OrganizationListWindow extends JPanel {
     }
 
     public static void display() throws Exception {
+        logger.info("Showing OrganizationList. @OrganizationListWindow");
+
         if (frame == null) {
             frame = new JFrame("Select an organization");
         }
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         List<Organization> organizations =
                 TmcCoreHolder.get().getOrganizations(ProgressObserver.NULL_OBSERVER).call();
+
         final OrganizationListWindow organizationListWindow =
                 new OrganizationListWindow(organizations);
+
         frame.setContentPane(organizationListWindow);
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -78,6 +89,7 @@ public class OrganizationListWindow extends JPanel {
         frame.setVisible(true);
         button.setMinimumSize(new Dimension(organizationListWindow.getWidth(), button.getHeight()));
         button.setMaximumSize(new Dimension(organizationListWindow.getWidth(), button.getHeight()));
+
         organizationListWindow.addComponentListener(
                 new ComponentListener() {
                     @Override
@@ -127,14 +139,19 @@ public class OrganizationListWindow extends JPanel {
 
     class SelectOrganizationListener implements ActionListener {
 
+        private final Logger logger = LoggerFactory.getLogger(LoginManager.class);
+
         public SelectOrganizationListener(OrganizationListWindow window) {}
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            logger.info("Action SelectOrganization performed. @SelectOrganizationListener");
+
             final OrganizationCard organization = organizations.getSelectedValue();
             setColors(organization, Color.blue, Color.black);
             frame.setVisible(false);
             frame.dispose();
+
             try {
                 final PersistentTmcSettings persistentSettings =
                         ServiceManager.getService(PersistentTmcSettings.class);
@@ -144,9 +161,10 @@ public class OrganizationListWindow extends JPanel {
                 settingsTmc.setOrganization(Optional.of(organization.getOrganization()));
                 persistentSettings.setSettingsTmc(settingsTmc);
 
-                if (SettingsPanel.getInstance() != null) {
+                if (SettingsPanel.getInstance() != null) { // update settingspanel if it's visible
                     SettingsPanel.getInstance().setCurrentOrganization();
                 }
+
                 CourseListWindow.display(); // show courselistwindow after selecting an organization
             } catch (Exception ex) {
                 ex.printStackTrace();
