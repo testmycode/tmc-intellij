@@ -18,7 +18,6 @@ public class SettingsWindow {
         logger.info("Building SettingsWindow. @SettingsWindow");
         frame = new JFrame();
         JPanel panel = new SettingsPanel(frame).getPanel();
-        //        JPanel panel = SettingsPanel.getInstance().getPanel();
 
         frame.add(panel);
         frame.setTitle("TMC Settings");

@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.organizationselection;
 
 import fi.helsinki.cs.tmc.core.domain.Organization;
+import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanelMock;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -12,19 +13,30 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 
 public class OrganizationListWindowTest {
-    private OrganizationListWindow orgListWin;
+
+    private OrganizationListWindowMock orgListWin;
+    private SettingsPanelMock settingsPanel;
 
     @Before
     public void setUp() throws Exception {
-        Organization org1 = new Organization("Default", "default", "default", "default", false);
-        Organization org2 = new Organization("Kissa", "Kissa", "kissa", "kissa", false);
-        Organization org3 = new Organization("Testi", "Testaukseen", "test", "test", false);
-        List<Organization> orgs = new ArrayList<>();
-        orgs.add(org1);
-        orgs.add(org2);
-        orgs.add(org3);
+        createOrganizationListWindow();
+        settingsPanel = new SettingsPanelMock(new JFrame());
+    }
 
-        orgListWin = new OrganizationListWindow(orgs);
+    public void createOrganizationListWindow() {
+        Organization org1 =
+                new Organization("Default", "testing intellij plugin", "default", "missing", false);
+        Organization org2 =
+                new Organization("Kissa", "testing intellij plugin", "kissa", "missing", false);
+        Organization org3 =
+                new Organization("Testi", "testing intellij plugin", "test", "missing", false);
+
+        List<Organization> organizations = new ArrayList<>();
+        organizations.add(org1);
+        organizations.add(org2);
+        organizations.add(org3);
+
+        orgListWin = new OrganizationListWindowMock(organizations);
     }
 
     @Test
@@ -34,8 +46,23 @@ public class OrganizationListWindowTest {
         for (Component component : orgListWin.getComponents()) {
             if (component.getClass() == JButton.class) {
                 isButton = true;
+                break;
             }
         }
         assertTrue(isButton);
+    }
+
+    @Test
+    public void selectingAnOrganizationUpdatesTheLabel() {
+        orgListWin.getOrganizationCards().setSelectedIndex(1);
+        orgListWin.getButton().doClick();
+
+        settingsPanel.getOrganizationLabel().getText().contains("Kissa");
+    }
+
+    @Test
+    public void selectedOrganizationIsSavedInTmcSettings() {
+        // TODO: implement if wanted
+
     }
 }

@@ -30,7 +30,6 @@ public class OrganizationListWindow extends JPanel {
 
     private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
 
-
     public OrganizationListWindow(List<Organization> organizations) {
         OrganizationCard[] organizationCards = new OrganizationCard[organizations.size()];
         for (int i = 0; i < organizations.size(); i++) {
@@ -161,8 +160,9 @@ public class OrganizationListWindow extends JPanel {
                 settingsTmc.setOrganization(Optional.of(organization.getOrganization()));
                 persistentSettings.setSettingsTmc(settingsTmc);
 
-                if (SettingsPanel.getInstance() != null) { // update settingspanel if it's visible
-                    SettingsPanel.getInstance().setCurrentOrganization();
+                if (SettingsPanel.getInstance() != null) {
+                    SettingsPanel.getInstance()
+                            .setCurrentOrganization(); // update settingspanel if it's visible
                 }
 
                 CourseListWindow.display(); // show courselistwindow after selecting an organization
