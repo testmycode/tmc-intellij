@@ -93,7 +93,7 @@
     <orderEntry type="module-library">
       <library name="Maven: com.sun:tools:1.7.0">
         <CLASSES>
-          <root url="jar:///usr/lib/jvm/java-7-openjdk//lib/tools.jar!/" />
+          <root url="jar:///usr/lib/jvm/java-7-openjdk/lib/tools.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

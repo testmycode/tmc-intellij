@@ -1,9 +1,11 @@
 package fi.helsinki.cs.tmc.intellij.ui.login;
 
 import com.intellij.openapi.components.ServiceManager;
+import fi.helsinki.cs.tmc.core.utilities.TmcServerAddressNormalizer;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
+import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
 import fi.helsinki.cs.tmc.intellij.ui.organizationselection.OrganizationListWindow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,7 +85,8 @@ public class LoginDialog extends JDialog {
                 ServiceManager.getService(PersistentTmcSettings.class);
 
         settingsTmc.setUsername(usernameField.getText());
-        settingsTmc.setServerAddress(serverAddress.getText());
+        // settingsTmc.setServerAddress(serverAddress.getText());
+        TmcServerAddressNormalizer.normalize();
 
         saveSettings.setSettingsTmc(settingsTmc);
 
@@ -92,7 +95,11 @@ public class LoginDialog extends JDialog {
         if (loginManager.login(passwordField.getText())) {
             dispose();
             try {
-                OrganizationListWindow.display();
+                if (settingsTmc.getOrganization().isPresent()) {
+                    CourseListWindow.display();
+                } else {
+                    OrganizationListWindow.display();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -111,7 +118,9 @@ public class LoginDialog extends JDialog {
 
             if (newAddress != null && !newAddress.trim().isEmpty()) {
                 this.serverAddress.setText(newAddress.trim());
-                settingsTmc.setServerAddress(newAddress);
+                // settingsTmc.setServerAddress(newAddress);
+                TmcServerAddressNormalizer.normalize();
+
             }
         };
     }
