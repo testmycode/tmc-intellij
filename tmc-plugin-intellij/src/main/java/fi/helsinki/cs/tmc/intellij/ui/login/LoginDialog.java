@@ -22,6 +22,7 @@ public class LoginDialog extends JDialog {
     private JLabel serverAddress;
     private JButton changeServerAddressButton;
     private SettingsTmc settingsTmc;
+    private TmcServerAddressNormalizer addressNormalizer;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
 
@@ -85,8 +86,6 @@ public class LoginDialog extends JDialog {
                 ServiceManager.getService(PersistentTmcSettings.class);
 
         settingsTmc.setUsername(usernameField.getText());
-        // settingsTmc.setServerAddress(serverAddress.getText());
-        TmcServerAddressNormalizer.normalize();
 
         saveSettings.setSettingsTmc(settingsTmc);
 
@@ -118,9 +117,10 @@ public class LoginDialog extends JDialog {
 
             if (newAddress != null && !newAddress.trim().isEmpty()) {
                 this.serverAddress.setText(newAddress.trim());
-                // settingsTmc.setServerAddress(newAddress);
-                TmcServerAddressNormalizer.normalize();
+                settingsTmc.setServerAddress(newAddress);
+                addressNormalizer = new TmcServerAddressNormalizer();
 
+                addressNormalizer.normalize();
             }
         };
     }

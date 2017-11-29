@@ -73,12 +73,10 @@ public class OrganizationListWindowMock extends JPanel {
                     SettingsPanelMock.getInstance()
                             .setCurrentOrganization(
                                     organization
-                                            .getOrganization()); // update settingspanel if it's
-                                                                 // visible
+                                            .getOrganization()); // update settingspanel if it's visible
                 }
 
-                //                CourseListWindow.display(); // show courselistwindow after
-                // selecting an organization
+                //                CourseListWindow.display(); // show courselistwindow after selecting an organization
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

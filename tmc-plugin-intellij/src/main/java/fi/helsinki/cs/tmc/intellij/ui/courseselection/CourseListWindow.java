@@ -165,7 +165,7 @@ public class CourseListWindow extends JPanel {
                 SettingsTmc settingsTmc =
                         ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
 
-                settingsTmc.setCourse(course.getCourse());
+                settingsTmc.setCourse(Optional.of(course.getCourse()));
                 saveSettings.setSettingsTmc(settingsTmc);
 
                 if (SettingsPanel.getInstance() != null) { // Update SettingsPanel if it's visible

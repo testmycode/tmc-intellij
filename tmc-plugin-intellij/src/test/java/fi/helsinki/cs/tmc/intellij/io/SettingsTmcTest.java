@@ -111,8 +111,8 @@ public class SettingsTmcTest {
     @Test
     public void setCourseWorksCorrectly() throws Exception {
         Course course = new Course();
-        settingstmc.setCourse(course);
-        Course course1 = settingstmc.getCourse();
+        settingstmc.setCourse(Optional.of(course));
+        Course course1 = settingstmc.getCurrentCourse().get();
         assertEquals(course, course1);
     }
 

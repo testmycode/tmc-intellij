@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.io;
 
+import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
@@ -28,7 +29,7 @@ public class ProjectOpener {
 
     public void openProject(String path, String courseName) {
         Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
-        TmcSettingsManager.get().setCourse(course);
+        TmcSettingsManager.get().setCourse(Optional.of(course));
         openProject(path);
     }
 

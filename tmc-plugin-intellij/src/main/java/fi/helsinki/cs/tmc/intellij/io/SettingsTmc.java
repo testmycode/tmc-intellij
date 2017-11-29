@@ -199,15 +199,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
         return null;
     }
 
-    public Course getCourse() {
-        logger.info("Getting course <- {}. @SettingsTmc", course);
-        return course;
-    }
-
     @Override
-    public void setCourse(Course course) {
+    public void setCourse(Optional<Course> course) {
         logger.info("Setting course -> {}. @SettingsTmc", course);
-        this.course = course;
+        this.course = course.orNull();
     }
 
     @Override
@@ -246,7 +241,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     @Override
     public Optional<Organization> getOrganization() {
-        logger.info("Getting organization <- {}", organization.getName());
+        logger.info("Getting organization <- {}", organization);
         return Optional.fromNullable(this.organization);
     }
 

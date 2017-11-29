@@ -178,8 +178,8 @@ public class SpywareTabListener {
 
     public Course getCourse() {
         SettingsTmc settings = TmcSettingsManager.get();
-        if (settings.getCourse().getName().equals(PathResolver.getCourseName(basePath))) {
-            return settings.getCourse();
+        if (settings.getCurrentCourse().get().getName().equals(PathResolver.getCourseName(basePath))) {
+            return settings.getCurrentCourse().get();
         }
         return new ObjectFinder()
                 .findCourseByName(PathResolver.getCourseName(basePath), TmcCoreHolder.get());

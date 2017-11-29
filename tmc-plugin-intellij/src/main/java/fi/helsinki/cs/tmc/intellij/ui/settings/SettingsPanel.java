@@ -54,7 +54,7 @@ public class SettingsPanel {
                 ServiceManager.getService(PersistentTmcSettings.class);
         SettingsTmc settings = persistentSettings.getSettingsTmc();
 
-        if (settings.getOrganization().get().getName() != null) {
+        if (settings.getOrganization().isPresent() && settings.getOrganization().get().getName() != null) {
             currentOrganization.setText(settings.getOrganization().get().getName());
         } else {
             currentOrganization.setText("No organization selected");
@@ -66,7 +66,7 @@ public class SettingsPanel {
                 ServiceManager.getService(PersistentTmcSettings.class);
         SettingsTmc settings = persistentSettings.getSettingsTmc();
 
-        if (settings.getCourse().getName() != null) {
+        if (settings.getCurrentCourse().isPresent() && settings.getCurrentCourse().get().getName() != null) {
             currentCourse.setText(settings.getCourseName());
         } else {
             currentCourse.setText("No course selected");
