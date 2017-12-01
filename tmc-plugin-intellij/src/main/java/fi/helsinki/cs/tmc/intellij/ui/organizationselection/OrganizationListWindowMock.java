@@ -1,10 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.ui.organizationselection;
 
-import com.intellij.ui.components.JBList;
-import com.intellij.ui.components.JBScrollPane;
 import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
-import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
 import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanelMock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +24,12 @@ public class OrganizationListWindowMock extends JPanel {
             organizationCards[i] = new OrganizationCard(organizations.get(i));
         }
 
-        this.organizationCards = new JBList<>(organizationCards);
+        this.organizationCards = new JList<>(organizationCards);
 
         this.button = new JButton("Select");
         button.addActionListener(new SelectOrganizationListenerMock(this));
 
-        JScrollPane pane = new JBScrollPane(this.organizationCards);
+        JScrollPane pane = new JScrollPane(this.organizationCards);
 
         this.organizationCards.addMouseListener(
                 new MouseAdapter() {

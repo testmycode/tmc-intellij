@@ -115,11 +115,10 @@ public class CourseListWindow extends JPanel {
         return frame.isVisible();
     }
 
-    private static boolean hasCourses(List<Course> courses) {
+    private static boolean hasCourses(List<Course> courses) throws Exception {
         if (courses.isEmpty()) {
-            // TODO: Handle organizations with no courses
-            //            JOptionPane.showMessageDialog(panel, "Organization has no courses!",
-            // "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(
+                    frame, "Organization has no courses!", "Error", JOptionPane.ERROR_MESSAGE);
             frame.setVisible(false);
             frame.dispose();
             return false;

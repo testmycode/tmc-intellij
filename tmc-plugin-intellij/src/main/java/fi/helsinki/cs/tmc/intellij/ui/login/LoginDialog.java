@@ -1,6 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.ui.login;
 
 import com.intellij.openapi.components.ServiceManager;
+import fi.helsinki.cs.tmc.core.domain.Course;
+import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.core.utilities.TmcServerAddressNormalizer;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
@@ -23,6 +25,8 @@ public class LoginDialog extends JDialog {
     private JButton changeServerAddressButton;
     private SettingsTmc settingsTmc;
     private TmcServerAddressNormalizer addressNormalizer;
+    private Organization previousOrganization;
+    private Course previousCourse;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
 
@@ -32,6 +36,9 @@ public class LoginDialog extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         settingsTmc = ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+        previousOrganization = settingsTmc.getOrganization().get();
+        previousCourse = settingsTmc.getCurrentCourse().get();
+
         serverAddress.setText(settingsTmc.getServerAddress());
 
         this.setTitle("TMC Login");
@@ -93,11 +100,19 @@ public class LoginDialog extends JDialog {
 
         if (loginManager.login(passwordField.getText())) {
             dispose();
+            addressNormalizer.selectOrganizationAndCourse();
             try {
-                if (settingsTmc.getOrganization().isPresent()) {
-                    CourseListWindow.display();
-                } else {
+                if (!settingsTmc.getOrganization().isPresent()) {
                     OrganizationListWindow.display();
+                } else if (!settingsTmc.getCurrentCourse().isPresent()
+                        || (previousOrganization != settingsTmc.getOrganization().get()
+                                && previousCourse == settingsTmc.getCurrentCourse().get())) {
+                    // Show courselistwindow if current course isn't selected OR if user's
+                    // organization has
+                    // changed and current course hasn't.
+                    // Because then the current course probably isn't the right organization's
+                    // course.
+                    CourseListWindow.display();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
