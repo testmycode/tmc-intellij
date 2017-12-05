@@ -36,8 +36,8 @@ public class LoginDialog extends JDialog {
         getRootPane().setDefaultButton(buttonOK);
 
         settingsTmc = ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
-        previousOrganization = settingsTmc.getOrganization().get();
-        previousCourse = settingsTmc.getCurrentCourse().get();
+        previousOrganization = settingsTmc.getOrganization().orNull();
+        previousCourse = settingsTmc.getCurrentCourse().orNull();
 
         serverAddress.setText(settingsTmc.getServerAddress());
 
@@ -80,6 +80,13 @@ public class LoginDialog extends JDialog {
                 JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    public TmcServerAddressNormalizer getAddressNormalizer() {
+        if (this.addressNormalizer == null) {
+            this.addressNormalizer = new TmcServerAddressNormalizer();
+        }
+        return this.addressNormalizer;
+    }
+
     public static void display() {
         logger.info("Showing Login window. @LoginDialog");
 
@@ -100,6 +107,7 @@ public class LoginDialog extends JDialog {
 
         if (loginManager.login(passwordField.getText())) {
             dispose();
+            addressNormalizer = getAddressNormalizer();
             addressNormalizer.selectOrganizationAndCourse();
             try {
                 if (!settingsTmc.getOrganization().isPresent()) {
@@ -133,7 +141,7 @@ public class LoginDialog extends JDialog {
             if (newAddress != null && !newAddress.trim().isEmpty()) {
                 this.serverAddress.setText(newAddress.trim());
                 settingsTmc.setServerAddress(newAddress);
-                addressNormalizer = new TmcServerAddressNormalizer();
+                addressNormalizer = getAddressNormalizer();
 
                 addressNormalizer.normalize();
             }

@@ -62,7 +62,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.firstRun = true;
         logger.info("Setting default folder for TMC project files. @SettingsTmc");
         JFileChooser fileChooser = new JFileChooser();
-        serverAddress = "https://tmc.mooc.fi/mooc";
+        serverAddress = "https://tmc.mooc.fi/";
         projectBasePath =
                 fileChooser.getFileSystemView().getDefaultDirectory().toString()
                         + File.separator
