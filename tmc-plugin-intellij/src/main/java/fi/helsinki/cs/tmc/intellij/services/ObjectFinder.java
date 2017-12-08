@@ -60,13 +60,12 @@ public class ObjectFinder {
         try {
             courses = core.listCourses(ProgressObserver.NULL_OBSERVER).call();
         } catch (TmcCoreException e) {
-            logger.warn(
-                    "Could not find course {}. @ObjectFinder", courseName, e, e.getStackTrace());
+            logger.warn("Could not find course {} @ObjectFinder", courseName, e, e.getStackTrace());
             new ErrorMessageService().showHumanReadableErrorMessage(e, false);
         } catch (Exception e) {
-            logger.warn(
-                    "Could not find course {}. @ObjectFinder", courseName, e, e.getStackTrace());
-            new ErrorMessageService().showErrorMessage(e, "Could not find course. " + courseName, true);
+            logger.warn("Could not find course {} @ObjectFinder", courseName, e, e.getStackTrace());
+            new ErrorMessageService()
+                    .showErrorMessage(e, "Could not find course " + courseName, true);
         }
         if (courses == null) {
             return null;
@@ -116,9 +115,7 @@ public class ObjectFinder {
         logger.info(
                 "Processing listAllDownloadedExercises from course {}. @ObjectFinder", courseName);
         return getListOfDirectoriesInPath(
-                TmcSettingsManager.get().getProjectBasePath()
-                        + File.separator
-                        + courseName);
+                TmcSettingsManager.get().getProjectBasePath() + File.separator + courseName);
     }
 
     private List<String> getListOfDirectoriesInPath(String folderPath) {

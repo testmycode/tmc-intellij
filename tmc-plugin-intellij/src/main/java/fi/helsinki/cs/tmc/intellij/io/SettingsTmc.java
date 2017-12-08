@@ -160,10 +160,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
     @Override
     public boolean userDataExists() {
         logger.info("Checking if user data exists. @SettingsTmc");
-        return this.username != null
-                && this.password != null
-                && !this.username.isEmpty()
-                && !this.password.isEmpty();
+        return this.username != null && !this.username.isEmpty();
     }
 
     @Override

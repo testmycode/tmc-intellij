@@ -1,8 +1,11 @@
 package fi.helsinki.cs.tmc.intellij.services.exercises;
 
+import com.intellij.notification.NotificationType;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
+import fi.helsinki.cs.tmc.core.exceptions.ExpiredException;
+import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
@@ -10,6 +13,7 @@ import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 
@@ -51,18 +55,25 @@ public class ExerciseUploadingService {
         Exercise exercise =
                 courseAndExerciseManager.getExercise(
                         getCourseName(exerciseCourse), getExerciseName(exerciseCourse));
-        getResults(
-                project,
-                exercise,
-                core,
-                handler,
-                threadingService,
-                testRunningService,
-                finder,
-                observer,
-                window);
-        courseAndExerciseManager.updateSingleCourse(
-                getCourseName(exerciseCourse), checker, finder, settings);
+
+
+        if (exercise.hasDeadlinePassed()) {
+            logger.warn("Exercise has expired. @ExerciseUploadingService");
+            Messages.showErrorDialog(project, "The deadline for this exercise has passed", "Error");
+        } else {
+            getResults(
+                    project,
+                    exercise,
+                    core,
+                    handler,
+                    threadingService,
+                    testRunningService,
+                    finder,
+                    observer,
+                    window);
+            courseAndExerciseManager.updateSingleCourse(
+                    getCourseName(exerciseCourse), checker, finder, settings);
+        }
     }
 
     private void getResults(
@@ -82,6 +93,15 @@ public class ExerciseUploadingService {
                 () -> {
                     try {
                         getSubmissionResult(core, observer, exercise, handler, project);
+                    } catch (TmcCoreException exception) {
+                        logger.warn(
+                                "Could not getExercise submission results. "
+                                        + "@ExerciseUploadingService",
+                                exception,
+                                exception.getStackTrace());
+                        exception.printStackTrace();
+
+                        new ErrorMessageService().showHumanReadableErrorMessage(exception, true);
                     } catch (Exception exception) {
                         logger.warn(
                                 "Could not getExercise submission results. "
@@ -110,8 +130,9 @@ public class ExerciseUploadingService {
 
         ApplicationManager.getApplication()
                 .invokeLater(
-                        () -> TestResultPanelFactory.updateMostRecentResult(
-                                result.getTestCases(), result.getValidationResult()));
+                        () ->
+                                TestResultPanelFactory.updateMostRecentResult(
+                                        result.getTestCases(), result.getValidationResult()));
     }
 
     private String getCourseName(String[] courseAndExercise) {
@@ -131,8 +152,9 @@ public class ExerciseUploadingService {
                             new CourseAndExerciseManager().initiateDatabase();
                             ApplicationManager.getApplication()
                                     .invokeLater(
-                                            () -> ProjectListManagerHolder.get()
-                                                    .refreshAllCourses());
+                                            () ->
+                                                    ProjectListManagerHolder.get()
+                                                            .refreshAllCourses());
                         });
     }
 }

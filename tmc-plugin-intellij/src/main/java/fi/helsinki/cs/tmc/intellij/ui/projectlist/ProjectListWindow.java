@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
+import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
@@ -123,9 +124,15 @@ public class ProjectListWindow {
             ProjectOpener opener = new ProjectOpener();
             String courseName = (list.getName());
 
-            opener.openProject(TmcSettingsManager.get().getProjectBasePath()
-                    + File.separator + courseName + File.separator
-                    + list.getSelectedValue(), courseName);
+            if (list.getSelectedValue() == null) {
+                logger.warn("Project not selected. @ProjectListWindow");
+                Messages.showErrorDialog("No project selected",
+                        "File not found");
+            } else {
+                opener.openProject(TmcSettingsManager.get().getProjectBasePath()
+                        + File.separator + courseName + File.separator
+                        + list.getSelectedValue(), courseName);
+            }
         });
     }
 

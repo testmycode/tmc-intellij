@@ -29,7 +29,7 @@ public class ProjectOpener {
 
     public void openProject(String path, String courseName) {
         Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
-        TmcSettingsManager.get().setCourse(Optional.of(course));
+        TmcSettingsManager.get().setCourse(Optional.fromNullable(course));
         openProject(path);
     }
 
