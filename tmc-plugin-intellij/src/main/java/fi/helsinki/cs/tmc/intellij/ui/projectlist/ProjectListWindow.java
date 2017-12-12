@@ -52,8 +52,6 @@ public class ProjectListWindow {
     }
 
     private JPanel basePanel;
-    private JButton openButton;
-    private JButton hideButton;
     private JToolBar toolbar;
 
     public ProjectListWindow() {
@@ -75,11 +73,9 @@ public class ProjectListWindow {
         createCourseSpecificTabs(finder, opener, tabbedPanelBase,
                 courses, factory, new CourseAndExerciseManager());
 
-        addFunctionalityToHideButton();
         JButton refreshButton = addFunctionalityToRefreshButton();
         // TODO: refresh button not working
         // toolbar.add(refreshButton);
-        addFunctionalityToOpenButton();
         setActiveTabToSelectedCourse();
     }
 
@@ -113,29 +109,6 @@ public class ProjectListWindow {
         }
     }
 
-    private void addFunctionalityToOpenButton() {
-        logger.info("Adding functionality to open project button. @ProjectListWindow");
-
-        openButton.addActionListener(actionEvent -> {
-            JBList list = (JBList) tabbedPanelBase
-                    .getSelectedComponent().getComponentAt(10, 10)
-                    .getComponentAt(10, 10);
-
-            ProjectOpener opener = new ProjectOpener();
-            String courseName = (list.getName());
-
-            if (list.getSelectedValue() == null) {
-                logger.warn("Project not selected. @ProjectListWindow");
-                Messages.showErrorDialog("No project selected",
-                        "File not found");
-            } else {
-                opener.openProject(TmcSettingsManager.get().getProjectBasePath()
-                        + File.separator + courseName + File.separator
-                        + list.getSelectedValue(), courseName);
-            }
-        });
-    }
-
     @NotNull
     private JButton addFunctionalityToRefreshButton() {
         logger.info("Adding functionality to refresh projects button. "
@@ -156,18 +129,6 @@ public class ProjectListWindow {
         });
 
         return refreshButton;
-    }
-
-    private void addFunctionalityToHideButton() {
-        logger.info("Adding functionality to hide project button. "
-                + "@ProjectListWindow");
-
-        hideButton.addActionListener(actionEvent -> {
-            DataContext dataContext =
-                    DataManager.getInstance().getDataContextFromFocus().getResult();
-            Project project = DataKeys.PROJECT.getData(dataContext);
-            new OpenToolWindowAction().hideToolWindow(project);
-        });
     }
 
     public void refreshProjectList() {
@@ -217,20 +178,6 @@ public class ProjectListWindow {
                 GridConstraints.FILL_HORIZONTAL,
                 GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null,
                 new Dimension(-1, 20), null, 0, false));
-
-        openButton = new JButton();
-        openButton.setText("Open");
-
-        basePanel.add(openButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_NONE, 1,
-                GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-
-        hideButton = new JButton();
-        hideButton.setText("Hide");
-
-        basePanel.add(hideButton, new GridConstraints(2, 2, 1, 1, GridConstraints.ANCHOR_CENTER,
-                GridConstraints.FILL_NONE, 1,
-                GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
 
         final Spacer spacer1 = new Spacer();
         basePanel.add(spacer1, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER,
