@@ -210,7 +210,7 @@ public class CourseAndExerciseManager {
         logger.info("Updating single course. @CourseAndExerciseManager");
         boolean isNewCourse = getDatabase().getCourses().get(courseName) == null;
 
-        Course course = finder.findCourseByName(courseName, TmcCoreHolder.get());
+        Course course = finder.findCourse(courseName, "name");
 
         if (course == null) {
             return;

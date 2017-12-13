@@ -77,7 +77,7 @@ public class ExerciseDownloadingService {
                 logger.info("Starting to check exercises. @ExerciseDownloadingService");
 
                 final Course course =
-                        finder.findCourseByName(settings.getCurrentCourse().get().getName(), core);
+                        finder.findCourse(settings.getCurrentCourse().get().getName(), "name");
 
                 List<Exercise> exercises = course.getExercises();
                 exercises = checker.clean(exercises, settings);
@@ -145,7 +145,7 @@ public class ExerciseDownloadingService {
             CoreProgressObserver observer) {
         logger.info("Starting to download exercise. @ExerciseDownloadingService");
 
-        final Course course = finder.findCourseByName(settings.getCurrentCourse().get().getName(), core);
+        final Course course = finder.findCourse(settings.getCurrentCourse().get().getName(), "name");
 
         List<Exercise> exercises = course.getExercises();
         exercises = checker.clean(exercises, settings);

@@ -28,7 +28,7 @@ public class ProjectOpener {
     private static final Logger logger = LoggerFactory.getLogger(ProjectOpener.class);
 
     public void openProject(String path, String courseName) {
-        Course course = new ObjectFinder().findCourseByName(courseName, TmcCoreHolder.get());
+        Course course = new ObjectFinder().findCourse(courseName, "name");
         TmcSettingsManager.get().setCourse(Optional.fromNullable(course));
         openProject(path);
     }
@@ -65,7 +65,7 @@ public class ProjectOpener {
             Messages.showErrorDialog(
                     new ObjectFinder().findCurrentProject(),
                     "Directory no longer exists",
-                    "File not Found");
+                    "File not found");
             ProjectListManagerHolder.get().refreshAllCourses();
         }
     }

@@ -65,6 +65,8 @@ public class OrganizationListWindowMock extends JPanel {
 
             final OrganizationCard organization = organizationCards.getSelectedValue();
 
+
+
             try {
                 if (SettingsPanelMock.getInstance() != null) {
                     SettingsPanelMock.getInstance()

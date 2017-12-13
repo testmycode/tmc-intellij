@@ -66,7 +66,7 @@ public class SettingsPanel {
                 ServiceManager.getService(PersistentTmcSettings.class);
         SettingsTmc settings = persistentSettings.getSettingsTmc();
 
-        if (settings.getCurrentCourse().isPresent() && settings.getCurrentCourse().get().getName() != null) {
+        if (settings.getCurrentCourse().isPresent() && settings.getCurrentCourse().get().getTitle() != null) {
             currentCourse.setText(settings.getCourseName());
         } else {
             currentCourse.setText("No course selected");

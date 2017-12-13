@@ -182,7 +182,7 @@ public class SpywareTabListener {
             return settings.getCurrentCourse().get();
         }
         return new ObjectFinder()
-                .findCourseByName(PathResolver.getCourseName(basePath), TmcCoreHolder.get());
+                .findCourse(PathResolver.getCourseName(basePath), "name");
     }
 
     public Exercise getExercise() {

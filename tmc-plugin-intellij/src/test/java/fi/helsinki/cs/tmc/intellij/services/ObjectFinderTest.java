@@ -61,7 +61,7 @@ public class ObjectFinderTest {
         when(core.getCourseDetails(ProgressObserver.NULL_OBSERVER, toFind)).thenReturn(
                 () -> toFind
         );
-        assertEquals(toFind, finder.findCourseByName("Namibian Saha", core));
+        assertEquals(toFind, finder.findCourse("Namibian Saha", "name"));
     }
 
     @Test
@@ -75,7 +75,7 @@ public class ObjectFinderTest {
         when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
                 () -> courses
         );
-        assertEquals(null, finder.findCourseByName("Namibian Saha", core));
+        assertEquals(null, finder.findCourse("Namibian Saha", "name"));
     }
 
 }

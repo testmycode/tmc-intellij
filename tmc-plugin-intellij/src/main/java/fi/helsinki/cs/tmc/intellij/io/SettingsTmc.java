@@ -100,9 +100,9 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     public String getCourseName() {
-        logger.info("Getting course name <- {}. @SettingsTmc", course.getName());
+        logger.info("Getting course name <- {}. @SettingsTmc", course.getTitle());
         if (course != null) {
-            return course.getName();
+            return course.getTitle();
         }
         return null;
     }

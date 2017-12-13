@@ -1,7 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.ui.projectlist;
 
-import com.intellij.openapi.ui.Messages;
-import fi.helsinki.cs.tmc.intellij.actions.OpenToolWindowAction;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.ProjectOpener;
@@ -10,13 +8,8 @@ import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
 
-import com.intellij.ide.DataManager;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.actionSystem.DataKeys;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.progress.util.ProgressWindow;
-import com.intellij.openapi.project.Project;
-import com.intellij.ui.components.JBList;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -30,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
-import java.io.File;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -45,7 +37,7 @@ public class ProjectListWindow {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectListWindow.class);
 
-    private JTabbedPane tabbedPanelBase;
+    private JTabbedPane tabbedPaneBase;
 
     public JPanel getBasePanel() {
         return basePanel;
@@ -62,7 +54,7 @@ public class ProjectListWindow {
 
     public void addCourseTabsAndExercises() {
         logger.info("Creating course tabs and exercises. @ProjectListWindow");
-        tabbedPanelBase.removeAll();
+        tabbedPaneBase.removeAll();
         toolbar.removeAll();
         ObjectFinder finder = new ObjectFinder();
         List<String> courses = finder.listAllDownloadedCourses();
@@ -70,7 +62,7 @@ public class ProjectListWindow {
         final ProjectOpener opener = new ProjectOpener();
         CourseTabFactory factory = new CourseTabFactory();
 
-        createCourseSpecificTabs(finder, opener, tabbedPanelBase,
+        createCourseSpecificTabs(finder, opener, tabbedPaneBase,
                 courses, factory, new CourseAndExerciseManager());
 
         JButton refreshButton = addFunctionalityToRefreshButton();
@@ -84,9 +76,9 @@ public class ProjectListWindow {
 
         if (TmcSettingsManager.get().getCurrentCourse().isPresent()) {
             String course = TmcSettingsManager.get().getCurrentCourse().get().getName();
-            for (int i = 0; i < tabbedPanelBase.getTabCount(); i++) {
-                if (tabbedPanelBase.getTitleAt(i).equals(course)) {
-                    tabbedPanelBase.setSelectedIndex(i);
+            for (int i = 0; i < tabbedPaneBase.getTabCount(); i++) {
+                if (tabbedPaneBase.getTitleAt(i).equals(course)) {
+                    tabbedPaneBase.setSelectedIndex(i);
                     return;
                 }
             }
@@ -101,6 +93,7 @@ public class ProjectListWindow {
                                           CourseAndExerciseManager courseAndExerciseManager) {
 
         logger.info("Starting to create all course specific tabs. @ProjectListWindow");
+
         for (String course : courses) {
             logger.info("Creating course specific tab for "
                     + course + ". @ProjectListWindow");
@@ -160,9 +153,9 @@ public class ProjectListWindow {
         basePanel = new JPanel();
         basePanel.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
 
-        tabbedPanelBase = new JTabbedPane();
+        tabbedPaneBase = new JTabbedPane();
 
-        basePanel.add(tabbedPanelBase, new GridConstraints(1, 0, 1, 3,
+        basePanel.add(tabbedPaneBase, new GridConstraints(1, 0, 1, 3,
                 GridConstraints.ANCHOR_CENTER,
                 GridConstraints.FILL_BOTH,
                 GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW,
