@@ -57,7 +57,7 @@ public class ExerciseUploadingService {
                         getCourseName(exerciseCourse), getExerciseName(exerciseCourse));
 
 
-        if (exercise.hasDeadlinePassed()) {
+        if (exercise != null && exercise.hasDeadlinePassed()) {
             logger.warn("Exercise has expired. @ExerciseUploadingService");
             Messages.showErrorDialog(project, "The deadline for this exercise has passed", "Error");
         } else {

@@ -67,13 +67,6 @@ public class SettingsTmcTest {
     }
 
     @Test
-    public void userDataExistsReturnsFalseWhenPassWordDoesNotExist() throws Exception {
-        settingstmc.setUsername("koira");
-        Boolean bool = settingstmc.userDataExists();
-        assertFalse(bool);
-    }
-
-    @Test
     public void setOrganizationWorksCorrectly() {
         settingstmc.setOrganization(Optional.of(new Organization("Default", "default", "default", "default", false)));
         assertEquals("Default", settingstmc.getOrganization().get().getName());

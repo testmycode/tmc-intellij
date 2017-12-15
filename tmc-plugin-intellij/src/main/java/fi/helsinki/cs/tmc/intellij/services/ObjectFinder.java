@@ -16,6 +16,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,34 +28,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 /** Finds various exercises and courses from the disk or by asking the TMCServer. */
 public class ObjectFinder {
 
     private static final Logger logger = LoggerFactory.getLogger(ObjectFinder.class);
-
-    public Exercise findExerciseByName(Course course, String exerciseName) {
-        logger.info("Processing findExerciseByName {}. @ObjectFinder", exerciseName);
-        List<Exercise> exercises = course.getExercises();
-        Exercise exercise = getExercise(exerciseName, exercises);
-        if (exercise != null) {
-            return exercise;
-        }
-        logger.info("Could not find exercise with the name {}. @ObjectFinder", exerciseName);
-        return null;
-    }
-
-    @Nullable
-    private Exercise getExercise(String exerciseName, List<Exercise> exercises) {
-        for (Exercise exercise : exercises) {
-            if (exercise.getName().equals(exerciseName)) {
-                logger.info("Found {}. @ObjectFinder", exercise);
-                return exercise;
-            }
-        }
-        return null;
-    }
 
     @Nullable
     public Course findCourse(String searchTerm, String titleOrName) {
@@ -87,7 +65,26 @@ public class ObjectFinder {
         return null;
     }
 
-    public List<Course> getCourses(TmcCore core) {
+    @TestOnly
+    public Course findCourseForTesting(String searchTerm, String titleOrName, TmcCore core) {
+        List<Course> courses = getCourses(core);
+
+        for (Course c : courses) {
+            if ((titleOrName.equals("name") && c.getName().equals(searchTerm)) || (titleOrName.equals("title") && c.getTitle().equals(searchTerm))) {
+                try {
+                    return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, c).call();
+                } catch (TmcCoreException exception) {
+                    new ErrorMessageService().showHumanReadableErrorMessage(exception, false);
+                } catch (Exception e) {
+                    new ErrorMessageService().showErrorMessage(e, "Could not find course.", true);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private List<Course> getCourses(TmcCore core) {
         logger.info("Processing getCourses @ObjectFinder");
         List<Course> courses = null;
 
@@ -130,7 +127,7 @@ public class ObjectFinder {
     }
 
     private List<String> getListOfDirectoriesInPath(String folderPath) {
-        logger.info("Processing addExercisesToList. @ObjectFinder");
+        logger.info("Processing getListOfDirectoriesInPath. @ObjectFinder");
         List<String> fileNames = new ArrayList<>();
 
         try (DirectoryStream<Path> directoryStream =
@@ -153,13 +150,15 @@ public class ObjectFinder {
             if (!Files.isDirectory(path)) {
                 continue;
             }
-            String[] exerciseCourse = PathResolver.getCourseAndExerciseName(path);
-            if (exerciseCourse == null || getExerciseName(exerciseCourse).charAt(0) == '.') {
+            String[] courseAndExerciseNameArray = PathResolver.getCourseAndExerciseName(path); // courseAndExerciseName is an array
+                                                                                        // where the second to last element is
+                                                                                        // course name and last element is exercise name
+            if (courseAndExerciseNameArray == null || getExerciseName(courseAndExerciseNameArray).charAt(0) == '.') {
                 logger.info("exerciseCourse variable = null. @ObjectFinder");
                 continue;
             }
-            logger.info("Adding exercise to list. @ObjectFinder", getExerciseName(exerciseCourse));
-            fileNames.add(getExerciseName(exerciseCourse));
+            logger.info("Adding exercise to list. @ObjectFinder", getExerciseName(courseAndExerciseNameArray));
+            fileNames.add(getExerciseName(courseAndExerciseNameArray));
         }
     }
 

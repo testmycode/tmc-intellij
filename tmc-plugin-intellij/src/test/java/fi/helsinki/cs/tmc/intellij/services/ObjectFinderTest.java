@@ -26,28 +26,6 @@ public class ObjectFinderTest {
     }
 
     @Test
-    public void findExerciseByNameFindsIt() throws Exception {
-        List<Exercise> exercises = new ArrayList<>();
-        exercises.add(new Exercise("harjoitus"));
-        Exercise toFind = new Exercise("teht");
-        exercises.add(toFind);
-        Course course = new Course();
-        course.setExercises(exercises);
-        assertEquals(finder.findExerciseByName(course, "teht"), toFind);
-    }
-
-    @Test
-    public void findExerciseReturnsNullIfCantBeFound() throws Exception {
-        List<Exercise> exercises = new ArrayList<>();
-        exercises.add(new Exercise("harjoitus"));
-        Exercise toFind = new Exercise("aspo");
-        exercises.add(toFind);
-        Course course = new Course();
-        course.setExercises(exercises);
-        assertEquals(finder.findExerciseByName(course, "teht"), null);
-    }
-
-    @Test
     public void findCourseByNameWorks() throws Exception {
         final List<Course> courses = new ArrayList<>();
         courses.add(new Course("Jamaikan Nippuside"));
@@ -61,7 +39,7 @@ public class ObjectFinderTest {
         when(core.getCourseDetails(ProgressObserver.NULL_OBSERVER, toFind)).thenReturn(
                 () -> toFind
         );
-        assertEquals(toFind, finder.findCourse("Namibian Saha", "name"));
+        assertEquals(toFind, finder.findCourseForTesting("Namibian Saha", "name", core));
     }
 
     @Test
@@ -75,7 +53,7 @@ public class ObjectFinderTest {
         when(core.listCourses(ProgressObserver.NULL_OBSERVER)).thenReturn(
                 () -> courses
         );
-        assertEquals(null, finder.findCourse("Namibian Saha", "name"));
+        assertEquals(null, finder.findCourseForTesting("Namibian Saha", "name", core));
     }
 
 }
