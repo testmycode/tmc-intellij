@@ -207,10 +207,15 @@ public class CourseTabFactory {
                             .getExerciseDirectory(TmcSettingsManager.get()
                                     .getTmcProjectDirectory()));
                 } else {
-                    String courseName = finder.findCourse(list.getParent().getParent().getName(), "title").getName();
-                    opener.openProject(TmcSettingsManager.get().getProjectBasePath()
-                            + File.separator + courseName
-                            + File.separator + selectedItem, courseName);
+                    try {
+                        String courseName = finder.findCourse(list.getParent().getParent().getName(), "title").getName();
+                        opener.openProject(TmcSettingsManager.get().getProjectBasePath()
+                                + File.separator + courseName
+                                + File.separator + selectedItem, courseName);
+                    } catch (NullPointerException e) {
+                        new ErrorMessageService().showErrorMessage(e, "Course doesn't belong to the current organization", true);
+                    }
+
                 }
 
             }

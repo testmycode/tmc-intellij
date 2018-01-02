@@ -3,15 +3,12 @@ package fi.helsinki.cs.tmc.intellij.ui.settings;
 import com.intellij.openapi.ui.ComboBox;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Organization;
-import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
 import fi.helsinki.cs.tmc.intellij.ui.organizationselection.OrganizationListWindow;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionListener;
 
@@ -20,7 +17,6 @@ import javax.swing.*;
 /** Swing component displayed in settings window. */
 public class SettingsPanelMock {
 
-    private static final Logger logger = LoggerFactory.getLogger(SettingsPanel.class);
     private JPanel panel1;
     private JFormattedTextField projectPathField;
     private JCheckBox checkForNewOrCheckBox;
@@ -46,8 +42,6 @@ public class SettingsPanelMock {
         this.instance = this;
 
         initComponents();
-
-        logger.info("Building SettingsPanel");
 
         SettingsTmc settingsTmc = new SettingsTmc("server-address", "kissa", "koira"); // TODO: HOW?
 
@@ -211,10 +205,8 @@ public class SettingsPanelMock {
     }
 
     private ActionListener createActionListenerOk() {
-        logger.info("Create action listener for SettingsPanel ok button. @SettingsPanel");
         return actionEvent -> {
             new ButtonInputListener().receiveSettings();
-            logger.info("Ok button pressed. @SettingsPanel");
             //            saveInformation();
 
             this.frame.dispose();
@@ -224,9 +216,7 @@ public class SettingsPanelMock {
     }
 
     private ActionListener createActionListenerCancel() {
-        logger.info("Create action listener for SettingsPanel cancel button. @SettingsPanel");
         return actionEvent -> {
-            logger.info("Cancel button pressed. @SettingsPanel");
             this.frame.dispose();
             this.frame.setVisible(false);
             this.instance = null;

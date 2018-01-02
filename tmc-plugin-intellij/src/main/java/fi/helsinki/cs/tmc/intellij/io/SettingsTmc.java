@@ -41,16 +41,12 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private boolean firstRun;
 
     public SettingsTmc(String serverAddress, String username, String password) {
-        // TODO: do we have an initial value for organization, token, etc.?
         this.spyware = true;
         this.sendDiagnostics = true;
         this.checkForExercises = false;
         this.serverAddress = serverAddress;
         this.username = username;
         this.password = password;
-        this.organization = new Organization("Default", "lolled", "default", "lolled", false);
-        this.oauthCredentials = new OauthCredentials("oauth_application_id", "oauth_secret");
-        this.token = "kissa";
         this.firstRun = true;
     }
 

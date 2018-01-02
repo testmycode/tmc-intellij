@@ -40,10 +40,10 @@ public class ObjectFinder {
         List<Course> courses = getCourses(core);
 
         for (Course c : courses) {
-            if ((titleOrName.equals("name") && c.getName().equals(searchTerm)) || (titleOrName.equals("title") && c.getTitle().equals(searchTerm))) {
+            if ((titleOrName.equals("name") && c.getName().equals(searchTerm))
+                    || (titleOrName.equals("title") && c.getTitle().equals(searchTerm))) {
                 try {
-                    logger.info(
-                            "Trying to get course details from TmcCore. @ObjectFinder", c);
+                    logger.info("Trying to get course details from TmcCore. @ObjectFinder", c);
 
                     return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, c).call();
                 } catch (TmcCoreException exception) {
@@ -53,10 +53,7 @@ public class ObjectFinder {
                             exception.getStackTrace());
                     new ErrorMessageService().showHumanReadableErrorMessage(exception, false);
                 } catch (Exception e) {
-                    logger.warn(
-                            "Could not find course. @ObjectFinder",
-                            e,
-                            e.getStackTrace());
+                    logger.warn("Could not find course. @ObjectFinder", e, e.getStackTrace());
                     new ErrorMessageService().showErrorMessage(e, "Could not find course.", true);
                 }
             }
@@ -70,7 +67,8 @@ public class ObjectFinder {
         List<Course> courses = getCourses(core);
 
         for (Course c : courses) {
-            if ((titleOrName.equals("name") && c.getName().equals(searchTerm)) || (titleOrName.equals("title") && c.getTitle().equals(searchTerm))) {
+            if ((titleOrName.equals("name") && c.getName().equals(searchTerm))
+                    || (titleOrName.equals("title") && c.getTitle().equals(searchTerm))) {
                 try {
                     return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, c).call();
                 } catch (TmcCoreException exception) {
@@ -96,7 +94,8 @@ public class ObjectFinder {
         } catch (Exception e) {
             logger.warn("Getting courses failed @ObjectFinder", e, e.getStackTrace());
             new ErrorMessageService()
-                    .showErrorMessage(e, "Something went wrong while trying to get the course list", true);
+                    .showErrorMessage(
+                            e, "Something went wrong while trying to get the course list", true);
         }
 
         return courses;
@@ -106,7 +105,8 @@ public class ObjectFinder {
         logger.info("Processing listAllDownloadedCourses. @ObjectFinder");
         List<String> courseTitles = new ArrayList<>();
 
-        for (String name : getListOfDirectoriesInPath(TmcSettingsManager.get().getProjectBasePath())) {
+        for (String name :
+                getListOfDirectoriesInPath(TmcSettingsManager.get().getProjectBasePath())) {
             Course course = findCourse(name, "name");
 
             if (course == null) {
@@ -123,7 +123,9 @@ public class ObjectFinder {
         logger.info(
                 "Processing listAllDownloadedExercises from course {}. @ObjectFinder", courseTitle);
         return getListOfDirectoriesInPath(
-                TmcSettingsManager.get().getProjectBasePath() + File.separator + findCourse(courseTitle, "title").getName());
+                TmcSettingsManager.get().getProjectBasePath()
+                        + File.separator
+                        + findCourse(courseTitle, "title").getName());
     }
 
     private List<String> getListOfDirectoriesInPath(String folderPath) {
@@ -150,14 +152,18 @@ public class ObjectFinder {
             if (!Files.isDirectory(path)) {
                 continue;
             }
-            String[] courseAndExerciseNameArray = PathResolver.getCourseAndExerciseName(path); // courseAndExerciseName is an array
-                                                                                        // where the second to last element is
-                                                                                        // course name and last element is exercise name
-            if (courseAndExerciseNameArray == null || getExerciseName(courseAndExerciseNameArray).charAt(0) == '.') {
+
+            // courseAndExerciseName is an array where the second to last element is course name and
+            // last element is exercise name
+            String[] courseAndExerciseNameArray = PathResolver.getCourseAndExerciseName(path);
+            if (courseAndExerciseNameArray == null
+                    || getExerciseName(courseAndExerciseNameArray).charAt(0) == '.') {
                 logger.info("exerciseCourse variable = null. @ObjectFinder");
                 continue;
             }
-            logger.info("Adding exercise to list. @ObjectFinder", getExerciseName(courseAndExerciseNameArray));
+            logger.info(
+                    "Adding exercise to list. @ObjectFinder",
+                    getExerciseName(courseAndExerciseNameArray));
             fileNames.add(getExerciseName(courseAndExerciseNameArray));
         }
     }

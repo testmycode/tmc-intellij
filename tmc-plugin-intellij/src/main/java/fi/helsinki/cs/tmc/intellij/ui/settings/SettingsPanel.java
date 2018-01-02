@@ -1,11 +1,18 @@
 package fi.helsinki.cs.tmc.intellij.ui.settings;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.progress.util.ProgressWindow;
+import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
+import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
+import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
@@ -48,39 +55,7 @@ public class SettingsPanel {
     private JButton changeCourseButton;
     private static SettingsPanel instance;
     private JFrame frame;
-
-    public void setCurrentOrganization() {
-        final PersistentTmcSettings persistentSettings =
-                ServiceManager.getService(PersistentTmcSettings.class);
-        SettingsTmc settings = persistentSettings.getSettingsTmc();
-
-        if (settings.getOrganization().isPresent() && settings.getOrganization().get().getName() != null) {
-            currentOrganization.setText(settings.getOrganization().get().getName());
-        } else {
-            currentOrganization.setText("No organization selected");
-        }
-    }
-
-    public void setCurrentCourse() {
-        final PersistentTmcSettings persistentSettings =
-                ServiceManager.getService(PersistentTmcSettings.class);
-        SettingsTmc settings = persistentSettings.getSettingsTmc();
-
-        if (settings.getCurrentCourse().isPresent() && settings.getCurrentCourse().get().getTitle() != null) {
-            currentCourse.setText(settings.getCourseName());
-        } else {
-            currentCourse.setText("No course selected");
-        }
-    }
-
-    public JPanel getPanel() {
-        doClicks();
-        return this.panel1;
-    }
-
-    public static SettingsPanel getInstance() {
-        return instance;
-    }
+    private Organization organizationFirst;
 
     public SettingsPanel(final JFrame frame) {
         this.frame = frame;
@@ -92,6 +67,7 @@ public class SettingsPanel {
         loggedUser.setText("Logged in as " + settingsTmc.getUsername().get());
 
         setCurrentOrganization();
+        organizationFirst = settingsTmc.getOrganization().orNull();
 
         setCurrentCourse();
 
@@ -115,6 +91,41 @@ public class SettingsPanel {
         downloadCourseExercisesButton.addActionListener(downloadListener);
         ActionListener logoutListener = createActionListenerLogout();
         logoutButton.addActionListener(logoutListener);
+    }
+
+    public JPanel getPanel() {
+        doClicks();
+        return this.panel1;
+    }
+
+    public static SettingsPanel getInstance() {
+        return instance;
+    }
+
+    public void setCurrentOrganization() {
+        final PersistentTmcSettings persistentSettings =
+                ServiceManager.getService(PersistentTmcSettings.class);
+        SettingsTmc settings = persistentSettings.getSettingsTmc();
+
+        if (settings.getOrganization().isPresent()
+                && settings.getOrganization().get().getName() != null) {
+            currentOrganization.setText(settings.getOrganization().get().getName());
+        } else {
+            currentOrganization.setText("No organization selected");
+        }
+    }
+
+    public void setCurrentCourse() {
+        final PersistentTmcSettings persistentSettings =
+                ServiceManager.getService(PersistentTmcSettings.class);
+        SettingsTmc settings = persistentSettings.getSettingsTmc();
+
+        if (settings.getCurrentCourse().isPresent()
+                && settings.getCurrentCourse().get().getTitle() != null) {
+            currentCourse.setText(settings.getCourseName());
+        } else {
+            currentCourse.setText("No course selected");
+        }
     }
 
     public void doClicks() {
@@ -210,6 +221,22 @@ public class SettingsPanel {
             this.frame.dispose();
             this.frame.setVisible(false);
             this.instance = null;
+
+            SettingsTmc settingsTmc =
+                    ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+
+            if (settingsTmc.getOrganization().orNull() != organizationFirst) {
+                ApplicationManager.getApplication()
+                        .invokeLater(
+                                () -> {
+                                    new ErrorMessageService()
+                                            .showInfoBalloon(
+                                                    "Organization has been changed. Refreshing project list...");
+                                    ProjectListManagerHolder.get().refreshAllCourses();
+                                    new ErrorMessageService()
+                                            .showInfoBalloon("Project list has been refreshed.");
+                                });
+            }
         };
     }
 
