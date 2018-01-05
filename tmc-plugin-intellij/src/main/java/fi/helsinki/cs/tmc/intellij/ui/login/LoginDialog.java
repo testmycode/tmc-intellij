@@ -4,6 +4,7 @@ import com.intellij.openapi.components.ServiceManager;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.core.utilities.TmcServerAddressNormalizer;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
@@ -121,6 +122,8 @@ public class LoginDialog extends JDialog {
                     // Because then the current course probably isn't the right organization's
                     // course.
                     CourseListWindow.display();
+                } else {
+                    ProjectListManagerHolder.get().refreshAllCourses();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

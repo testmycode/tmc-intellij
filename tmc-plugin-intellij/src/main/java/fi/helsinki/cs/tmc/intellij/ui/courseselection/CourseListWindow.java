@@ -7,6 +7,7 @@ import com.intellij.ui.components.JBScrollPane;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.holders.TmcSettingsHolder;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
@@ -170,7 +171,7 @@ public class CourseListWindow extends JPanel {
                 if (SettingsPanel.getInstance() != null) { // Update SettingsPanel if it's visible
                     SettingsPanel.getInstance().setCurrentCourse();
                 }
-
+                ProjectListManagerHolder.get().refreshAllCourses();
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

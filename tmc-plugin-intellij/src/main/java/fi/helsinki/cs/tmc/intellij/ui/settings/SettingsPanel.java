@@ -229,12 +229,14 @@ public class SettingsPanel {
                 ApplicationManager.getApplication()
                         .invokeLater(
                                 () -> {
-                                    new ErrorMessageService()
-                                            .showInfoBalloon(
-                                                    "Organization has been changed. Refreshing project list...");
+//                                    new ErrorMessageService()
+//                                            .showInfoBalloon(
+//                                                    "Organization has been changed. Refreshing project list...");
+
                                     ProjectListManagerHolder.get().refreshAllCourses();
-                                    new ErrorMessageService()
-                                            .showInfoBalloon("Project list has been refreshed.");
+
+//                                    new ErrorMessageService()
+//                                            .showInfoBalloon("Project list has been refreshed.");
                                 });
             }
         };

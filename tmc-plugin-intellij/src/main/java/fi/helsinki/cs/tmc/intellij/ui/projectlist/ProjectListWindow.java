@@ -49,7 +49,9 @@ public class ProjectListWindow {
     public ProjectListWindow() {
         logger.info("Adding course tabs and exercises"
                 + " to ProjectListWindow. @ProjectListWindow");
-        addCourseTabsAndExercises();
+        if (TmcSettingsManager.get().getOrganization().isPresent()) {
+            addCourseTabsAndExercises();
+        }
     }
 
     public void addCourseTabsAndExercises() {

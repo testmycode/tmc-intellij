@@ -176,6 +176,7 @@ public class ObjectFinder {
     public Project findCurrentProject() {
         logger.info("Trying to findCurrentProject. @ObjectFinder");
         DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResult();
+
         if (dataContext == null) {
             Project[] projects = ProjectManager.getInstance().getOpenProjects();
 

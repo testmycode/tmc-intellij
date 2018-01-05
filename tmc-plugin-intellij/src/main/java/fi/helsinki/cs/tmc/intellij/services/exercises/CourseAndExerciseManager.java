@@ -115,9 +115,14 @@ public class CourseAndExerciseManager {
                     "Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
                     exception,
                     exception.getStackTrace());
-            ErrorMessageService error = new ErrorMessageService();
-            error.showHumanReadableErrorMessage(exception, false);
-            refreshCoursesOffline();
+            SettingsTmc settingsTmc = TmcSettingsManager.get();
+            if (!settingsTmc.getFirstRun()) {
+                ErrorMessageService error = new ErrorMessageService();
+                error.showHumanReadableErrorMessage(exception, false);
+            }
+            if (settingsTmc.getOrganization().isPresent()) {
+                refreshCoursesOffline();
+            }
         } catch (Exception exception) {
             logger.warn(
                     "Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
