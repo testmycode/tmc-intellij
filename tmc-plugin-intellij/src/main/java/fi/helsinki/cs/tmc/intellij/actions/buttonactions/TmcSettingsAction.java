@@ -1,5 +1,8 @@
 package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
+import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
+import fi.helsinki.cs.tmc.intellij.ui.login.LoginDialog;
 import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsWindow;
 
 import com.intellij.openapi.actionSystem.AnAction;
@@ -25,10 +28,14 @@ public class TmcSettingsAction extends AnAction {
 
     public void showSettings() {
         logger.info("Opening TMC setting window. @TmcSettingsAction");
-        if (window == null || window.isClosed()) {
-            window = new SettingsWindow();
+        if (TmcSettingsManager.get().getToken().isPresent()) {
+            if (window == null || window.isClosed()) {
+                window = new SettingsWindow();
+            } else {
+                window.show();
+            }
         } else {
-            window.show();
+            LoginDialog.display();
         }
     }
 }

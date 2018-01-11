@@ -10,7 +10,7 @@ public class RunProject {
 
     private static final Logger logger = LoggerFactory.getLogger(RunProject.class);
 
-    private RunConfigurationFactory factory;
+    private final RunConfigurationFactory factory;
 
     public RunProject(RunManager runManager, Module module, String configurationType) {
         logger.info("Creating RunConfigurationFactory.");

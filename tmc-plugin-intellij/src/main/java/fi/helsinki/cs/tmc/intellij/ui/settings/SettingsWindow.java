@@ -7,14 +7,12 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-/**
- * Creates and controls the settings window.
- */
+/** Creates and controls the settings window. */
 public class SettingsWindow {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsWindow.class);
 
-    private JFrame frame;
+    private final JFrame frame;
 
     public SettingsWindow() {
         logger.info("Building SettingsWindow. @SettingsWindow");

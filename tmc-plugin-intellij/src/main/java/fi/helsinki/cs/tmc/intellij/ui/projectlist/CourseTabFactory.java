@@ -43,7 +43,7 @@ public class CourseTabFactory {
             ObjectFinder finder,
             ProjectOpener opener,
             String course,
-            JTabbedPane tabbedPanelBase,
+            JTabbedPane tabbedPaneBase,
             CourseAndExerciseManager courseAndExerciseManager) {
         logger.info("Creating course specific tab. @CourseTabFactory");
         final JBScrollPane panel = new JBScrollPane();
@@ -71,9 +71,9 @@ public class CourseTabFactory {
         panel.setViewportView(list);
 
         ProjectListManagerHolder.get().addList(list);
-        tabbedPanelBase.addTab(course, panel);
-        tabbedPanelBase.addMouseListener(tabMouseListener(tabbedPanelBase));
-        setScrollBarToBottom(course, tabbedPanelBase, panel);
+        tabbedPaneBase.addTab(course, panel);
+        tabbedPaneBase.addMouseListener(tabMouseListener(tabbedPaneBase));
+        setScrollBarToBottom(course, tabbedPaneBase, panel);
     }
 
     @NotNull
@@ -185,6 +185,8 @@ public class CourseTabFactory {
     private MouseListener createMouseListenerForWindow(
             final ProjectOpener opener, final JBScrollPane panel, final JBList list) {
 
+        ObjectFinder finder = new ObjectFinder();
+
         logger.info("Creating mouse listener for course tab. @CourseTabFactory");
         return new MouseAdapter() {
 
@@ -205,10 +207,15 @@ public class CourseTabFactory {
                             .getExerciseDirectory(TmcSettingsManager.get()
                                     .getTmcProjectDirectory()));
                 } else {
-                    String courseName = list.getParent().getParent().getName();
-                    opener.openProject(TmcSettingsManager.get().getProjectBasePath()
-                            + File.separator + courseName
-                            + File.separator + selectedItem, courseName);
+                    try {
+                        String courseName = finder.findCourse(list.getParent().getParent().getName(), "title").getName();
+                        opener.openProject(TmcSettingsManager.get().getProjectBasePath()
+                                + File.separator + courseName
+                                + File.separator + selectedItem, courseName);
+                    } catch (NullPointerException e) {
+                        new ErrorMessageService().showErrorMessage(e, "Course doesn't belong to the current organization", true);
+                    }
+
                 }
 
             }

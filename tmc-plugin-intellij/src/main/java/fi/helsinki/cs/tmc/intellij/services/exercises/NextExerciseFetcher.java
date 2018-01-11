@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.services.exercises;
 
+import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
@@ -19,8 +20,8 @@ import java.util.List;
 public class NextExerciseFetcher {
 
     private static final Logger logger = LoggerFactory.getLogger(NextExerciseFetcher.class);
-    private String course;
-    private Project project;
+    private final String course;
+    private final Project project;
     private Exercise exercise;
 
     public NextExerciseFetcher(String course, Exercise exercise, Project project) {
@@ -54,7 +55,7 @@ public class NextExerciseFetcher {
                             .equals(PathResolver.getCourseName(project.getBasePath()))) {
                         logger.info("Setting current course"
                                 + " to match the course we want to download from.");
-                        settings.setCourse(PathResolver.getCourse(project.getBasePath()));
+                        settings.setCourse(Optional.of(PathResolver.getCourse(project.getBasePath())));
                     }
                     new DownloadExerciseAction().downloadExercises(project, false);
                 }
@@ -111,7 +112,7 @@ public class NextExerciseFetcher {
     }
 
     private static boolean isCourseSelected(SettingsTmc settings) {
-        return settings.getCourse() != null;
+        return settings.getCurrentCourse().isPresent();
     }
 
 

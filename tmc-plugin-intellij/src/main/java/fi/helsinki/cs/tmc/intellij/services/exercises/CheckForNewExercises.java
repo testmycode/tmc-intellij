@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.services.exercises;
 
+import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.commands.GetUpdatableExercises.UpdateResult;
 import fi.helsinki.cs.tmc.core.domain.Course;
@@ -41,7 +42,7 @@ public class CheckForNewExercises {
                             if (course == null) {
                                 return;
                             }
-                            settings.setCourse(course);
+                            settings.setCourse(Optional.of(course));
                             CourseAndExerciseManager manager = new CourseAndExerciseManager();
                             try {
                                 getExerciseUpdateData(project, core, settings, manager);
@@ -56,7 +57,7 @@ public class CheckForNewExercises {
             throws Exception {
         logger.info("Trying to get exercise update data.");
         UpdateResult result =
-                core.getExerciseUpdates(ProgressObserver.NULL_OBSERVER, settings.getCourse())
+                core.getExerciseUpdates(ProgressObserver.NULL_OBSERVER, settings.getCurrentCourse().get())
                         .call();
         if (newExercisesAreAvailable(
                 result.getNewExercises(), manager.getExercises(settings.getCourseName()))) {

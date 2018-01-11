@@ -27,8 +27,8 @@ public class SpywareTabListener {
 
     private static final Logger logger = LoggerFactory.getLogger(SpywareTabListener.class);
 
-    private Project project;
-    private String basePath;
+    private final Project project;
+    private final String basePath;
 
     public SpywareTabListener(Project project) {
         this.project = project;
@@ -178,11 +178,11 @@ public class SpywareTabListener {
 
     public Course getCourse() {
         SettingsTmc settings = TmcSettingsManager.get();
-        if (settings.getCourse().getName().equals(PathResolver.getCourseName(basePath))) {
-            return settings.getCourse();
+        if (settings.getCurrentCourse().get().getName().equals(PathResolver.getCourseName(basePath))) {
+            return settings.getCurrentCourse().get();
         }
         return new ObjectFinder()
-                .findCourseByName(PathResolver.getCourseName(basePath), TmcCoreHolder.get());
+                .findCourse(PathResolver.getCourseName(basePath), "name");
     }
 
     public Exercise getExercise() {

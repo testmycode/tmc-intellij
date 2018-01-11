@@ -22,8 +22,6 @@ import com.intellij.openapi.application.WriteAction;
 import com.intellij.openapi.module.ModifiableModuleModel;
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
-import com.intellij.openapi.module.ModuleWithNameAlreadyExists;
-import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.CompilerModuleExtension;
 import com.intellij.openapi.roots.ContentEntry;
@@ -34,18 +32,15 @@ import com.intellij.openapi.roots.ModuleRootManager;
 import com.intellij.openapi.roots.OrderRootType;
 import com.intellij.openapi.roots.libraries.Library;
 import com.intellij.openapi.roots.libraries.LibraryTable;
-import com.intellij.openapi.util.InvalidDataException;
 import com.intellij.openapi.util.io.FileUtil;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
-import org.jdom.JDOMException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -156,9 +151,7 @@ public class ProjectFromSourcesBuilderImplModified {
             ProjectDescriptor projectDescriptor,
             final ModuleDescriptor descriptor,
             final Map<LibraryDescriptor, Library> projectLibs,
-            final ModifiableModuleModel moduleModel)
-            throws InvalidDataException, IOException, ModuleWithNameAlreadyExists, JDOMException,
-                    ConfigurationException {
+            final ModifiableModuleModel moduleModel) {
 
         logger.info("Starting createModule in ProjectFromSourcesBuilderImplModified");
         final String moduleFilePath = descriptor.computeModuleFilePath();

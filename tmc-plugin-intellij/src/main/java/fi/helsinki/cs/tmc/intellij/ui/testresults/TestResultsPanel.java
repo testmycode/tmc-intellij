@@ -154,8 +154,7 @@ public class TestResultsPanel extends JPanel {
     }
 
     private void createValidationRows(ValidationResult validationResult) {
-        validationResult.getValidationErrors().entrySet().stream()
-                        .forEach(e -> createValidationRowForEachError(e.getKey(), e.getValue()));
+        validationResult.getValidationErrors().forEach((key, value) -> createValidationRowForEachError(key, value));
     }
 
     private void createValidationRowForEachError(File file, List<ValidationError> errors) {

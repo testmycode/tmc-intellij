@@ -4,8 +4,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.domain.Course;
 
+import fi.helsinki.cs.tmc.core.domain.OauthCredentials;
+import fi.helsinki.cs.tmc.core.domain.Organization;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,14 +30,14 @@ public class SettingsTmcTest {
     @Test
     public void setUsernameWorksCorrectly() throws Exception {
         settingstmc.setUsername("koira");
-        String user = settingstmc.getUsername();
+        String user = settingstmc.getUsername().get();
         assertEquals("koira", user);
     }
 
     @Test
     public void setPasswordWorksCorrectly() throws Exception {
         settingstmc.setPassword("koira");
-        String user = settingstmc.getPassword();
+        String user = settingstmc.getPassword().get();
         assertEquals("koira", user);
     }
 
@@ -51,12 +54,12 @@ public class SettingsTmcTest {
         String user = settingstmc.getProjectBasePath();
         assertEquals("koira" + File.separator + "TMCProjects", user);
         settingstmc.setUsername("koira" + File.separator + "TMCProjects");
-        user = settingstmc.getUsername();
+        user = settingstmc.getUsername().get();
         assertEquals("koira" + File.separator + "TMCProjects", user);
     }
 
     @Test
-    public void userDataExistsReturnsTrue() throws Exception {
+    public void userDataExistsReturnsTrueWhenUsernameAndPasswordExist() throws Exception {
         settingstmc.setUsername("koira");
         settingstmc.setPassword("kissa");
         Boolean bool = settingstmc.userDataExists();
@@ -64,27 +67,28 @@ public class SettingsTmcTest {
     }
 
     @Test
-    public void userDataExistsReturnsFalse() throws Exception {
-        settingstmc.setUsername("koira");
-        Boolean bool = settingstmc.userDataExists();
-        assertFalse(bool);
+    public void setOrganizationWorksCorrectly() {
+        settingstmc.setOrganization(Optional.of(new Organization("Default", "default", "default", "default", false)));
+        assertEquals("Default", settingstmc.getOrganization().get().getName());
+        assertEquals("default", settingstmc.getOrganization().get().getInformation());
     }
 
     @Test
-    public void apiVersionWorksCorrectly() throws Exception {
-        assertEquals("7", settingstmc.apiVersion());
+    public void setOauthCredentialsWorksCorrectly() {
+        settingstmc.setOauthCredentials(Optional.of(new OauthCredentials("kissa", "koira")));
+        assertEquals("kissa", settingstmc.getOauthCredentials().get().getOauthApplicationId());
+    }
+
+    @Test
+    public void setTokenWorksCorrectly() {
+        settingstmc.setToken(Optional.of("kissa"));
+        assertEquals("kissa", settingstmc.getToken().get());
     }
 
     @Test
     public void clientNameWorksCorrectly() throws Exception {
         assertEquals("idea_plugin", settingstmc.clientName());
     }
-
-    @Test
-    public void getFormattedUserDataWorksCorrectly() throws Exception {
-        assertEquals(null, settingstmc.getFormattedUserData());
-    }
-
     @Test
     public void getTmcProjectDirectoryWorksCorrectly() throws Exception {
         Path path = Paths.get("koira" + File.separator + "TMCProjects");
@@ -100,8 +104,8 @@ public class SettingsTmcTest {
     @Test
     public void setCourseWorksCorrectly() throws Exception {
         Course course = new Course();
-        settingstmc.setCourse(course);
-        Course course1 = settingstmc.getCourse();
+        settingstmc.setCourse(Optional.of(course));
+        Course course1 = settingstmc.getCurrentCourse().get();
         assertEquals(course, course1);
     }
 

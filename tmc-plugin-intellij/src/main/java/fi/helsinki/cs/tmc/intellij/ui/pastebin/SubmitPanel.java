@@ -7,9 +7,9 @@ import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import com.intellij.util.ui.JBUI;
 
 import java.awt.Dimension;
-import java.awt.Insets;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -48,9 +48,9 @@ public class SubmitPanel {
     private void setupUi() {
         createUiComponents();
         jpanel1 = new JPanel();
-        jpanel1.setLayout(new GridLayoutManager(3, 3, new Insets(0, 0, 0, 0), -1, -1));
+        jpanel1.setLayout(new GridLayoutManager(3, 3, JBUI.emptyInsets(), -1, -1));
         final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel1.setLayout(new GridLayoutManager(5, 1, JBUI.emptyInsets(), -1, -1));
         jpanel1.add(
                 panel1,
                 new GridConstraints(
@@ -154,7 +154,7 @@ public class SubmitPanel {
                         0,
                         false));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(2, 3, new Insets(0, 0, 0, 0), -1, -1));
+        panel2.setLayout(new GridLayoutManager(2, 3, JBUI.emptyInsets(), -1, -1));
         jpanel1.add(
                 panel2,
                 new GridConstraints(

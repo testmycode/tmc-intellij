@@ -5,22 +5,11 @@ import static org.junit.Assert.assertNotEquals;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 
 
 public class TmcCoreHolderTest {
-    @Before
-    public void setUp() throws Exception {
-
-    }
-
-    @After
-    public void tearDown() throws Exception {
-
-    }
 
     @Test
     public void getReturnsCoreWithoutSetup() throws Exception {

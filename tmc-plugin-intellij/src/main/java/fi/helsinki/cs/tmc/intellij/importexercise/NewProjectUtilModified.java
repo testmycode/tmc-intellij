@@ -40,27 +40,25 @@ public class NewProjectUtilModified {
      * @param path project root dir
      * @throws IOException
      */
-    public static void importExercise(String path) throws IOException {
+    public static void importExercise(String path) {
         logger.info("Started importing exercise.");
-
-        final String projectFilePath = path;
 
         final Project newProject;
 
         try {
             logger.info("Creates .idea");
-            File projectDir = new File(projectFilePath).getParentFile();
+            File projectDir = new File(path).getParentFile();
             if (projectDir == null) {
-                logger.warn("Cannot create project in '" + projectFilePath + "': no parent file exists");
+                logger.warn("Cannot create project in '" + path + "': no parent file exists");
             }
             FileUtil.ensureExists(projectDir);
 
-            final File ideaDir = new File(projectFilePath, Project.DIRECTORY_STORE_FOLDER);
+            final File ideaDir = new File(path, Project.DIRECTORY_STORE_FOLDER);
             FileUtil.ensureExists(ideaDir);
 
             newProject =
                     ProjectManagerImpl.getInstanceEx()
-                            .newProject(path.toString(), path.toString(), true, false);
+                            .newProject(path, path, true, false);
 
             logger.info("Setting JDK");
             final Sdk jdk =
@@ -80,7 +78,6 @@ public class NewProjectUtilModified {
             logger.info("Sets compile output path");
             final String compileOutput =
                     StringUtil.endsWithChar(path, '/') ? path + "out" : path + "/out";
-            ;
             CommandProcessor.getInstance()
                     .executeCommand(
                             newProject,
@@ -121,7 +118,7 @@ public class NewProjectUtilModified {
 
             logger.info("saving project after builder commit");
             // without save method nothing happens
-            ProjectUtil.updateLastProjectLocation(projectFilePath);
+            ProjectUtil.updateLastProjectLocation(path);
             newProject.save();
             if (!ApplicationManager.getApplication().isUnitTestMode()) {
                 newProject.save();

@@ -35,8 +35,8 @@ public class SpywareFileListener implements Closeable {
     private static final Logger logger = LoggerFactory.getLogger(SpywareFileListener.class);
     private String projectPath;
     private boolean closed;
-    private ActiveThreadSet snapshotterThreads;
-    private Project project;
+    private final ActiveThreadSet snapshotterThreads;
+    private final Project project;
     private static VirtualFileListener listener;
 
     public SpywareFileListener(Project project) {

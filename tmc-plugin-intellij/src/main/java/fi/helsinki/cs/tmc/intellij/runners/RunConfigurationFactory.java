@@ -25,9 +25,9 @@ public class RunConfigurationFactory {
 
     private static final Logger logger = LoggerFactory.getLogger(RunConfigurationFactory.class);
 
-    private RunManager runManager;
-    private Module module;
-    private String configurationType;
+    private final RunManager runManager;
+    private final Module module;
+    private final String configurationType;
 
     public RunConfigurationFactory(RunManager runManager, Module module, String configurationType) {
         this.runManager = runManager;
@@ -82,7 +82,6 @@ public class RunConfigurationFactory {
      * Creates a run configuration, using the given template. The created configuration is then
      * added to RunManager.
      */
-    @NotNull
     public void createConfiguration() {
         logger.info("Creating configuration.");
         ConfigurationType type = ConfigurationTypeUtil.findConfigurationType(configurationType);

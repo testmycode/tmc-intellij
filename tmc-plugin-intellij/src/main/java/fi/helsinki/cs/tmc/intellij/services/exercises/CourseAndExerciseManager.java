@@ -93,7 +93,15 @@ public class CourseAndExerciseManager {
             Map<String, List<Exercise>> database = new HashMap<>();
             List<Course> courses =
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
-            Optional<Course> currentCourse = courses.stream().filter(o -> o.equals(TmcSettingsManager.get().getCourse())).findFirst();
+            Optional<Course> currentCourse =
+                    courses.stream()
+                            .filter(
+                                    o ->
+                                            o.equals(
+                                                    TmcSettingsManager.get()
+                                                            .getCurrentCourse()
+                                                            .orNull()))
+                            .findFirst();
             if (!currentCourse.isPresent()) {
                 logger.info("Did not find the selected course from the server");
                 return;
@@ -107,9 +115,14 @@ public class CourseAndExerciseManager {
                     "Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
                     exception,
                     exception.getStackTrace());
-            ErrorMessageService error = new ErrorMessageService();
-            error.showHumanReadableErrorMessage(exception, false);
-            refreshCoursesOffline();
+            SettingsTmc settingsTmc = TmcSettingsManager.get();
+            if (!settingsTmc.getFirstRun()) {
+                ErrorMessageService error = new ErrorMessageService();
+                error.showHumanReadableErrorMessage(exception, false);
+            }
+            if (settingsTmc.getOrganization().isPresent()) {
+                refreshCoursesOffline();
+            }
         } catch (Exception exception) {
             logger.warn(
                     "Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
@@ -202,7 +215,7 @@ public class CourseAndExerciseManager {
         logger.info("Updating single course. @CourseAndExerciseManager");
         boolean isNewCourse = getDatabase().getCourses().get(courseName) == null;
 
-        Course course = finder.findCourseByName(courseName, TmcCoreHolder.get());
+        Course course = finder.findCourse(courseName, "name");
 
         if (course == null) {
             return;

@@ -1,20 +1,28 @@
 package fi.helsinki.cs.tmc.intellij.ui.settings;
 
-import fi.helsinki.cs.tmc.core.domain.Course;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.progress.util.ProgressWindow;
+import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
-import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.actions.buttonactions.DownloadExerciseAction;
+import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
+import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 
+import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
+import fi.helsinki.cs.tmc.intellij.ui.login.LoginDialog;
+import fi.helsinki.cs.tmc.intellij.ui.organizationselection.OrganizationListWindow;
 import org.jetbrains.annotations.NotNull;
 
 import org.slf4j.Logger;
@@ -22,32 +30,13 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionListener;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.swing.*;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JComponent;
-import javax.swing.JFileChooser;
-import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-
-/**
- * Swing component displayed in settings window.
- */
+/** Swing component displayed in settings window. */
 public class SettingsPanel {
 
     private static final Logger logger = LoggerFactory.getLogger(SettingsPanel.class);
     private JPanel panel1;
-    private JTextField usernameField;
-    private JPasswordField passwordField;
-    private JTextField serverAddressField;
-    private JComboBox<Course> listOfAvailableCourses;
-    private JButton refreshButton;
     private JFormattedTextField projectPathField;
     private JCheckBox checkForNewOrCheckBox;
     private JCheckBox checkThatAllActiveCheckBox;
@@ -58,45 +47,50 @@ public class SettingsPanel {
     private JButton okButton;
     private JButton cancelButton;
     private JButton downloadCourseExercisesButton;
+    private JButton logoutButton;
+    private JLabel loggedUser;
+    private JLabel currentOrganization;
+    private JButton changeOrganizationButton;
+    private JLabel currentCourse;
+    private JButton changeCourseButton;
+    private static SettingsPanel instance;
+    private JFrame frame;
+    private Organization organizationFirst;
 
-    public JTextField getUsernameField() {
-        return usernameField;
-    }
+    public SettingsPanel(final JFrame frame) {
+        this.frame = frame;
+        this.instance = this;
 
-    public JPasswordField getPasswordField() {
-        return passwordField;
-    }
+        logger.info("Building SettingsPanel");
+        SettingsTmc settingsTmc = TmcSettingsManager.get();
 
-    public JTextField getServerAddressField() {
-        return serverAddressField;
-    }
+        loggedUser.setText("Logged in as " + settingsTmc.getUsername().get());
 
-    public JComboBox<Course> getListOfAvailableCourses() {
-        return listOfAvailableCourses;
-    }
+        setCurrentOrganization();
+        organizationFirst = settingsTmc.getOrganization().orNull();
 
-    public JFormattedTextField getProjectPathField() {
-        return projectPathField;
-    }
+        setCurrentCourse();
 
-    public JCheckBox getCheckForNewOrCheckBox() {
-        return checkForNewOrCheckBox;
-    }
+        ActionListener browseListener = createActionListenerBrowse();
+        browseButton.addActionListener(browseListener);
 
-    public JCheckBox getCheckThatAllActiveCheckBox() {
-        return checkThatAllActiveCheckBox;
-    }
+        changeOrganizationButton.addActionListener(createActionListenerChangeOrganization());
 
-    public JCheckBox getSendDiagnosticsCheckBox() {
-        return sendDiagnosticsCheckBox;
-    }
+        changeCourseButton.addActionListener(createActionListenerChangeCourse());
 
-    public JCheckBox getSendSnapshotsOfYourCheckBox() {
-        return sendSnapshotsOfYourCheckBox;
-    }
+        doClicks();
 
-    public JComboBox<String> getselectErrorLanguageField() {
-        return selectErrorLanguageField;
+        projectPathField.setText(settingsTmc.getProjectBasePath());
+        selectErrorLanguageField.addItem("English");
+
+        ActionListener okListener = createActionListenerOk();
+        okButton.addActionListener(okListener);
+        ActionListener cancelListener = createActionListenerCancel();
+        cancelButton.addActionListener(cancelListener);
+        ActionListener downloadListener = createActionListenerDownload();
+        downloadCourseExercisesButton.addActionListener(downloadListener);
+        ActionListener logoutListener = createActionListenerLogout();
+        logoutButton.addActionListener(logoutListener);
     }
 
     public JPanel getPanel() {
@@ -104,51 +98,34 @@ public class SettingsPanel {
         return this.panel1;
     }
 
-    public SettingsPanel(final JFrame frame) {
-        logger.info("Building SettingsPanel");
-        SettingsTmc settingsTmc = TmcSettingsManager.get();
+    public static SettingsPanel getInstance() {
+        return instance;
+    }
 
-        usernameField.setText(settingsTmc.getUsername());
-        serverAddressField.setText(settingsTmc.getServerAddress());
-        passwordField.setText(settingsTmc.getPassword());
+    public void setCurrentOrganization() {
+        final PersistentTmcSettings persistentSettings =
+                ServiceManager.getService(PersistentTmcSettings.class);
+        SettingsTmc settings = persistentSettings.getSettingsTmc();
 
-        ActionListener browseListener = createActionListener();
-        browseButton.addActionListener(browseListener);
-
-        ActionListener refreshListener = createActionListenerRefresh();
-        refreshButton.addActionListener(refreshListener);
-
-        doClicks();
-
-        List<Course> courses = new ArrayList<>();
-
-        try {
-            courses =
-                    TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
-            logger.info("Getting list of courses from TmcCore. @SettingsPanel");
-        } catch (Exception ignored) {
-            logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
-                    ignored, ignored.getStackTrace());
-            ignored.printStackTrace();
+        if (settings.getOrganization().isPresent()
+                && settings.getOrganization().get().getName() != null) {
+            currentOrganization.setText(settings.getOrganization().get().getName());
+        } else {
+            currentOrganization.setText("No organization selected");
         }
-        for (Course crs : courses) {
-            listOfAvailableCourses.addItem(crs);
+    }
+
+    public void setCurrentCourse() {
+        final PersistentTmcSettings persistentSettings =
+                ServiceManager.getService(PersistentTmcSettings.class);
+        SettingsTmc settings = persistentSettings.getSettingsTmc();
+
+        if (settings.getCurrentCourse().isPresent()
+                && settings.getCurrentCourse().get().getTitle() != null) {
+            currentCourse.setText(settings.getCourseName());
+        } else {
+            currentCourse.setText("No course selected");
         }
-        if (listOfAvailableCourses.getItemCount() == 0) {
-            listOfAvailableCourses.addItem(TmcSettingsManager.get().getCourse());
-        }
-
-        listOfAvailableCourses.setSelectedItem(settingsTmc.getCourse());
-        projectPathField.setText(settingsTmc.getProjectBasePath());
-        selectErrorLanguageField.addItem("English");
-
-        ActionListener okListener = createActionListenerOk(frame);
-        okButton.addActionListener(okListener);
-        ActionListener cancelListener = createActionListenerCancel(frame);
-        cancelButton.addActionListener(cancelListener);
-
-        ActionListener downloadListener = createActionListenerDownload(frame);
-        downloadCourseExercisesButton.addActionListener(downloadListener);
     }
 
     public void doClicks() {
@@ -163,7 +140,22 @@ public class SettingsPanel {
         }
     }
 
-    private ActionListener createActionListenerDownload(final JFrame frame) {
+    private ActionListener createActionListenerLogout() {
+        return actionEvent -> {
+            logger.info("Logout button pressed. @SettingsPanel");
+
+            LoginManager loginManager = new LoginManager();
+            loginManager.logout();
+
+            this.frame.dispose();
+            this.frame.setVisible(false);
+            this.instance = null;
+
+            LoginDialog.display();
+        };
+    }
+
+    private ActionListener createActionListenerDownload() {
         return actionEvent -> {
             logger.info("Download button pressed. @SettingsPanel");
 
@@ -173,34 +165,24 @@ public class SettingsPanel {
             DownloadExerciseAction action = new DownloadExerciseAction();
             action.downloadExercises(project, false);
 
-            frame.dispose();
-            frame.setVisible(false);
+            this.frame.dispose();
+            this.frame.setVisible(false);
+            this.instance = null;
         };
     }
 
     public void saveInformation() {
         logger.info("Saving settings information. @SettingsPanel");
-        final PersistentTmcSettings saveSettings =
+        final PersistentTmcSettings persistentSettings =
                 ServiceManager.getService(PersistentTmcSettings.class);
-        SettingsTmc settingsTmc = ServiceManager.getService(PersistentTmcSettings.class)
-                .getSettingsTmc();
-        settingsTmc.setUsername(usernameField.getText());
-        settingsTmc.setPassword(passwordField.getText());
-        settingsTmc.setServerAddress(serverAddressField.getText());
-        if (listOfAvailableCourses.getSelectedItem() != null) {
-            Course course = (Course) listOfAvailableCourses.getSelectedItem();
-            settingsTmc.setCourse(new ObjectFinder()
-                    .findCourseByName(((Course) listOfAvailableCourses
-                            .getSelectedItem()).getName(), TmcCoreHolder.get()));
-            if (settingsTmc.getCourse() == null) {
-                settingsTmc.setCourse(course);
-            }
-        }
+        SettingsTmc settingsTmc =
+                ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+
         settingsTmc.setCheckForExercises(checkForNewOrCheckBox.isSelected());
         settingsTmc.setProjectBasePath(projectPathField.getText());
         settingsTmc.setSpyware(sendSnapshotsOfYourCheckBox.isSelected());
         settingsTmc.setSendDiagnostics(sendDiagnosticsCheckBox.isSelected());
-        saveSettings.setSettingsTmc(settingsTmc);
+        persistentSettings.setSettingsTmc(settingsTmc);
         if (sendDiagnosticsCheckBox.isSelected()) {
             try {
                 TmcCoreHolder.get().sendDiagnostics(ProgressObserver.NULL_OBSERVER).call();
@@ -209,69 +191,69 @@ public class SettingsPanel {
         }
     }
 
-    private ActionListener createActionListenerOk(final JFrame frame) {
+    private ActionListener createActionListenerChangeOrganization() {
+        return actionEvent -> {
+            try {
+                OrganizationListWindow.display();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+    }
+
+    private ActionListener createActionListenerChangeCourse() {
+        return actionEvent -> {
+            try {
+                CourseListWindow.display();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        };
+    }
+
+    private ActionListener createActionListenerOk() {
         logger.info("Create action listener for SettingsPanel ok button. @SettingsPanel");
         return actionEvent -> {
             new ButtonInputListener().receiveSettings();
             logger.info("Ok button pressed. @SettingsPanel");
             saveInformation();
-            frame.dispose();
-            frame.setVisible(false);
+
+            this.frame.dispose();
+            this.frame.setVisible(false);
+            this.instance = null;
+
+            SettingsTmc settingsTmc =
+                    ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+
+            if (settingsTmc.getOrganization().orNull() != organizationFirst) {
+                ApplicationManager.getApplication()
+                        .invokeLater(
+                                () -> {
+//                                    new ErrorMessageService()
+//                                            .showInfoBalloon(
+//                                                    "Organization has been changed. Refreshing project list...");
+
+                                    ProjectListManagerHolder.get().refreshAllCourses();
+
+//                                    new ErrorMessageService()
+//                                            .showInfoBalloon("Project list has been refreshed.");
+                                });
+            }
         };
     }
 
-    private ActionListener createActionListenerCancel(final JFrame frame) {
+    private ActionListener createActionListenerCancel() {
         logger.info("Create action listener for SettingsPanel cancel button. @SettingsPanel");
         return actionEvent -> {
             logger.info("Cancel button pressed. @SettingsPanel");
-            frame.dispose();
-            frame.setVisible(false);
+            this.frame.dispose();
+            this.frame.setVisible(false);
+            this.instance = null;
         };
-    }
-
-    private ActionListener createActionListenerRefresh() {
-        logger.info("Create action listener for SettingsPanel refresh button. @SettingsPanel");
-        return actionEvent -> {
-            logger.info("Refresh button pressed. @SettingsPanel");
-            List<Course> courses = new ArrayList<>();
-            listOfAvailableCourses.removeAllItems();
-            saveInformation();
-            try {
-                logger.info("Getting list of courses from TmcCore. @SettingsPanel");
-                courses = (ArrayList<Course>)
-                        TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
-            } catch (Exception exception) {
-                logger.warn("Could not list Courses from TmcCore. @SettingsPanel",
-                        exception, exception.getStackTrace());
-                ErrorMessageService error = new ErrorMessageService();
-                error.showHumanReadableErrorMessage((TmcCoreException) exception, true);
-            }
-
-            addCourSesToListOfAvailable(courses);
-            if ((TmcSettingsManager.get().getCourse()) != null) {
-                listOfAvailableCourses.setSelectedItem(TmcSettingsManager.get().getCourse());
-            } else {
-                listOfAvailableCourses.setSelectedItem(getFirstFromAvailableCourses());
-            }
-            if (listOfAvailableCourses.getItemCount() == 0) {
-                listOfAvailableCourses.addItem(TmcSettingsManager.get().getCourse());
-            }
-        };
-    }
-
-    private Course getFirstFromAvailableCourses() {
-        return listOfAvailableCourses.getModel().getElementAt(0);
-    }
-
-    private void addCourSesToListOfAvailable(List<Course> courses) {
-        logger.info("Adding courses to list of availabe courses. @SettingsPanel");
-        for (Course crs : courses) {
-            listOfAvailableCourses.addItem(crs);
-        }
     }
 
     @NotNull
-    private ActionListener createActionListener() {
+    private ActionListener createActionListenerBrowse() {
         logger.info("Creating action listener for browsing. @SettingsPanel");
         return actionEvent -> {
             logger.info("Browsing action performed. @SettingsPanel", actionEvent);

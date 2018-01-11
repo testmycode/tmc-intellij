@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.testresults;
 
+import com.intellij.ui.JBColor;
 import com.intellij.ui.JBProgressBar;
 
 import java.awt.Color;
@@ -58,7 +59,7 @@ public class TestResultProgressBar extends JBProgressBar {
                 graphic.fillRect(filled, 0, notFilled, height);
 
                 if (isStringPainted()) {
-                    graphic.setColor(Color.BLACK);
+                    graphic.setColor(JBColor.BLACK);
                     String string = getString();
                     FontMetrics fm = graphic.getFontMetrics();
                     Rectangle textBox = fm.getStringBounds(string, graphic).getBounds();
@@ -72,7 +73,7 @@ public class TestResultProgressBar extends JBProgressBar {
                 }
             } else {
                 // Is the bar ever used indeterminate?
-                graphic.setColor(Color.WHITE);
+                graphic.setColor(JBColor.WHITE);
                 graphic.fillRect(0, 0, width, height);
             }
 

@@ -6,8 +6,8 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import com.intellij.notification.NotificationType;
 
 class PresentableErrorMessage {
-    private String message;
-    private NotificationType messageType;
+    private final String message;
+    private final NotificationType messageType;
 
     private PresentableErrorMessage(String message, NotificationType messageType) {
         this.message = message;
@@ -27,28 +27,38 @@ class PresentableErrorMessage {
      * error's severity.
      */
     static PresentableErrorMessage forTmcException(TmcCoreException exception) {
-        Throwable cause = exception.getCause();
-        String causeMessage = cause.getMessage();
+        String causeMessage;
+
+        if (exception.getCause() != null) {
+            causeMessage = exception.getCause().getMessage();
+        } else {
+            causeMessage = exception.getMessage();
+        }
 
         String shownMessage;
         NotificationType type = NotificationType.WARNING;
 
-        if (causeMessage.contains("Download failed") || causeMessage.contains("404") || causeMessage.contains("500")) {
+        if (causeMessage.contains("Download failed")
+                || causeMessage.contains("404")
+                || causeMessage.contains("500")) {
             shownMessage = notifyAboutCourseServerAddressAndInternet();
         } else if (!TmcSettingsManager.get().userDataExists()) {
             shownMessage = notifyAboutUsernamePasswordAndServerAddress(causeMessage);
         } else if (causeMessage.contains("401")) {
             shownMessage = notifyAboutIncorrectUsernameOrPassword(causeMessage);
             type = NotificationType.ERROR;
+        } else if (causeMessage.contains("Organization not selected")) {
+            shownMessage = causeMessage;
         } else if (exception.getMessage().contains("Failed to fetch courses from the server")
                 || exception.getMessage().contains("Failed to compress project")) {
             shownMessage = notifyAboutFailedSubmissionAttempt();
         } else if (TmcSettingsManager.get().getServerAddress().isEmpty()) {
             shownMessage = notifyAboutEmptyServerAddress(causeMessage);
         } else {
-            shownMessage = exception.getCause().getMessage();
+            shownMessage = causeMessage;
             type = NotificationType.ERROR;
         }
+        System.out.println("error: " + shownMessage);
 
         return new PresentableErrorMessage(shownMessage, type);
     }
@@ -66,7 +76,8 @@ class PresentableErrorMessage {
     }
 
     private static String notifyAboutEmptyServerAddress(String causeMessage) {
-        return causeMessage + ".\nYou need to set up TMC server address "
+        return causeMessage
+                + ".\nYou need to set up TMC server address "
                 + "to be able to download and submit exercises.";
     }
 

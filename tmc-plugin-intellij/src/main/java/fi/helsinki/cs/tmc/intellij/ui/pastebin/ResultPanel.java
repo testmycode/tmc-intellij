@@ -5,10 +5,10 @@ import fi.helsinki.cs.tmc.intellij.services.ClipboardService;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import com.intellij.util.ui.JBUI;
 
 import java.awt.Desktop;
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.io.IOException;
 import java.net.URI;
 import javax.swing.JButton;
@@ -54,7 +54,7 @@ public class ResultPanel {
 
     private void setupUi() {
         jpanel1 = new JPanel();
-        jpanel1.setLayout(new GridLayoutManager(5, 7, new Insets(0, 0, 0, 0), -1, -1));
+        jpanel1.setLayout(new GridLayoutManager(5, 7, JBUI.emptyInsets(), -1, -1));
         final JLabel label1 = new JLabel();
         label1.setText("Code submitted to TMC pastebin");
         jpanel1.add(

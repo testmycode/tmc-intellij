@@ -62,7 +62,7 @@ public class PathResolver {
             return null;
         }
         String[] split = getCourseAndExerciseName(path);
-        return new ObjectFinder().findCourseByName(split[split.length - 2], TmcCoreHolder.get());
+        return new ObjectFinder().findCourse(split[split.length - 2], "name");
     }
 
     public static String getCourseName(String path) {

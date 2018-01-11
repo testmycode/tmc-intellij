@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
+import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 
@@ -15,6 +16,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectManager;
 
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.TestOnly;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,103 +34,102 @@ public class ObjectFinder {
 
     private static final Logger logger = LoggerFactory.getLogger(ObjectFinder.class);
 
-    public Exercise findExerciseByName(Course course, String exerciseName) {
-        logger.info("Processing findExerciseByName {}. @ObjectFinder", exerciseName);
-        List<Exercise> exercises = course.getExercises();
-        Exercise exercise = getExercise(exerciseName, exercises);
-        if (exercise != null) {
-            return exercise;
-        }
-        logger.info("Could not find exercise with the name {}. @ObjectFinder", exerciseName);
-        return null;
-    }
-
     @Nullable
-    private Exercise getExercise(String exerciseName, List<Exercise> exercises) {
-        for (Exercise exercise : exercises) {
-            if (exercise.getName().equals(exerciseName)) {
-                logger.info("Found {}. @ObjectFinder", exercise);
-                return exercise;
-            }
-        }
-        return null;
-    }
+    public Course findCourse(String searchTerm, String titleOrName) {
+        TmcCore core = TmcCoreHolder.get();
+        List<Course> courses = getCourses(core);
 
-    public Course findCourseByName(String courseName, TmcCore core) {
-        logger.info("Processing findCourseByName {}. @ObjectFinder", courseName);
-        List<Course> courses = null;
-        try {
-            courses = core.listCourses(ProgressObserver.NULL_OBSERVER).call();
-        } catch (TmcCoreException e) {
-            logger.warn(
-                    "Could not find course {}. @ObjectFinder", courseName, e, e.getStackTrace());
-            new ErrorMessageService().showHumanReadableErrorMessage(e, false);
-        } catch (Exception e) {
-            logger.warn(
-                    "Could not find course {}. @ObjectFinder", courseName, e, e.getStackTrace());
-            new ErrorMessageService().showErrorMessage(e, "Could not find course. " + courseName, true);
-        }
-        if (courses == null) {
-            return null;
-        }
-
-        Course course = getCourse(courseName, core, courses);
-        if (course != null) {
-            return course;
-        }
-        return null;
-    }
-
-    @Nullable
-    private Course getCourse(String courseName, TmcCore core, List<Course> courses) {
-        for (Course course : courses) {
-            if (course.getName().equals(courseName)) {
+        for (Course c : courses) {
+            if ((titleOrName.equals("name") && c.getName().equals(searchTerm))
+                    || (titleOrName.equals("title") && c.getTitle().equals(searchTerm))) {
                 try {
-                    logger.info(
-                            "Trying to get course {} details from TmcCore. @ObjectFinder", course);
-                    return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, course).call();
+                    logger.info("Trying to get course details from TmcCore. @ObjectFinder", c);
+
+                    return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, c).call();
                 } catch (TmcCoreException exception) {
                     logger.warn(
-                            "Could not find course {}. @ObjectFinder",
-                            courseName,
+                            "Could not find course. @ObjectFinder",
                             exception,
                             exception.getStackTrace());
                     new ErrorMessageService().showHumanReadableErrorMessage(exception, false);
                 } catch (Exception e) {
-                    logger.warn(
-                            "Could not find course {}. @ObjectFinder",
-                            courseName,
-                            e,
-                            e.getStackTrace());
+                    logger.warn("Could not find course. @ObjectFinder", e, e.getStackTrace());
                     new ErrorMessageService().showErrorMessage(e, "Could not find course.", true);
                 }
             }
         }
+
         return null;
+    }
+
+    @TestOnly
+    public Course findCourseForTesting(String searchTerm, String titleOrName, TmcCore core) {
+        List<Course> courses = getCourses(core);
+
+        for (Course c : courses) {
+            if ((titleOrName.equals("name") && c.getName().equals(searchTerm))
+                    || (titleOrName.equals("title") && c.getTitle().equals(searchTerm))) {
+                try {
+                    return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, c).call();
+                } catch (TmcCoreException exception) {
+                    new ErrorMessageService().showHumanReadableErrorMessage(exception, false);
+                } catch (Exception e) {
+                    new ErrorMessageService().showErrorMessage(e, "Could not find course.", true);
+                }
+            }
+        }
+
+        return null;
+    }
+
+    private List<Course> getCourses(TmcCore core) {
+        logger.info("Processing getCourses @ObjectFinder");
+        List<Course> courses = null;
+
+        try {
+            courses = core.listCourses(ProgressObserver.NULL_OBSERVER).call();
+        } catch (TmcCoreException e) {
+            logger.warn("Getting courses failed @ObjectFinder", e, e.getStackTrace());
+            new ErrorMessageService().showHumanReadableErrorMessage(e, false);
+        } catch (Exception e) {
+            logger.warn("Getting courses failed @ObjectFinder", e, e.getStackTrace());
+            new ErrorMessageService()
+                    .showErrorMessage(
+                            e, "Something went wrong while trying to get the course list", true);
+        }
+
+        return courses;
     }
 
     public List<String> listAllDownloadedCourses() {
         logger.info("Processing listAllDownloadedCourses. @ObjectFinder");
-        List<String> fileNames =
-                getListOfDirectoriesInPath(TmcSettingsManager.get().getProjectBasePath());
+        List<String> courseTitles = new ArrayList<>();
 
-        return fileNames;
+        for (String name :
+                getListOfDirectoriesInPath(TmcSettingsManager.get().getProjectBasePath())) {
+            Course course = findCourse(name, "name");
+
+            if (course == null) {
+                continue;
+            }
+
+            courseTitles.add(course.getTitle());
+        }
+
+        return courseTitles;
     }
 
-    public List<String> listAllDownloadedExercises(String courseName) {
+    public List<String> listAllDownloadedExercises(String courseTitle) {
         logger.info(
-                "Processing listAllDownloadedExercises from course {}. @ObjectFinder", courseName);
-        List<String> fileNames =
-                getListOfDirectoriesInPath(
-                        TmcSettingsManager.get().getProjectBasePath()
-                                + File.separator
-                                + courseName);
-
-        return fileNames;
+                "Processing listAllDownloadedExercises from course {}. @ObjectFinder", courseTitle);
+        return getListOfDirectoriesInPath(
+                TmcSettingsManager.get().getProjectBasePath()
+                        + File.separator
+                        + findCourse(courseTitle, "title").getName());
     }
 
     private List<String> getListOfDirectoriesInPath(String folderPath) {
-        logger.info("Processing addExercisesToList. @ObjectFinder");
+        logger.info("Processing getListOfDirectoriesInPath. @ObjectFinder");
         List<String> fileNames = new ArrayList<>();
 
         try (DirectoryStream<Path> directoryStream =
@@ -151,13 +152,19 @@ public class ObjectFinder {
             if (!Files.isDirectory(path)) {
                 continue;
             }
-            String[] exerciseCourse = PathResolver.getCourseAndExerciseName(path);
-            if (exerciseCourse == null || getExerciseName(exerciseCourse).charAt(0) == '.') {
+
+            // courseAndExerciseName is an array where the second to last element is course name and
+            // last element is exercise name
+            String[] courseAndExerciseNameArray = PathResolver.getCourseAndExerciseName(path);
+            if (courseAndExerciseNameArray == null
+                    || getExerciseName(courseAndExerciseNameArray).charAt(0) == '.') {
                 logger.info("exerciseCourse variable = null. @ObjectFinder");
                 continue;
             }
-            logger.info("Adding exercise to list. @ObjectFinder", getExerciseName(exerciseCourse));
-            fileNames.add(getExerciseName(exerciseCourse));
+            logger.info(
+                    "Adding exercise to list. @ObjectFinder",
+                    getExerciseName(courseAndExerciseNameArray));
+            fileNames.add(getExerciseName(courseAndExerciseNameArray));
         }
     }
 
@@ -169,14 +176,16 @@ public class ObjectFinder {
     public Project findCurrentProject() {
         logger.info("Trying to findCurrentProject. @ObjectFinder");
         DataContext dataContext = DataManager.getInstance().getDataContextFromFocus().getResult();
+
         if (dataContext == null) {
             Project[] projects = ProjectManager.getInstance().getOpenProjects();
-            return projects[projects.length - 1];
+
+            if (projects.length > 0) {
+                return projects[projects.length - 1];
+            }
+            return null;
         }
-
-        Project project = DataKeys.PROJECT.getData(dataContext);
-
-        return project;
+        return DataKeys.PROJECT.getData(dataContext);
     }
 
     public Course findCourseNoDetails(String courseName, TmcCore core) {

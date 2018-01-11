@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.spyware;
 
+import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.communication.TmcServerCommunicationTaskFactory;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
@@ -23,7 +24,7 @@ public class SpywareEventManager {
 
     private static final Logger logger = LoggerFactory.getLogger(SpywareEventManager.class);
 
-    private static SpywareSettings spywareSettings =
+    private static final SpywareSettings spywareSettings =
             new SpywareSettings() {
                 @Override
                 public boolean isSpywareEnabled() {
@@ -36,7 +37,7 @@ public class SpywareEventManager {
                 }
             };
 
-    private static EventSendBuffer buffer =
+    private static final EventSendBuffer buffer =
             new EventSendBuffer(
                     spywareSettings, new TmcServerCommunicationTaskFactory(), new EventStore());
 
@@ -49,9 +50,9 @@ public class SpywareEventManager {
                 .executeOnPooledThread(
                         () -> {
                             try {
-                                if (TmcSettingsManager.get().getCourse() != null
+                                if (TmcSettingsManager.get().getCurrentCourse().isPresent()
                                         && TmcSettingsManager.get()
-                                                        .getCourse()
+                                                        .getCurrentCourse().get()
                                                         .getSpywareUrls()
                                                         .size()
                                                 == 0) {
@@ -60,12 +61,13 @@ public class SpywareEventManager {
                                     TmcCore core = TmcCoreHolder.get();
                                     TmcSettingsManager.get()
                                             .setCourse(
-                                                    core.getCourseDetails(
-                                                                    ProgressObserver
-                                                                            .NULL_OBSERVER,
-                                                                    TmcSettingsManager.get()
-                                                                            .getCourse())
-                                                            .call());
+                                                    Optional.of(
+                                                            core.getCourseDetails(
+                                                                            ProgressObserver
+                                                                                    .NULL_OBSERVER,
+                                                                            TmcSettingsManager.get()
+                                                                                    .getCurrentCourse().get())
+                                                                    .call()));
                                 }
                             } catch (Exception e) {
                             }

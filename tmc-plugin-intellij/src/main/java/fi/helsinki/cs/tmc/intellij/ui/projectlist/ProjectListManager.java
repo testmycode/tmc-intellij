@@ -40,6 +40,7 @@ public class ProjectListManager {
 
     public void refreshAllCourses() {
         logger.info("Refreshing all courses. @ProjectListManager");
+
         ApplicationManager.getApplication().invokeLater(() -> {
             for (ProjectListWindow window : projectListWindows) {
                 window.addCourseTabsAndExercises();
