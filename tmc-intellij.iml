@@ -10,7 +10,7 @@
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="IntelliJ IDEA Community Edition IC-171.4073.35" jdkType="IDEA JDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
     <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
     <orderEntry type="library" name="Maven: org.picocontainer:picocontainer:2.15" level="project" />
@@ -40,7 +40,7 @@
     <orderEntry type="library" name="Maven: javax.enterprise:cdi-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: javax.annotation:jsr250-api:1.0" level="project" />
     <orderEntry type="library" name="Maven: org.apache.maven:maven-embedder:3.3.3" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.maven:maven-compat:3.3.3" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.maven:maven-compat:3.3.3" level="project" />
     <orderEntry type="library" name="Maven: org.sonatype.plexus:plexus-cipher:1.7" level="project" />
     <orderEntry type="library" name="Maven: commons-cli:commons-cli:1.2" level="project" />
     <orderEntry type="library" name="Maven: org.eclipse.aether:aether-connector-basic:1.0.2.v20150114" level="project" />
@@ -54,19 +54,6 @@
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-util:0.7.8-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-framework:0.7.8-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-java:0.7.8-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.ant:ant:1.9.6" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.ant:ant-launcher:1.9.6" level="project" />
-    <orderEntry type="library" name="Maven: org.rauschig:jarchivelib:0.7.1" level="project" />
-    <orderEntry type="module-library">
-      <library name="Maven: com.sun:tools:1.6.0">
-        <CLASSES>
-          <root url="jar:///usr/lib/jvm/java-8-oracle/lib/tools.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" name="Maven: org.apache.maven.shared:maven-invoker:2.2" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-make:0.7.8-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-python3:0.7.8-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: fi.helsinki.cs.tmc:tmc-langs-r:0.7.8-SNAPSHOT" level="project" />
