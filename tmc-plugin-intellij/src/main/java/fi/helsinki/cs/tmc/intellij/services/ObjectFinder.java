@@ -39,22 +39,26 @@ public class ObjectFinder {
         TmcCore core = TmcCoreHolder.get();
         List<Course> courses = getCourses(core);
 
-        for (Course c : courses) {
-            if ((titleOrName.equals("name") && c.getName().equals(searchTerm))
-                    || (titleOrName.equals("title") && c.getTitle().equals(searchTerm))) {
-                try {
-                    logger.info("Trying to get course details from TmcCore. @ObjectFinder", c);
+        if (courses != null) {
 
-                    return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, c).call();
-                } catch (TmcCoreException exception) {
-                    logger.warn(
-                            "Could not find course. @ObjectFinder",
-                            exception,
-                            exception.getStackTrace());
-                    new ErrorMessageService().showHumanReadableErrorMessage(exception, false);
-                } catch (Exception e) {
-                    logger.warn("Could not find course. @ObjectFinder", e, e.getStackTrace());
-                    new ErrorMessageService().showErrorMessage(e, "Could not find course.", true);
+            for (Course c : courses) {
+                if ((titleOrName.equals("name") && c.getName().equals(searchTerm))
+                        || (titleOrName.equals("title") && c.getTitle().equals(searchTerm))) {
+                    try {
+                        logger.info("Trying to get course details from TmcCore. @ObjectFinder", c);
+
+                        return core.getCourseDetails(ProgressObserver.NULL_OBSERVER, c).call();
+                    } catch (TmcCoreException exception) {
+                        logger.warn(
+                                "Could not find course. @ObjectFinder",
+                                exception,
+                                exception.getStackTrace());
+                        new ErrorMessageService().showHumanReadableErrorMessage(exception, false);
+                    } catch (Exception e) {
+                        logger.warn("Could not find course. @ObjectFinder", e, e.getStackTrace());
+                        new ErrorMessageService()
+                                .showErrorMessage(e, "Could not find course.", true);
+                    }
                 }
             }
         }
@@ -122,6 +126,9 @@ public class ObjectFinder {
     public List<String> listAllDownloadedExercises(String courseTitle) {
         logger.info(
                 "Processing listAllDownloadedExercises from course {}. @ObjectFinder", courseTitle);
+        if (findCourse(courseTitle, "title") == null) {
+            return new ArrayList<>();
+        }
         return getListOfDirectoriesInPath(
                 TmcSettingsManager.get().getProjectBasePath()
                         + File.separator
