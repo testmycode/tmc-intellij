@@ -44,7 +44,8 @@ public class ActivateSpywareAction implements TypedActionHandler {
             editor.getDocument().addDocumentListener(docl);
             listenedDocuments.add(editor.getDocument());
             logger.info("Added document listener to ", editor.getDocument().toString());
-            UsagesCollector.doPersistProjectUsages(new ObjectFinder().findCurrentProject());
+//            UsagesCollector.doPersistProjectUsages(new ObjectFinder().findCurrentProject());
+            // the above line does not work with the new intellij (v2017.3). has it ever been necessary??
         }
         handler.execute(editor, cha, dataContext);
     }
