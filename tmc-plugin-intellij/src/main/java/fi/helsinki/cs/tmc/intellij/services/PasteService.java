@@ -88,7 +88,7 @@ public class PasteService {
                                         exception,
                                         exception.getStackTrace());
                                 new ErrorMessageService()
-                                        .showErrorMessage(
+                                        .showErrorMessageWithExceptionDetails(
                                                 exception,
                                                 "Error while uploading to TMC Pastebin.",
                                                 true);

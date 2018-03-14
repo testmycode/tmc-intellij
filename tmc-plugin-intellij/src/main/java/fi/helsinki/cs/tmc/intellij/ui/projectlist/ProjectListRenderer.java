@@ -65,7 +65,7 @@ public class ProjectListRenderer extends DefaultListCellRenderer {
             }
         } catch (Exception ewr) {
 //            logger.info("Failed to set icon.", ewr, ewr.getStackTrace());
-            new ErrorMessageService().showErrorMessage(ewr, "Failed to set icon.", true);
+            new ErrorMessageService().showErrorMessageWithExceptionDetails(ewr, "Failed to set icon.", true);
         }
 
         label.setHorizontalTextPosition(JLabel.RIGHT);

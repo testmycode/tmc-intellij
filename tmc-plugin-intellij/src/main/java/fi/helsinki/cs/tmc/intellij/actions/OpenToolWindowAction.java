@@ -68,9 +68,4 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
         toolWindow.getContentManager().addContent(content);
         ProjectListManagerHolder.get().addWindow(window);
     }
-
-    public void hideToolWindow(Project project) {
-        logger.info("Hiding tool window. @OpenToolWindowAction");
-        ToolWindowManager.getInstance(project).getToolWindow("TMC Project List").hide(null);
-    }
 }

@@ -5,6 +5,7 @@ import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.core.exceptions.ExpiredException;
+import fi.helsinki.cs.tmc.core.exceptions.ShowToUserException;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
@@ -56,8 +57,13 @@ public class ExerciseUploadingService {
                 courseAndExerciseManager.getExercise(
                         getCourseName(exerciseCourse), getExerciseName(exerciseCourse));
 
+        if (exercise == null) {
+            logger.warn("Failed to submit an exercise that was null. @ExerciseUploadingService");
+            ErrorMessageService error = new ErrorMessageService();
+            error.showErrorMessagePopup(
+                    "Failed to submit exercise.\nPlease check your internet connection.");
 
-        if (exercise != null && exercise.hasDeadlinePassed()) {
+        } else if (exercise.hasDeadlinePassed()) {
             logger.warn("Exercise has expired. @ExerciseUploadingService");
             Messages.showErrorDialog(project, "The deadline for this exercise has passed", "Error");
         } else {
@@ -124,6 +130,7 @@ public class ExerciseUploadingService {
             Project project)
             throws Exception {
         logger.info("Getting submission results. @ExerciseUploadingService");
+
         final SubmissionResult result = core.submit(observer, exercise).call();
         handler.showResultMessage(exercise, result, project);
         refreshExerciseList();

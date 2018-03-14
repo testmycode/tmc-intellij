@@ -3,7 +3,6 @@ package fi.helsinki.cs.tmc.intellij.io;
 import com.google.common.base.Optional;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
-import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
@@ -56,7 +55,7 @@ public class ProjectOpener {
                             exception,
                             exception.getStackTrace());
                     new ErrorMessageService()
-                            .showErrorMessage(
+                            .showErrorMessageWithExceptionDetails(
                                     exception, "Could not open project from path. " + path, true);
                 }
             }

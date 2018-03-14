@@ -48,7 +48,7 @@ public class TestRunningService {
                     exercise,
                     exception);
             new ErrorMessageService()
-                    .showErrorMessage(
+                    .showErrorMessageWithExceptionDetails(
                             exception, "Running tests failed, exercise was not recognized", true);
         }
     }
@@ -69,7 +69,7 @@ public class TestRunningService {
                     } catch (Exception exception) {
                         logger.warn("Could not run tests. @TestRunningService", exception);
                         new ErrorMessageService()
-                                .showErrorMessage(exception, "Running tests failed!", true);
+                                .showErrorMessageWithExceptionDetails(exception, "Running tests failed!", true);
                         return;
                     }
 

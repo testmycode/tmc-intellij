@@ -86,12 +86,17 @@ public class ErrorMessageService {
      * @param errorDescription Additional description of the error.
      * @param showAsPopup if the error message will be a pop up or not.
      */
-    public void showErrorMessage(Exception exception,
-                                 String errorDescription,
-                                 boolean showAsPopup) {
+    public void showErrorMessageWithExceptionDetails(Exception exception,
+                                                     String errorDescription,
+                                                     boolean showAsPopup) {
         logger.info("Showing Exception. {} @ErrorMessageService", exception);
         String message = exception + ". \n" + errorDescription;
         showNotification(message, NotificationType.ERROR, showAsPopup);
+    }
+
+    public void showErrorMessagePopup(String errorMessage) {
+        logger.info("Showing error message: {}. @ErrorMessageService", errorMessage);
+        showNotification(errorMessage, NotificationType.ERROR, true);
     }
 
     private void showNotification(String message, NotificationType type, boolean showAsPopup) {

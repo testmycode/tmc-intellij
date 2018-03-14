@@ -64,13 +64,15 @@ public class ProjectListWindow {
         final ProjectOpener opener = new ProjectOpener();
         CourseTabFactory factory = new CourseTabFactory();
 
-        createCourseSpecificTabs(finder, opener, tabbedPaneBase,
+        if (courses != null) {
+            createCourseSpecificTabs(finder, opener, tabbedPaneBase,
                 courses, factory, new CourseAndExerciseManager());
 
-        JButton refreshButton = addFunctionalityToRefreshButton();
-        // TODO: refresh button not working
-        // toolbar.add(refreshButton);
-        setActiveTabToSelectedCourse();
+            JButton refreshButton = addFunctionalityToRefreshButton();
+            // TODO: refresh button not working
+            // toolbar.add(refreshButton);
+            setActiveTabToSelectedCourse();
+        }
     }
 
     private void setActiveTabToSelectedCourse() {
