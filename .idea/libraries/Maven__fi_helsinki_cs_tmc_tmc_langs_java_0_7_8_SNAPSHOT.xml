@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: fi.helsinki.cs.tmc:tmc-langs-java:0.7.8-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-java/0.7.8-SNAPSHOT/tmc-langs-java-0.7.8-20180130.192817-4.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-java/0.7.8-SNAPSHOT/tmc-langs-java-0.7.8-20180312.170732-5.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-java/0.7.8-SNAPSHOT/tmc-langs-java-0.7.8-20180130.192817-4-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-java/0.7.8-SNAPSHOT/tmc-langs-java-0.7.8-20180312.170732-5-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-java/0.7.8-SNAPSHOT/tmc-langs-java-0.7.8-20180130.192817-4-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-java/0.7.8-SNAPSHOT/tmc-langs-java-0.7.8-20180312.170732-5-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

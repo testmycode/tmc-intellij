@@ -29,11 +29,11 @@ class PresentableErrorMessage {
     static PresentableErrorMessage forTmcException(TmcCoreException exception) {
         String causeMessage;
 
-        if (exception.getCause() != null) {
-            causeMessage = exception.getCause().getMessage();
-        } else {
+//        if (exception.getCause() != null) {
+//            causeMessage = exception.getCause().getMessage();
+//        } else {
             causeMessage = exception.getMessage();
-        }
+//        }
 
         String shownMessage;
         NotificationType type = NotificationType.WARNING;
@@ -49,8 +49,9 @@ class PresentableErrorMessage {
             type = NotificationType.ERROR;
         } else if (causeMessage.contains("Organization not selected")) {
             shownMessage = causeMessage;
-        } else if (exception.getMessage().contains("Failed to fetch courses from the server")
-                || exception.getMessage().contains("Failed to compress project")) {
+        } else if (causeMessage.contains("Failed to fetch courses from the server")
+                || causeMessage.contains("Failed to compress project")
+            || causeMessage.contains("Failed to submit exercise")) {
             shownMessage = notifyAboutFailedSubmissionAttempt();
         } else if (TmcSettingsManager.get().getServerAddress().isEmpty()) {
             shownMessage = notifyAboutEmptyServerAddress(causeMessage);
@@ -82,7 +83,9 @@ class PresentableErrorMessage {
     }
 
     private static String notifyAboutFailedSubmissionAttempt() {
-        return "Failed to establish connection to the server.\n Check your Internet connection";
+//        return "Failed to establish connection to the server.\n Check your Internet connection";
+        return "Failed to submit exercise.\nPlease check your Internet connection";
+
     }
 
     private static String notifyAboutIncorrectUsernameOrPassword(String causeMessage) {

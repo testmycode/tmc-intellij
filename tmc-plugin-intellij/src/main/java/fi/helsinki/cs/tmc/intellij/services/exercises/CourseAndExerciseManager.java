@@ -1,5 +1,9 @@
 package fi.helsinki.cs.tmc.intellij.services.exercises;
 
+import com.intellij.notification.NotificationType;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
@@ -17,6 +21,7 @@ import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentExerciseDataba
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -133,14 +138,35 @@ public class CourseAndExerciseManager {
                     "Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
                     exception,
                     exception.getStackTrace());
-            ErrorMessageService error = new ErrorMessageService();
-            error.showErrorMessagePopup(
-                    "Failed to fetch courses from the server.\nPlease check your internet connection.");
-            //            refreshCoursesOffline();
+            showMessageDialog();
 
         } catch (Exception exception) {
             exception.printStackTrace();
         }
+    }
+
+    private void showMessageDialog() {
+        Project currentProject = new ObjectFinder().findCurrentProject();
+        Icon icon = Messages.getErrorIcon();
+        String message =
+                "Failed to fetch courses from the server.\nPlease check your internet connection.";
+
+        ApplicationManager.getApplication()
+                .invokeLater(
+                        () -> {
+                            int answer =
+                                    Messages.showOkCancelDialog(
+                                            currentProject,
+                                            message,
+                                            "",
+                                            "Try again",
+                                            "Cancel",
+                                            icon);
+                            if (answer == 0) {
+                                System.out.println("yes");
+                                this.initiateDatabase();
+                            }
+                        });
     }
 
     private void fetchCourseFromTmcCore(Map<String, List<Exercise>> database, Course course) {
