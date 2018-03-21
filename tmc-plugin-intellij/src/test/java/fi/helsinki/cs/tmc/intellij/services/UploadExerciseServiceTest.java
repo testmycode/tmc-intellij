@@ -6,6 +6,7 @@ import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
+import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForExistingExercises;
@@ -37,12 +38,14 @@ public class UploadExerciseServiceTest {
         SettingsTmc settings = mock(SettingsTmc.class);
         ThreadingService threadingService = mock(ThreadingService.class);
         Course course = new Course("home");
+        Exercise exercise = new Exercise("user");
 
         Project project = mock(Project.class);
         when(project.getBasePath()).thenReturn("/home/user");
 
         CourseAndExerciseManager mockCourseAndExerciseManager = mock(CourseAndExerciseManager.class);
         when(mockCourseAndExerciseManager.isCourseInDatabase(course.getName())).thenReturn(true);
+        when(mockCourseAndExerciseManager.getExercise(course.getName(), exercise.getName())).thenReturn(exercise);
 
         ProgressWindow window = mock(ProgressWindow.class);
         CoreProgressObserver observer = mock(CoreProgressObserver.class);
