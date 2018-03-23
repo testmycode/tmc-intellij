@@ -8,6 +8,7 @@ import fi.helsinki.cs.tmc.core.exceptions.ExpiredException;
 import fi.helsinki.cs.tmc.core.exceptions.ShowToUserException;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
@@ -15,6 +16,7 @@ import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.ui.login.LoginDialog;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 
@@ -57,7 +59,9 @@ public class ExerciseUploadingService {
                 courseAndExerciseManager.getExercise(
                         getCourseName(exerciseCourse), getExerciseName(exerciseCourse));
 
-        if (exercise == null) {
+        if (!settings.getToken().isPresent()) {
+            LoginDialog.display();
+        } else if (exercise == null) {
             logger.warn("Failed to submit an exercise that was null. @ExerciseUploadingService");
             ErrorMessageService error = new ErrorMessageService();
             error.showErrorMessagePopup(

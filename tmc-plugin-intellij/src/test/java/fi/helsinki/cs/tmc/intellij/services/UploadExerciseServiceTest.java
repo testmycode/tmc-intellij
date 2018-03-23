@@ -2,6 +2,7 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 
 
+import com.google.common.base.Optional;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import fi.helsinki.cs.tmc.core.TmcCore;
@@ -35,10 +36,12 @@ public class UploadExerciseServiceTest {
     public void afterUploadingExercisesTheCourseIsUpdated() {
         ObjectFinder finder = mock(ObjectFinder.class);
         CheckForExistingExercises checker = mock(CheckForExistingExercises.class);
-        SettingsTmc settings = mock(SettingsTmc.class);
         ThreadingService threadingService = mock(ThreadingService.class);
         Course course = new Course("home");
         Exercise exercise = new Exercise("user");
+
+        SettingsTmc settings = mock(SettingsTmc.class);
+        when(settings.getToken()).thenReturn(Optional.of("token"));
 
         Project project = mock(Project.class);
         when(project.getBasePath()).thenReturn("/home/user");

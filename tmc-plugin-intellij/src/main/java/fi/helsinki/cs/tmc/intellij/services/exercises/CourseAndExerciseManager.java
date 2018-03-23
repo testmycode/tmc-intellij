@@ -126,10 +126,6 @@ public class CourseAndExerciseManager {
                     exception,
                     exception.getStackTrace());
             SettingsTmc settingsTmc = TmcSettingsManager.get();
-            if (!settingsTmc.getFirstRun()) {
-                ErrorMessageService error = new ErrorMessageService();
-                error.showHumanReadableErrorMessage(exception, false);
-            }
             if (settingsTmc.getOrganization().isPresent()) {
                 refreshCoursesOffline();
             }

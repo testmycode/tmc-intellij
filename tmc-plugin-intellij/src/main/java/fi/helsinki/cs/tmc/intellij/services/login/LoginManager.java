@@ -10,6 +10,7 @@ import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,9 @@ public class LoginManager {
             logger.info("Authenticating user. @LoginManager");
 
             TmcCoreHolder.get().authenticate(ProgressObserver.NULL_OBSERVER, password).call();
+
+            new CourseAndExerciseManager().initiateDatabase();
+
             return true;
         } catch (Exception e) {
             if (e instanceof IOException) {
@@ -66,21 +70,6 @@ public class LoginManager {
             } else {
                 errorMessageService.showErrorMessagePopup("Logging in failed! Try again.");
             }
-
-//            if (authenticationException != null) {
-//                try {
-//                    throw authenticationException;
-//                } catch (AuthenticationFailedException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
-//            if (connectionException != null) {
-//                try {
-//                    throw connectionException;
-//                } catch (IOException e1) {
-//                    e1.printStackTrace();
-//                }
-//            }
 
             return false;
         }
