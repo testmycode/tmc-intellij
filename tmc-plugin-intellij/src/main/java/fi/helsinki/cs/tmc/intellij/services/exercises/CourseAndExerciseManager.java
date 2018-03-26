@@ -134,7 +134,9 @@ public class CourseAndExerciseManager {
                     "Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
                     exception,
                     exception.getStackTrace());
-            showMessageDialog();
+            if (TmcSettingsManager.get().getOrganization().isPresent()) {
+                showMessageDialog();
+            }
 
         } catch (Exception exception) {
             exception.printStackTrace();
