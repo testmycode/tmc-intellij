@@ -14,10 +14,7 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-/**
- * Tells JList how to show its elements, allowing icons next
- * to exercises.
- */
+/** Tells JList how to show its elements, allowing icons next to exercises. */
 public class ProjectListRenderer extends DefaultListCellRenderer {
 
     private static final Logger logger = LoggerFactory.getLogger(ProjectListRenderer.class);
@@ -39,33 +36,38 @@ public class ProjectListRenderer extends DefaultListCellRenderer {
 
     @Override
     public Component getListCellRendererComponent(
-            JList list, Object value, int index,
-            boolean isSelected, boolean cellHasFocus) {
+            JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
 
-
-        JLabel label = (JLabel) super.getListCellRendererComponent(
-                list, value, index, isSelected, cellHasFocus);
-
+        JLabel label =
+                (JLabel)
+                        super.getListCellRendererComponent(
+                                list, value, index, isSelected, cellHasFocus);
         try {
             if (exerciseUnKnown(value)) {
-//                logger.info("Setting UNKNOWN TmcIcon "
-//                        + "for exercise " + value + " in the project list window "
-//                        + "@ProjectListManager");
+                logger.info(
+                        "Setting UNKNOWN TmcIcon for exercise "
+                                + value
+                                + " in the project list window @ProjectListManager");
                 label.setIcon(TmcIcons.UNKNOWN);
             } else if (exerciseCompleted(value)) {
-//                logger.info("Setting DONE_EXERCISE TmcIcon"
-//                        + " for exercise " + value + " in the project list window "
-//                        + "@ProjectListManager");
+                logger.info(
+                        "Setting DONE_EXERCISE TmcIcon for exercise "
+                                + value
+                                + " in the project list window @ProjectListManager");
                 label.setIcon(TmcIcons.DONE_EXERCISE);
+            } else if (exerciseExpired(value)) {
+                label.setIcon(TmcIcons.EXPIRED_EXERCISE);
             } else {
-//                logger.info("Setting NOT_DONE_EXERCISE TmcIcon "
-//                        + "for exercise " + value + " in the project list window "
-//                        + "@ProjectListManager");
+                logger.info(
+                        "Setting NOT_DONE_EXERCISE TmcIcon for exercise "
+                                + value
+                                + " in the project list window @ProjectListManager");
                 label.setIcon(TmcIcons.NOT_DONE_EXERCISE);
             }
         } catch (Exception ewr) {
-//            logger.info("Failed to set icon.", ewr, ewr.getStackTrace());
-            new ErrorMessageService().showErrorMessageWithExceptionDetails(ewr, "Failed to set icon.", true);
+            logger.info("Failed to set icon.", ewr, ewr.getStackTrace());
+            new ErrorMessageService()
+                    .showErrorMessageWithExceptionDetails(ewr, "Failed to set icon.", true);
         }
 
         label.setHorizontalTextPosition(JLabel.RIGHT);
@@ -79,5 +81,9 @@ public class ProjectListRenderer extends DefaultListCellRenderer {
 
     private boolean exerciseCompleted(Object value) {
         return ((Exercise) value).isCompleted();
+    }
+
+    private boolean exerciseExpired(Object value) {
+        return ((Exercise) value).hasDeadlinePassed();
     }
 }
