@@ -2,6 +2,7 @@ package fi.helsinki.cs.tmc.intellij.services.exercises;
 
 import com.intellij.notification.NotificationType;
 import fi.helsinki.cs.tmc.core.TmcCore;
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.core.exceptions.ExpiredException;
@@ -49,15 +50,16 @@ public class ExerciseUploadingService {
         logger.info("Starting to upload an exercise. @ExerciseUploadingService");
 
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
+        Course course = finder.findCourse(getCourseName(exerciseCourse), "name");
 
-        if (!courseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
+        if (!courseAndExerciseManager.isCourseInDatabase(course.getTitle())) {
             Messages.showErrorDialog(project, "Project not identified as TMC exercise", "Error");
             return;
         }
 
         Exercise exercise =
                 courseAndExerciseManager.getExercise(
-                        getCourseName(exerciseCourse), getExerciseName(exerciseCourse));
+                        course.getTitle(), getExerciseName(exerciseCourse));
 
         if (!settings.getToken().isPresent()) {
             LoginDialog.display();
@@ -82,7 +84,7 @@ public class ExerciseUploadingService {
                     observer,
                     window);
             courseAndExerciseManager.updateSingleCourse(
-                    getCourseName(exerciseCourse), checker, finder, settings);
+                    course.getTitle(), checker, finder, settings);
         }
     }
 
