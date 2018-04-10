@@ -2,10 +2,12 @@ package fi.helsinki.cs.tmc.intellij.services;
 
 
 
+import com.google.common.base.Optional;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
 import fi.helsinki.cs.tmc.core.TmcCore;
 import fi.helsinki.cs.tmc.core.domain.Course;
+import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForExistingExercises;
@@ -32,20 +34,26 @@ public class UploadExerciseServiceTest {
      */
     @Test
     public void afterUploadingExercisesTheCourseIsUpdated() {
-        ObjectFinder finder = mock(ObjectFinder.class);
         CheckForExistingExercises checker = mock(CheckForExistingExercises.class);
-        SettingsTmc settings = mock(SettingsTmc.class);
         ThreadingService threadingService = mock(ThreadingService.class);
         Course course = new Course("home");
+        Exercise exercise = new Exercise("user");
+
+        SettingsTmc settings = mock(SettingsTmc.class);
+        when(settings.getToken()).thenReturn(Optional.of("token"));
 
         Project project = mock(Project.class);
         when(project.getBasePath()).thenReturn("/home/user");
 
         CourseAndExerciseManager mockCourseAndExerciseManager = mock(CourseAndExerciseManager.class);
-        when(mockCourseAndExerciseManager.isCourseInDatabase(course.getName())).thenReturn(true);
+        when(mockCourseAndExerciseManager.isCourseInDatabase(null)).thenReturn(true);
+        when(mockCourseAndExerciseManager.getExercise(null, exercise.getName())).thenReturn(exercise);
 
         ProgressWindow window = mock(ProgressWindow.class);
         CoreProgressObserver observer = mock(CoreProgressObserver.class);
+
+        ObjectFinder finder = mock(ObjectFinder.class);
+        when(finder.findCourse("home", "name")).thenReturn(course);
 
         new ExerciseUploadingService().startUploadExercise(project, mock(TmcCore.class), finder, checker,
                 mock(SubmissionResultHandler.class), settings,
@@ -53,7 +61,7 @@ public class UploadExerciseServiceTest {
                 observer, window);
 
         verify(threadingService).runWithNotification(any(Runnable.class), any(Project.class), any(ProgressWindow.class));
-        verify(mockCourseAndExerciseManager).updateSingleCourse(course.getName(),
+        verify(mockCourseAndExerciseManager).updateSingleCourse(null,
                 checker, finder, settings);
     }
 

@@ -213,7 +213,7 @@ public class CourseTabFactory {
                                 + File.separator + courseName
                                 + File.separator + selectedItem, courseName);
                     } catch (NullPointerException e) {
-                        new ErrorMessageService().showErrorMessage(e, "Course doesn't belong to the current organization", true);
+                        new ErrorMessageService().showErrorMessageWithExceptionDetails(e, "Course doesn't belong to the current organization", true);
                     }
 
                 }
@@ -273,7 +273,7 @@ public class CourseTabFactory {
                 logger.warn("IOException occurred. Something interrupted "
                                 + "the mouse action. @CourseTabFactory",
                         e1, e1.getStackTrace());
-                new ErrorMessageService().showErrorMessage(e1,
+                new ErrorMessageService().showErrorMessageWithExceptionDetails(e1,
                         "IOException occurred. Something interrupted the mouse action.",
                         true);
             }
@@ -310,7 +310,7 @@ public class CourseTabFactory {
                 logger.warn("IOException occurred. Something interrupted "
                                 + "the mouse action. @CourseTabFactory",
                         e1, e1.getStackTrace());
-                new ErrorMessageService().showErrorMessage(e1,
+                new ErrorMessageService().showErrorMessageWithExceptionDetails(e1,
                         "IOException occurred. Something interrupted the mouse action.",
                         true);
             }

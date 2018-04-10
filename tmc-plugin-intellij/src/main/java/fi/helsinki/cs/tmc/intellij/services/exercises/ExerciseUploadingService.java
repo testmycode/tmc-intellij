@@ -2,11 +2,14 @@ package fi.helsinki.cs.tmc.intellij.services.exercises;
 
 import com.intellij.notification.NotificationType;
 import fi.helsinki.cs.tmc.core.TmcCore;
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 import fi.helsinki.cs.tmc.core.exceptions.ExpiredException;
+import fi.helsinki.cs.tmc.core.exceptions.ShowToUserException;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
+import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.CoreProgressObserver;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
@@ -14,6 +17,7 @@ import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
+import fi.helsinki.cs.tmc.intellij.ui.login.LoginDialog;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 import fi.helsinki.cs.tmc.intellij.ui.testresults.TestResultPanelFactory;
 
@@ -46,18 +50,26 @@ public class ExerciseUploadingService {
         logger.info("Starting to upload an exercise. @ExerciseUploadingService");
 
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
+        Course course = finder.findCourse(getCourseName(exerciseCourse), "name");
 
-        if (!courseAndExerciseManager.isCourseInDatabase(getCourseName(exerciseCourse))) {
+        if (!courseAndExerciseManager.isCourseInDatabase(course.getTitle())) {
             Messages.showErrorDialog(project, "Project not identified as TMC exercise", "Error");
             return;
         }
 
         Exercise exercise =
                 courseAndExerciseManager.getExercise(
-                        getCourseName(exerciseCourse), getExerciseName(exerciseCourse));
+                        course.getTitle(), getExerciseName(exerciseCourse));
 
+        if (!settings.getToken().isPresent()) {
+            LoginDialog.display();
+        } else if (exercise == null) {
+            logger.warn("Failed to submit an exercise that was null. @ExerciseUploadingService");
+            ErrorMessageService error = new ErrorMessageService();
+            error.showErrorMessagePopup(
+                    "Failed to submit exercise.\nPlease check your internet connection.");
 
-        if (exercise != null && exercise.hasDeadlinePassed()) {
+        } else if (exercise.hasDeadlinePassed()) {
             logger.warn("Exercise has expired. @ExerciseUploadingService");
             Messages.showErrorDialog(project, "The deadline for this exercise has passed", "Error");
         } else {
@@ -72,7 +84,7 @@ public class ExerciseUploadingService {
                     observer,
                     window);
             courseAndExerciseManager.updateSingleCourse(
-                    getCourseName(exerciseCourse), checker, finder, settings);
+                    course.getTitle(), checker, finder, settings);
         }
     }
 
@@ -124,6 +136,7 @@ public class ExerciseUploadingService {
             Project project)
             throws Exception {
         logger.info("Getting submission results. @ExerciseUploadingService");
+
         final SubmissionResult result = core.submit(observer, exercise).call();
         handler.showResultMessage(exercise, result, project);
         refreshExerciseList();

@@ -254,7 +254,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
                             ex,
                             ex.getStackTrace());
                     new ErrorMessageService()
-                            .showErrorMessage(ex, "Failed to open browser. Problem with browser.", true);
+                            .showErrorMessageWithExceptionDetails(ex, "Failed to open browser. Problem with browser.", true);
                     String errorMessage = "Failed to open browser.\n" + ex.getMessage();
                     Messages.showErrorDialog(project, errorMessage, "Problem with Browser");
                 }

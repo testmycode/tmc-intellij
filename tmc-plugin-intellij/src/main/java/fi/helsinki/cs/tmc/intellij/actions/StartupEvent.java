@@ -76,8 +76,6 @@ public class StartupEvent implements StartupActivity {
 
                             checkForNewExercises(observer);
 
-                            showLoginWindow();
-
                             ApplicationManager.getApplication()
                                     .invokeLater(
                                             () -> {
@@ -94,6 +92,8 @@ public class StartupEvent implements StartupActivity {
                         }),
                 project,
                 progressWindow);
+
+        showLoginWindow();
     }
 
     private void setupLoggers(ProgressObserver observer) {

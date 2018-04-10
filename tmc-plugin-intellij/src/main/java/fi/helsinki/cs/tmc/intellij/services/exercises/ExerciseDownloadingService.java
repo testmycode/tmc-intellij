@@ -97,7 +97,7 @@ public class ExerciseDownloadingService {
                         except,
                         except.getStackTrace());
                 new ErrorMessageService()
-                        .showErrorMessage(
+                        .showErrorMessageWithExceptionDetails(
                                 except,
                                 "You need to select a course to be able to download.",
                                 true);
@@ -130,7 +130,7 @@ public class ExerciseDownloadingService {
             } catch (Exception exception) {
                 logger.info("Failed to download exercises. @ExerciseDownloadingService");
                 new ErrorMessageService()
-                        .showErrorMessage(exception, "Failed to download exercises.", true);
+                        .showErrorMessageWithExceptionDetails(exception, "Failed to download exercises.", true);
             }
 
             createThreadForRefreshingExerciseList();
@@ -157,7 +157,7 @@ public class ExerciseDownloadingService {
             openFirstExercise(exercises, core, observer);
         } catch (Exception exception) {
             logger.info("Failed to download exercises. @ExerciseDownloadingService");
-            new ErrorMessageService().showErrorMessage(exception, "Failed to download exercises.", true);
+            new ErrorMessageService().showErrorMessageWithExceptionDetails(exception, "Failed to download exercises.", true);
         }
         return false;
     }

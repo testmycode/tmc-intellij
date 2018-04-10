@@ -14,6 +14,7 @@ public interface TmcIcons {
     Icon REFRESH = IconLoader.getIcon("refresh.png");
     Icon SUCCESS = IconLoader.getIcon("smiley.png");
     Icon SIDE_PANEL = IconLoader.getIcon("sidepanel_new.png");
+    Icon EXPIRED_EXERCISE = IconLoader.getIcon("expired_clock.png");
 }
 
 

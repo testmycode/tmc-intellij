@@ -1,8 +1,12 @@
 package fi.helsinki.cs.tmc.intellij.services.exercises;
 
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.core.exceptions.ShowToUserException;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
 import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
@@ -16,11 +20,11 @@ import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentExerciseDataba
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Holds a database of courses in memory, allowing quick fetching of course when necessary without
@@ -41,12 +45,13 @@ public class CourseAndExerciseManager {
                             .getExerciseDatabase()
                             .getCourses()
                             .get(course);
-            for (Exercise exc : exercises) {
-                if (exerciseIsTheCorrectOne(exc, exercise)) {
-                    logger.info("Found " + exc + " @CourseAndExerciseManager");
-                    return exc;
+
+                for (Exercise exc : exercises) {
+                    if (exerciseIsTheCorrectOne(exc, exercise)) {
+                        logger.info("Found " + exc + " @CourseAndExerciseManager");
+                        return exc;
+                    }
                 }
-            }
         } catch (Exception exception) {
             logger.warn(
                     "Exercise was not found. @CourseAndExerciseManager",
@@ -74,7 +79,8 @@ public class CourseAndExerciseManager {
                     exception,
                     exception.getStackTrace());
             ErrorMessageService error = new ErrorMessageService();
-            error.showErrorMessage(exception, "Could not find the course.", false);
+            error.showErrorMessageWithExceptionDetails(
+                    exception, "Could not find the course.", false);
         }
         return null;
     }
@@ -93,21 +99,25 @@ public class CourseAndExerciseManager {
             Map<String, List<Exercise>> database = new HashMap<>();
             List<Course> courses =
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
-            Optional<Course> currentCourse =
-                    courses.stream()
-                            .filter(
-                                    o ->
-                                            o.equals(
-                                                    TmcSettingsManager.get()
-                                                            .getCurrentCourse()
-                                                            .orNull()))
-                            .findFirst();
-            if (!currentCourse.isPresent()) {
-                logger.info("Did not find the selected course from the server");
-                return;
-            }
+//            Optional<Course> currentCourse =
+//                    courses.stream()
+//                            .filter(
+//                                    o ->
+//                                            o.equals(
+//                                                    TmcSettingsManager.get()
+//                                                            .getCurrentCourse()
+//                                                            .orNull()))
+//                            .findFirst();
+//            if (!currentCourse.isPresent()) {
+//                logger.info("Did not find the selected course from the server");
+//                return;
+//            }
 
-            fetchCourseFromTmcCore(database, currentCourse.get());
+//            fetchCourseFromTmcCore(database, currentCourse.get());
+
+            for (Course course : courses) {
+                fetchCourseFromTmcCore(database, course);
+            }
 
             getDatabase().setCourses(database);
         } catch (TmcCoreException exception) {
@@ -116,22 +126,45 @@ public class CourseAndExerciseManager {
                     exception,
                     exception.getStackTrace());
             SettingsTmc settingsTmc = TmcSettingsManager.get();
-            if (!settingsTmc.getFirstRun()) {
-                ErrorMessageService error = new ErrorMessageService();
-                error.showHumanReadableErrorMessage(exception, false);
-            }
             if (settingsTmc.getOrganization().isPresent()) {
                 refreshCoursesOffline();
             }
-        } catch (Exception exception) {
+        } catch (ShowToUserException exception) {
             logger.warn(
                     "Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
                     exception,
                     exception.getStackTrace());
-            ErrorMessageService error = new ErrorMessageService();
-            error.showErrorMessage(exception, "Failed to fetch courses from tmc core.", false);
-            refreshCoursesOffline();
+            if (TmcSettingsManager.get().getOrganization().isPresent()) {
+                showMessageDialog();
+            }
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
+    }
+
+    private void showMessageDialog() {
+        Project currentProject = new ObjectFinder().findCurrentProject();
+        Icon icon = Messages.getErrorIcon();
+        String message =
+                "Failed to fetch courses from the server.\nPlease check your internet connection.";
+
+        ApplicationManager.getApplication()
+                .invokeLater(
+                        () -> {
+                            int answer =
+                                    Messages.showOkCancelDialog(
+                                            currentProject,
+                                            message,
+                                            "",
+                                            "Try again",
+                                            "Cancel",
+                                            icon);
+                            if (answer == 0) {
+                                System.out.println("yes");
+                                this.initiateDatabase();
+                            }
+                        });
     }
 
     private void fetchCourseFromTmcCore(Map<String, List<Exercise>> database, Course course) {
@@ -145,14 +178,15 @@ public class CourseAndExerciseManager {
                     new CheckForExistingExercises()
                             .getListOfDownloadedExercises(
                                     course.getExercises(), TmcSettingsManager.get());
-            database.put(course.getName(), exercises);
+            database.put(course.getTitle(), exercises);
         } catch (Exception exception) {
             logger.warn(
                     "Failed to initiate database. @CourseAndExerciseManager",
                     exception,
                     exception.getStackTrace());
             new ErrorMessageService()
-                    .showErrorMessage(exception, "Failed to initiate database", true);
+                    .showErrorMessageWithExceptionDetails(
+                            exception, "Failed to initiate database", true);
         }
     }
 

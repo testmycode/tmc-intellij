@@ -29,11 +29,7 @@ class PresentableErrorMessage {
     static PresentableErrorMessage forTmcException(TmcCoreException exception) {
         String causeMessage;
 
-        if (exception.getCause() != null) {
-            causeMessage = exception.getCause().getMessage();
-        } else {
-            causeMessage = exception.getMessage();
-        }
+        causeMessage = exception.getMessage();
 
         String shownMessage;
         NotificationType type = NotificationType.WARNING;
@@ -49,8 +45,9 @@ class PresentableErrorMessage {
             type = NotificationType.ERROR;
         } else if (causeMessage.contains("Organization not selected")) {
             shownMessage = causeMessage;
-        } else if (exception.getMessage().contains("Failed to fetch courses from the server")
-                || exception.getMessage().contains("Failed to compress project")) {
+        } else if (causeMessage.contains("Failed to fetch courses from the server")
+                || causeMessage.contains("Failed to compress project")
+                || causeMessage.contains("Failed to submit exercise")) {
             shownMessage = notifyAboutFailedSubmissionAttempt();
         } else if (TmcSettingsManager.get().getServerAddress().isEmpty()) {
             shownMessage = notifyAboutEmptyServerAddress(causeMessage);
@@ -58,7 +55,6 @@ class PresentableErrorMessage {
             shownMessage = causeMessage;
             type = NotificationType.ERROR;
         }
-        System.out.println("error: " + shownMessage);
 
         return new PresentableErrorMessage(shownMessage, type);
     }
@@ -70,9 +66,7 @@ class PresentableErrorMessage {
     }
 
     private static String notifyAboutUsernamePasswordAndServerAddress(String causeMessage) {
-        return causeMessage
-                + ".\nSeems like you don't have your TMC settings initialized. \n"
-                + "Set up your username, password and TMC server address.";
+        return causeMessage + "\nSet up your username, password and TMC server address.";
     }
 
     private static String notifyAboutEmptyServerAddress(String causeMessage) {
@@ -82,7 +76,7 @@ class PresentableErrorMessage {
     }
 
     private static String notifyAboutFailedSubmissionAttempt() {
-        return "Failed to establish connection to the server.\n Check your Internet connection";
+        return "Failed to submit exercise.\nPlease check your Internet connection";
     }
 
     private static String notifyAboutIncorrectUsernameOrPassword(String causeMessage) {
