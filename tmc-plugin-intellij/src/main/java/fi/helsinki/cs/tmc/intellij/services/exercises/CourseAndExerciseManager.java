@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.services.exercises;
 
-import com.intellij.notification.NotificationType;
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
@@ -26,7 +25,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * Holds a database of courses in memory, allowing quick fetching of course when necessary without
@@ -48,14 +46,12 @@ public class CourseAndExerciseManager {
                             .getCourses()
                             .get(course);
 
-            if (!exercises.isEmpty()) {
                 for (Exercise exc : exercises) {
                     if (exerciseIsTheCorrectOne(exc, exercise)) {
                         logger.info("Found " + exc + " @CourseAndExerciseManager");
                         return exc;
                     }
                 }
-            }
         } catch (Exception exception) {
             logger.warn(
                     "Exercise was not found. @CourseAndExerciseManager",
