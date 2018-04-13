@@ -10,6 +10,7 @@ import fi.helsinki.cs.tmc.core.domain.submission.FeedbackQuestion;
 import fi.helsinki.cs.tmc.core.domain.submission.SubmissionResult;
 
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
+import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.exercises.NextExerciseFetcher;
@@ -44,7 +45,6 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-
 public class SuccessfulSubmissionDialog extends JDialog {
 
     private static final Logger logger = LoggerFactory.getLogger(SuccessfulSubmissionDialog.class);
@@ -73,7 +73,7 @@ public class SuccessfulSubmissionDialog extends JDialog {
         addVSpace(10);
         addModelSolutionButton(result, project);
         addVSpace(20);
-        addFeedbackQuestions(result); //TODO: maybe put in box
+        addFeedbackQuestions(result); // TODO: maybe put in box
         addVSpace(10);
         addOkButton();
         addNextExerciseButton();
@@ -106,7 +106,9 @@ public class SuccessfulSubmissionDialog extends JDialog {
                     String path = project.getBasePath();
                     NextExerciseFetcher fetcher =
                             new NextExerciseFetcher(
-                                    PathResolver.getCourseName(path),
+                                    new ObjectFinder()
+                                            .findCourse(PathResolver.getCourseName(path), "name")
+                                            .getTitle(),
                                     PathResolver.getExercise(path),
                                     project);
 
@@ -179,11 +181,11 @@ public class SuccessfulSubmissionDialog extends JDialog {
 
         yayLabel.setForeground(new JBColor(new Color(0, 153, 51), new Color(0, 153, 51)));
         yayLabel.setIcon(TmcIcons.SUCCESS);
-        //URL imageUrl = new URL("/fi/helsinki/cs/tmc/intellij/smile.gif");
-        //ImageIcon icon = new ImageIcon(getClass().getResource("/smiley.gif"));
-        //yayLabel.setIcon(icon);
-        //new ImageIcon(getClass().getResource("/fi/helsinki/cs/tmc/smile.gif"));
-        //yayLabel.setIcon(ConvenientDialogDisplayer.getDefault().getSmileyIcon());
+        // URL imageUrl = new URL("/fi/helsinki/cs/tmc/intellij/smile.gif");
+        // ImageIcon icon = new ImageIcon(getClass().getResource("/smiley.gif"));
+        // yayLabel.setIcon(icon);
+        // new ImageIcon(getClass().getResource("/fi/helsinki/cs/tmc/smile.gif"));
+        // yayLabel.setIcon(ConvenientDialogDisplayer.getDefault().getSmileyIcon());
 
         getContentPane().add(leftAligned(yayLabel));
     }
@@ -254,7 +256,8 @@ public class SuccessfulSubmissionDialog extends JDialog {
                             ex,
                             ex.getStackTrace());
                     new ErrorMessageService()
-                            .showErrorMessageWithExceptionDetails(ex, "Failed to open browser. Problem with browser.", true);
+                            .showErrorMessageWithExceptionDetails(
+                                    ex, "Failed to open browser. Problem with browser.", true);
                     String errorMessage = "Failed to open browser.\n" + ex.getMessage();
                     Messages.showErrorDialog(project, errorMessage, "Problem with Browser");
                 }

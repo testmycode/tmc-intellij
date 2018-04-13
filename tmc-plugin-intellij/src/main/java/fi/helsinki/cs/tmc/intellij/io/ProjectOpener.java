@@ -6,6 +6,7 @@ import fi.helsinki.cs.tmc.intellij.holders.ProjectListManagerHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
+import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 
@@ -49,6 +50,11 @@ public class ProjectOpener {
                     if (project != null) {
                         ProjectManager.getInstance().closeProject(project);
                     }
+
+                    String[] split = PathResolver.getCourseAndExerciseName(path);
+                    Course course = new ObjectFinder().findCourse(split[split.length - 2], "name");
+                    TmcSettingsManager.get().setCourse(Optional.of(course));
+
                 } catch (Exception exception) {
                     logger.warn(
                             "Could not open project from path. @ProjectOpener",
