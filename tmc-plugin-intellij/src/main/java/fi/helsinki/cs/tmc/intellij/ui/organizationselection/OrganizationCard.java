@@ -31,9 +31,10 @@ public class OrganizationCard extends JPanel {
 
         this.organizationName.setText(organization.getName());
         String information = organization.getInformation();
-        if (information.length() > 75) {
-            information = information.substring(0, 74) + "...";
-        }
+        // TODO: make scrollable?
+//        if (information.length() > 75) {
+//            information = information.substring(0, 74) + "...";
+//        }
         this.organizationInformation.setText(information);
         this.organizationSlug.setText("/" + organization.getSlug());
         ImageIcon image = new ImageIcon("placeholderLogo.png");

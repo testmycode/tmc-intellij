@@ -45,7 +45,8 @@ public class CourseListWindow extends JPanel {
         this.courses.setVisibleRowCount(4);
         JScrollPane pane = new JBScrollPane(this.courses);
         Dimension d = pane.getPreferredSize();
-        d.width = 400;
+        d.width = 1000;
+        d.height = 600;
         pane.setPreferredSize(d);
         pane.setBorder(new EmptyBorder(5, 0, 5, 0));
         this.courses.setBackground(new Color(242, 241, 240));

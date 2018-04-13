@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.actions.buttonactions;
 
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
@@ -22,6 +23,7 @@ public class RunTestsAction extends AnAction {
     public void actionPerformed(AnActionEvent anActionEvent) {
         logger.info("Run tests action performed. @RunTestsAction");
         String[] courseExercise = PathResolver.getCourseAndExerciseName(anActionEvent.getProject());
+        Course course = new ObjectFinder().findCourse(getCourseName(courseExercise), "name");
 
         FileDocumentManager.getInstance().saveAllDocuments();
 
@@ -31,7 +33,7 @@ public class RunTestsAction extends AnAction {
                 .runTests(
                         new CourseAndExerciseManager()
                                 .getExercise(
-                                        getCourseName(courseExercise),
+                                        course.getTitle(),
                                         getExerciseName(courseExercise)),
                         anActionEvent.getProject(),
                         new ThreadingService(),

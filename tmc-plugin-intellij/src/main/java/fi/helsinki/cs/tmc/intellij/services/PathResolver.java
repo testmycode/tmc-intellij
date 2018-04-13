@@ -53,8 +53,9 @@ public class PathResolver {
             return null;
         }
         String[] split = getCourseAndExerciseName(path);
+        Course course = new ObjectFinder().findCourse(split[split.length - 2], "name");
         CourseAndExerciseManager manager = new CourseAndExerciseManager();
-        return manager.getExercise(split[split.length - 2], split[split.length - 1]);
+        return manager.getExercise(course.getTitle(), split[split.length - 1]);
     }
 
     public static Course getCourse(String path) {

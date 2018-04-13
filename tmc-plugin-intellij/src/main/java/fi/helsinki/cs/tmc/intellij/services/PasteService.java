@@ -1,6 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.services;
 
 import fi.helsinki.cs.tmc.core.TmcCore;
+import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.TmcCoreException;
@@ -27,11 +28,12 @@ public class PasteService {
     public void showSubmitForm(Project project, TmcCore core) {
         logger.info("Opening paste submit form. @PasteService");
         String[] exerciseCourse = PathResolver.getCourseAndExerciseName(project);
+        Course course = new ObjectFinder().findCourse(getCourseName(exerciseCourse), "name");
 
         this.exercise =
                 new CourseAndExerciseManager()
                         .getExercise(
-                                getCourseName(exerciseCourse),
+                                course.getTitle(),
                                 getExerciseNameFromArray(exerciseCourse));
         this.core = core;
         this.window = new PasteWindow();

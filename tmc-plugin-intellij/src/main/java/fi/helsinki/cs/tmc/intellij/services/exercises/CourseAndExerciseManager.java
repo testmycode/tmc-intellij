@@ -99,21 +99,6 @@ public class CourseAndExerciseManager {
             Map<String, List<Exercise>> database = new HashMap<>();
             List<Course> courses =
                     TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
-//            Optional<Course> currentCourse =
-//                    courses.stream()
-//                            .filter(
-//                                    o ->
-//                                            o.equals(
-//                                                    TmcSettingsManager.get()
-//                                                            .getCurrentCourse()
-//                                                            .orNull()))
-//                            .findFirst();
-//            if (!currentCourse.isPresent()) {
-//                logger.info("Did not find the selected course from the server");
-//                return;
-//            }
-
-//            fetchCourseFromTmcCore(database, currentCourse.get());
 
             for (Course course : courses) {
                 fetchCourseFromTmcCore(database, course);

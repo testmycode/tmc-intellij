@@ -1,6 +1,10 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
+import com.google.common.base.Optional;
+import fi.helsinki.cs.tmc.core.TmcCore;
+import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
+import fi.helsinki.cs.tmc.core.utilities.TmcServerAddressNormalizer;
 import fi.helsinki.cs.tmc.intellij.holders.ExerciseDatabaseManager;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
@@ -12,6 +16,7 @@ import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForNewExercises;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.logging.PropertySetter;
+import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentExerciseDatabase;
 import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
 
 import com.intellij.openapi.application.ApplicationManager;
@@ -28,6 +33,9 @@ import org.jetbrains.annotations.NotNull;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * The actions to be executed on project startup defined in plugin.xml exercises group on line
@@ -61,10 +69,8 @@ public class StartupEvent implements StartupActivity {
                         () -> {
                             setupLoggers(observer);
                             setupTmcSettings(observer);
-
                             setupCoreHolder(observer);
                             setupSpyware(observer, project);
-
                             setupDatabase(observer);
                             setupHandlersForSpyware(observer);
 
@@ -79,7 +85,13 @@ public class StartupEvent implements StartupActivity {
                             ApplicationManager.getApplication()
                                     .invokeLater(
                                             () -> {
-                                                while (project.isDisposed()) {}
+                                                while (project.isDisposed()) {
+                                                    try {
+                                                        Thread.sleep(5);
+                                                    } catch (Exception e) {
+
+                                                    }
+                                                }
 
                                                 if (ToolWindowManager.getInstance(project)
                                                                 .getToolWindow("Project")
@@ -118,8 +130,10 @@ public class StartupEvent implements StartupActivity {
     }
 
     private void setupDatabase(ProgressObserver observer) {
-        observer.progress(0, 0.56, "Initializing database");
-        new CourseAndExerciseManager().initiateDatabase();
+        if (TmcSettingsManager.get().getToken().isPresent()) {
+            observer.progress(0, 0.56, "Initializing database");
+            new CourseAndExerciseManager().initiateDatabase();
+        }
     }
 
     private void setupHandlersForSpyware(ProgressObserver observer) {
@@ -146,8 +160,33 @@ public class StartupEvent implements StartupActivity {
         }
     }
 
+    private void tryToMigratePasswordToOAuthToken() {
+        final SettingsTmc settings = TmcSettingsManager.get();
+        try {
+            TmcServerAddressNormalizer normalizer = new TmcServerAddressNormalizer();
+            normalizer.normalize();
+            TmcCoreHolder.get()
+                    .authenticate(ProgressObserver.NULL_OBSERVER, settings.getPassword().get())
+                    .call();
+            normalizer.selectOrganizationAndCourse();
+        } catch (Exception ex) {
+            logger.info(
+                    "Couldn't migrate password to OAuth token. The user will be asked to log in.");
+        } finally {
+            settings.setPassword(Optional.<String>absent());
+        }
+    }
+
+    private void migrateCourseAndExerciseDatabase() {
+        new CourseAndExerciseManager().initiateDatabase();
+    }
+
     private void showLoginWindow() {
         SettingsTmc settingsTmc = TmcSettingsManager.get();
+        if (settingsTmc.getPassword().isPresent()) {
+            this.tryToMigratePasswordToOAuthToken();
+            this.migrateCourseAndExerciseDatabase();
+        }
         if (!settingsTmc.getToken().isPresent() || settingsTmc.getServerAddress().isEmpty()) {
             LoginDialog.display();
         }

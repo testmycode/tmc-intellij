@@ -20,6 +20,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Collections;
 import java.util.List;
 
 public class OrganizationListWindow extends JPanel {
@@ -32,6 +33,18 @@ public class OrganizationListWindow extends JPanel {
 
     public OrganizationListWindow(List<Organization> organizations) {
         OrganizationCard[] organizationCards = new OrganizationCard[organizations.size()];
+        Collections.sort(organizations, (a, b) -> {
+            if (a.isPinned() && b.isPinned()) {
+                return a.getName().compareTo(b.getName());
+            }
+            if (a.isPinned()) {
+                return -1;
+            }
+            if (b.isPinned()) {
+                return 1;
+            }
+            return a.getName().compareTo(b.getName());
+        });
         for (int i = 0; i < organizations.size(); i++) {
             organizationCards[i] = new OrganizationCard(organizations.get(i));
         }
@@ -46,7 +59,8 @@ public class OrganizationListWindow extends JPanel {
         this.organizations.setVisibleRowCount(4);
         JScrollPane pane = new JBScrollPane(this.organizations);
         Dimension d = pane.getPreferredSize();
-        d.width = 400;
+        d.width = 1000;
+        d.height = 600;
         pane.setPreferredSize(d);
         pane.setBorder(new EmptyBorder(5, 0, 5, 0));
         this.organizations.setBackground(new Color(242, 241, 240));

@@ -29,15 +29,16 @@ public class CourseCard extends JPanel {
             information = " ";
         }
 
-        if (information.length() > 100) {
-            information = information.substring(0, 99) + "...";
-        }
+        // TODO: make scrollable?
+//        if (information.length() > 100) {
+//            information = information.substring(0, 99) + "...";
+//        }
         this.informationLabel.setText(information);
-        this.informationLabel.setRows(2);
-        final String text = this.informationLabel.getText();
-        if (text.length() > 3) {
-            this.informationLabel.replaceRange("...", text.length() - 3, text.length());
-        }
+        this.informationLabel.setRows(3);
+//        final String text = this.informationLabel.getText();
+//        if (text.length() > 3) {
+//            this.informationLabel.replaceRange("...", text.length() - 3, text.length());
+//        }
         this.nameLabel.setText("/" + course.getName());
     }
 
