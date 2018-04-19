@@ -278,7 +278,7 @@ public class SettingsPanel {
             final String projectDefaultFolderPath = projectDefaultFolder.getAbsolutePath();
 
             if (projectDefaultFolderPath.toLowerCase().contains("onedrive")) {
-                new ErrorMessageService().showErrorMessagePopup("OneDrive doesn't work with IntelliJ.\n" +
+                new ErrorMessageService().showErrorMessagePopup("OneDrive doesn't work with the TMC plugin for IntelliJ.\n" +
                     "Please use another folder for your projects.");
                 return;
             }
