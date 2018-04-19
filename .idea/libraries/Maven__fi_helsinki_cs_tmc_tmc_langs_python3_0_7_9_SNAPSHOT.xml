@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: fi.helsinki.cs.tmc:tmc-langs-python3:0.7.9-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-python3/0.7.9-SNAPSHOT/tmc-langs-python3-0.7.9-20180418.135709-1.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-python3/0.7.9-SNAPSHOT/tmc-langs-python3-0.7.9-20180418.135709-1-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-python3/0.7.9-SNAPSHOT/tmc-langs-python3-0.7.9-20180418.135709-1-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

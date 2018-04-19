@@ -33,6 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.*;
 
@@ -263,15 +264,26 @@ public class SettingsPanel {
         logger.info("Creating action listener for browsing. @SettingsPanel");
         return actionEvent -> {
             logger.info("Browsing action performed. @SettingsPanel", actionEvent);
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setDialogTitle("Select path for projects");
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            fileChooser.showOpenDialog(panel1);
+            JFileChooser folderChooser = new JFileChooser();
+            folderChooser.setDialogTitle("Select path for projects");
+            folderChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            folderChooser.showOpenDialog(panel1);
 
-            if (fileChooser.getSelectedFile() == null) {
+            File projectDefaultFolder = folderChooser.getSelectedFile();
+
+            if (projectDefaultFolder == null) {
                 return;
             }
-            projectPathField.setText(fileChooser.getSelectedFile().getAbsolutePath());
+
+            final String projectDefaultFolderPath = projectDefaultFolder.getAbsolutePath();
+
+            if (projectDefaultFolderPath.toLowerCase().contains("onedrive")) {
+                new ErrorMessageService().showErrorMessagePopup("OneDrive doesn't work with IntelliJ.\n" +
+                    "Please use another folder for your projects.");
+                return;
+            }
+
+            projectPathField.setText(projectDefaultFolderPath);
         };
     }
 

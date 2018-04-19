@@ -69,6 +69,7 @@ public class StartupEvent implements StartupActivity {
                         () -> {
                             setupLoggers(observer);
                             setupTmcSettings(observer);
+                            CheckForOneDrive.run();
                             setupCoreHolder(observer);
                             setupSpyware(observer, project);
                             setupDatabase(observer);
