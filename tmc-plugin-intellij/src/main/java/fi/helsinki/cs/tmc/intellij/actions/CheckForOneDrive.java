@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.actions;
 
-import com.intellij.notification.NotificationType;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
