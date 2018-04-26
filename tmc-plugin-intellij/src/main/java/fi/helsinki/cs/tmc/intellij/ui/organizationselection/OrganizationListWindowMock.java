@@ -1,5 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.organizationselection;
 
+import com.intellij.ui.components.JBScrollPane;
 import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.ui.settings.SettingsPanelMock;
@@ -12,26 +13,21 @@ import java.util.List;
 
 public class OrganizationListWindowMock extends JPanel {
 
-    private final JList<OrganizationCard> organizationCards;
+    private final JList<Organization> organizations;
     private static JButton button;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
 
     public OrganizationListWindowMock(List<Organization> organizations) {
-        OrganizationCard[] organizationCards = new OrganizationCard[organizations.size()];
-
-        for (int i = 0; i < organizationCards.length; i++) {
-            organizationCards[i] = new OrganizationCard(organizations.get(i));
-        }
-
-        this.organizationCards = new JList<>(organizationCards);
+        Organization[] orgArray = organizations.toArray(new Organization[organizations.size()]);
+        this.organizations = new JList<Organization>(orgArray);
 
         this.button = new JButton("Select");
         button.addActionListener(new SelectOrganizationListenerMock(this));
 
-        JScrollPane pane = new JScrollPane(this.organizationCards);
+        JScrollPane pane = new JBScrollPane(this.organizations);
 
-        this.organizationCards.addMouseListener(
+        this.organizations.addMouseListener(
                 new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent event) {
@@ -45,8 +41,8 @@ public class OrganizationListWindowMock extends JPanel {
         add(button);
     }
 
-    public JList<OrganizationCard> getOrganizationCards() {
-        return this.organizationCards;
+    public JList<Organization> getOrganizations() {
+        return this.organizations;
     }
 
     public JButton getButton() {
@@ -63,7 +59,7 @@ public class OrganizationListWindowMock extends JPanel {
         public void actionPerformed(ActionEvent e) {
             logger.info("Action SelectOrganization performed. @SelectOrganizationListener");
 
-            final OrganizationCard organization = organizationCards.getSelectedValue();
+            final Organization organization = organizations.getSelectedValue();
 
 
 
@@ -71,11 +67,9 @@ public class OrganizationListWindowMock extends JPanel {
                 if (SettingsPanelMock.getInstance() != null) {
                     SettingsPanelMock.getInstance()
                             .setCurrentOrganization(
-                                    organization
-                                            .getOrganization()); // update settingspanel if it's visible
+                                    organization); // update settingspanel if it's visible
                 }
 
-                //                CourseListWindow.display(); // show courselistwindow after selecting an organization
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

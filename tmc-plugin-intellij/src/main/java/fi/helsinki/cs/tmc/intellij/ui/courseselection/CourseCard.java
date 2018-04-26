@@ -4,7 +4,6 @@ import com.intellij.ui.components.JBScrollPane;
 import fi.helsinki.cs.tmc.core.domain.Course;
 
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
 
 public class CourseCard extends JPanel {
@@ -19,9 +18,6 @@ public class CourseCard extends JPanel {
 
         this.course = course;
 
-        DefaultCaret caret = (DefaultCaret) this.informationLabel.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-
         this.titleLabel.setText(course.getTitle());
         String information = course.getDescription();
 
@@ -29,16 +25,10 @@ public class CourseCard extends JPanel {
             information = " ";
         }
 
-        // TODO: make scrollable?
-//        if (information.length() > 100) {
-//            information = information.substring(0, 99) + "...";
-//        }
+        if (information.length() > 188) {
+            information = information.substring(0, 187) + "...";
+        }
         this.informationLabel.setText(information);
-        this.informationLabel.setRows(3);
-//        final String text = this.informationLabel.getText();
-//        if (text.length() > 3) {
-//            this.informationLabel.replaceRange("...", text.length() - 3, text.length());
-//        }
         this.nameLabel.setText("/" + course.getName());
     }
 
@@ -78,7 +68,7 @@ public class CourseCard extends JPanel {
         nameLabel.setForeground(new Color(150, 150, 150));
 
         infoScrollPane.setBackground(new Color(255, 255, 255));
-        infoScrollPane.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        infoScrollPane.setBorder(BorderFactory.createEmptyBorder(2, 10, 2, 10));
         infoScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         infoScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         infoScrollPane.setViewportBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -111,7 +101,7 @@ public class CourseCard extends JPanel {
                                                                                 LayoutStyle
                                                                                         .ComponentPlacement
                                                                                         .RELATED,
-                                                                                161,
+                                                                                155,
                                                                                 Short.MAX_VALUE)
                                                                         .addComponent(nameLabel))
                                                         .addComponent(

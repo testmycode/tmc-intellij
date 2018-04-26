@@ -110,19 +110,10 @@ public class CourseAndExerciseManager {
                     "Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
                     exception,
                     exception.getStackTrace());
-            SettingsTmc settingsTmc = TmcSettingsManager.get();
-            if (settingsTmc.getOrganization().isPresent()) {
-                refreshCoursesOffline();
-            }
-        } catch (ShowToUserException exception) {
-            logger.warn(
-                    "Failed to fetch courses from TmcCore. @CourseAndExerciseManager",
-                    exception,
-                    exception.getStackTrace());
             if (TmcSettingsManager.get().getOrganization().isPresent()) {
                 showMessageDialog();
+                refreshCoursesOffline();
             }
-
         } catch (Exception exception) {
             exception.printStackTrace();
         }

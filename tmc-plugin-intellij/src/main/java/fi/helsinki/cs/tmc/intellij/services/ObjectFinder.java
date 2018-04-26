@@ -95,17 +95,17 @@ public class ObjectFinder {
 
         try {
             courses = core.listCourses(ProgressObserver.NULL_OBSERVER).call();
+        } catch (ShowToUserException exception) {
+            logger.warn(
+                "Failed to fetch courses from TmcCore. @ObjectFinder",
+                exception,
+                exception.getStackTrace());
+            ErrorMessageService error = new ErrorMessageService();
+            error.showErrorMessagePopup(
+                "Failed to fetch courses from the server.\nPlease check your internet connection.");
         } catch (TmcCoreException e) {
             logger.warn("Getting courses failed @ObjectFinder", e, e.getStackTrace());
             new ErrorMessageService().showHumanReadableErrorMessage(e, false);
-        } catch (ShowToUserException exception) {
-            logger.warn(
-                    "Failed to fetch courses from TmcCore. @ObjectFinder",
-                    exception,
-                    exception.getStackTrace());
-            ErrorMessageService error = new ErrorMessageService();
-            error.showErrorMessagePopup(
-                    "Failed to fetch courses from the server.\nPlease check your internet connection.");
         } catch (Exception e) {
             logger.warn("Getting courses failed @ObjectFinder", e, e.getStackTrace());
             new ErrorMessageService()

@@ -20,22 +20,25 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CourseListWindow extends JPanel {
 
     private static JFrame frame;
-    private final JBList<CourseCard> courses;
+    private final JBList<Course> courses;
     private static JButton button;
 
     private static final Logger logger = LoggerFactory.getLogger(LoginManager.class);
 
     public CourseListWindow(List<Course> courses) {
-        CourseCard[] courseCards = new CourseCard[courses.size()];
-        for (int i = 0; i < courses.size(); i++) {
-            courseCards[i] = new CourseCard(courses.get(i));
-        }
-        this.courses = new JBList<>(courseCards);
+        Course[] courseArray = courses.toArray(new Course[courses.size()]);
+        this.courses = new JBList<>(courseArray);
+        this.courses.setFixedCellHeight(107);
+        this.courses.setFixedCellWidth(346);
+
+
         this.courses.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.button = new JButton("Select");
@@ -45,22 +48,25 @@ public class CourseListWindow extends JPanel {
         this.courses.setVisibleRowCount(4);
         JScrollPane pane = new JBScrollPane(this.courses);
         Dimension d = pane.getPreferredSize();
-        d.width = 1000;
-        d.height = 600;
+        d.width = 800;
+        d.height = (int) (d.height * 1.12);
         pane.setPreferredSize(d);
         pane.setBorder(new EmptyBorder(5, 0, 5, 0));
+        pane.setViewportBorder(new EmptyBorder(0, 0, 0, 0));
+        pane.getVerticalScrollBar().setUnitIncrement(10);
+
         this.courses.setBackground(new Color(242, 241, 240));
 
         this.courses.setSelectedIndex(setDefaultSelectedIndex());
         this.courses.addMouseListener(
-                new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent event) {
-                        if (event.getClickCount() >= 2) {
-                            button.doClick();
-                        }
+            new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent event) {
+                    if (event.getClickCount() >= 2) {
+                        button.doClick();
                     }
-                });
+                }
+            });
         add(pane);
         add(button);
     }
@@ -74,7 +80,7 @@ public class CourseListWindow extends JPanel {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         List<Course> courses =
-                TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
+            TmcCoreHolder.get().listCourses(ProgressObserver.NULL_OBSERVER).call();
 
         final CourseListWindow courseListWindow = new CourseListWindow(courses);
         frame.setContentPane(courseListWindow);
@@ -90,24 +96,27 @@ public class CourseListWindow extends JPanel {
         button.setMaximumSize(new Dimension(courseListWindow.getWidth(), button.getHeight()));
 
         courseListWindow.addComponentListener(
-                new ComponentListener() {
-                    @Override
-                    public void componentResized(ComponentEvent event) {
-                        button.setMinimumSize(
-                                new Dimension(courseListWindow.getWidth(), button.getHeight()));
-                        button.setMaximumSize(
-                                new Dimension(courseListWindow.getWidth(), button.getHeight()));
-                    }
+            new ComponentListener() {
+                @Override
+                public void componentResized(ComponentEvent event) {
+                    button.setMinimumSize(
+                        new Dimension(courseListWindow.getWidth(), button.getHeight()));
+                    button.setMaximumSize(
+                        new Dimension(courseListWindow.getWidth(), button.getHeight()));
+                }
 
-                    @Override
-                    public void componentMoved(ComponentEvent e) {}
+                @Override
+                public void componentMoved(ComponentEvent e) {
+                }
 
-                    @Override
-                    public void componentShown(ComponentEvent e) {}
+                @Override
+                public void componentShown(ComponentEvent e) {
+                }
 
-                    @Override
-                    public void componentHidden(ComponentEvent e) {}
-                });
+                @Override
+                public void componentHidden(ComponentEvent e) {
+                }
+            });
     }
 
     public static boolean isWindowVisible() {
@@ -120,7 +129,7 @@ public class CourseListWindow extends JPanel {
     private static boolean hasCourses(List<Course> courses) throws Exception {
         if (courses.isEmpty()) {
             JOptionPane.showMessageDialog(
-                    frame, "Organization has no courses!", "Error", JOptionPane.ERROR_MESSAGE);
+                frame, "Organization has no courses!", "Error", JOptionPane.ERROR_MESSAGE);
             frame.setVisible(false);
             frame.dispose();
             return false;
@@ -135,9 +144,9 @@ public class CourseListWindow extends JPanel {
         }
         String selectedCourseName = currentCourse.get().getName();
 
-        final ListModel<CourseCard> list = courses.getModel();
+        final ListModel<Course> list = courses.getModel();
         for (int i = 0; i < list.getSize(); i++) {
-            if (list.getElementAt(i).getCourse().getName().equals(selectedCourseName)) {
+            if (list.getElementAt(i).getName().equals(selectedCourseName)) {
                 return i;
             }
         }
@@ -149,24 +158,24 @@ public class CourseListWindow extends JPanel {
 
         private final Logger logger = LoggerFactory.getLogger(LoginManager.class);
 
-        public SelectCourseListener(CourseListWindow window) {}
+        public SelectCourseListener(CourseListWindow window) {
+        }
 
         @Override
         public void actionPerformed(ActionEvent e) {
             logger.info("Action SelectCourse performed. @SelectCourseListener");
 
-            final CourseCard course = courses.getSelectedValue();
-            setColors(course, Color.blue, Color.black);
+            final Course course = courses.getSelectedValue();
             frame.setVisible(false);
             frame.dispose();
 
             try {
                 final PersistentTmcSettings saveSettings =
-                        ServiceManager.getService(PersistentTmcSettings.class);
+                    ServiceManager.getService(PersistentTmcSettings.class);
                 SettingsTmc settingsTmc =
-                        ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+                    ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
 
-                settingsTmc.setCourse(Optional.of(course.getCourse()));
+                settingsTmc.setCourse(Optional.of(course));
                 saveSettings.setSettingsTmc(settingsTmc);
 
                 if (SettingsPanel.getInstance() != null) { // Update SettingsPanel if it's visible
@@ -178,20 +187,17 @@ public class CourseListWindow extends JPanel {
             }
         }
     }
-
-    private void setColors(CourseCard course, Color background, Color foreground) {
-        course.setBackground(background);
-        for (Component c : course.getComponents()) {
-            c.setForeground(foreground);
-        }
-    }
 }
 
-class CourseCellRenderer extends JLabel implements ListCellRenderer {
+class CourseCellRenderer extends DefaultListCellRenderer {
 
     private static final Color HIGHLIGHT_COLOR = new Color(240, 119, 70);
 
-    public CourseCellRenderer() {}
+    private final Map<Course, CourseCard> cachedCourses;
+
+    public CourseCellRenderer() {
+        this.cachedCourses = new HashMap<>();
+    }
 
     @Override
     public Component getListCellRendererComponent(
@@ -200,12 +206,18 @@ class CourseCellRenderer extends JLabel implements ListCellRenderer {
             final int index,
             final boolean isSelected,
             final boolean hasFocus) {
-        CourseCard course = (CourseCard) value;
-        if (isSelected) {
-            course.setColors(Color.white, HIGHLIGHT_COLOR);
-        } else {
-            course.setColors(new Color(76, 76, 76), Color.white);
+
+        final Course course = (Course) value;
+        if (!this.cachedCourses.containsKey(course)) {
+            this.cachedCourses.put(course, new CourseCard(course));
         }
-        return course;
+        CourseCard courseCard = this.cachedCourses.get(course);
+
+        if (isSelected) {
+            courseCard.setColors(Color.white, HIGHLIGHT_COLOR);
+        } else {
+            courseCard.setColors(new Color(76, 76, 76), Color.white);
+        }
+        return courseCard;
     }
 }

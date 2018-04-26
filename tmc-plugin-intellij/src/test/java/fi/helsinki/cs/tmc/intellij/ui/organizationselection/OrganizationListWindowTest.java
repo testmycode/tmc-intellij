@@ -18,7 +18,7 @@ public class OrganizationListWindowTest {
     private SettingsPanelMock settingsPanel;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         createOrganizationListWindow();
         settingsPanel = new SettingsPanelMock(new JFrame());
     }
@@ -54,7 +54,7 @@ public class OrganizationListWindowTest {
 
     @Test
     public void selectingAnOrganizationUpdatesTheLabel() {
-        orgListWin.getOrganizationCards().setSelectedIndex(1);
+        orgListWin.getOrganizations().setSelectedIndex(1);
         orgListWin.getButton().doClick();
 
         settingsPanel.getOrganizationLabel().getText().contains("Kissa");

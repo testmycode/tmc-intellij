@@ -1,18 +1,17 @@
 package fi.helsinki.cs.tmc.intellij.ui.organizationselection;
 
 import com.intellij.ui.JBColor;
+import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 
 import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class OrganizationCard extends JPanel {
-    private JPanel panel1;
     private JLabel logo;
     private JLabel organizationName;
     private JLabel organizationSlug;
@@ -20,29 +19,41 @@ public class OrganizationCard extends JPanel {
     private JTextArea organizationInformation;
 
     private final Organization organization;
+    private ImageIcon image;
+    private JBList parent;
 
-    public OrganizationCard(Organization organization) {
+    public OrganizationCard(Organization organization, JBList parent) {
         this.initComponents();
 
         this.organization = organization;
-
-        DefaultCaret caret = (DefaultCaret) this.organizationInformation.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        this.parent = parent;
 
         this.organizationName.setText(organization.getName());
         String information = organization.getInformation();
-        // TODO: make scrollable?
-//        if (information.length() > 75) {
-//            information = information.substring(0, 74) + "...";
-//        }
+        if (information.length() > 188) {
+            information = information.substring(0, 187) + "...";
+        }
         this.organizationInformation.setText(information);
         this.organizationSlug.setText("/" + organization.getSlug());
-        ImageIcon image = new ImageIcon("placeholderLogo.png");
-        if (!organization.getLogoPath().contains("missing")) {
-            image = new ImageIcon(logoUrl(organization.getLogoPath()));
+
+        setLogo();
+    }
+
+    private void setLogo() {
+        setLogo(logoUrl("placeholderLogo.png"));
+        final String logoPath = organization.getLogoPath();
+        if(!logoPath.contains("missing")) {
+            new Thread(() -> {
+                setLogo(logoUrl(logoPath));
+                this.parent.repaint();
+            }).start();
         }
-        image.setImage(image.getImage().getScaledInstance(49, 49, java.awt.Image.SCALE_SMOOTH));
-        this.logo.setIcon(image);
+    }
+
+    private void setLogo(URL logoUrl) {
+        this.image = new ImageIcon(logoUrl);
+        this.image.setImage(this.image.getImage().getScaledInstance(49, 49, Image.SCALE_SMOOTH));
+        this.logo.setIcon(this.image);
     }
 
     public Organization getOrganization() {
@@ -70,6 +81,7 @@ public class OrganizationCard extends JPanel {
         this.organizationName.setForeground(foreground);
         this.organizationSlug.setForeground(foreground);
         this.infoScrollPane.setBackground(background);
+        this.infoScrollPane.setForeground(foreground);
         this.organizationInformation.setForeground(foreground);
         this.organizationInformation.setBackground(background);
     }
@@ -81,15 +93,15 @@ public class OrganizationCard extends JPanel {
         logo = new JLabel();
         organizationName = new JLabel();
         organizationSlug = new JLabel();
-        infoScrollPane = new JBScrollPane();
         organizationInformation = new JTextArea();
+        infoScrollPane = new JBScrollPane(organizationInformation);
 
         setBackground(new Color(255, 255, 255));
         setBorder(
                 BorderFactory.createMatteBorder(
-                        5,
+                        1,
                         10,
-                        5,
+                        1,
                         10,
                         new JBColor(new Color(242, 241, 240), new Color(242, 241, 24))));
         setMaximumSize(new Dimension(332, 73));
@@ -106,7 +118,7 @@ public class OrganizationCard extends JPanel {
         infoScrollPane.setBackground(new Color(255, 255, 255));
         infoScrollPane.setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         infoScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        infoScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        infoScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
         infoScrollPane.setViewportBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
         infoScrollPane.setHorizontalScrollBar(null);
         infoScrollPane.setPreferredSize(new Dimension(106, 30));
