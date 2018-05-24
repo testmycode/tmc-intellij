@@ -59,6 +59,7 @@
       <action id="Run Project" class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.RunProjectAction" text="Run Project" description="Run Project" />
       <action id="Run Tests" class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.RunTestsAction" text="Run Tests" description="Run Tests" />
       <action id="Download ALL Exercises" class="fi.helsinki.cs.tmc.intellij.actions.DownloadAllExercisesAction" text="Download current course's ALL exercises" description="Download all exercise" />
+      <action id="About TMC" class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.ShowAboutTmcAction" text="About TMC" description="About TMC" />
     </group>
 
     <action class="fi.helsinki.cs.tmc.intellij.actions.buttonactions.TmcSettingsAction" text="Get started with TMC" description="Get started with TMC" id="TmcSettingsAction" icon="TmcIcons.RUN_BUTTON" >

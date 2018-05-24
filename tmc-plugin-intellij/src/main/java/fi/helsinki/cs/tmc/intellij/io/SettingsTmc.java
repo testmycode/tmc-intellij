@@ -83,10 +83,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
         this.username = username;
     }
 
-    public void setSpyware(boolean spyware) {
-        this.spyware = spyware;
-    }
-
     public void setPassword(String password) {
         logger.info("Setting password. @SettingsTmc");
         if (password.trim().equals("")) {
@@ -114,7 +110,7 @@ public class SettingsTmc implements TmcSettings, Serializable {
     }
 
     public boolean isSpyware() {
-        return spyware;
+        return true;
     }
 
     public void setProjectBasePath(String projectBasePath) {
