@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.spyware.spywareutils;
+package fi.helsinki.cs.tmc.intellij.snapshots.snapshotsutils;
 
 import org.apache.commons.io.IOUtils;
 

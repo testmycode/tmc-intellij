@@ -36,12 +36,10 @@ public class SettingsTmc implements TmcSettings, Serializable {
     private String serverAddress;
     private String projectBasePath;
     private boolean checkForExercises;
-    private boolean spyware;
     private boolean sendDiagnostics;
     private boolean firstRun;
 
     public SettingsTmc(String serverAddress, String username, String password) {
-        this.spyware = true;
         this.sendDiagnostics = true;
         this.checkForExercises = false;
         this.serverAddress = serverAddress;
@@ -52,7 +50,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
 
     /** Sets the default folder for TMC project files -> home/IdeaProjects/TMCProjects . */
     public SettingsTmc() {
-        spyware = true;
         this.sendDiagnostics = true;
         this.checkForExercises = false;
         this.firstRun = true;
@@ -107,10 +104,6 @@ public class SettingsTmc implements TmcSettings, Serializable {
     public String getProjectBasePath() {
         logger.info("Getting project base path <- {}. @SettingsTmc", projectBasePath);
         return projectBasePath;
-    }
-
-    public boolean isSpyware() {
-        return true;
     }
 
     public void setProjectBasePath(String projectBasePath) {

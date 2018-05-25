@@ -8,7 +8,7 @@ import fi.helsinki.cs.tmc.intellij.services.ProgressWindowMaker;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForExistingExercises;
 import fi.helsinki.cs.tmc.intellij.services.exercises.ExerciseDownloadingService;
-import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
+import fi.helsinki.cs.tmc.intellij.snapshots.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.spyware;
+package fi.helsinki.cs.tmc.intellij.snapshots;
 
 import com.intellij.execution.ui.RunContentManager;
 import com.intellij.openapi.project.Project;
@@ -6,11 +6,11 @@ import com.intellij.util.messages.MessageBusConnection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SpywareRunListener  {
+public class SnapshotsRunListener {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpywareRunListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(SnapshotsRunListener.class);
 
-    public SpywareRunListener(Project project) {
+    public SnapshotsRunListener(Project project) {
         connectToMessageBus(project);
     }
 

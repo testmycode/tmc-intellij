@@ -14,7 +14,7 @@ import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForNewExercises;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.logging.PropertySetter;
-import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
+import fi.helsinki.cs.tmc.intellij.snapshots.ActivateSnapshotsListeners;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.editor.actionSystem.EditorActionManager;
@@ -66,9 +66,9 @@ public class StartupEvent implements StartupActivity {
                             setupTmcSettings(observer);
                             CheckForOneDrive.run();
                             setupCoreHolder(observer);
-                            setupSpyware(observer, project);
+                            setupSnapshots(observer, project);
                             setupDatabase(observer);
-                            setupHandlersForSpyware(observer);
+                            setupHandlersForSnapshots(observer);
 
                             if (TmcSettingsManager.get().getFirstRun()) {
                                 TmcSettingsManager.get().setFirstRun(false);
@@ -120,9 +120,9 @@ public class StartupEvent implements StartupActivity {
         TmcCoreHolder.setup();
     }
 
-    private void setupSpyware(ProgressObserver observer, Project project) {
+    private void setupSnapshots(ProgressObserver observer, Project project) {
         observer.progress(0, 0.42, "Activating listeners");
-        new ActivateSpywareListeners(project).activateListeners();
+        new ActivateSnapshotsListeners(project).activateListeners();
     }
 
     private void setupDatabase(ProgressObserver observer) {
@@ -132,12 +132,12 @@ public class StartupEvent implements StartupActivity {
         }
     }
 
-    private void setupHandlersForSpyware(ProgressObserver observer) {
+    private void setupHandlersForSnapshots(ProgressObserver observer) {
         observer.progress(0, 0.70, "Setting handlers");
         final EditorActionManager actionManager = EditorActionManager.getInstance();
         final TypedAction typedAction = actionManager.getTypedAction();
         TypedActionHandler originalHandler = actionManager.getTypedAction().getHandler();
-        typedAction.setupHandler(new ActivateSpywareAction(originalHandler));
+        typedAction.setupHandler(new ActivateSnapshotsAction(originalHandler));
     }
 
     private void checkForNewExercises(ProgressObserver observer) {

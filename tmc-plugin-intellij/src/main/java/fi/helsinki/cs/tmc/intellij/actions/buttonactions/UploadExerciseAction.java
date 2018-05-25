@@ -10,7 +10,7 @@ import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CheckForExistingExercises;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.services.exercises.ExerciseUploadingService;
-import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
+import fi.helsinki.cs.tmc.intellij.snapshots.ButtonInputListener;
 import fi.helsinki.cs.tmc.intellij.ui.submissionresult.SubmissionResultHandler;
 
 import com.intellij.openapi.actionSystem.AnAction;

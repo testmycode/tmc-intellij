@@ -1,9 +1,8 @@
-package fi.helsinki.cs.tmc.intellij.spyware;
+package fi.helsinki.cs.tmc.intellij.snapshots;
 
-import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.spyware.HostInformationGenerator;
+import fi.helsinki.cs.tmc.snapshots.*;
 
 import com.intellij.openapi.project.Project;
 
@@ -12,33 +11,31 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class ActivateSpywareListeners {
+public class ActivateSnapshotsListeners {
 
     private static final Logger logger = LoggerFactory.getLogger(TextInputListener.class);
 
     private final Project project;
 
-    public ActivateSpywareListeners(Project project) {
-        logger.info("Activating spyware listeners.");
+    public ActivateSnapshotsListeners(Project project) {
+        logger.info("Activating snapshots listeners.");
         this.project = project;
     }
 
     public void activateListeners() {
         if (isCourseInDatabase(project)) {
-            if (TmcSettingsManager.get().isSpyware()) {
-                new HostInformationGenerator().updateHostInformation(SpywareEventManager.get());
-            }
-            new SpywareRunListener(project);
-            new SpywareFileListener(project).createAndAddListener();
-            new SpywareTabListener(project);
+                new HostInformationGenerator().updateHostInformation(SnapshotsEventManager.get());
+            new SnapshotsRunListener(project);
+            new SnapshotsFileListener(project).createAndAddListener();
+            new SnapshotsTabListener(project);
         } else {
-            new SpywareFileListener(project).removeListener();
+            new SnapshotsFileListener(project).removeListener();
         }
     }
 
     public void removeListeners() {
         logger.info("Trying to remove file listeners and close it.");
-        SpywareFileListener listener = new SpywareFileListener(project);
+        SnapshotsFileListener listener = new SnapshotsFileListener(project);
         listener.removeListener();
 
         try {

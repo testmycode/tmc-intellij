@@ -4,7 +4,7 @@ import com.intellij.openapi.ui.ComboBox;
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Organization;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
-import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
+import fi.helsinki.cs.tmc.intellij.snapshots.ButtonInputListener;
 
 import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
 import fi.helsinki.cs.tmc.intellij.ui.organizationselection.OrganizationListWindow;

@@ -1,10 +1,10 @@
-package fi.helsinki.cs.tmc.intellij.spyware;
+package fi.helsinki.cs.tmc.intellij.snapshots;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.spyware.LoggableEvent;
+import fi.helsinki.cs.tmc.snapshots.*;
 
 import com.google.gson.Gson;
 
@@ -18,7 +18,7 @@ import java.util.Collections;
 
 /**
  * When a button is pressed the responsible action tells this class that an action has happened.
- * This class then creates a LoggableEvent to be sent to the spyware server. There are also checks
+ * This class then creates a LoggableEvent to be sent to the snapshots server. There are also checks
  * in place to make sure that the course is a TMC course.
  */
 public class ButtonInputListener {
@@ -90,7 +90,7 @@ public class ButtonInputListener {
     }
 
     private void addEvent(LoggableEvent event) {
-        logger.info("Checking that spyware setting is enabled.");
-        SpywareEventManager.add(event);
+        logger.info("Checking that snapshots setting is enabled.");
+        SnapshotsEventManager.add(event);
     }
 }

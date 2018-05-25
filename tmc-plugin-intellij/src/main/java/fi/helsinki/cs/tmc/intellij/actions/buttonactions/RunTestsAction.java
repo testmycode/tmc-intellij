@@ -6,7 +6,7 @@ import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.TestRunningService;
 import fi.helsinki.cs.tmc.intellij.services.ThreadingService;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
+import fi.helsinki.cs.tmc.intellij.snapshots.ButtonInputListener;
 
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;

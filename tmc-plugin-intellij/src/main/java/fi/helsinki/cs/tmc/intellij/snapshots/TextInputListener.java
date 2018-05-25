@@ -1,4 +1,4 @@
-package fi.helsinki.cs.tmc.intellij.spyware;
+package fi.helsinki.cs.tmc.intellij.snapshots;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.utilities.JsonMaker;
@@ -6,7 +6,7 @@ import fi.helsinki.cs.tmc.intellij.services.ClipboardService;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.spyware.LoggableEvent;
+import fi.helsinki.cs.tmc.snapshots.*;
 
 import com.intellij.openapi.editor.event.DocumentEvent;
 import com.intellij.openapi.editor.event.DocumentListener;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * When a change in the listened document happens this class creates a diff patch. That created
  * patch is then analyzed and a json is generated from it that is added to the list of items to be
- * sent to the spyware server.
+ * sent to the snapshots server.
  */
 public class TextInputListener implements DocumentListener {
 
@@ -119,6 +119,6 @@ public class TextInputListener implements DocumentListener {
         }
 
         LoggableEvent event = new LoggableEvent(exercise, eventType, text.getBytes());
-        SpywareEventManager.add(event);
+        SnapshotsEventManager.add(event);
     }
 }

@@ -8,7 +8,7 @@ import fi.helsinki.cs.tmc.intellij.importexercise.ExerciseImport;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
-import fi.helsinki.cs.tmc.intellij.spyware.ActivateSpywareListeners;
+import fi.helsinki.cs.tmc.intellij.snapshots.ActivateSnapshotsListeners;
 
 import com.intellij.ide.impl.ProjectUtil;
 import com.intellij.openapi.project.Project;
@@ -43,7 +43,7 @@ public class ProjectOpener {
             if (project == null || !path.equals(project.getBasePath())) {
                 try {
                     if (project != null) {
-                        new ActivateSpywareListeners(project).removeListeners();
+                        new ActivateSnapshotsListeners(project).removeListeners();
                     }
                     ExerciseImport.importExercise(path);
                     ProjectUtil.openOrImport(path, project, true);

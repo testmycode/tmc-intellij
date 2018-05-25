@@ -1,13 +1,12 @@
-package fi.helsinki.cs.tmc.intellij.spyware;
+package fi.helsinki.cs.tmc.intellij.snapshots;
 
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.utilities.JsonMaker;
-import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.intellij.spyware.spywareutils.ActiveThreadSet;
-import fi.helsinki.cs.tmc.intellij.spyware.spywareutils.RecursiveZipper;
-import fi.helsinki.cs.tmc.spyware.LoggableEvent;
+import fi.helsinki.cs.tmc.intellij.snapshots.snapshotsutils.ActiveThreadSet;
+import fi.helsinki.cs.tmc.intellij.snapshots.snapshotsutils.RecursiveZipper;
+import fi.helsinki.cs.tmc.snapshots.*;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
@@ -30,16 +29,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class SpywareFileListener implements Closeable {
+public class SnapshotsFileListener implements Closeable {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpywareFileListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(SnapshotsFileListener.class);
     private String projectPath;
     private boolean closed;
     private final ActiveThreadSet snapshotterThreads;
     private final Project project;
     private static VirtualFileListener listener;
 
-    public SpywareFileListener(Project project) {
+    public SnapshotsFileListener(Project project) {
         this.project = project;
         this.projectPath = project.getBasePath();
         this.snapshotterThreads = new ActiveThreadSet();
@@ -191,9 +190,8 @@ public class SpywareFileListener implements Closeable {
     }
 
     private void sendMetadata(JsonMaker metadata) {
-        if (!TmcSettingsManager.get().isSpyware()
-                || !new CourseAndExerciseManager()
-                        .isCourseInDatabase(PathResolver.getCourseName(projectPath))) {
+        if (!new CourseAndExerciseManager()
+                .isCourseInDatabase(PathResolver.getCourseName(projectPath))) {
             return;
         }
 
@@ -247,7 +245,8 @@ public class SpywareFileListener implements Closeable {
 
         @Override
         public void run() {
-            // Note that, being in a thread, this is inherently prone to races that modify the  projectPath.
+            // Note that, being in a thread, this is inherently prone to races that modify the
+            // projectPath.
             // For now we just accept that. Not sure if the FileObject API would allow some sort of
             // global locking of the  projectPath.
             File projectPathDir = new File(projectPathInfo);
@@ -257,9 +256,10 @@ public class SpywareFileListener implements Closeable {
             try {
                 byte[] data = zipper.zipProjectSources();
                 LoggableEvent event = new LoggableEvent(exercise, "code_snapshot", data, metadata);
-                SpywareEventManager.add(event);
+                SnapshotsEventManager.add(event);
             } catch (IOException ex) {
-                // Warning might be also appro1priate, but this often races with  projectPath closing
+                // Warning might be also appro1priate, but this often races with  projectPath
+                // closing
                 // during integration tests, and there warning would cause a dialog to appear,
                 // failing the test.
                 logger.warn("Error zipping  projectPath sources in: " + projectPathDir, ex);

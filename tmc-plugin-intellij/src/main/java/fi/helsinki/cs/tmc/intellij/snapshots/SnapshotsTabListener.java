@@ -1,15 +1,14 @@
-package fi.helsinki.cs.tmc.intellij.spyware;
+package fi.helsinki.cs.tmc.intellij.snapshots;
 
 import fi.helsinki.cs.tmc.core.domain.Course;
 import fi.helsinki.cs.tmc.core.domain.Exercise;
 import fi.helsinki.cs.tmc.core.utilities.JsonMaker;
-import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.spyware.LoggableEvent;
+import fi.helsinki.cs.tmc.snapshots.*;
 
 import com.intellij.openapi.fileEditor.FileEditorManager;
 import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
@@ -23,14 +22,14 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.charset.Charset;
 
-public class SpywareTabListener {
+public class SnapshotsTabListener {
 
-    private static final Logger logger = LoggerFactory.getLogger(SpywareTabListener.class);
+    private static final Logger logger = LoggerFactory.getLogger(SnapshotsTabListener.class);
 
     private final Project project;
     private final String basePath;
 
-    public SpywareTabListener(Project project) {
+    public SnapshotsTabListener(Project project) {
         this.project = project;
         this.basePath = project.getBasePath();
         createAndAddListeners(project);
@@ -168,21 +167,22 @@ public class SpywareTabListener {
     }
 
     private void addEventToBuffer(LoggableEvent event) {
-        if (!TmcSettingsManager.get().isSpyware()
-                || new CourseAndExerciseManager()
-                        .isCourseInDatabase(PathResolver.getCourseName(basePath))) {
+        if (new CourseAndExerciseManager()
+                .isCourseInDatabase(PathResolver.getCourseName(basePath))) {
             return;
         }
-        SpywareEventManager.add(event);
+        SnapshotsEventManager.add(event);
     }
 
     public Course getCourse() {
         SettingsTmc settings = TmcSettingsManager.get();
-        if (settings.getCurrentCourse().get().getName().equals(PathResolver.getCourseName(basePath))) {
+        if (settings.getCurrentCourse()
+                .get()
+                .getName()
+                .equals(PathResolver.getCourseName(basePath))) {
             return settings.getCurrentCourse().get();
         }
-        return new ObjectFinder()
-                .findCourse(PathResolver.getCourseName(basePath), "name");
+        return new ObjectFinder().findCourse(PathResolver.getCourseName(basePath), "name");
     }
 
     public Exercise getExercise() {

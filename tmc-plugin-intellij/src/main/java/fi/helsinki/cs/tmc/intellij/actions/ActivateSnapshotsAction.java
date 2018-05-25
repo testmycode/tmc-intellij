@@ -3,9 +3,8 @@ package fi.helsinki.cs.tmc.intellij.actions;
 import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
-import fi.helsinki.cs.tmc.intellij.spyware.TextInputListener;
+import fi.helsinki.cs.tmc.intellij.snapshots.TextInputListener;
 
-import com.intellij.internal.statistic.UsagesCollector;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
@@ -25,15 +24,15 @@ import java.util.List;
  * This class substitutes the normal TypedActionHandler. It attempts to add a listener to the
  * current document when a key is pressed.
  */
-public class ActivateSpywareAction implements TypedActionHandler {
+public class ActivateSnapshotsAction implements TypedActionHandler {
 
     private final TypedActionHandler handler;
 
     private static final List<Document> listenedDocuments = new ArrayList<>();
 
-    private static final Logger logger = LoggerFactory.getLogger(ActivateSpywareAction.class);
+    private static final Logger logger = LoggerFactory.getLogger(ActivateSnapshotsAction.class);
 
-    public ActivateSpywareAction(TypedActionHandler originalHandler) {
+    public ActivateSnapshotsAction(TypedActionHandler originalHandler) {
         handler = originalHandler;
     }
 

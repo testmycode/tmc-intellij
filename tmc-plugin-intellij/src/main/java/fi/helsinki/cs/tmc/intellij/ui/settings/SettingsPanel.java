@@ -15,7 +15,7 @@ import fi.helsinki.cs.tmc.intellij.services.ObjectFinder;
 import fi.helsinki.cs.tmc.intellij.services.errors.ErrorMessageService;
 import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
-import fi.helsinki.cs.tmc.intellij.spyware.ButtonInputListener;
+import fi.helsinki.cs.tmc.intellij.snapshots.ButtonInputListener;
 
 import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
