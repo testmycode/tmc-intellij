@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: fi.helsinki.cs.tmc:tmc-langs-notests:0.7.9-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-notests/0.7.9-SNAPSHOT/tmc-langs-notests-0.7.9-20180418.135716-1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-notests/0.7.9-SNAPSHOT/tmc-langs-notests-0.7.9-20180605.144432-4.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-notests/0.7.9-SNAPSHOT/tmc-langs-notests-0.7.9-20180418.135716-1-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-notests/0.7.9-SNAPSHOT/tmc-langs-notests-0.7.9-20180605.144432-4-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-notests/0.7.9-SNAPSHOT/tmc-langs-notests-0.7.9-20180418.135716-1-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/fi/helsinki/cs/tmc/tmc-langs-notests/0.7.9-SNAPSHOT/tmc-langs-notests-0.7.9-20180605.144432-4-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

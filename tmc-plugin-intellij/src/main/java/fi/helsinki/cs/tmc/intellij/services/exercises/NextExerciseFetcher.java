@@ -12,6 +12,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 
+import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,9 +106,13 @@ public class NextExerciseFetcher {
             NextExerciseFetcher.openFirst(manager.getExercises(settings.getCourseName()));
         } else {
             String path = project.getBasePath();
-            NextExerciseFetcher fetcher = new NextExerciseFetcher(PathResolver
-                    .getCourseName(path), PathResolver.getExercise(path), project);
+
+
+            String course = PersistentTmcSettings.getInstance().getSettingsTmc().getCourseName();
+
+            NextExerciseFetcher fetcher = new NextExerciseFetcher(course, PathResolver.getExercise(path), project);
             fetcher.tryToOpenNext();
+
         }
     }
 
