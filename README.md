@@ -51,7 +51,7 @@ New releases may be uploaded to: https://plugins.jetbrains.com/plugin/8551
 ---
 
 
-##Credits
+## Credits
 This plugin was developed for RAGE team of the department of Computer Science in University of Helsinki during course Software Production Project, Summer 2016.
 
 #### Original developers
