@@ -63,7 +63,7 @@ public class OpenToolWindowAction extends AnAction implements ToolWindowFactory 
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
         logger.info("Creating tool window content. @OpenToolWindowAction");
         ProjectListWindow window = new ProjectListWindow();
-        ContentFactory cf = ContentFactory.SERVICE.getInstance();
+        ContentFactory cf = ContentFactory.getInstance();
         Content content = cf.createContent(window.getBasePanel(), "", true);
         toolWindow.getContentManager().addContent(content);
         ProjectListManagerHolder.get().addWindow(window);

@@ -22,11 +22,12 @@ import com.intellij.openapi.editor.actionSystem.TypedAction;
 import com.intellij.openapi.editor.actionSystem.TypedActionHandler;
 import com.intellij.openapi.progress.util.ProgressWindow;
 import com.intellij.openapi.project.Project;
-import com.intellij.openapi.startup.StartupActivity;
+import com.intellij.openapi.startup.ProjectActivity;
 import com.intellij.openapi.wm.ToolWindowManager;
 
 import fi.helsinki.cs.tmc.intellij.ui.login.LoginDialog;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,12 +36,24 @@ import org.slf4j.LoggerFactory;
 /**
  * The actions to be executed on project startup defined in plugin.xml exercises group on line
  * &lt;postStartupActivity implementation ="fi.helsinki.cs.tmc.intellij.actions.StartupEvent"&gt;
+ *
+ * <p>Implements the modern {@link ProjectActivity} contract. The {@code execute} method
+ * is the suspend function generated from Kotlin; we delegate to {@link #runActivity(Project)}
+ * for the actual logic.
  */
-public class StartupEvent implements StartupActivity {
+public class StartupEvent implements ProjectActivity {
 
     private static final Logger logger = LoggerFactory.getLogger(StartupEvent.class);
 
+    @Nullable
     @Override
+    public Object execute(
+            @NotNull Project project,
+            @NotNull kotlin.coroutines.Continuation<? super kotlin.Unit> continuation) {
+        runActivity(project);
+        return kotlin.Unit.INSTANCE;
+    }
+
     public void runActivity(@NotNull Project project) {
 
         logger.info("Opening project {} and running startup actions. @StartupEvent", project);

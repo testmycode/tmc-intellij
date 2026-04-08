@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>fi.helsinki.cs.tmc</id>
-  <name>TMC Plugin for Intellij</name>
-  <version>2.0.3</version>
+  <name>TMC - Test My Code</name>
+  <version>2.1.0</version>
   <vendor email="" url="https://github.com/testmycode/tmc-intellij"> TMC IntelliJ team @ Github</vendor>
 
   <description><![CDATA[
@@ -21,14 +21,11 @@
     ]]>
   </change-notes>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="141.0"/>
+  <!-- please see https://plugins.jetbrains.com/docs/intellij/build-number-ranges.html for description -->
+  <idea-version since-build="261"/>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.modules.java</depends>
 
   <extensions defaultExtensionNs="com.intellij">
 

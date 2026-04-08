@@ -118,7 +118,7 @@ public class NewProjectUtilModified {
 
             logger.info("saving project after builder commit");
             // without save method nothing happens
-            ProjectUtil.updateLastProjectLocation(path);
+            ProjectUtil.updateLastProjectLocation(java.nio.file.Paths.get(path));
             newProject.save();
             if (!ApplicationManager.getApplication().isUnitTestMode()) {
                 newProject.save();

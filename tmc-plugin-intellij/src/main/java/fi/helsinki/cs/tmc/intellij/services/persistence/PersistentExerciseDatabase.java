@@ -1,7 +1,7 @@
 package fi.helsinki.cs.tmc.intellij.services.persistence;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 import com.intellij.util.xmlb.XmlSerializerUtil;
@@ -52,10 +52,9 @@ public class PersistentExerciseDatabase implements
         XmlSerializerUtil.copyBean(persistentExerciseDatabase, this);
     }
 
-    @Nullable
     public static PersistentExerciseDatabase getInstance() {
         logger.info("Processing getInstance. @PersistentExerciseDatabase.");
-        return ServiceManager.getService(PersistentExerciseDatabase.class);
+        return ApplicationManager.getApplication().getService(PersistentExerciseDatabase.class);
     }
 
 }

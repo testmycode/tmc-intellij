@@ -17,7 +17,6 @@ import fi.helsinki.cs.tmc.intellij.services.login.LoginManager;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 import fi.helsinki.cs.tmc.intellij.snapshots.ButtonInputListener;
 
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.project.Project;
 
 import fi.helsinki.cs.tmc.intellij.ui.courseselection.CourseListWindow;
@@ -106,7 +105,7 @@ public class SettingsPanel {
 
     public void setCurrentOrganization() {
         final PersistentTmcSettings persistentSettings =
-                ServiceManager.getService(PersistentTmcSettings.class);
+                PersistentTmcSettings.getInstance();
         SettingsTmc settings = persistentSettings.getSettingsTmc();
 
         if (settings.getOrganization().isPresent()
@@ -119,7 +118,7 @@ public class SettingsPanel {
 
     public void setCurrentCourse() {
         final PersistentTmcSettings persistentSettings =
-                ServiceManager.getService(PersistentTmcSettings.class);
+                PersistentTmcSettings.getInstance();
         SettingsTmc settings = persistentSettings.getSettingsTmc();
 
         if (settings.getCurrentCourse().isPresent()
@@ -173,9 +172,9 @@ public class SettingsPanel {
     public void saveInformation() {
         logger.info("Saving settings information. @SettingsPanel");
         final PersistentTmcSettings persistentSettings =
-                ServiceManager.getService(PersistentTmcSettings.class);
+                PersistentTmcSettings.getInstance();
         SettingsTmc settingsTmc =
-                ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+                PersistentTmcSettings.getInstance().getSettingsTmc();
 
         settingsTmc.setCheckForExercises(checkForNewOrCheckBox.isSelected());
         settingsTmc.setProjectBasePath(projectPathField.getText());
@@ -221,7 +220,7 @@ public class SettingsPanel {
             this.instance = null;
 
             SettingsTmc settingsTmc =
-                    ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+                    PersistentTmcSettings.getInstance().getSettingsTmc();
 
             if (settingsTmc.getOrganization().orNull() != organizationFirst) {
                 ApplicationManager.getApplication()

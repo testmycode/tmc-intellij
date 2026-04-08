@@ -1,7 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.organizationselection;
 
 import com.google.common.base.Optional;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.util.containers.hash.HashMap;
@@ -165,9 +164,9 @@ public class OrganizationListWindow extends JPanel {
 
             try {
                 final PersistentTmcSettings persistentSettings =
-                        ServiceManager.getService(PersistentTmcSettings.class);
+                        PersistentTmcSettings.getInstance();
                 SettingsTmc settingsTmc =
-                        ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+                        PersistentTmcSettings.getInstance().getSettingsTmc();
 
                 settingsTmc.setOrganization(Optional.of(organization));
                 persistentSettings.setSettingsTmc(settingsTmc);

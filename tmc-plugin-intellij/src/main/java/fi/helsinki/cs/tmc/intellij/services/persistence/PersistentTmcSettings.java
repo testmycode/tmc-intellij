@@ -2,8 +2,8 @@ package fi.helsinki.cs.tmc.intellij.services.persistence;
 
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 
+import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.components.State;
 import com.intellij.openapi.components.Storage;
 
@@ -44,10 +44,9 @@ public class PersistentTmcSettings implements PersistentStateComponent<Persisten
         XmlSerializerUtil.copyBean(persistentTmcSettings, this);
     }
 
-    @Nullable
     public static PersistentTmcSettings getInstance() {
         logger.info("Processing getInstance. @PersistentTmcSettings");
-        return ServiceManager.getService(PersistentTmcSettings.class);
+        return ApplicationManager.getApplication().getService(PersistentTmcSettings.class);
     }
 
     public SettingsTmc getSettingsTmc() {

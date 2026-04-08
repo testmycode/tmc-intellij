@@ -3,8 +3,6 @@ package fi.helsinki.cs.tmc.intellij.holders;
 import fi.helsinki.cs.tmc.intellij.io.SettingsTmc;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentTmcSettings;
 
-import com.intellij.openapi.components.ServiceManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,23 +10,27 @@ import org.slf4j.LoggerFactory;
 public final class TmcSettingsManager {
 
     private static final Logger logger = LoggerFactory.getLogger(TmcSettingsManager.class);
-    private static final PersistentTmcSettings persistentSettings =
-            ServiceManager.getService(PersistentTmcSettings.class);
 
     private TmcSettingsManager() {}
 
+    private static PersistentTmcSettings persistentSettings() {
+        return PersistentTmcSettings.getInstance();
+    }
+
     public static synchronized SettingsTmc get() {
         logger.info("Get SettingsTmc. @TmcSettingsManager.");
-        if (persistentSettings.getSettingsTmc() == null) {
-            persistentSettings.setSettingsTmc(new SettingsTmc());
+        PersistentTmcSettings ps = persistentSettings();
+        if (ps.getSettingsTmc() == null) {
+            ps.setSettingsTmc(new SettingsTmc());
         }
-        return persistentSettings.getSettingsTmc();
+        return ps.getSettingsTmc();
     }
 
     public static synchronized void setup() {
         logger.info("Setup SettingsTmc. @TmcSettingsManager.");
-        if (persistentSettings.getSettingsTmc() == null) {
-            persistentSettings.setSettingsTmc(new SettingsTmc());
+        PersistentTmcSettings ps = persistentSettings();
+        if (ps.getSettingsTmc() == null) {
+            ps.setSettingsTmc(new SettingsTmc());
         }
     }
 }

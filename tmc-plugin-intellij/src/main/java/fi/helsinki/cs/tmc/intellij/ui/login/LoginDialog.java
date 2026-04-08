@@ -1,6 +1,5 @@
 package fi.helsinki.cs.tmc.intellij.ui.login;
 
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
@@ -40,7 +39,7 @@ public class LoginDialog extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        settingsTmc = ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+        settingsTmc = PersistentTmcSettings.getInstance().getSettingsTmc();
         previousOrganization = settingsTmc.getOrganization().orNull();
         previousCourse = settingsTmc.getCurrentCourse().orNull();
 
@@ -101,8 +100,7 @@ public class LoginDialog extends JDialog {
     }
 
     private void onOK() {
-        final PersistentTmcSettings saveSettings =
-                ServiceManager.getService(PersistentTmcSettings.class);
+        final PersistentTmcSettings saveSettings = PersistentTmcSettings.getInstance();
 
         settingsTmc.setUsername(usernameField.getText());
 

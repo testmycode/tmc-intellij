@@ -78,8 +78,7 @@ public class ProjectFromSourcesBuilderImplModified {
         final Map<LibraryDescriptor, Library> projectLibs = new HashMap<>();
         final List<Module> result = new ArrayList<>();
         try {
-            AccessToken token = WriteAction.start();
-            try {
+            WriteAction.run(() -> {
                 // create project-level libraries
                 logger.info("Create project-level libraries.");
                 for (LibraryDescriptor lib : projectDescriptor.getLibraries()) {
@@ -96,10 +95,7 @@ public class ProjectFromSourcesBuilderImplModified {
                 }
 
                 projectLibraryTable.commit();
-
-            } finally {
-                token.finish();
-            }
+            });
         } catch (Exception e) {
             logger.warn(e.getMessage());
             new ErrorMessageService().showErrorMessageWithExceptionDetails(e, "Error adding module to project", true);
@@ -108,9 +104,8 @@ public class ProjectFromSourcesBuilderImplModified {
         final Map<ModuleDescriptor, Module> descriptorToModuleMap = new HashMap<>();
 
         try {
-            AccessToken token = WriteAction.start();
             logger.info("Starts creating modules");
-            try {
+            WriteAction.run(() -> {
                 final ModifiableModuleModel moduleModel =
                         ModuleManager.getInstance(project).getModifiableModel();
                 logger.info("Goes trough module descriptions to build module");
@@ -135,10 +130,7 @@ public class ProjectFromSourcesBuilderImplModified {
                 }
                 logger.info("Saving up created modules");
                 moduleModel.commit();
-
-            } finally {
-                token.finish();
-            }
+            });
         } catch (Exception e) {
             logger.warn(e.getMessage());
             new ErrorMessageService().showErrorMessageWithExceptionDetails(e, "Error adding module to project", true);

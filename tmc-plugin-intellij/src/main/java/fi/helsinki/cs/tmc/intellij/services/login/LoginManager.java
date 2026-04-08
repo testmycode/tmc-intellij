@@ -1,7 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.services.login;
 
 import com.google.common.base.Optional;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.openapi.ui.Messages;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.core.exceptions.AuthenticationFailedException;
@@ -79,9 +78,9 @@ public class LoginManager {
         logger.info("Logging out user. @LoginManager");
 
         final PersistentTmcSettings saveSettings =
-                ServiceManager.getService(PersistentTmcSettings.class);
+                PersistentTmcSettings.getInstance();
         final SettingsTmc settings =
-                ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+                PersistentTmcSettings.getInstance().getSettingsTmc();
 
         settings.setToken(Optional.absent());
         settings.setOauthCredentials(Optional.absent());

@@ -6,7 +6,7 @@ import fi.helsinki.cs.tmc.core.communication.TmcServerCommunicationTaskFactory;
 import fi.helsinki.cs.tmc.core.domain.ProgressObserver;
 import fi.helsinki.cs.tmc.intellij.holders.TmcCoreHolder;
 import fi.helsinki.cs.tmc.intellij.holders.TmcSettingsManager;
-import fi.helsinki.cs.tmc.snapshots.*;
+import fi.helsinki.cs.tmc.spyware.*;
 
 import com.intellij.openapi.application.ApplicationManager;
 
@@ -21,8 +21,13 @@ public class SnapshotsEventManager {
 
     private static final Logger logger = LoggerFactory.getLogger(SnapshotsEventManager.class);
 
+    private static final SpywareSettings SETTINGS = new SpywareSettings() {
+        @Override public boolean isSpywareEnabled() { return true; }
+        @Override public boolean isDetailedSpywareEnabled() { return true; }
+    };
+
     private static final EventSendBuffer buffer =
-            new EventSendBuffer(new TmcServerCommunicationTaskFactory(), new EventStore());
+            new EventSendBuffer(SETTINGS, new TmcServerCommunicationTaskFactory(), new EventStore());
 
     public static void add(final LoggableEvent log) {
         ApplicationManager.getApplication()

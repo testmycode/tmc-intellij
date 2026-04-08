@@ -1,7 +1,6 @@
 package fi.helsinki.cs.tmc.intellij.ui.courseselection;
 
 import com.google.common.base.Optional;
-import com.intellij.openapi.components.ServiceManager;
 import com.intellij.ui.components.JBList;
 import com.intellij.ui.components.JBScrollPane;
 import fi.helsinki.cs.tmc.core.domain.Course;
@@ -171,9 +170,9 @@ public class CourseListWindow extends JPanel {
 
             try {
                 final PersistentTmcSettings saveSettings =
-                    ServiceManager.getService(PersistentTmcSettings.class);
+                    PersistentTmcSettings.getInstance();
                 SettingsTmc settingsTmc =
-                    ServiceManager.getService(PersistentTmcSettings.class).getSettingsTmc();
+                    PersistentTmcSettings.getInstance().getSettingsTmc();
 
                 settingsTmc.setCourse(Optional.of(course));
                 saveSettings.setSettingsTmc(settingsTmc);

@@ -3,8 +3,6 @@ package fi.helsinki.cs.tmc.intellij.holders;
 import fi.helsinki.cs.tmc.intellij.services.persistence.ExerciseDatabase;
 import fi.helsinki.cs.tmc.intellij.services.persistence.PersistentExerciseDatabase;
 
-import com.intellij.openapi.components.ServiceManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,23 +10,27 @@ import org.slf4j.LoggerFactory;
 public class ExerciseDatabaseManager {
 
     private static final Logger logger = LoggerFactory.getLogger(ExerciseDatabaseManager.class);
-    private static final PersistentExerciseDatabase persistentExerciseDatabase =
-            ServiceManager.getService(PersistentExerciseDatabase.class);
 
     private ExerciseDatabaseManager() {}
 
+    private static PersistentExerciseDatabase persistent() {
+        return PersistentExerciseDatabase.getInstance();
+    }
+
     public static synchronized ExerciseDatabase get() {
         logger.info("Get ExerciseDatabase. @ExerciseDatabaseManager.");
-        if (persistentExerciseDatabase.getExerciseDatabase() == null) {
-            persistentExerciseDatabase.setExerciseDatabase(new ExerciseDatabase());
+        PersistentExerciseDatabase p = persistent();
+        if (p.getExerciseDatabase() == null) {
+            p.setExerciseDatabase(new ExerciseDatabase());
         }
-        return persistentExerciseDatabase.getExerciseDatabase();
+        return p.getExerciseDatabase();
     }
 
     public static synchronized void setup() {
         logger.info("Setup ExerciseDatabase. @ExerciseDatabaseManager.");
-        if (persistentExerciseDatabase.getExerciseDatabase() == null) {
-            persistentExerciseDatabase.setExerciseDatabase(new ExerciseDatabase());
+        PersistentExerciseDatabase p = persistent();
+        if (p.getExerciseDatabase() == null) {
+            p.setExerciseDatabase(new ExerciseDatabase());
         }
     }
 }

@@ -31,7 +31,7 @@ public class TestResultPanelFactory implements ToolWindowFactory {
         logger.info("Creating tool window content for test results. " + "@TestResultPanelFactory");
 
         TestResultsPanel panel = new TestResultsPanel();
-        ContentFactory cf = ContentFactory.SERVICE.getInstance();
+        ContentFactory cf = ContentFactory.getInstance();
         Content content = cf.createContent(panel, "", true);
         toolWindow.getContentManager().addContent(content);
 

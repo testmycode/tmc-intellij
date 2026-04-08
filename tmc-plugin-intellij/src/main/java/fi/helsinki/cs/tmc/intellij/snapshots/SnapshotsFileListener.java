@@ -6,7 +6,7 @@ import fi.helsinki.cs.tmc.intellij.services.PathResolver;
 import fi.helsinki.cs.tmc.intellij.services.exercises.CourseAndExerciseManager;
 import fi.helsinki.cs.tmc.intellij.snapshots.snapshotsutils.ActiveThreadSet;
 import fi.helsinki.cs.tmc.intellij.snapshots.snapshotsutils.RecursiveZipper;
-import fi.helsinki.cs.tmc.snapshots.*;
+import fi.helsinki.cs.tmc.spyware.*;
 
 import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.project.Project;
